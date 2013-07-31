@@ -1,0 +1,3 @@
+IsicsOpenMiamMiamBundle:
+    resource: "@IsicsOpenMiamMiamBundle/Resources/config/routing.yml"
+    prefix:   /

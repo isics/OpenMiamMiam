@@ -32,7 +32,10 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "isics/open-miam-miam-bundle": "dev-master@dev",
+        "stof/doctrine-extensions-bundle": "~1.1@dev",
         "behat/behat": "2.4.*@stable",
+        "behat/mink-extension": "*",
+        "behat/mink-goutte-driver": "1.0.*",
         "behat/symfony2-extension": "*"
     },
     "scripts": {

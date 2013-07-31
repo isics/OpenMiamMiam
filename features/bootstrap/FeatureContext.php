@@ -15,7 +15,9 @@ use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\Branch,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 
 //
 // Require 3rd-party libraries here:
@@ -29,6 +31,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
  */
 class FeatureContext extends BehatContext
 {
+    use Behat\MinkExtension\Context\MinkDictionary;
     use Behat\Symfony2Extension\Context\KernelDictionary;
 
     /**
@@ -64,15 +67,39 @@ class FeatureContext extends BehatContext
      */
     public function anAssociation($name)
     {
-        throw new PendingException();
+        $entityManager = $this->getEntityManager();
+
+        $association = new Association();
+        $association->setName($name);
+
+        $entityManager->persist($association);
+        $entityManager->flush();
     }
 
     /**
      * @Given /^association "([^"]*)" has following branches:$/
      */
-    public function associationHasFollowingBranches($arg1, TableNode $table)
+    public function associationHasFollowingBranches($association_name, TableNode $table)
     {
-        throw new PendingException();
+        $association = $this->getRepository('Association')->findOneByName($association_name);
+
+        if (null === $association) {
+            throw new \InvalidArgumentException(
+                sprintf('Association named "%s" was not found.', $association_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $branch = new Branch();
+            $branch->setAssociation($association);
+            $branch->setName($data['name']);
+
+            $entityManager->persist($branch);
+        }
+
+        $entityManager->flush();
     }
 
     /**
@@ -125,4 +152,15 @@ class FeatureContext extends BehatContext
         return $this->getContainer()->get('doctrine')->getManager();
     }
 
+    /**
+     * Get repository by entity Classname.
+     *
+     * @param string $entity_classname
+     *
+     * @return ObjectRepository
+     */
+    public function getRepository($entity_classname)
+    {
+        return $this->getContainer()->get('doctrine')->getRepository('IsicsOpenMiamMiamBundle:'.$entity_classname);
+    }
 }
