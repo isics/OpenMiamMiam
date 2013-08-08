@@ -8,7 +8,7 @@
 default:
     extensions:
         Behat\MinkExtension\Extension:
-            base_url:  'http://openmiammiam.local'
+            base_url:  'http://openmiammiam.local/app_test.php'
             goutte:    ~
         Behat\Symfony2Extension\Extension: ~
 

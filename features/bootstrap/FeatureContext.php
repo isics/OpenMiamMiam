@@ -15,9 +15,12 @@ use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
+use Doctrine\ORM\Tools\SchemaTool;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Branch,
-    Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+    Isics\Bundle\OpenMiamMiamBundle\Entity\Category,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\Producer,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 
 //
 // Require 3rd-party libraries here:
@@ -46,6 +49,19 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function cleanDatabase()
+    {
+        $entityManager = $this->getEntityManager();
+        $metadata      = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool    = new SchemaTool($entityManager);
+
+        $schemaTool->dropSchema($metadata);
+        $schemaTool->createSchema($metadata);
+    }
+
+    /**
      * @Given /^there are following categories:$/
      */
     public function thereAreFollowingCategories(TableNode $table)
@@ -57,6 +73,23 @@ class FeatureContext extends BehatContext
             $category->setName($data['name']);
 
             $entityManager->persist($category);
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
+     * @Given /^there are following producers:$/
+     */
+    public function thereAreFollowingProducers(TableNode $table)
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $producer = new Producer();
+            $producer->setName($data['name']);
+
+            $entityManager->persist($producer);
         }
 
         $entityManager->flush();
@@ -82,7 +115,6 @@ class FeatureContext extends BehatContext
     public function associationHasFollowingBranches($association_name, TableNode $table)
     {
         $association = $this->getRepository('Association')->findOneByName($association_name);
-
         if (null === $association) {
             throw new \InvalidArgumentException(
                 sprintf('Association named "%s" was not found.', $association_name)
@@ -105,41 +137,136 @@ class FeatureContext extends BehatContext
     /**
      * @Given /^association "([^"]*)" has following producers:$/
      */
-    public function associationHasFollowingProducers($arg1, TableNode $table)
+    public function associationHasFollowingProducers($association_name, TableNode $table)
     {
-        throw new PendingException();
+        $association = $this->getRepository('Association')->findOneByName($association_name);
+        if (null === $association) {
+            throw new \InvalidArgumentException(
+                sprintf('Association named "%s" was not found.', $association_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $producer = $this->getRepository('Producer')->findOneByName($data['name']);
+            if (null === $producer) {
+                throw new \InvalidArgumentException(
+                    sprintf('Producer named "%s" was not found.', $data['name'])
+                );
+            }
+
+            $association->addProducer($producer);
+        }
+
+        $entityManager->persist($association);
+        $entityManager->flush();
     }
 
     /**
      * @Given /^producer "([^"]*)" has following products:$/
      */
-    public function producerHasFollowingProducts($arg1, TableNode $table)
+    public function producerHasFollowingProducts($producer_name, TableNode $table)
     {
-        throw new PendingException();
+        $producer = $this->getRepository('Producer')->findOneByName($producer_name);
+        if (null === $producer) {
+            throw new \InvalidArgumentException(
+                sprintf('Producer named "%s" was not found.', $producer_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $category = $this->getRepository('Category')->findOneByName($data['category']);
+            if (null === $category) {
+                throw new \InvalidArgumentException(
+                    sprintf('Category named "%s" was not found.', $data['category'])
+                );
+            }
+
+            $product = new Product();
+            $product->setRef('TMP');
+            $product->setProducer($producer);
+            $product->setName($data['name']);
+            $product->setCategory($category);
+            $product->setAvailability((int) $data['availability']);
+
+            if (array_key_exists('price', $data)) {
+                $product->setPrice($data['price']);
+            }
+
+            $entityManager->persist($product);
+        }
+
+        $entityManager->flush();
     }
 
     /**
-     * @Given /^I am on the branch "([^"]*)" homepage$/
+     * @Given /^branch "([^"]*)" has following producers:$/
      */
-    public function iAmOnTheBranchHomepage($arg1)
+    public function branchHasFollowingProducers($branch_name, TableNode $table)
     {
-        throw new PendingException();
+        $branch = $this->getRepository('Branch')->findOneByName($branch_name);
+        if (null === $branch) {
+            throw new \InvalidArgumentException(
+                sprintf('Branch named "%s" of assocation named "%s" was not found.', $branch_name, $association_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $producer = $this->getRepository('Producer')->findOneByName($data['name']);
+            if (null === $producer) {
+                throw new \InvalidArgumentException(
+                    sprintf('Producer named "%s" was not found.', $association_name)
+                );
+            }
+            $branch->addProducer($producer);
+        }
+
+        $entityManager->persist($branch);
+        $entityManager->flush();
     }
 
     /**
-     * @Then /^I should see "([^"]*)" and "([^"]*)"$/
+     * @Given /^branch "([^"]*)" has following products:$/
      */
-    public function iShouldSeeAnd($arg1, $arg2)
+    public function branchHasFollowingProducts($branch_name, TableNode $table)
     {
-        throw new PendingException();
-    }
+        $branch = $this->getRepository('Branch')->findOneByName($branch_name);
+        if (null === $branch) {
+            throw new \InvalidArgumentException(
+                sprintf('Branch named "%s" of assocation named "%s" was not found.', $branch_name, $association_name)
+            );
+        }
 
-    /**
-     * @Given /^I should not see "([^"]*)"$/
-     */
-    public function iShouldNotSee($arg1)
-    {
-        throw new PendingException();
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $producer = $this->getRepository('Producer')->findOneByName($data['producer']);
+            if (null === $producer) {
+                throw new \InvalidArgumentException(
+                    sprintf('Producer named "%s" was not found.', $data['producer'])
+                );
+            }
+
+            $product = $this->getRepository('Product')->findOneBy(array(
+                'name'     => $data['product'],
+                'producer' => $producer
+            ));
+            if (null === $product) {
+                throw new \InvalidArgumentException(
+                    sprintf('Product named "%s" of producer named "%s" was not found.', $data['product'], $data['producer'])
+                );
+            }
+
+            $branch->addProduct($product);
+        }
+
+        $entityManager->persist($branch);
+        $entityManager->flush();
     }
 
     /**

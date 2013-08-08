@@ -1,6 +1,6 @@
 Feature: Branch homepage
     As a customer
-    I can see branch name and next date
+    I can see branch name
 
     Background:
         Given an association "Comptoir Bio"
@@ -10,13 +10,14 @@ Feature: Branch homepage
             | Le Chesnois Auboncourt |
 
     Scenario Outline: Branch homepage title
-        Given I am on "<branch_url>"
-         Then I should see "<title>"
+        Given I am on "<url>"
+         Then the response status code should be 200
+          And the "h1" element should contain "<title>"
 
         Examples:
-            | branch_url              | title                          |
-            | /charleville-mezieres   | Branch: Charleville-Mézières   |
-            | /le-chesnois-auboncourt | Branch: Le Chesnois Auboncourt |
+            | url                     | title                  |
+            | /charleville-mezieres   | Charleville-Mézières   |
+            | /le-chesnois-auboncourt | Le Chesnois Auboncourt |
 
     Scenario: Branch homepage for a nonexistent branch
         Given I am on "/foobar"
