@@ -6,7 +6,7 @@ php:
 
 before_script:
   - composer install -n
-  - app/console --env=test --force doctrine:database:drop
+  - app/console --env=test --force doctrine:database:drop || true
   - app/console --env=test doctrine:database:create
 
 script:
