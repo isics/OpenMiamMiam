@@ -4,7 +4,10 @@ php:
   - 5.4
   - 5.5
 
-before_script: composer install -n
+before_script:
+  - composer install -n
+  - app/console --env=test --force doctrine:database:drop
+  - app/console --env=test doctrine:database:create
 
 script:
   - bin/behat
