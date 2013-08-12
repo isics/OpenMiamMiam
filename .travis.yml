@@ -12,8 +12,8 @@ before_script:
   - app/console --env=test --force doctrine:database:drop || true
   - app/console --env=test doctrine:database:create
   # Web server
-  - php -S openmiammiam.local:80 --docroot web
+  - php -S localhost:8000 --docroot web
 
 script:
-  - bin/behat
+  - bin/behat --profile=travis
 #  - phpunit -c app
