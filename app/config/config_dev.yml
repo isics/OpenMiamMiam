@@ -7,10 +7,6 @@ framework:
         strict_requirements: true
     profiler: { only_exceptions: false }
 
-doctrine:
-    dbal:
-        dbname:   %database_name%_test
-
 web_profiler:
     toolbar: true
     intercept_redirects: false
