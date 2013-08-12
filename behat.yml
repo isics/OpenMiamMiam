@@ -15,3 +15,8 @@ default:
 frontend:
     paths:
         features: features/frontend
+
+travis:
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url:  'http://localhost:8000/app_test.php'
