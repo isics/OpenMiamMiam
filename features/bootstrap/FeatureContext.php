@@ -186,13 +186,16 @@ class FeatureContext extends BehatContext
             }
 
             $product = new Product();
-            $product->setRef('TMP');
             $product->setProducer($producer);
             $product->setName($data['name']);
             $product->setCategory($category);
             $product->setAvailability((int) $data['availability']);
 
-            if (array_key_exists('price', $data)) {
+            if (array_key_exists('description', $data)) {
+                $product->setDescription($data['description']);
+            }
+
+            if (array_key_exists('price', $data) && '' !== $data['price']) {
                 $product->setPrice($data['price']);
             }
 
