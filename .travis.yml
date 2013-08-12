@@ -6,9 +6,14 @@ php:
 
 before_script:
   - composer install -n
+  # Parameters
+  - cp -a app/config/parameters.yml{.dist,}
+  # Database
   - app/console --env=test --force doctrine:database:drop || true
   - app/console --env=test doctrine:database:create
+  # Web server
+  - php -S localhost:8000 --docroot web
 
 script:
   - bin/behat
-  - phpunit -c app
+#  - phpunit -c app
