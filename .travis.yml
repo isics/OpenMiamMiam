@@ -12,7 +12,8 @@ before_script:
   - app/console --env=test --force doctrine:database:drop || true
   - app/console --env=test doctrine:database:create
   # Web server
-  - php -S localhost:8000 --docroot web
+  - php -S localhost:8000 --docroot web &
+  - sleep 3
 
 script:
   - bin/behat --profile=travis
