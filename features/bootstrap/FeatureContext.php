@@ -18,6 +18,7 @@ use Behat\Gherkin\Node\PyStringNode,
 use Doctrine\ORM\Tools\SchemaTool;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Branch,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\BranchDate,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Category,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Producer,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
@@ -206,6 +207,33 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^branch "([^"]*)" has following calendar:$/
+     */
+    public function branchHasFollowingCalendar($branch_name, TableNode $table)
+    {
+        $branch = $this->getRepository('Branch')->findOneByName($branch_name);
+        if (null === $branch) {
+            throw new \InvalidArgumentException(
+                sprintf('Branch named "%s" was not found.', $branch_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $branchDate = new BranchDate();
+            $branchDate->setBranch($branch);
+            $branchDate->setDate(new \DateTime($data['date']));
+            $branchDate->setStartTime(new \DateTime($data['from']));
+            $branchDate->setEndTime(new \DateTime($data['to']));
+
+            $entityManager->persist($branchDate);
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
      * @Given /^branch "([^"]*)" has following producers:$/
      */
     public function branchHasFollowingProducers($branch_name, TableNode $table)
@@ -213,7 +241,7 @@ class FeatureContext extends BehatContext
         $branch = $this->getRepository('Branch')->findOneByName($branch_name);
         if (null === $branch) {
             throw new \InvalidArgumentException(
-                sprintf('Branch named "%s" of assocation named "%s" was not found.', $branch_name, $association_name)
+                sprintf('Branch named "%s" was not found.', $branch_name)
             );
         }
 
@@ -270,6 +298,14 @@ class FeatureContext extends BehatContext
 
         $entityManager->persist($branch);
         $entityManager->flush();
+    }
+
+    /**
+     * @Given /^I should see the next date "([^"]*)" formated "([^"]*)"$/
+     */
+    public function iShouldSeeTheNextDateFormated($time, $format)
+    {
+        $this->assertPageContainsText(date($format, strtotime($time)));
     }
 
     /**
