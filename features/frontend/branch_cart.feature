@@ -33,8 +33,8 @@ Feature: Branch cart
             | name        |
             | Beth Rave   |
         And branch "Lorem" has following products:
-            | producer    | product            |
-            | Beth Rave   | Panier de légumes  |
+            | producer    | product           |
+            | Beth Rave   | Panier de légumes |
 
     Scenario Outline: See empty branch cart summary
         Given I am on "<url>"
@@ -52,3 +52,10 @@ Feature: Branch cart
          When I press "Add to cart"
          Then I should be on "/lorem/cart"
           And I should see "Item has been added to cart."
+
+    Scenario: Remove from cart
+        Given I am on "/lorem/fruits-et-legumes"
+          And I follow "Panier de légumes"
+          And I press "Add to cart"
+         When I follow "Remove"
+         Then I should see "Item has been removed from cart."
