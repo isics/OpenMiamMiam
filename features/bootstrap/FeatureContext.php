@@ -190,7 +190,6 @@ class FeatureContext extends BehatContext
             $product->setProducer($producer);
             $product->setName($data['name']);
             $product->setCategory($category);
-            $product->setAvailability((int) $data['availability']);
 
             if (array_key_exists('description', $data)) {
                 $product->setDescription($data['description']);
@@ -198,6 +197,26 @@ class FeatureContext extends BehatContext
 
             if (array_key_exists('price', $data) && '' !== $data['price']) {
                 $product->setPrice($data['price']);
+            }
+
+            if (array_key_exists('availability', $data) && '' !== $data['availability']) {
+                if ('available' === $data['availability']) {
+                    $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
+                } else if ('unavailable' === $data['availability']) {
+                    $product->setAvailability(Product::AVAILABILITY_UNAVAILABLE);
+                } else if ('available at' === substr($data['availability'], 0, 12)) {
+                    $product->setAvailability(Product::AVAILABILITY_AVAILABLE_AT);
+                    $product->setAvailableAt(new \DateTime(substr($data['availability'], 13)));
+                } else if (false !== $pos = strpos($data['availability'], 'in stock')) {
+                    $product->setAvailability(Product::AVAILABILITY_ACCORDING_TO_STOCK);
+                    $product->setStock(substr($data['availability'], 0, $pos-1));
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('"%s" is not a valid availability.', $data['availability'])
+                    );
+                }
+            } else {
+                $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
             }
 
             $entityManager->persist($product);

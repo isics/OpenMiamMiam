@@ -11,8 +11,8 @@ Feature: Branch cart
             | name        |
             | Beth Rave   |
         And producer "Beth Rave" has following products:
-            | name               | category          | description | price | availability |
-            | Panier de légumes  | Fruits et Légumes |             |    15 |            3 |
+            | name               | category          | description | price |
+            | Panier de légumes  | Fruits et Légumes |             |    15 |
         And an association "L'asso Sisson"
         And association "L'asso Sisson" has following branches:
             | name  |

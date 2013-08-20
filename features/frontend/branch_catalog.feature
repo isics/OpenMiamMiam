@@ -15,17 +15,17 @@ Feature: Branch catalog
             | Elsa Dorsa  |
             | Roméo Frigo |
         And producer "Beth Rave" has following products:
-            | name               | category          | description | price | availability |
-            | Panier de légumes  | Fruits et Légumes |             |    15 |            3 |
+            | name               | category          | description | price | availability            |
+            | Panier de légumes  | Fruits et Légumes |             |  15.0 | available               |
         And producer "Elsa Dorsa" has following products:
-            | name               | category          | description | price | availability |
-            | Côte de bœuf       | Viande            |             |       |            3 |
-            | Merguez            | Viande            | 100% agneau |       |            3 |
+            | name               | category          | description | price | availability            |
+            | Côte de bœuf       | Viande            |             |       | available at next month |
+            | Merguez            | Viande            | 100% agneau |       | available               |
         And producer "Roméo Frigo" has following products:
-            | name               | category          | description | price | availability |
-            | Beurre             | Laitages          |             |  0.40 |            3 |
-            | Yahourt nature     | Laitages          |             |  0.50 |            3 |
-            | Yahourt aux fruits | Laitages          |             |  0.60 |            3 |
+            | name               | category          | description | price | availability            |
+            | Beurre             | Laitages          |             |  0.40 | 14 in stock             |
+            | Yahourt nature     | Laitages          |             |  0.50 | 0 in stock              |
+            | Yahourt aux fruits | Laitages          |             |  0.60 | unavailable             |
         And an association "L'asso Sisson"
         And association "L'asso Sisson" has following branches:
             | name  |
@@ -83,7 +83,32 @@ Feature: Branch catalog
         Given I am on "/ipsum/viande"
          Then the response status code should be 404
 
+    Scenario: Not see products unavailable
+        Given I am on "/lorem/laitages"
+         Then I should see "Beurre"
+          And I should see "Yahourt nature"
+          But I should not see "Yahourt aux fruits"
+
     Scenario: See product details
         Given I am on "/lorem/viande"
          When I follow "Merguez"
          Then I should see "100% agneau"
+
+    Scenario Outline: Order only available product 1/2
+        Given I am on "<url>"
+         Then I should see "Add to cart"
+
+        Examples:
+            | url                                        |
+            | /lorem/fruits-et-legumes/panier-de-legumes |
+            | /lorem/viande/merguez                      |
+            | /lorem/laitages/beurre                     |
+
+    Scenario Outline: Order only available product 2/2
+        Given I am on "<url>"
+         Then I should not see "Add to cart"
+
+        Examples:
+            | url                                        |
+            | /lorem/viande/cote-de-boeuf                |
+            | /lorem/laitages/yahourt-nature             |
