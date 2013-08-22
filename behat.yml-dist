@@ -15,8 +15,3 @@ default:
 frontend:
     paths:
         features: features/frontend
-
-travis:
-    extensions:
-        Behat\MinkExtension\Extension:
-            base_url:  'your_base_url'

@@ -8,6 +8,7 @@ before_script:
   - composer install -n
   # Parameters
   - cp -a app/config/parameters.yml{.dist,}
+  - sed 's/your_base_url/http:\/\/localhost:8000\/app_test.php/' behat.yml-dist > behat.yml
   # Database
   - app/console --env=test --force doctrine:database:drop || true
   - app/console --env=test doctrine:database:create
@@ -16,5 +17,5 @@ before_script:
   - sleep 3
 
 script:
-  - bin/behat --profile=travis
+  - bin/behat
 #  - phpunit -c app
