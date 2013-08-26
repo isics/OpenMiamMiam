@@ -105,6 +105,9 @@ class FeatureContext extends BehatContext
 
         $association = new Association();
         $association->setName($name);
+        $association->setClosingDelay(86400);
+        $association->setOpeningDelay(86400);
+        $association->setDefaultCommission(10);
 
         $entityManager->persist($association);
         $entityManager->flush();
@@ -317,6 +320,14 @@ class FeatureContext extends BehatContext
 
         $entityManager->persist($branch);
         $entityManager->flush();
+    }
+
+    /**
+     * @Given /^I change quantity to "([^"]*)"$/
+     */
+    public function iChangeQuantityTo($quantity)
+    {
+        $this->fillField('open_miam_miam_cart_items_1_quantity', $quantity);
     }
 
     /**

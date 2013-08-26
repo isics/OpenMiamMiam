@@ -31,6 +31,9 @@ Feature: Branch catalog
             | name  |
             | Lorem |
             | Ipsum |
+        And branch "Lorem" has following calendar:
+            | date                | from   | to     |
+            | wednesday           | 5 p.m. | 7 p.m. |
         And association "L'asso Sisson" has following producers:
             | name        |
             | Beth Rave   |
