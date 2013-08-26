@@ -71,3 +71,13 @@ stof_doctrine_extensions:
     orm:
         default:
             sluggable: true
+
+# Sonata intl bundle
+sonata_intl:
+    timezone:
+        # default timezone used as fallback
+        default: Europe/Paris
+
+        # locale specific overrides
+        locales:
+            fr: Europe/Paris
