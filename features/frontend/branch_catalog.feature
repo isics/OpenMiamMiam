@@ -1,117 +1,117 @@
 Feature: Branch catalog
-    As a customer
-    I need to be able to browse products of a branch
-    In order to checkout
+  As a customer
+  I need to be able to browse products of a branch
+  In order to checkout
 
-    Background:
-        Given there are following categories:
-            | name              |
-            | Fruits et Légumes |
-            | Laitages          |
-            | Viande            |
-        And there are following producers:
-            | name        |
-            | Beth Rave   |
-            | Elsa Dorsa  |
-            | Roméo Frigo |
-        And producer "Beth Rave" has following products:
-            | name               | category          | description | price | availability            |
-            | Panier de légumes  | Fruits et Légumes |             |  15.0 | available               |
-        And producer "Elsa Dorsa" has following products:
-            | name               | category          | description | price | availability            |
-            | Côte de bœuf       | Viande            |             |       | available at next month |
-            | Merguez            | Viande            | 100% agneau |       | available               |
-        And producer "Roméo Frigo" has following products:
-            | name               | category          | description | price | availability            |
-            | Beurre             | Laitages          |             |  0.40 | 14 in stock             |
-            | Yahourt nature     | Laitages          |             |  0.50 | 0 in stock              |
-            | Yahourt aux fruits | Laitages          |             |  0.60 | unavailable             |
-        And an association "L'asso Sisson"
-        And association "L'asso Sisson" has following branches:
-            | name  |
-            | Lorem |
-            | Ipsum |
-        And branch "Lorem" has following calendar:
-            | date                | from   | to     |
-            | wednesday           | 5 p.m. | 7 p.m. |
-        And association "L'asso Sisson" has following producers:
-            | name        |
-            | Beth Rave   |
-            | Elsa Dorsa  |
-            | Roméo Frigo |
-        And branch "Lorem" has following producers:
-            | name        |
-            | Beth Rave   |
-            | Elsa Dorsa  |
-            | Roméo Frigo |
-        And branch "Ipsum" has following producers:
-            | name        |
-            | Beth Rave   |
-            | Elsa Dorsa  |
-            | Roméo Frigo |
-        And branch "Lorem" has following products:
-            | producer    | product            |
-            | Beth Rave   | Panier de légumes  |
-            | Elsa Dorsa  | Côte de bœuf       |
-            | Elsa Dorsa  | Merguez            |
-            | Roméo Frigo | Beurre             |
-            | Roméo Frigo | Yahourt nature     |
-            | Roméo Frigo | Yahourt aux fruits |
-        And branch "Ipsum" has following products:
-            | producer    | product            |
-            | Beth Rave   | Panier de légumes  |
-            | Roméo Frigo | Beurre             |
-            | Roméo Frigo | Yahourt nature     |
-            | Roméo Frigo | Yahourt aux fruits |
+  Background:
+    Given there are following categories:
+      | name                  |
+      | Fruits and vegetables |
+      | Dairy produce         |
+      | Meat                  |
+    And there are following producers:
+      | name        |
+      | Beth Rave   |
+      | Elsa Dorsa  |
+      | Romeo Frigo |
+    And producer "Beth Rave" has following products:
+      | name                 | category              | description | price | availability |
+      | Basket of vegetables | Fruits and vegetables |             | 15.0  | available    |
+    And producer "Elsa Dorsa" has following products:
+      | name              | category | description | price | availability            |
+      | Prime rib of beef | Meat     |             |       | available at next month |
+      | Sausages          | Meat     | 100% lamb   |       | available               |
+    And producer "Romeo Frigo" has following products:
+      | name          | category      | description | price | availability |
+      | Butter        | Dairy produce |             | 0.40  | 14 in stock  |
+      | Plain yoghurt | Dairy produce |             | 0.50  | 0 in stock   |
+      | Fruit yoghurt | Dairy produce |             | 0.60  | unavailable  |
+    And an association "Friends of organic food"
+    And association "Friends of organic food" has following branches:
+      | name     |
+      | Branch 1 |
+      | Branch 2 |
+    And branch "Branch 1" has following calendar:
+      | date      | from   | to     |
+      | wednesday | 5 p.m. | 7 p.m. |
+    And association "Friends of organic food" has following producers:
+      | name        |
+      | Beth Rave   |
+      | Elsa Dorsa  |
+      | Romeo Frigo |
+    And branch "Branch 1" has following producers:
+      | name        |
+      | Beth Rave   |
+      | Elsa Dorsa  |
+      | Romeo Frigo |
+    And branch "Branch 2" has following producers:
+      | name        |
+      | Beth Rave   |
+      | Elsa Dorsa  |
+      | Romeo Frigo |
+    And branch "Branch 1" has following products:
+      | producer    | product              |
+      | Beth Rave   | Basket of vegetables |
+      | Elsa Dorsa  | Prime rib of beef    |
+      | Elsa Dorsa  | Sausages             |
+      | Romeo Frigo | Butter               |
+      | Romeo Frigo | Plain yoghurt        |
+      | Romeo Frigo | Fruit yoghurt        |
+    And branch "Branch 2" has following products:
+      | producer    | product              |
+      | Beth Rave   | Basket of vegetables |
+      | Romeo Frigo | Butter               |
+      | Romeo Frigo | Plain yoghurt        |
+      | Romeo Frigo | Fruit yoghurt        |
 
-    Scenario: See categories that have products 1/2
-        Given I am on "/lorem"
-         Then I should see "Fruits et Légumes"
-          And I should see "Laitages"
-          And I should see "Viande"
+  Scenario: See categories that have products 1/2
+    Given I am on "/branch-1"
+    Then I should see "Fruits and vegetables"
+    And I should see "Dairy produce"
+    And I should see "Meat"
 
-    Scenario: See categories that have products 2/2
-        Given I am on "/ipsum"
-         Then I should see "Fruits et Légumes"
-          And I should see "Laitages"
-          But I should not see "Viande"
+  Scenario: See categories that have products 2/2
+    Given I am on "/branch-2"
+    Then I should see "Fruits and vegetables"
+    And I should see "Dairy produce"
+    But I should not see "Meat"
 
-    Scenario: See products of a category
-        Given I am on "/lorem"
-         When I follow "Viande"
-         Then I should see "Merguez"
-          But I should not see "Yahout nature"
+  Scenario: See products of a category
+    Given I am on "/branch-1"
+    When I follow "Meat"
+    Then I should see "Sausages"
+    But I should not see "Yahout nature"
 
-    Scenario: Category with no product
-        Given I am on "/ipsum/viande"
-         Then the response status code should be 404
+  Scenario: Category with no product
+    Given I am on "/branch-2/meat"
+    Then the response status code should be 404
 
-    Scenario: Not see products unavailable
-        Given I am on "/lorem/laitages"
-         Then I should see "Beurre"
-          And I should see "Yahourt nature"
-          But I should not see "Yahourt aux fruits"
+  Scenario: Not see products unavailable
+    Given I am on "/branch-1/dairy-produce"
+    Then I should see "Butter"
+    And I should see "Plain yoghurt"
+    But I should not see "Fruit yoghurt"
 
-    Scenario: See product details
-        Given I am on "/lorem/viande"
-         When I follow "Merguez"
-         Then I should see "100% agneau"
+  Scenario: See product details
+    Given I am on "/branch-1/meat"
+    When I follow "Sausages"
+    Then I should see "100% lamb"
 
-    Scenario Outline: Order only available product 1/2
-        Given I am on "<url>"
-         Then I should see "Add to cart"
+  Scenario Outline: Order only available product 1/2
+    Given I am on "<url>"
+    Then I should see "Add to cart"
 
-        Examples:
-            | url                                        |
-            | /lorem/fruits-et-legumes/panier-de-legumes |
-            | /lorem/viande/merguez                      |
-            | /lorem/laitages/beurre                     |
+  Examples:
+    | url                                                  |
+    | /branch-1/fruits-and-vegetables/basket-of-vegetables |
+    | /branch-1/meat/sausages                              |
+    | /branch-1/dairy-produce/butter                       |
 
-    Scenario Outline: Order only available product 2/2
-        Given I am on "<url>"
-         Then I should not see "Add to cart"
+  Scenario Outline: Order only available product 2/2
+    Given I am on "<url>"
+    Then I should not see "Add to cart"
 
-        Examples:
-            | url                                        |
-            | /lorem/viande/cote-de-boeuf                |
-            | /lorem/laitages/yahourt-nature             |
+  Examples:
+    | url                                   |
+    | /branch-1/meat/prime-rib-of-beef      |
+    | /branch-1/dairy-produce/plain-yoghurt |
