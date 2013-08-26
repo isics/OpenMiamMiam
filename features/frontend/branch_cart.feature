@@ -51,7 +51,7 @@ Feature: Branch cart
           And I follow "Panier de légumes"
          When I press "Add to cart"
          Then I should be on "/lorem/cart"
-          And I should see "My cart (1) 15,00 €"
+          And I should see "My cart (1) €15.00"
           And I should see "Item has been added to cart."
 
     Scenario: Add an existing product via product page
@@ -61,7 +61,7 @@ Feature: Branch cart
           And I follow "Panier de légumes"
          When I press "Add to cart"
          Then I should be on "/lorem/cart"
-          And I should see "My cart (1) 30,00 €"
+          And I should see "My cart (1) €30.00"
           And I should see "Item has been added to cart."
 
     Scenario: Update quantity
@@ -70,7 +70,7 @@ Feature: Branch cart
           And I press "Add to cart"
           And I change quantity to "3"
          When I press "Update"
-         Then I should see "My cart (1) 45,00 €"
+         Then I should see "My cart (1) €45.00"
           And I should see "Cart has been updated."
 
     Scenario: Reset quantity (remove)
