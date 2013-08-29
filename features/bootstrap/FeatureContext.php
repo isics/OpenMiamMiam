@@ -18,7 +18,7 @@ use Behat\Gherkin\Node\PyStringNode,
 use Doctrine\ORM\Tools\SchemaTool;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Branch,
-    Isics\Bundle\OpenMiamMiamBundle\Entity\BranchDate,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Category,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Producer,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
@@ -243,13 +243,12 @@ class FeatureContext extends BehatContext
         $entityManager = $this->getEntityManager();
 
         foreach ($table->getHash() as $data) {
-            $branchDate = new BranchDate();
-            $branchDate->setBranch($branch);
-            $branchDate->setDate(new \DateTime($data['date']));
-            $branchDate->setStartTime(new \DateTime($data['from']));
-            $branchDate->setEndTime(new \DateTime($data['to']));
+            $branchOccurrence = new BranchOccurrence();
+            $branchOccurrence->setBranch($branch);
+            $branchOccurrence->setBegin(new \DateTime($data['date'].' '.$data['from']));
+            $branchOccurrence->setEnd(new \DateTime($data['date'].' '.$data['to']));
 
-            $entityManager->persist($branchDate);
+            $entityManager->persist($branchOccurrence);
         }
 
         $entityManager->flush();

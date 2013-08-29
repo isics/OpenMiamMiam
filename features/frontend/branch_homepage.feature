@@ -5,7 +5,7 @@ Feature: Branch homepage
   Background:
     Given an association "Friends of organic food"
     And association "Friends of organic food" has following branches:
-      | name  |
+      | name     |
       | Branch 1 |
       | Branch 2 |
 
@@ -15,7 +15,7 @@ Feature: Branch homepage
     And the "h1" element should contain "<title>"
 
   Examples:
-    | url    | title |
+    | url       | title    |
     | /branch-1 | Branch 1 |
     | /branch-2 | Branch 2 |
 
