@@ -96,22 +96,3 @@ Feature: Branch catalog
     Given I am on "/branch-1/meat"
     When I follow "Sausages"
     Then I should see "100% lamb"
-
-  Scenario Outline: Order only available product 1/2
-    Given I am on "<url>"
-    Then I should see "Add to cart"
-
-  Examples:
-    | url                                                  |
-    | /branch-1/fruits-and-vegetables/basket-of-vegetables |
-    | /branch-1/meat/sausages                              |
-    | /branch-1/dairy-produce/butter                       |
-
-  Scenario Outline: Order only available product 2/2
-    Given I am on "<url>"
-    Then I should not see "Add to cart"
-
-  Examples:
-    | url                                   |
-    | /branch-1/meat/prime-rib-of-beef      |
-    | /branch-1/dairy-produce/plain-yoghurt |

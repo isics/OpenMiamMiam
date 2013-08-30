@@ -18,6 +18,18 @@ Feature: Branch cart
       | name     |
       | Branch 1 |
       | Branch 2 |
+    And branch "Branch 1" has following producers:
+      | name      |
+      | Beth Rave |
+    And branch "Branch 1" has following products:
+      | producer  | product              |
+      | Beth Rave | Basket of vegetables |
+    And branch "Branch 2" has following producers:
+      | name      |
+      | Beth Rave |
+    And branch "Branch 2" has following products:
+      | producer  | product              |
+      | Beth Rave | Basket of vegetables |
     And branch "Branch 1" has following calendar:
       | date      | from   | to     |
       | last week | 5 p.m. | 7 p.m. |
@@ -29,12 +41,9 @@ Feature: Branch cart
       | last week | 5 p.m. | 7 p.m. |
       | + 2 weeks | 5 p.m. | 7 p.m. |
       | + 4 weeks | 5 p.m. | 7 p.m. |
-    And branch "Branch 1" has following producers:
-      | name      |
-      | Beth Rave |
-    And branch "Branch 1" has following products:
-      | producer  | product              |
-      | Beth Rave | Basket of vegetables |
+    And producer "Beth Rave" will be present to following occurrences:
+      | branch   | date     |
+      | Branch 1 | + 1 week |
 
   Scenario Outline: See empty branch cart summary
     Given I am on "<url>"
@@ -104,3 +113,31 @@ Feature: Branch cart
     When I press "Update"
     Then I should see "My cart (0)"
     And I should see "Cart has been updated."
+
+  Scenario: Product available
+    Given I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
+    Then I should see "Add to cart"
+    And I should see "Available"
+
+  Scenario: Product available with stock management
+    Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "10"
+    Given I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
+    Then I should see "Add to cart"
+    And I should see "stock level: 10"
+
+  Scenario: Producer absent
+    Given I am on "/branch-2/fruits-and-vegetables/basket-of-vegetables"
+    Then I should not see "Add to cart"
+    And I should see "Producer absent"
+
+  Scenario: Product not yet available
+    Given Product "Basket of vegetables" of producer "Beth Rave" will be available at "+ 3 weeks"
+    And I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
+    Then I should not see "Add to cart"
+    And I should see "Available at"
+
+  Scenario: Product is out of stock
+    Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "0"
+    And I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
+    Then I should not see "Add to cart"
+    And I should see "Too late!"

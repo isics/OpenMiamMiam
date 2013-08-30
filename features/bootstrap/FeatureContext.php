@@ -21,6 +21,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
     Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Category,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Producer,
+    Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 
 //
@@ -290,7 +291,7 @@ class FeatureContext extends BehatContext
         $branch = $this->getRepository('Branch')->findOneByName($branch_name);
         if (null === $branch) {
             throw new \InvalidArgumentException(
-                sprintf('Branch named "%s" of assocation named "%s" was not found.', $branch_name, $association_name)
+                sprintf('Branch named "%s" was not found.', $branch_name)
             );
         }
 
@@ -318,6 +319,117 @@ class FeatureContext extends BehatContext
         }
 
         $entityManager->persist($branch);
+        $entityManager->flush();
+    }
+
+    /**
+     * @Given /^producer "([^"]*)" will be present to following occurrences:$/
+     */
+    public function producerWillBePresentToFollowingOccurrences($producer_name, TableNode $table)
+    {
+        $producer = $this->getRepository('Producer')->findOneByName($producer_name);
+        if (null === $producer) {
+            throw new \InvalidArgumentException(
+                sprintf('Producer named "%s" was not found.', $producer_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        foreach ($table->getHash() as $data) {
+            $branch = $this->getRepository('Branch')->findOneByName($data['branch']);
+            if (null === $branch) {
+                throw new \InvalidArgumentException(
+                    sprintf('Branch named "%s" was not found.', $data['branch'])
+                );
+            }
+
+            $branchOccurrence = $this->getRepository('BranchOccurrence')
+                ->createQueryBuilder('bo')
+                ->where('bo.branch = :branch')
+                ->andWhere('bo.begin >= :date1')
+                ->andWhere('bo.begin < :date2')
+                ->setParameter('branch', $branch)
+                ->setParameter('date1', new \DateTime($data['date']))
+                ->setParameter('date2', new \DateTime($data['date'].' + 1 day'))
+                ->getQuery()
+                ->getOneOrNullResult();
+            if (null === $branchOccurrence) {
+                throw new \InvalidArgumentException(
+                    sprintf('No branch occurrence for branch named "%s" at %s.', $data['branch'], date('c', strtotime($data['date'])))
+                );
+            }
+
+            $producerAttendance = new ProducerAttendance();
+            $producerAttendance->setProducer($producer);
+            $producerAttendance->setBranchOccurrence($branchOccurrence);
+            $producerAttendance->setIsAttendee(true);
+
+            $entityManager->persist($producerAttendance);
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
+     * @Given /^Product "([^"]*)" of producer "([^"]*)" has stock level "([^"]*)"$/
+     */
+    public function productOfProducerHasStockLevel($product_name, $producer_name, $stock)
+    {
+        $producer = $this->getRepository('Producer')->findOneByName($producer_name);
+        if (null === $producer) {
+            throw new \InvalidArgumentException(
+                sprintf('Producer named "%s" was not found.', $producer_name)
+            );
+        }
+
+        $product = $this->getRepository('Product')->findOneBy(array(
+            'name'     => $product_name,
+            'producer' => $producer
+        ));
+        if (null === $product) {
+            throw new \InvalidArgumentException(
+                sprintf('Product named "%s" of producer named "%s" was not found.', $product_name, $producer_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        $product->setAvailability(Product::AVAILABILITY_ACCORDING_TO_STOCK);
+        $product->setStock($stock);
+
+        $entityManager->persist($product);
+        $entityManager->flush();
+    }
+
+    /**
+     * @Given /^Product "([^"]*)" of producer "([^"]*)" will be available at "([^"]*)"$/
+     */
+    public function productOfProducerWillBeAvailableAt($product_name, $producer_name, $date)
+    {
+        $producer = $this->getRepository('Producer')->findOneByName($producer_name);
+        if (null === $producer) {
+            throw new \InvalidArgumentException(
+                sprintf('Producer named "%s" was not found.', $producer_name)
+            );
+        }
+
+        $product = $this->getRepository('Product')->findOneBy(array(
+            'name'     => $product_name,
+            'producer' => $producer
+        ));
+        if (null === $product) {
+            throw new \InvalidArgumentException(
+                sprintf('Product named "%s" of producer named "%s" was not found.', $product_name, $producer_name)
+            );
+        }
+
+        $entityManager = $this->getEntityManager();
+
+        $product->setAvailability(Product::AVAILABILITY_AVAILABLE_AT);
+        $product->setAvailableAt(new \DateTime($date));
+
+        $entityManager->persist($product);
         $entityManager->flush();
     }
 
