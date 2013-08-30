@@ -414,12 +414,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/isics/IsicsOpenMiamMiamBundle.git",
-                "reference": "451c8f844bc3a56fb8271f17c5971357d4b08531"
+                "reference": "09fb41768acc2cdcf91ed9453e5fefecb92dad5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/451c8f844bc3a56fb8271f17c5971357d4b08531",
-                "reference": "451c8f844bc3a56fb8271f17c5971357d4b08531",
+                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/09fb41768acc2cdcf91ed9453e5fefecb92dad5c",
+                "reference": "09fb41768acc2cdcf91ed9453e5fefecb92dad5c",
                 "shasum": ""
             },
             "require": {
@@ -446,7 +446,7 @@
                 "source": "https://github.com/isics/IsicsOpenMiamMiamBundle/tree/master",
                 "issues": "https://github.com/isics/IsicsOpenMiamMiamBundle/issues"
             },
-            "time": "2013-08-29 09:34:43"
+            "time": "2013-08-30 09:53:13"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1985,12 +1985,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "feb6492762a77db946bc13cc44a20a01546be0e6"
+                "reference": "77a4e394d99a67e7fb611e8b402c2da4b80fa4f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/feb6492762a77db946bc13cc44a20a01546be0e6",
-                "reference": "feb6492762a77db946bc13cc44a20a01546be0e6",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/77a4e394d99a67e7fb611e8b402c2da4b80fa4f8",
+                "reference": "77a4e394d99a67e7fb611e8b402c2da4b80fa4f8",
                 "shasum": ""
             },
             "require": {
@@ -2023,7 +2023,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2013-08-12 10:05:47"
+            "time": "2013-08-29 19:11:59"
         },
         {
             "name": "guzzle/common",
