@@ -414,12 +414,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/isics/IsicsOpenMiamMiamBundle.git",
-                "reference": "09fb41768acc2cdcf91ed9453e5fefecb92dad5c"
+                "reference": "958b674cfd9d7bb9371423457fe681fb345f20d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/09fb41768acc2cdcf91ed9453e5fefecb92dad5c",
-                "reference": "09fb41768acc2cdcf91ed9453e5fefecb92dad5c",
+                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/958b674cfd9d7bb9371423457fe681fb345f20d6",
+                "reference": "958b674cfd9d7bb9371423457fe681fb345f20d6",
                 "shasum": ""
             },
             "require": {
@@ -446,7 +446,7 @@
                 "source": "https://github.com/isics/IsicsOpenMiamMiamBundle/tree/master",
                 "issues": "https://github.com/isics/IsicsOpenMiamMiamBundle/issues"
             },
-            "time": "2013-08-30 09:53:13"
+            "time": "2013-08-30 14:20:33"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -934,16 +934,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "v5.0.1"
+                "reference": "f3917ecef35a4e4d98b303eb9fee463bc983f379"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/v5.0.1",
-                "reference": "v5.0.1",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/f3917ecef35a4e4d98b303eb9fee463bc983f379",
+                "reference": "f3917ecef35a4e4d98b303eb9fee463bc983f379",
                 "shasum": ""
             },
             "require": {
@@ -979,7 +979,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2013-06-17 13:32:32"
+            "time": "2013-08-30 12:35:21"
         },
         {
             "name": "symfony/assetic-bundle",
