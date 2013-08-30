@@ -414,12 +414,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/isics/IsicsOpenMiamMiamBundle.git",
-                "reference": "958b674cfd9d7bb9371423457fe681fb345f20d6"
+                "reference": "50cf20cc2ce9215f5eb98714226343a2db650daa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/958b674cfd9d7bb9371423457fe681fb345f20d6",
-                "reference": "958b674cfd9d7bb9371423457fe681fb345f20d6",
+                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/50cf20cc2ce9215f5eb98714226343a2db650daa",
+                "reference": "50cf20cc2ce9215f5eb98714226343a2db650daa",
                 "shasum": ""
             },
             "require": {
@@ -446,7 +446,7 @@
                 "source": "https://github.com/isics/IsicsOpenMiamMiamBundle/tree/master",
                 "issues": "https://github.com/isics/IsicsOpenMiamMiamBundle/issues"
             },
-            "time": "2013-08-30 14:20:33"
+            "time": "2013-08-30 14:56:49"
         },
         {
             "name": "jdorn/sql-formatter",
