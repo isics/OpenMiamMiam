@@ -15,25 +15,25 @@ Feature: Branch catalog
       | Elsa Dorsa  |
       | Romeo Frigo |
     And producer "Beth Rave" has following products:
-      | name                 | category              | description | price | availability |
-      | Basket of vegetables | Fruits and vegetables |             | 15.0  | available    |
+      | name                 | category              | description | price | availability            |
+      | Basket of vegetables | Fruits and vegetables |             | 15.0  | available               |
     And producer "Elsa Dorsa" has following products:
-      | name              | category | description | price | availability            |
-      | Prime rib of beef | Meat     |             |       | available at next month |
-      | Sausages          | Meat     | 100% lamb   |       | available               |
+      | name                 | category              | description | price | availability            |
+      | Prime rib of beef    | Meat                  |             |       | available at next month |
+      | Sausages             | Meat                  | 100% lamb   |       | available               |
     And producer "Romeo Frigo" has following products:
-      | name          | category      | description | price | availability |
-      | Butter        | Dairy produce |             | 0.40  | 14 in stock  |
-      | Plain yoghurt | Dairy produce |             | 0.50  | 0 in stock   |
-      | Fruit yoghurt | Dairy produce |             | 0.60  | unavailable  |
+      | name                 | category              | description | price | availability            |
+      | Butter               | Dairy produce         |             | 0.40  | 14 in stock             |
+      | Plain yoghurt        | Dairy produce         |             | 0.50  | 0 in stock              |
+      | Fruit yoghurt        | Dairy produce         |             | 0.60  | unavailable             |
     And an association "Friends of organic food"
     And association "Friends of organic food" has following branches:
       | name     |
       | Branch 1 |
       | Branch 2 |
     And branch "Branch 1" has following calendar:
-      | date      | from   | to     |
-      | wednesday | 5 p.m. | 7 p.m. |
+      | date     | from   | to     |
+      | + 1 week | 5 p.m. | 7 p.m. |
     And association "Friends of organic food" has following producers:
       | name        |
       | Beth Rave   |
