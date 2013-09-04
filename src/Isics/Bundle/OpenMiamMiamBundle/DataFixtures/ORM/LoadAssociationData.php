@@ -1,0 +1,45 @@
+<?php
+
+/*
+ * This file is part of the OpenMiamMiam project.
+ *
+ * (c) Isics <contact@isics.fr>
+ *
+ * This source file is subject to the AGPL v3 license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Isics\Bundle\OpenMiamMiamBundle\DataFixtures\ORM;
+
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+
+class LoadAssociationData extends AbstractFixture implements OrderedFixtureInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        $association = new Association();
+        $association->setName('L\'Asso Sisson');
+        $association->setClosingDelay(86400);
+        $association->setOpeningDelay(86400);
+        $association->setDefaultCommission(10);
+
+        $manager->persist($association);
+        $manager->flush();
+
+        $this->addReference('association', $association);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 2;
+    }
+}

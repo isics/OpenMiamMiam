@@ -1,0 +1,24 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
+    {% block content %}
+        <h2>{{ product.name }}</h2>
+
+        Producer:
+        <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
+            {{ product.producer }}
+        </a>
+
+        {{ product.description }}
+
+        {{ product.price|number_format_currency(open_miam_miam.currency) }}
+
+        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product})) }}
+    {% endblock %}
+{% endembed %}

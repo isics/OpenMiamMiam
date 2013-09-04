@@ -1,0 +1,16 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div id="next-occurrences">
+    <h2>Next occurrences</h2>
+    <ul>
+    {% for branchOccurrence in branchOccurrences %}
+        <li>{{ branchOccurrence.begin|date('y-m-d H:i') }} - {{ branchOccurrence.end|date('H:i') }}</li>
+    {% endfor %}
+    </ul>
+</div>

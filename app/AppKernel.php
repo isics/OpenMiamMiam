@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
+//            new FOS\UserBundle\FOSUserBundle(),
+//            new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

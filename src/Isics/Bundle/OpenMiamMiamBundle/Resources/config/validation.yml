@@ -1,0 +1,9 @@
+Isics\Bundle\OpenMiamMiamBundle\Model\CartItem:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItem: ~
+    properties:
+        product:
+            - NotNull: ~
+        quantity:
+            - GreaterThanOrEqual:
+                value: 1

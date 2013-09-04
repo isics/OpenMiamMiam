@@ -1,0 +1,19 @@
+{% if productAvailability.isAvailable %}
+    {% if productAvailability.reason is constant('REASON_IN_STOCK', productAvailability) %}
+        stock level: {{ product.stock }}
+    {% else %}
+        available
+    {% endif %}
+{% else %}
+    {% if productAvailability.reason is constant('REASON_PRODUCER_ABSENT', productAvailability) %}
+        Producer absent
+    {% elseif productAvailability.reason is constant('REASON_OUT_OF_STOCK', productAvailability) %}
+        Too late!
+    {% elseif productAvailability.reason is constant('REASON_AVAILABLE_AT', productAvailability) %}
+        Available at {{ product.availableAt|date('m-d') }}
+    {% endif %}
+{% endif %}
+
+{% if form is defined %}
+    {{ form(form) }}
+{% endif %}

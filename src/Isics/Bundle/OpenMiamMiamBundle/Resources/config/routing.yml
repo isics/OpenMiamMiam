@@ -1,0 +1,64 @@
+# This file is part of the OpenMiamMiam project.
+#
+# (c) Isics <contact@isics.fr>
+#
+# This source file is subject to the AGPL v3 license that is bundled
+# with this source code in the file LICENSE.
+
+#
+# General
+#
+open_miam_miam_homepage:
+    pattern:  /
+    defaults: { _controller: IsicsOpenMiamMiamBundle:General:showHomepage }
+
+open_miam_miam_association:
+    pattern:  /association/{association_slug}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:General:showAssociation }
+
+open_miam_miam_producer:
+    pattern:  /producer/{producer_slug}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:General:showProducer }
+
+#
+# Branch
+#
+open_miam_miam_branch_homepage:
+    pattern:  /{branch_slug}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showHomepage }
+
+open_miam_miam_branch_producers:
+    pattern:  /{branch_slug}/producers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:listProducers }
+
+#
+# Cart
+#
+open_miam_miam_cart_show:
+    pattern:  /{branch_slug}/cart
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:show }
+    requirements:
+        _method: GET
+
+open_miam_miam_cart_add:
+    pattern:  /{branch_slug}/cart
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:add }
+    requirements:
+        _method: POST
+
+open_miam_miam_cart_update:
+    pattern:  /{branch_slug}/cart
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:update }
+    requirements:
+        _method: PUT
+
+#
+# Catalog
+#
+open_miam_miam_branch_category:
+    pattern:  /{branch_slug}/{category_slug}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Catalog:showCategory }
+
+open_miam_miam_branch_product:
+    pattern:  /{branch_slug}/{category_slug}/{product_slug}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Catalog:showProduct }

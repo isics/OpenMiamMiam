@@ -1,0 +1,44 @@
+# This file is part of the OpenMiamMiam project.
+#
+# (c) Isics <contact@isics.fr>
+#
+# This source file is subject to the AGPL v3 license that is bundled
+# with this source code in the file LICENSE.
+
+parameters:
+    open_miam_miam.branch_occurrence_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
+    open_miam_miam.cart_item_validator.class:       'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
+    open_miam_miam.cart_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
+    open_miam_miam.product_ref_generator.class:     'Isics\Bundle\OpenMiamMiamBundle\EventListener\ProductRefGenerator'
+
+services:
+    open_miam_miam.branch_occurrence_manager:
+        class:     %open_miam_miam.branch_occurrence_manager.class%
+        arguments: [@doctrine.orm.entity_manager]
+
+    open_miam_miam.cart_item_validator:
+        class:     %open_miam_miam.cart_item_validator.class%
+        arguments: [@open_miam_miam.branch_occurrence_manager]
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam_cart_item_validator}
+    open_miam_miam.cart_manager:
+        class:     %open_miam_miam.cart_manager.class%
+        arguments: [@open_miam_miam.branch_occurrence_manager, @doctrine.orm.entity_manager, @session, @security.context]
+
+    open_miam_miam.product_ref_generator:
+        class:     %open_miam_miam.product_ref_generator.class%
+        arguments: [%open_miam_miam.product_ref_prefix%, %open_miam_miam.product_ref_pad_length%]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    open_miam_miam.form.type.hidden_product:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: form.type, alias: open_miam_miam_hidden_product }
+
+    open_miam_miam.twig.open_miam_miam_extension:
+        class: Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
+        arguments: [%open_miam_miam.currency%]
+        tags:
+            - { name: twig.extension }
