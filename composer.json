@@ -10,7 +10,7 @@
     ],
     "description": "OpenMiamMiam",
     "autoload": {
-        "psr-0": { "": "src/", "": "features/bootstrap" }
+        "psr-0": { "Isics": "src/", "": "src/" }
     },
     "repositories": [
         {

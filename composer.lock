@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ab303476c2ca3ab8d4c88c8eb362309c",
+    "hash": "b3c0d62f45dbc6374064077cf5fb2cb8",
     "packages": [
         {
             "name": "doctrine/common",
@@ -477,47 +477,6 @@
             "time": "2013-04-06 17:15:44"
         },
         {
-            "name": "isics/open-miam-miam-bundle",
-            "version": "dev-master",
-            "target-dir": "Isics/Bundle/OpenMiamMiamBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/isics/IsicsOpenMiamMiamBundle.git",
-                "reference": "b33c70214467133372fb6f06c2f5958f2791dcdd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/isics/IsicsOpenMiamMiamBundle/zipball/b33c70214467133372fb6f06c2f5958f2791dcdd",
-                "reference": "b33c70214467133372fb6f06c2f5958f2791dcdd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "sonata-project/intl-bundle": "2.1.1",
-                "stof/doctrine-extensions-bundle": "~1.1@dev"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Isics\\Bundle\\OpenMiamMiamBundle": ""
-                }
-            },
-            "license": [
-                "AGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Isics",
-                    "homepage": "http://www.isics.fr"
-                }
-            ],
-            "support": {
-                "source": "https://github.com/isics/IsicsOpenMiamMiamBundle/tree/master",
-                "issues": "https://github.com/isics/IsicsOpenMiamMiamBundle/issues"
-            },
-            "time": "2013-08-30 15:24:40"
-        },
-        {
             "name": "jdorn/sql-formatter",
             "version": "v1.2.9",
             "source": {
@@ -941,17 +900,17 @@
         },
         {
             "name": "stof/doctrine-extensions-bundle",
-            "version": "v1.1.0",
+            "version": "dev-master",
             "target-dir": "Stof/DoctrineExtensionsBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "0aa21137bcae43241ffa047946bbdd46b91a2b0a"
+                "reference": "fe3f6551a41d0bce874159fd4c46296fdd697d2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/0aa21137bcae43241ffa047946bbdd46b91a2b0a",
-                "reference": "0aa21137bcae43241ffa047946bbdd46b91a2b0a",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/fe3f6551a41d0bce874159fd4c46296fdd697d2b",
+                "reference": "fe3f6551a41d0bce874159fd4c46296fdd697d2b",
                 "shasum": ""
             },
             "require": {
@@ -999,7 +958,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2013-06-23 16:53:41"
+            "time": "2013-08-27 13:42:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2299,7 +2258,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofsymfony/user-bundle": 20,
-        "isics/open-miam-miam-bundle": 20,
+        "stof/doctrine-extensions-bundle": 20,
         "behat/behat": 0,
         "doctrine/data-fixtures": 20,
         "doctrine/doctrine-fixtures-bundle": 20,

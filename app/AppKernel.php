@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new Sonata\IntlBundle\SonataIntlBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 //            new FOS\UserBundle\FOSUserBundle(),
-//            new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
+            new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
