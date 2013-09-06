@@ -65,9 +65,15 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-# Stof Doctrine Extension
+# StofDoctrineExtensionsBundle Configuration
 stof_doctrine_extensions:
     default_locale: %locale%
     orm:
         default:
             sluggable: true
+
+# FOSUserBundle Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Isics\Bundle\OpenMiamMiamBundle\Entity\User

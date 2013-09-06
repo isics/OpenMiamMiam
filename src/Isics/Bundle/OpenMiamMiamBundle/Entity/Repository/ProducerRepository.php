@@ -27,14 +27,7 @@ class ProducerRepository extends EntityRepository
     public function findAllRandomForBranch(Branch $branch, $limit = 5)
     {
         // Retrieve all producers ids
-        $ids = $this->createQueryBuilder('p')
-            ->select('p.id')
-            ->innerJoin('p.branches', 'b')
-            ->where('b = :branch')
-            ->setParameter('branch', $branch)
-            ->getQuery()
-            ->getResult();
-
+        $ids = $this->findAllIds();
         if (empty($ids)) {
             return array();
         }
@@ -56,5 +49,25 @@ class ProducerRepository extends EntityRepository
         shuffle($producers);
 
         return $producers;
+    }
+
+    /**
+     * Finds all ids
+     *
+     * @return array
+     */
+    public function findAllIds()
+    {
+        $ids = $this->createQueryBuilder('p')
+                ->select('p.id')
+                ->getQuery()
+                ->getResult();
+
+        $flattenIds = array();
+        foreach ($ids as $id) {
+            $flattenIds[] = $id['id'];
+        }
+
+        return $flattenIds;
     }
 }

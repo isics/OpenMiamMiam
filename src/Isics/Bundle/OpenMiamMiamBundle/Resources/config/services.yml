@@ -10,6 +10,7 @@ parameters:
     open_miam_miam.cart_item_validator.class:       'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
     open_miam_miam.cart_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
     open_miam_miam.product_ref_generator.class:     'Isics\Bundle\OpenMiamMiamBundle\EventListener\ProductRefGenerator'
+    open_miam_miam.admin_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
 
 services:
     open_miam_miam.branch_occurrence_manager:
@@ -21,6 +22,7 @@ services:
         arguments: [@open_miam_miam.branch_occurrence_manager]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_cart_item_validator}
+
     open_miam_miam.cart_manager:
         class:     %open_miam_miam.cart_manager.class%
         arguments: [@open_miam_miam.branch_occurrence_manager, @doctrine.orm.entity_manager, @session, @security.context]
@@ -42,3 +44,8 @@ services:
         arguments: [%open_miam_miam.currency%]
         tags:
             - { name: twig.extension }
+
+    open_miam_miam.admin_manager:
+        class: %open_miam_miam.admin_manager.class%
+        arguments: [@security.context, @doctrine.orm.entity_manager, @router]
+        shared: true

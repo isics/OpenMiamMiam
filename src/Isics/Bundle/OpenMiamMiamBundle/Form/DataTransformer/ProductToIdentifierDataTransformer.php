@@ -29,7 +29,7 @@ class ProductToIdentifierDataTransformer implements DataTransformerInterface
     /**
      * Constructor
      *
-     * @param EntityManager $objectManager Entity Manager
+     * @param ObjectManager $objectManager Entity Manager
      */
     public function __construct(ObjectManager $objectManager)
     {
