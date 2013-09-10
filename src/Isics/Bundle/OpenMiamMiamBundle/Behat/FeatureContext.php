@@ -9,6 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
+namespace Isics\Bundle\OpenMiamMiamBundle\Behat;
+
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
@@ -36,8 +38,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
  */
 class FeatureContext extends BehatContext
 {
-    use Behat\MinkExtension\Context\MinkDictionary;
-    use Behat\Symfony2Extension\Context\KernelDictionary;
+    use \Behat\MinkExtension\Context\MinkDictionary;
+    use \Behat\Symfony2Extension\Context\KernelDictionary;
 
     /**
      * Initializes context.
@@ -350,8 +352,8 @@ class FeatureContext extends BehatContext
                 ->andWhere('bo.begin >= :date1')
                 ->andWhere('bo.begin < :date2')
                 ->setParameter('branch', $branch)
-                ->setParameter('date1', new \DateTime($data['date']))
-                ->setParameter('date2', new \DateTime($data['date'].' + 1 day'))
+                ->setParameter('date1', new \DateTime($data['date'].' 12 a.m.'))
+                ->setParameter('date2', new \DateTime($data['date'].' 12 a.m. + 1 day'))
                 ->getQuery()
                 ->getOneOrNullResult();
             if (null === $branchOccurrence) {
