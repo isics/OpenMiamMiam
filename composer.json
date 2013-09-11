@@ -12,12 +12,6 @@
     "autoload": {
         "psr-0": { "Isics": "src/", "": "src/" }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "http://github.com/isics/IsicsOpenMiamMiamBundle"
-        }
-    ],
     "require": {
         "php": ">=5.4.0",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
