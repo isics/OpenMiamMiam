@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\AdminResourceChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

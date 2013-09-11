@@ -11,6 +11,7 @@ parameters:
     open_miam_miam.cart_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
     open_miam_miam.product_ref_generator.class:     'Isics\Bundle\OpenMiamMiamBundle\EventListener\ProductRefGenerator'
     open_miam_miam.admin_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
+    open_miam_miam.acl_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
 
 services:
     open_miam_miam.branch_occurrence_manager:
@@ -49,3 +50,10 @@ services:
         class: %open_miam_miam.admin_manager.class%
         arguments: [@security.context, @doctrine.orm.entity_manager, @router]
         shared: true
+
+    open_miam_miam.acl_manager:
+        class:     %open_miam_miam.acl_manager.class%
+        arguments: [@service_container]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preRemove }
