@@ -77,7 +77,7 @@ class AdminManager
     {
         $producers = $this->findAvailableProducers();
         foreach ($producers as $producer) {
-            $this->adminResourceCollection->add(new ProducerAdminResource($this->router, $producer));
+            $this->adminResourceCollection->add(new ProducerAdminResource($producer, $this->router));
         }
 
         return $this->adminResourceCollection;
@@ -119,6 +119,10 @@ class AdminManager
             if ($this->securityContext->isGranted('OWNER', $objectIdentity)) {
                 $availableProducerIds[] = $id;
             }
+        }
+
+        if (empty($availableProducerIds)) {
+            return array();
         }
 
         return $repository->findById($availableProducerIds);

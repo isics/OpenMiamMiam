@@ -23,13 +23,12 @@ final class ProducerAdminResource extends AdminResource
     /**
      * Constructs object
      *
-     * @param RouterInterface $router
      * @param Producer $producer
+     * @param RouterInterface $router
      */
-    public function __construct(RouterInterface $router, Producer $producer)
+    public function __construct(Producer $producer, RouterInterface $router)
     {
-        parent::__construct($router);
-        $this->resource = $producer;
+        parent::__construct($producer, $router);
     }
 
     /**
@@ -60,5 +59,17 @@ final class ProducerAdminResource extends AdminResource
     public function getRoute()
     {
         return $this->router->generate('open_miam_miam.admin.producer.dashboard', array('id' => $this->resource->getId()));
+    }
+
+    /**
+     * Returns true if object is equal to resource
+     *
+     * @param mixed $object
+     *
+     * @return boolean
+     */
+    public function equals($object)
+    {
+        return get_class($object) === get_class($this->resource) && $object->getId() === $this->resource->getId();
     }
 }

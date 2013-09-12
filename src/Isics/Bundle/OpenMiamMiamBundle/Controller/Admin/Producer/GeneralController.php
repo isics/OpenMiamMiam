@@ -47,6 +47,8 @@ class GeneralController extends Controller
     {
         $this->secure($producer);
 
-        return new Response();
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:showDashboard.html.twig', array(
+            'producer' => $producer,
+        ));
     }
 }

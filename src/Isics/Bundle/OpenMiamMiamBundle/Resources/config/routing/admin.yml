@@ -10,7 +10,7 @@
 #
 open_miam_miam.admin:
     pattern:  /
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:chooseAdmin }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:index }
 
 #
 # Admin Producer

@@ -34,10 +34,12 @@ abstract class AdminResource implements AdminResourceInterface
     /**
      * Contructs object
      *
+     * @param $resource
      * @param RouterInterface $router
      */
-    public function __construct(RouterInterface $router)
+    public function __construct($resource, RouterInterface $router)
     {
+        $this->resource = $resource;
         $this->router = $router;
     }
 

@@ -40,6 +40,24 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
     }
 
     /**
+     * Returns offset of a resource
+     *
+     * @param AdminResourceInterface $resource
+     *
+     * @return int
+     */
+    public function getOffset(AdminResourceInterface $resource)
+    {
+        foreach ($this->elements as $idx => $element) {
+            if ($element === $resource) {
+                return $idx;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function offsetSet($offset, $value)
@@ -106,5 +124,23 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
     public function getFirst()
     {
         return reset($this->elements);
+    }
+
+    /**
+     * Returns element by object
+     *
+     * @param mixed $object
+     *
+     * @return AdminResourceInterface
+     */
+    public function getByObject($object)
+    {
+        foreach ($this->elements as $adminResource) {
+            if ($adminResource->equals($object)) {
+                return $adminResource;
+            }
+        }
+
+        return null;
     }
 }
