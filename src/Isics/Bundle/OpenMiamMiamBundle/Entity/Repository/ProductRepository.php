@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 
 class ProductRepository extends EntityRepository
@@ -72,5 +73,23 @@ class ProductRepository extends EntityRepository
 
             return null;
         }
+    }
+
+    /**
+     * Returns producer's products
+     *
+     * @param Producer $producer
+     *
+     * @return array
+     */
+    public function findForProducer(Producer $producer)
+    {
+        return $this->createQueryBuilder('p')
+                ->addSelect('b')
+                ->innerJoin('p.branches', 'b')
+                ->where('p.producer = :producer')
+                ->setParameter('producer', $producer)
+                ->getQuery()
+                ->getResult();
     }
 }

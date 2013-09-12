@@ -18,3 +18,15 @@ open_miam_miam.admin:
 open_miam_miam.admin.producer.dashboard:
     pattern:  /producer/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:showDashboard }
+
+open_miam_miam.admin.producer.list_products:
+    pattern:  /producer/{id}/products
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:list }
+
+open_miam_miam.admin.producer.create_product:
+    pattern:  /producer/{id}/products/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:create }
+
+open_miam_miam.admin.producer.edit_product:
+    pattern:  /producer/{id}/products/{productId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:edit }

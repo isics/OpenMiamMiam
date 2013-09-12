@@ -588,4 +588,22 @@ class Product
     {
         return $this->branches;
     }
+
+    /**
+     * Returns true if product has branch
+     *
+     * @param Branch $branch
+     *
+     * @return boolean
+     */
+    public function hasBranch(Branch $branch)
+    {
+        foreach ($this->getBranches() as $_branch) {
+            if ($_branch->getId() == $branch->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

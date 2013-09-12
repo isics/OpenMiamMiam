@@ -14,21 +14,24 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
-class GeneralController extends BaseController
+class ProductController extends BaseController
 {
     /**
-     * Show Dashboard
+     * List products
      *
      * @param Producer $producer
      *
      * @return Response
      */
-    public function showDashboardAction(Producer $producer)
+    public function listAction(Producer $producer)
     {
         $this->secure($producer);
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:showDashboard.html.twig', array(
+        $products = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Product')->findForProducer($producer);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\Product:list.html.twig', array(
             'producer' => $producer,
+            'products' => $products
         ));
     }
 }
