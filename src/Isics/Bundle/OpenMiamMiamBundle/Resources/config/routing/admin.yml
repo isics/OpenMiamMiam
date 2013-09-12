@@ -30,3 +30,7 @@ open_miam_miam.admin.producer.create_product:
 open_miam_miam.admin.producer.edit_product:
     pattern:  /producer/{id}/products/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:edit }
+
+open_miam_miam.admin.producer.delete_product:
+    pattern:  /producer/{id}/products/{productId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:delete }

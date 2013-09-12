@@ -14,7 +14,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AdminResourceChoiceType extends AbstractType
 {

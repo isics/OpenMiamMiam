@@ -1,0 +1,23 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
+    properties:
+        name:
+            - NotNull: ~
+            - Length:
+                max: 128
+        ref:
+            - NotNull: ~
+            - Length:
+                max: 16
+        category:
+            - NotNull: ~
+        isBio:
+            - Type: bool
+        description:
+            - Length:
+                max: 255
+        price:
+            - Range:
+                min: 0.01
+        priceInfo:
+            - Length:
+                max: 128

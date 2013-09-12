@@ -265,7 +265,7 @@ class Product
      */
     public function setIsBio($isBio)
     {
-        $this->isBio = $isBio;
+        $this->isBio = (bool)$isBio;
 
         return $this;
     }
@@ -277,7 +277,7 @@ class Product
      */
     public function getIsBio()
     {
-        return $this->isBio;
+        return (bool)$this->isBio;
     }
 
     /**
@@ -288,7 +288,7 @@ class Product
      */
     public function setIsOfTheMoment($isOfTheMoment)
     {
-        $this->isOfTheMoment = $isOfTheMoment;
+        $this->isOfTheMoment = (bool)$isOfTheMoment;
 
         return $this;
     }
@@ -300,7 +300,7 @@ class Product
      */
     public function getIsOfTheMoment()
     {
-        return $this->isOfTheMoment;
+        return (bool)$this->isOfTheMoment;
     }
 
     /**

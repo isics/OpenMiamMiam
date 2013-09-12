@@ -86,7 +86,7 @@ class ProductRepository extends EntityRepository
     {
         return $this->createQueryBuilder('p')
                 ->addSelect('b')
-                ->innerJoin('p.branches', 'b')
+                ->leftJoin('p.branches', 'b')
                 ->where('p.producer = :producer')
                 ->setParameter('producer', $producer)
                 ->getQuery()
