@@ -11,13 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Behat;
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
+use Behat\Behat\Context\BehatContext,
     Behat\Gherkin\Node\TableNode;
+
 use Doctrine\ORM\Tools\SchemaTool;
+
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Branch,
     Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence,
@@ -26,12 +24,9 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association,
     Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance,
     Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 
-//
-// Require 3rd-party libraries here:
-//
-//   require_once 'PHPUnit/Autoload.php';
-//   require_once 'PHPUnit/Framework/Assert/Functions.php';
-//
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity,
+    Symfony\Component\Security\Acl\Domain\UserSecurityIdentity,
+    Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * Features context.
@@ -94,9 +89,23 @@ class FeatureContext extends BehatContext
             $producer->setName($data['name']);
 
             $entityManager->persist($producer);
-        }
+            $entityManager->flush();
 
-        $entityManager->flush();
+            # ACL
+            $aclProvider = $this->getContainer()->get('security.acl.provider');
+
+            $objectIdentity = ObjectIdentity::fromDomainObject($producer);
+            $acl = $aclProvider->findAcl($objectIdentity);
+
+            if (!empty($data['managers'])) {
+                $managers = explode(',', $data['managers']);
+                foreach ($managers as $manager) {
+                    $securityIdentity = new UserSecurityIdentity(trim($manager), 'Isics\Bundle\OpenMiamMiamBundle\Entity\User');
+                    $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+                    $aclProvider->updateAcl($acl);
+                }
+            }
+        }
     }
 
     /**
@@ -444,11 +453,77 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @When /^I fill username field with "([^"]*)"$/
+     */
+    public function iFillUsernameFieldWith($username)
+    {
+        $this->fillField('username', $username);
+    }
+
+    /**
+     * @Given /^I fill password field with "([^"]*)"$/
+     */
+    public function iFillPasswordFieldWith($password)
+    {
+        $this->fillField('password', $password);
+    }
+
+    /**
+     * @Given /^I press login button$/
+     */
+    public function iPressLoginButton()
+    {
+        $this->pressButton('_submit');
+    }
+
+    /**
+     * @Given /^the administration area switcher value should be "([^"]*)"$/
+     */
+    public function theAdministrationAreaSwitcherValueShouldBe($value)
+    {
+        $this->assertFieldContains('open_miam_miam_admin_resource_choice_admin', $value);
+    }
+
+    /**
+     * @When /^I fill administration area switcher with "([^"]*)"$/
+     */
+    public function iFillAdministrationAreaSwitcherWith($value)
+    {
+        $this->fillField('open_miam_miam_admin_resource_choice_admin', $value);
+    }
+
+    /**
+     * @Given /^I press administration area switcher button$/
+     */
+    public function iPressAdministrationAreaSwitcherButton()
+    {
+        $this->pressButton('open_miam_miam_admin_resource_choice_Ok');
+    }
+
+    /**
      * @Given /^I should see the next date "([^"]*)" formated "([^"]*)"$/
      */
     public function iShouldSeeTheNextDateFormated($time, $format)
     {
         $this->assertPageContainsText(date($format, strtotime($time)));
+    }
+
+    /**
+     * @Given /^there are following users:$/
+     */
+    public function thereAreFollowingUsers(TableNode $table)
+    {
+        $manipulator = $this->getContainer()->get('fos_user.util.user_manipulator');
+
+        foreach ($table->getHash() as $data) {
+            $manipulator->create(
+                $data['email'],
+                $data['password'],
+                $data['email'],
+                $active = true,
+                $superAdmin = false
+            );
+        }
     }
 
     /**
