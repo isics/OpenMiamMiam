@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class AdminResource
@@ -29,18 +30,25 @@ abstract class AdminResource implements AdminResourceInterface
      */
     protected $router;
 
+    /**
+     * @var Translator $translator
+     */
+    protected $translator;
+
 
 
     /**
      * Contructs object
      *
-     * @param $resource
-     * @param RouterInterface $router
+     * @param mixed               $resource
+     * @param RouterInterface     $router
+     * @param TranslatorInterface $translator
      */
-    public function __construct($resource, RouterInterface $router)
+    public function __construct($resource, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->resource = $resource;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     /**
@@ -50,7 +58,7 @@ abstract class AdminResource implements AdminResourceInterface
      */
     public function __toString()
     {
-        return $this->getName();
+        return sprintf('%s (%s)', $this->getName(), $this->translator->trans($this->getType()));
     }
 
     /**

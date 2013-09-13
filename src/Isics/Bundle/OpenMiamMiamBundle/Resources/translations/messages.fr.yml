@@ -1,0 +1,8 @@
+# General
+branch:   Comptoir
+checkout: Commander
+logout:   Déconnexion
+producer: producteur
+
+# Cart
+cart.title: Mon panier

@@ -40,8 +40,6 @@ class AdminResourceChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('admin', 'choice', array('choices' => $this->adminResourceCollection->getElements()));
-
-        $builder->add('Ok', 'submit');
     }
 
     /**

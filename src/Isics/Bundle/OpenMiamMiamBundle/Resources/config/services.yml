@@ -52,7 +52,7 @@ services:
 
     open_miam_miam.admin_manager:
         class: %open_miam_miam.admin_manager.class%
-        arguments: [@security.context, @doctrine.orm.entity_manager, @router]
+        arguments: [@security.context, @doctrine.orm.entity_manager, @router, @translator]
         shared: true
 
     open_miam_miam.product_manager:

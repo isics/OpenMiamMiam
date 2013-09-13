@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class AdminResource
@@ -23,12 +24,13 @@ final class ProducerAdminResource extends AdminResource
     /**
      * Constructs object
      *
-     * @param Producer $producer
-     * @param RouterInterface $router
+     * @param Producer            $producer
+     * @param RouterInterface     $router
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Producer $producer, RouterInterface $router)
+    public function __construct(Producer $producer, RouterInterface $router, TranslatorInterface $translator)
     {
-        parent::__construct($producer, $router);
+        parent::__construct($producer, $router, $translator);
     }
 
     /**

@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 
 /**
@@ -45,6 +46,11 @@ class AdminManager
     protected $router;
 
     /**
+     * @var Translator $translator
+     */
+    protected $translator;
+
+    /**
      * @var AdminResourceCollection $adminResourceCollection;
      */
     protected $adminResourceCollection;
@@ -55,16 +61,19 @@ class AdminManager
      * Constructs object
      *
      * @param SecurityContextInterface $securityContext
-     * @param ObjectManager $objectManager
-     * @param RouterInterface $router
+     * @param ObjectManager            $objectManager
+     * @param RouterInterface          $router
+     * @param TranslatorInterface      $translator
      */
     public function __construct(SecurityContextInterface $securityContext,
                                 ObjectManager $objectManager,
-                                RouterInterface $router)
+                                RouterInterface $router,
+                                TranslatorInterface $translator)
     {
         $this->securityContext = $securityContext;
         $this->objectManager = $objectManager;
         $this->router = $router;
+        $this->translator = $translator;
         $this->adminResourceCollection = new AdminResourceCollection();
     }
 
@@ -77,7 +86,7 @@ class AdminManager
     {
         $producers = $this->findAvailableProducers();
         foreach ($producers as $producer) {
-            $this->adminResourceCollection->add(new ProducerAdminResource($producer, $this->router));
+            $this->adminResourceCollection->add(new ProducerAdminResource($producer, $this->router, $this->translator));
         }
 
         return $this->adminResourceCollection;

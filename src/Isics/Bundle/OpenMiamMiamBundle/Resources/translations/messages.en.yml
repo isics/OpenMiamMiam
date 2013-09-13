@@ -1,0 +1,8 @@
+# General
+branch:   Branch
+checkout: Checkout
+logout:   Logout
+producer: producer
+
+# Cart
+cart.title: My cart
