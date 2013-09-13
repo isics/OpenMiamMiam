@@ -6,4 +6,7 @@
  # with this source code in the file LICENSE.
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Admin:base.html.twig' with {'object': producer} %}
+    {% block content %}
+        <h1>{% trans %}dashboard{% endtrans %}</h1>
+    {% endblock %}
 {% endembed %}
