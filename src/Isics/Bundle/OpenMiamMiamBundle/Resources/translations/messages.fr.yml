@@ -1,8 +1,14 @@
 # General
-branch:   Comptoir
-checkout: Commander
-logout:   Déconnexion
-producer: producteur
+branch:         Comptoir
+calendar:       Calendrier
+checkout:       Commander
+dashboard:      Tableau de bord
+logout:         Déconnexion
+managers:       Gestionnaires
+orders:         Commandes
+producer:       Producteur
+producer.infos: Infos producteur
+products:       Produits
 
 # Cart
 cart.title: Mon panier

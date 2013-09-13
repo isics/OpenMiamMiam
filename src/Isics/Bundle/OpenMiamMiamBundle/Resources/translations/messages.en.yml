@@ -1,8 +1,14 @@
 # General
-branch:   Branch
-checkout: Checkout
-logout:   Logout
-producer: producer
+branch:         Branch
+calendar:       Calendar
+checkout:       Checkout
+dashboard:      Dashboard
+logout:         Logout
+managers:       Managers
+orders:         Orders
+producer:       Producer
+producer.infos: Producer infos
+products:       Products
 
 # Cart
 cart.title: My cart
