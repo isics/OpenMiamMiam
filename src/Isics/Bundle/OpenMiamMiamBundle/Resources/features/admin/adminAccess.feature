@@ -17,16 +17,16 @@ Feature: Admin authentication & authorization
   Scenario: Access to the login page
     Given I am on "/login"
     Then I should be on "/login"
-    And I should see "Login"
+    And I should see "Manager access"
 
   Scenario: Redirect to the login
     Given I am on "/admin"
     Then I should be on "/login"
-    And I should see "Login"
+    And I should see "Manager access"
 
   Scenario: Log to the administration area but have no credentials
     Given I am on "/admin"
-    And I should see "Login"
+    And I should see "Manager access"
     When I fill username field with "john@smith.com"
     And I fill password field with "secret3"
     And I press login button
@@ -34,29 +34,28 @@ Feature: Admin authentication & authorization
 
   Scenario: Redirect to producer's administration area after logged in
     Given I am on "/admin"
-    And I should see "Login"
+    And I should see "Manager access"
     When I fill username field with "foo@bar.com"
     And I fill password field with "secret1"
     And I press login button
     Then I should be on "/admin/producer/2/dashboard"
-    And the administration area switcher value should be "0"
+    And the administration area switcher should be on "Elsa Dorsa"
 
   Scenario: Choose administration area after logged in
     Given I am on "/admin"
-    And I should see "Login"
+    And I should see "Manager access"
     When I fill username field with "john@doe.com"
     And I fill password field with "secret2"
     And I press login button
     Then I should be on "/admin/"
-    And I should see "Choose your administration area"
-    When I fill administration area switcher with "1"
-    And I press administration area switcher button
+    And I should see "Choose a role"
+    When I follow "Elsa Dorsa"
     Then I should be on "/admin/producer/2/dashboard"
-    And the administration area switcher value should be "1"
+    And the administration area switcher should be on "Elsa Dorsa"
 
   Scenario: Attempt to access not permitted administration area after login
     Given I am on "/admin"
-    And I should see "Login"
+    And I should see "Manager access"
     When I fill username field with "foo@bar.com"
     And I fill password field with "secret1"
     And I press login button

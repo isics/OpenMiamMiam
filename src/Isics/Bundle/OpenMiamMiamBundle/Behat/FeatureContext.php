@@ -477,27 +477,11 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @Given /^the administration area switcher value should be "([^"]*)"$/
+     * @Given /^the administration area switcher should be on "([^"]*)"$/
      */
-    public function theAdministrationAreaSwitcherValueShouldBe($value)
+    public function theAdministrationAreaSwitcherShouldBeOn($value)
     {
-        $this->assertFieldContains('open_miam_miam_admin_resource_choice_admin', $value);
-    }
-
-    /**
-     * @When /^I fill administration area switcher with "([^"]*)"$/
-     */
-    public function iFillAdministrationAreaSwitcherWith($value)
-    {
-        $this->fillField('open_miam_miam_admin_resource_choice_admin', $value);
-    }
-
-    /**
-     * @Given /^I press administration area switcher button$/
-     */
-    public function iPressAdministrationAreaSwitcherButton()
-    {
-        $this->pressButton('open_miam_miam_admin_resource_choice_Ok');
+        $this->assertElementContains('#admin-switcher', 'selected="selected">'.$value);
     }
 
     /**
