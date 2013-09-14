@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
+            new Isics\Bundle\OpenMiamMiamUserBundle\IsicsOpenMiamMiamUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         );
 

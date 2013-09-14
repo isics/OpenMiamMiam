@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 
 /**
  * Class AdminResourceCollection
@@ -42,11 +42,11 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
     /**
      * Returns offset of a resource
      *
-     * @param AdminResourceInterface $resource
+     * @param AdminResource $resource
      *
      * @return int
      */
-    public function getOffset(AdminResourceInterface $resource)
+    public function getOffset(AdminResource $resource)
     {
         foreach ($this->elements as $idx => $element) {
             if ($element === $resource) {
@@ -78,16 +78,16 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
      */
     public function getIterator()
     {
-        return new ArrayIterator($this);
+        return new \ArrayIterator($this->elements);
     }
 
     /**
      * Adds admin resource to elements
      *
-     * @param AdminResourceInterface $resource
+     * @param AdminResource$resource
      * @param mixed $offset
      */
-    public function add(AdminResourceInterface $resource, $offset = null)
+    public function add(AdminResource $resource, $offset = null)
     {
         if (null === $offset) {
             $this->elements[] = $resource;
@@ -119,28 +119,10 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
     /**
      * Returns the first element
      *
-     * @return AdminResourceInterface
+     * @return AdminResource
      */
     public function getFirst()
     {
         return reset($this->elements);
-    }
-
-    /**
-     * Returns element by object
-     *
-     * @param mixed $object
-     *
-     * @return AdminResourceInterface
-     */
-    public function getByObject($object)
-    {
-        foreach ($this->elements as $adminResource) {
-            if ($adminResource->equals($object)) {
-                return $adminResource;
-            }
-        }
-
-        return null;
     }
 }

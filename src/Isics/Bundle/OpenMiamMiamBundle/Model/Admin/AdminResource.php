@@ -11,63 +11,55 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-
 /**
  * Class AdminResource
  */
-abstract class AdminResource implements AdminResourceInterface
+class AdminResource
 {
+    const TYPE_SUPER_ADMIN = 0;
+    const TYPE_ASSOCIATION = 1;
+    const TYPE_PRODUCER    = 2;
+    const TYPE_RELAY       = 3;
+
     /**
      * @var mixed $resource
      */
-    protected $resource;
+    protected $type;
 
     /**
-     * @var RouterInterface $router
+     * @var mixed $entity
      */
-    protected $router;
-
-    /**
-     * @var Translator $translator
-     */
-    protected $translator;
-
-
+    protected $entity;
 
     /**
      * Contructs object
      *
-     * @param mixed               $resource
-     * @param RouterInterface     $router
-     * @param TranslatorInterface $translator
+     * @param integer $type   Type
+     * @param mixed   $entity Entity (optional)
      */
-    public function __construct($resource, RouterInterface $router, TranslatorInterface $translator)
+    public function __construct($type, $entity = null)
     {
-        $this->resource = $resource;
-        $this->router = $router;
-        $this->translator = $translator;
+        $this->type   = $type;
+        $this->entity = $entity;
     }
 
     /**
-     * Returns string representation of object
+     * Returns type
      *
-     * @return string
+     * @return integer
      */
-    public function __toString()
+    public function getType()
     {
-        return sprintf('%s (%s)', $this->getName(), $this->translator->trans($this->getType()));
+        return $this->type;
     }
 
     /**
-     * Returns resource
+     * Returns Entity
      *
      * @return mixed
      */
-    public function getResource()
+    public function getEntity()
     {
-        return $this->resource;
+        return $this->entity;
     }
 }

@@ -11,15 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 
 /**
@@ -41,16 +39,6 @@ class AdminManager
     protected $objectManager;
 
     /**
-     * @var RouterInterface $router
-     */
-    protected $router;
-
-    /**
-     * @var Translator $translator
-     */
-    protected $translator;
-
-    /**
      * @var AdminResourceCollection $adminResourceCollection;
      */
     protected $adminResourceCollection;
@@ -62,18 +50,11 @@ class AdminManager
      *
      * @param SecurityContextInterface $securityContext
      * @param ObjectManager            $objectManager
-     * @param RouterInterface          $router
-     * @param TranslatorInterface      $translator
      */
-    public function __construct(SecurityContextInterface $securityContext,
-                                ObjectManager $objectManager,
-                                RouterInterface $router,
-                                TranslatorInterface $translator)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $objectManager)
     {
         $this->securityContext = $securityContext;
         $this->objectManager = $objectManager;
-        $this->router = $router;
-        $this->translator = $translator;
         $this->adminResourceCollection = new AdminResourceCollection();
     }
 
@@ -86,7 +67,7 @@ class AdminManager
     {
         $producers = $this->findAvailableProducers();
         foreach ($producers as $producer) {
-            $this->adminResourceCollection->add(new ProducerAdminResource($producer, $this->router, $this->translator));
+            $this->adminResourceCollection->add(new AdminResource(AdminResource::TYPE_PRODUCER, $producer));
         }
 
         return $this->adminResourceCollection;
