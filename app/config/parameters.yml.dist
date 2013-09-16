@@ -13,3 +13,8 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    node_path: /usr/local/bin/node
+    node_modules_path: /usr/local/bin/node_modules
+    node_uglifycss_bin: /usr/local/bin/node_modules/uglifycss/uglifycss
+    node_uglifyjs_bin: /usr/local/bin/node_modules/uglifyjs/uglifyjs
