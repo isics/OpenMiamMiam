@@ -11,91 +11,159 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Menu;
 
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AssociationAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\RelayAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\SuperAdminResource;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class Builder extends ContainerAware
+class Builder
 {
+    /**
+     * @var FactoryInterface $factory
+     */
+    protected $factory;
+
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    /**
+     * @var AdminManager $adminManager
+     */
+    protected $adminManager;
+
+    /**
+     * @var string $labelFormat format for labels
+     */
     protected $labelFormat = '<span class="glyphicon glyphicon-%s"></span> %s';
 
-    public function adminMenu(FactoryInterface $factory, array $options)
+    /**
+     * Constructor
+     *
+     * @param FactoryInterface    $factory    Factory
+     * @param TranslatorInterface $translator Translator
+     */
+    public function __construct(FactoryInterface $factory, TranslatorInterface $translator, AdminManager $adminManager)
     {
-        $adminManager = $this->container->get('open_miam_miam.admin_manager');
+        $this->factory      = $factory;
+        $this->translator   = $translator;
+        $this->adminManager = $adminManager;
+    }
 
-        $menu = $factory->createItem('root');
+    /**
+     * Admin menu
+     *
+     * @param FactoryInteface $factory
+     * @param array           $options
+     */
+    public function createAdminMenu()
+    {
+        $menu = $this->factory->createItem('root');
 
-        foreach ($adminManager->findAvailableAdminResources() as $resource) {
-            switch ($resource->getType()) {
-                case AdminResource::TYPE_SUPER_ADMIN:
-                    $this->addSuperAdminMenu($menu);
-                    break;
-                case AdminResource::TYPE_ASSOCIATION:
-                    $this->addAssociationMenu($menu, $resource);
-                    break;
-                case AdminResource::TYPE_PRODUCER:
-                    $this->addProducerMenu($menu, $resource);
-                    break;
-                case AdminResource::TYPE_RELAY:
-                    $this->addRelayMenu($menu, $resource);
+        foreach ($this->adminManager->findAvailableAdminResources() as $resource) {
+            if ($resource instanceof SuperAdminResource) {
+                $this->addSuperAdminMenuItems($menu, $resource);
+            } else if ($resource instanceof AssociationAdminResource) {
+                 $this->addAssociationAdminMenuItems($menu, $resource);
+            } else if ($resource instanceof ProducerAdminResource) {
+                $this->addProducerAdminMenuItems($menu, $resource);
+            } else if ($resource instanceof RelayAdminResource) {
+                $this->addRelayAdminMenuItems($menu, $resource);
             }
         }
 
         return $menu;
     }
 
-    protected function addSuperAdminMenu(ItemInterface $menu)
+    /**
+     * Adds menu items for the super admin area
+     *
+     * @param ItemInterface          $menu     Root menu
+     * @param AdminResourceInterface $resource Admin resource
+     */
+    protected function addSuperAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
+        // @todo
     }
 
-    protected function addProducerMenu(ItemInterface $menu, $resource)
+    /**
+     * Adds menu items for a association admin area
+     *
+     * @param ItemInterface          $menu     Root menu
+     * @param AdminResourceInterface $resource Admin resource
+     */
+    protected function addAssocationAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
-        $producer   = $resource->getEntity();
-        $translator = $this->container->get('translator');
+        // @todo
+    }
+
+    /**
+     * Adds menu items for a producer admin area
+     *
+     * @param ItemInterface          $menu     Root menu
+     * @param AdminResourceInterface $resource Admin resource
+     */
+    protected function addProducerAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    {
+        $producer = $resource->getEntity();
 
         $menuName = sprintf('producer%s', $producer->getId());
 
         $menu->addChild($menuName, array(
             'route'           => 'open_miam_miam.admin.producer.dashboard',
             'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf('%s (%s)', $producer->getName(), $translator->trans('producer')),
+            'label'           => sprintf('%s (%s)', $producer->getName(), $this->translator->trans($resource->getType())),
         ));
         $menu[$menuName]->addChild('Dashboard', array(
             'route'           => 'open_miam_miam.admin.producer.dashboard',
             'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'home', $translator->trans('dashboard')),
+            'label'           => sprintf($this->labelFormat, 'home', $this->translator->trans('dashboard')),
         ));
         $menu[$menuName]->addChild('Orders', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $object->getId()),
-            'label'           => sprintf($this->labelFormat, 'shopping-cart', $translator->trans('orders')),
+            'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('orders')),
         ));
         $menu[$menuName]->addChild('Products', array(
             'route'           => 'open_miam_miam.admin.producer.list_products',
             'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'list', $translator->trans('products')),
+            'label'           => sprintf($this->labelFormat, 'list', $this->translator->trans('products')),
         ));
         $menu[$menuName]->addChild('Calendar', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'time', $translator->trans('calendar')),
+            'label'           => sprintf($this->labelFormat, 'time', $this->translator->trans('calendar')),
         ));
         $menu[$menuName]->addChild('Managers', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'lock', $translator->trans('managers')),
+            'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('managers')),
         ));
         $menu[$menuName]->addChild('Producer infos', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'user', $translator->trans('producer.infos')),
+            'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('producer.infos')),
         ));
+    }
+
+    /**
+     * Adds menu items for a relay admin area
+     *
+     * @param ItemInterface          $menu     Root menu
+     * @param AdminResourceInterface $resource Admin resource
+     */
+    protected function addRelayAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    {
+        // @todo
     }
 }

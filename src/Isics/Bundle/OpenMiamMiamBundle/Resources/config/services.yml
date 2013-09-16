@@ -16,6 +16,7 @@ parameters:
     open_miam_miam.admin_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
     open_miam_miam.acl_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
     open_miam_miam.product_manager.class:           'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
+    open_miam_miam.menu_builder.class:              'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
 
 services:
     open_miam_miam.branch_occurrence_manager:
@@ -65,3 +66,14 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: preRemove }
+
+    open_miam_miam.menu_builder:
+        class:      %open_miam_miam.menu_builder.class%
+        arguments: [@knp_menu.factory, @translator, @open_miam_miam.admin_manager]
+
+    open_miam_miam.menu.admin:
+        class:           Knp\Menu\MenuItem
+        factory_service: open_miam_miam.menu_builder
+        factory_method:  createAdminMenu
+        tags:
+            - { name: knp_menu.menu, alias: admin }

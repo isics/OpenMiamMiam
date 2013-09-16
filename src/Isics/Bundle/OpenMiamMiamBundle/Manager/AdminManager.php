@@ -11,8 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -67,7 +67,7 @@ class AdminManager
     {
         $producers = $this->findAvailableProducers();
         foreach ($producers as $producer) {
-            $this->adminResourceCollection->add(new AdminResource(AdminResource::TYPE_PRODUCER, $producer));
+            $this->adminResourceCollection->add(new ProducerAdminResource($producer));
         }
 
         return $this->adminResourceCollection;

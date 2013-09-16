@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
 
 /**
  * Class AdminResourceCollection
@@ -42,11 +42,11 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
     /**
      * Returns offset of a resource
      *
-     * @param AdminResource $resource
+     * @param AdminResourceInterface $resource
      *
-     * @return int
+     * @return integer
      */
-    public function getOffset(AdminResource $resource)
+    public function getOffset(AdminResourceInterface $resource)
     {
         foreach ($this->elements as $idx => $element) {
             if ($element === $resource) {
@@ -84,10 +84,10 @@ class AdminResourceCollection implements \ArrayAccess, \IteratorAggregate, \Coun
     /**
      * Adds admin resource to elements
      *
-     * @param AdminResource$resource
-     * @param mixed $offset
+     * @param AdminResourceInterface $resource
+     * @param mixed                  $offset
      */
-    public function add(AdminResource $resource, $offset = null)
+    public function add(AdminResourceInterface $resource, $offset = null)
     {
         if (null === $offset) {
             $this->elements[] = $resource;

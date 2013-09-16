@@ -38,21 +38,9 @@ class GeneralController extends Controller
         }
 
         if (1 === $nbAdminResources) {
-            $adminResource = $adminResources[0];
+            $adminMenu = $this->get('open_miam_miam.menu.admin');
 
-            switch ($adminResource->getType()) {
-                case AdminResource::TYPE_SUPER_ADMIN:
-                    return $this->redirect('');
-                case AdminResource::TYPE_ASSOCIATION:
-                    return $this->redirect('');
-                case AdminResource::TYPE_PRODUCER:
-                    return $this->redirect($this->generateUrl(
-                        'open_miam_miam.admin.producer.dashboard',
-                        array('id' => $adminResource->getEntity()->getId())
-                    ));
-                case AdminResource::TYPE_RELAY:
-                    return $this->redirect('');
-            }
+            return $this->redirect($adminMenu->getFirstChild()->getUri());
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin:index.html.twig');

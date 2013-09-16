@@ -10,7 +10,7 @@
 {% block global_content %}
     <div class="row">
         <div class="col-md-3" role="navigation">
-            {{ knp_menu_render('IsicsOpenMiamMiamBundle:Builder:adminMenu', {'template': 'IsicsOpenMiamMiamBundle:Admin:menu.html.twig'}) }}
+            {{ knp_menu_render('admin', {'template': 'IsicsOpenMiamMiamBundle:Admin:menu.html.twig'}) }}
         </div>
         <div class="col-md-9" role="main">
             {% include 'IsicsOpenMiamMiamBundle::messages.html.twig' %}
