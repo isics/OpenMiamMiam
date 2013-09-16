@@ -89,6 +89,9 @@ class ProductType extends AbstractType
                         Product::AVAILABILITY_AVAILABLE => 'Available'
                     )
                 ))
+                ->add('stock', 'text', array(
+                    'required' => false
+                ))
                 ->add('Save', 'submit');
 
         $product = $options['data'];

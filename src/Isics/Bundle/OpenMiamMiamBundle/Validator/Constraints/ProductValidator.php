@@ -11,10 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product as ProductEntity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class PriceValidator extends ConstraintValidator
+class ProductValidator extends ConstraintValidator
 {
     /**
      * {@inheritDoc}
@@ -24,12 +25,18 @@ class PriceValidator extends ConstraintValidator
      */
     public function validate($product, Constraint $constraint)
     {
+        // Price validation
         if (!$product->getHasPrice()) {
             $product->setPrice(null);
+        } elseif (null === $product->getPrice()) {
+            $this->context->addViolationAt('price', $constraint->requiredMessage, array(), null);
         }
 
-        if ($product->getHasPrice() && null === $product->getPrice()) {
-            $this->context->addViolationAt('price', $constraint->message, array(), null);
+        // Stock validation
+        if (ProductEntity::AVAILABILITY_ACCORDING_TO_STOCK !== $product->getAvailability()) {
+            $product->setStock(null);
+        } elseif (null === $product->getStock()) {
+            $this->context->addViolationAt('stock', $constraint->requiredMessage, array(), null);
         }
     }
 }

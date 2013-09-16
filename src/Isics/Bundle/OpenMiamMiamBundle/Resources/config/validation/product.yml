@@ -1,7 +1,7 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ref
-        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Price:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Product:
     properties:
         name:
             - NotNull: ~
@@ -27,9 +27,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - Length:
                 max: 128
         imageFile:
-            - File:
+            - Image:
                 maxSize: 5120k
-                mimeTypes: [image/jpeg, image/gif, image/png]
         deleteImage:
             - Type: bool
         hasPrice:
@@ -40,3 +39,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - Type: bool
         availability:
             - Choice: { callback: getAvailabilityStatus}
+        stock:
+            - Range:
+                min: 0

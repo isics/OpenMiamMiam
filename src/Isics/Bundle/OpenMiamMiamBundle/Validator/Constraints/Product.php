@@ -13,9 +13,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-class Price extends Constraint
+class Product extends Constraint
 {
-    public $message = 'Invalid.';
+    public $requiredMessage = 'Required.';
 
     /**
      * {@inheritDoc}
