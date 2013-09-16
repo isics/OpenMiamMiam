@@ -138,17 +138,26 @@ class ProductManager
             return null;
         }
 
-        return $this->getUploadDir().'/'.$product->getImage();
+        return $this->getUploadDir($product).'/'.$product->getImage();
     }
 
     /**
      * Returns upload directory
      *
+     * @param Product $product
+     *
+     * @throws \DomainException
+     *
      * @return string
      */
-    public function getUploadDir()
+    public function getUploadDir(Product $product)
     {
-        return $this->config['upload_path'];
+        $producer = $product->getProducer();
+        if (!$producer instanceof Producer) {
+            throw new \DomainException();
+        }
+
+        return $this->config['upload_path'].'/'.$producer->getId();
     }
 
     /**
@@ -166,10 +175,6 @@ class ProductManager
         elseif (null !== $product->getImageFile()) {
             $this->uploadImage($product);
         }
-        // Rename if slug changed
-        elseif (null !== $product->getImage() && !preg_match('/^'.$product->getSlug().'\..*$/', $product->getImage())) {
-            return $this->renameImage($product);
-        }
     }
 
     /**
@@ -180,34 +185,11 @@ class ProductManager
     public function removeImage(Product $product)
     {
         $fileSystem = new Filesystem();
-        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir();
+        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($product);
 
         $fileSystem->remove($uploadDir.'/'.$product->getImage());
 
         $product->setImage(null);
-
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
-    }
-
-    /**
-     * Renames image file
-     *
-     * @param Product $product
-     */
-    public function renameImage(Product $product)
-    {
-        $fileSystem = new Filesystem();
-        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir();
-        $extension = substr($product->getImage(), strrpos($product->getImage(), '.'));
-        $filename = $product->getSlug().$extension;
-
-        $fileSystem->rename(
-            $uploadDir.'/'.$product->getImage(),
-                $uploadDir.'/'.$filename
-        );
-
-        $product->setImage($filename);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
@@ -221,7 +203,7 @@ class ProductManager
     public function uploadImage(Product $product)
     {
         $fileSystem = new Filesystem();
-        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir();
+        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($product);
 
         // Remove old image
         if (null !== $product->getImage()) {
@@ -230,7 +212,7 @@ class ProductManager
 
         // Move image
         $file = $product->getImageFile();
-        $filename = $product->getSlug().'.'.$file->guessExtension();
+        $filename = uniqid($product->getSlug()).'.'.$file->guessExtension();
         $file->move($uploadDir, $filename);
 
         // Set new image filename and reset image file
