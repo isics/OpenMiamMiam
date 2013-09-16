@@ -86,6 +86,7 @@ fos_user:
     firewall_name: main
     user_class: Isics\Bundle\OpenMiamMiamBundle\Entity\User
 
+# LiipImagineBundle Configuration
 liip_imagine:
     filter_sets:
         admin:
