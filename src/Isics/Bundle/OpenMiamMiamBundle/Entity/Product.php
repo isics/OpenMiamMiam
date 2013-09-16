@@ -600,7 +600,7 @@ class Product
      * @param \DateTime $availableAt
      * @return Product
      */
-    public function setAvailableAt($availableAt)
+    public function setAvailableAt(\DateTime $availableAt = null)
     {
         $this->availableAt = $availableAt;
 

@@ -38,5 +38,12 @@ class ProductValidator extends ConstraintValidator
         } elseif (null === $product->getStock()) {
             $this->context->addViolationAt('stock', $constraint->requiredMessage, array(), null);
         }
+
+        // Availability date validation
+        if (ProductEntity::AVAILABILITY_AVAILABLE_AT !== $product->getAvailability()) {
+            $product->setAvailableAt(null);
+        } elseif (null === $product->getAvailableAt()) {
+            $this->context->addViolationAt('availableAt', $constraint->requiredMessage, array(), null);
+        }
     }
 }
