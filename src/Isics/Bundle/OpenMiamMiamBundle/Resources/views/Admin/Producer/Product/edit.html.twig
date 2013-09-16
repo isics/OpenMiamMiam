@@ -12,3 +12,8 @@
 {{ form(form) }}
 
 <a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.getId()}) }}">Return to list</a>
+
+{% set product = form.vars.data %}
+{% if product.getImage is not null %}
+    <img src="{{ asset(get_image_product_path(product))|imagine_filter('admin') }}" alt="{{ product.getName }}" />
+{% endif %}

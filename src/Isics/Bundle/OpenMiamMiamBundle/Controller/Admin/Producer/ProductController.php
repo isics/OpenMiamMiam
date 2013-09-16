@@ -58,7 +58,6 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $product = $form->getData();
                 $productManager->save($product);
 
                 $this->get('session')->getFlashBag()->add('notice', 'Product created.');
@@ -95,8 +94,6 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $product = $form->getData();
-
                 $productManager = $this->get('open_miam_miam.product_manager');
                 $productManager->save($product);
 
@@ -156,6 +153,8 @@ class ProductController extends BaseController
 
         $productManager = $this->get('open_miam_miam.product_manager');
         $productManager->delete($product);
+
+        $this->get('session')->getFlashBag()->add('notice', 'Product deleted.');
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.producer.list_products',

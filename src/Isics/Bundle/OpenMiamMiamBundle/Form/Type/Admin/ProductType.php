@@ -24,9 +24,7 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', 'text')
-                ->add('ref', 'text', array(
-                    'required' => false
-                ))
+                ->add('ref', 'text')
                 ->add('category', 'entity', array(
                     'class' => 'IsicsOpenMiamMiamBundle:Category',
                     'property' => 'name',
@@ -43,6 +41,9 @@ class ProductType extends AbstractType
                     'choices' => array(true => 'yes', false => 'no'),
                     'expanded' => true
                 ))
+                ->add('imageFile', 'file', array(
+                    'required' => false
+                ))
                 ->add('description', 'textarea', array(
                     'required' => false
                 ))
@@ -53,6 +54,13 @@ class ProductType extends AbstractType
                     'required' => false
                 ))
                 ->add('Save', 'submit');
+
+        $product = $options['data'];
+        if (null !== $product->getImage()) {
+            $builder->add('deleteImage', 'checkbox', array(
+                'required' => false
+            ));
+        }
     }
 
     /**

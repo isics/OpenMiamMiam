@@ -31,12 +31,9 @@ class IsicsOpenMiamMiamExtension extends Extension
 
         $container->setParameter('open_miam_miam.title', $config['title']);
         $container->setParameter('open_miam_miam.currency', $config['currency']);
-        $container->setParameter('open_miam_miam.product_ref_prefix', $config['product_ref_prefix']);
-        $container->setParameter('open_miam_miam.product_ref_pad_length', $config['product_ref_pad_length']);
-        $container->setParameter('open_miam_miam.customer_ref_prefix', $config['customer_ref_prefix']);
-        $container->setParameter('open_miam_miam.customer_ref_pad_length', $config['customer_ref_pad_length']);
-        $container->setParameter('open_miam_miam.order_ref_prefix', $config['order_ref_prefix']);
-        $container->setParameter('open_miam_miam.order_ref_pad_length', $config['order_ref_pad_length']);
+        $container->setParameter('open_miam_miam.product', $config['product']);
+        $container->setParameter('open_miam_miam.customer', $config['customer']);
+        $container->setParameter('open_miam_miam.order', $config['order']);
         $container->setParameter('open_miam_miam.buying_units', $config['buying_units']);
     }
 

@@ -1,4 +1,6 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ref
     properties:
         name:
             - NotNull: ~
@@ -11,6 +13,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
         category:
             - NotNull: ~
         isBio:
+            - Type: bool
+        isOfTheMoment:
             - Type: bool
         description:
             - Length:

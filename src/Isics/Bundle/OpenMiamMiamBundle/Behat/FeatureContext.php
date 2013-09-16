@@ -191,7 +191,7 @@ class FeatureContext extends BehatContext
             );
         }
 
-        $entityManager = $this->getEntityManager();
+        $productManager = $this->getContainer()->get('open_miam_miam.product_manager');
 
         foreach ($table->getHash() as $data) {
             $category = $this->getRepository('Category')->findOneByName($data['category']);
@@ -201,8 +201,7 @@ class FeatureContext extends BehatContext
                 );
             }
 
-            $product = new Product();
-            $product->setProducer($producer);
+            $product = $productManager->createForProducer($producer);
             $product->setName($data['name']);
             $product->setCategory($category);
 
@@ -234,10 +233,8 @@ class FeatureContext extends BehatContext
                 $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
             }
 
-            $entityManager->persist($product);
+            $productManager->save($product);
         }
-
-        $entityManager->flush();
     }
 
     /**

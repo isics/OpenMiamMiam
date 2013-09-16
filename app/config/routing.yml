@@ -24,3 +24,7 @@ isics_open_miam_miam_admin:
 isics_open_miam_miam_main:
     resource: "@IsicsOpenMiamMiamBundle/Resources/config/routing/main.yml"
     prefix:   /
+
+_imagine:
+    resource: .
+    type:     imagine

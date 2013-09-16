@@ -8,47 +8,45 @@
 parameters:
     validator.mapping.loader.yaml_files_loader.mapping_files:
         - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/product.yml"
+        - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/cartItem.yml"
 
-    open_miam_miam.branch_occurrence_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
     open_miam_miam.cart_item_validator.class:       'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
+    open_miam_miam.branch_occurrence_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
     open_miam_miam.cart_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
-    open_miam_miam.product_ref_generator.class:     'Isics\Bundle\OpenMiamMiamBundle\EventListener\ProductRefGenerator'
     open_miam_miam.admin_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
     open_miam_miam.acl_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
     open_miam_miam.product_manager.class:           'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
 
 services:
-    open_miam_miam.branch_occurrence_manager:
-        class:     %open_miam_miam.branch_occurrence_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
-
+    # Validators
     open_miam_miam.cart_item_validator:
         class:     %open_miam_miam.cart_item_validator.class%
         arguments: [@open_miam_miam.branch_occurrence_manager]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_cart_item_validator}
 
-    open_miam_miam.cart_manager:
-        class:     %open_miam_miam.cart_manager.class%
-        arguments: [@open_miam_miam.branch_occurrence_manager, @doctrine.orm.entity_manager, @session, @security.context]
-
-    open_miam_miam.product_ref_generator:
-        class:     %open_miam_miam.product_ref_generator.class%
-        arguments: [%open_miam_miam.product_ref_prefix%, %open_miam_miam.product_ref_pad_length%]
-        tags:
-            - { name: doctrine.event_listener, event: prePersist }
-
+    # Form types
     open_miam_miam.form.type.hidden_product:
         class:     Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: open_miam_miam_hidden_product }
 
+    # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
         class: Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
-        arguments: [%open_miam_miam.currency%]
+        arguments: [%open_miam_miam.currency%, @open_miam_miam.product_manager]
         tags:
             - { name: twig.extension }
+
+    # Managers
+    open_miam_miam.branch_occurrence_manager:
+        class:     %open_miam_miam.branch_occurrence_manager.class%
+        arguments: [@doctrine.orm.entity_manager]
+
+    open_miam_miam.cart_manager:
+        class:     %open_miam_miam.cart_manager.class%
+        arguments: [@open_miam_miam.branch_occurrence_manager, @doctrine.orm.entity_manager, @session, @security.context]
 
     open_miam_miam.admin_manager:
         class: %open_miam_miam.admin_manager.class%
@@ -57,7 +55,7 @@ services:
 
     open_miam_miam.product_manager:
         class: %open_miam_miam.product_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [%open_miam_miam.product%, @doctrine.orm.entity_manager, @kernel]
 
     open_miam_miam.acl_manager:
         class:     %open_miam_miam.acl_manager.class%

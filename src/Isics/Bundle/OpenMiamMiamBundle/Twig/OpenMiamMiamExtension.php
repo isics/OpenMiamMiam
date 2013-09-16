@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
 
 class OpenMiamMiamExtension extends \Twig_Extension
 {
@@ -21,11 +22,41 @@ class OpenMiamMiamExtension extends \Twig_Extension
     private $currency;
 
     /**
+     * @var ProductManager $productManager
+     */
+    private $productManager;
+
+    /**
      * Constructor
      */
-    public function __construct($currency)
+    public function __construct($currency, ProductManager $productManager)
     {
         $this->currency = $currency;
+        $this->productManager = $productManager;
+    }
+
+    /**
+     * Returns available functions
+     *
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return array(
+            'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath')
+        );
+    }
+
+    /**
+     * Returns image product path
+     *
+     * @param Product $product
+     *
+     * @return string
+     */
+    public function getImageProductPath(Product $product)
+    {
+        return $this->productManager->getImagePath($product);
     }
 
     /**

@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Isics\OpenMiamMiamBundle\Entity\Product
@@ -101,6 +102,16 @@ class Product
     private $image;
 
     /**
+     * @var UploadedFile string
+     */
+    private $imageFile;
+
+    /**
+     * @var boolean $deleteImage
+     */
+    private $deleteImage;
+
+    /**
      * @var string $description
      *
      * @ORM\Column(name="description", type="string", nullable=true)
@@ -174,6 +185,7 @@ class Product
         $this->isOfTheMoment        = false;
         $this->allowDecimalQuantity = false;
         $this->availability         = self::AVAILABILITY_UNAVAILABLE;
+        $this->deleteImage          = false;
 
         $this->branches = new ArrayCollection();
     }
@@ -277,7 +289,7 @@ class Product
      */
     public function getIsBio()
     {
-        return (bool)$this->isBio;
+        return $this->isBio;
     }
 
     /**
@@ -300,7 +312,7 @@ class Product
      */
     public function getIsOfTheMoment()
     {
-        return (bool)$this->isOfTheMoment;
+        return $this->isOfTheMoment;
     }
 
     /**
@@ -324,6 +336,53 @@ class Product
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set image file
+     *
+     * @param UploadedFile $imageFile
+     *
+     * @return Product
+     */
+    public function setImageFile(UploadedFile $imageFile = null)
+    {
+        $this->imageFile = $imageFile;
+
+        return $this;
+    }
+
+    /**
+     * Get image file
+     *
+     * @return UploadedFile
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set deleteImage flag
+     *
+     * @param boolean $deleteImage
+     * @return Product
+     */
+    public function setDeleteImage($deleteImage)
+    {
+        $this->deleteImage = (bool)$deleteImage;
+
+        return $this;
+    }
+
+    /**
+     * Get deleteImage flag
+     *
+     * @return boolean
+     */
+    public function getDeleteImage()
+    {
+        return $this->deleteImage;
     }
 
     /**
