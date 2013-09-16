@@ -67,6 +67,9 @@ class ProductType extends AbstractType
                     'choices' => $this->buyingUnits,
                     'required' => false
                 ))
+                ->add('allowDecimalQuantity', 'checkbox', array(
+                    'required' => false
+                ))
                 ->add('price', 'text', array(
                     'required' => false
                 ))

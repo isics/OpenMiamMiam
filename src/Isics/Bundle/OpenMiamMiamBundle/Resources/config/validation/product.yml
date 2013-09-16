@@ -31,3 +31,5 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
                 mimeTypes: [image/jpeg, image/gif, image/png]
         buyingUnit:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnit: ~
+        allowDecimalQuantity:
+            - Type: bool

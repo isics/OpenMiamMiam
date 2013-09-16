@@ -439,7 +439,7 @@ class Product
      */
     public function setAllowDecimalQuantity($allowDecimalQuantity)
     {
-        $this->allowDecimalQuantity = $allowDecimalQuantity;
+        $this->allowDecimalQuantity = (bool)$allowDecimalQuantity;
 
         return $this;
     }
