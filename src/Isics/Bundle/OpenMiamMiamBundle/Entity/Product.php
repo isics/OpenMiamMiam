@@ -133,6 +133,11 @@ class Product
     private $allowDecimalQuantity;
 
     /**
+     * @var boolean $hasPrice
+     */
+    private $hasPrice;
+
+    /**
      * @var decimal $price
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
@@ -184,8 +189,9 @@ class Product
         $this->isBio                = false;
         $this->isOfTheMoment        = false;
         $this->allowDecimalQuantity = false;
-        $this->availability         = self::AVAILABILITY_UNAVAILABLE;
         $this->deleteImage          = false;
+        $this->availability         = self::AVAILABILITY_UNAVAILABLE;
+        $this->hasPrice             = null !== $this->price;
 
         $this->branches = new ArrayCollection();
     }
@@ -475,6 +481,33 @@ class Product
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set hasPrice flag
+     *
+     * @param boolean $hasPrice
+     * @return Product
+     */
+    public function setHasPrice($hasPrice)
+    {
+        $this->hasPrice = (bool)$hasPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get hasPrice flag
+     *
+     * @return float
+     */
+    public function getHasPrice()
+    {
+        if (null === $this->hasPrice) {
+            $this->hasPrice = null !== $this->price;
+        }
+
+        return $this->hasPrice;
     }
 
     /**

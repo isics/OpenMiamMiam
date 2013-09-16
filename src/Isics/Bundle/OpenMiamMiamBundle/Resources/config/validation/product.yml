@@ -1,6 +1,7 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ref
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Price:
     properties:
         name:
             - NotNull: ~
@@ -29,6 +30,10 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - File:
                 maxSize: 5120k
                 mimeTypes: [image/jpeg, image/gif, image/png]
+        deleteImage:
+            - Type: bool
+        hasPrice:
+            - Type: bool
         buyingUnit:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnit: ~
         allowDecimalQuantity:
