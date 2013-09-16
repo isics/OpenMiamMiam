@@ -17,6 +17,7 @@ parameters:
     open_miam_miam.acl_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
     open_miam_miam.product_manager.class:           'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
     open_miam_miam.menu_builder.class:              'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
+    open_miam_miam.menu_voter.class:                'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
 services:
     # Validators
@@ -51,6 +52,11 @@ services:
         factory_method:  createAdminMenu
         tags:
             - { name: knp_menu.menu, alias: admin }
+
+    open_miam_miam.menu_voter:
+        class: %open_miam_miam.menu_voter.class%
+        tags:
+            - { name: knp_menu.voter, request: true }
 
     # Managers
     open_miam_miam.branch_occurrence_manager:
