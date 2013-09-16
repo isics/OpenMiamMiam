@@ -6,58 +6,56 @@
  # with this source code in the file LICENSE.
  #}
 
-{% embed 'IsicsOpenMiamMiamBundle::Admin\\Producer\\base.html.twig' with {'producer': producer} %}
-{% endembed %}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
-{{ products|length }}
+{% block content %}
+    {{ products|length }}
 
-<p>
-    <a href="{{ path('open_miam_miam.admin.producer.create_product', {'id': producer.getId()}) }}">Create</a>
-</p>
+    <p><a href="{{ path('open_miam_miam.admin.producer.create_product', {'id': producer.getId()}) }}">Create</a></p>
 
-
-<table>
-    <thead>
-        <tr>
-            <th>SKU</th>
-            <th>Product</th>
-            <th>Is organic food ?</th>
-            <th>Is of the moment ?</th>
-            <th>Price</th>
-            {% for branch in producer.branches %}
-                <th>{{ branch.name }}</th>
-            {% endfor %}
-            <th>Availability</th>
-            <th>&nbsp;</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in products %}
+    <table>
+        <thead>
             <tr>
-                <td>{{ product.getRef() }}</td>
-                <td>{{ product.getName() }}</td>
-                <td>{% if product.getIsBio() %}oui{% endif %}</td>
-                <td>{% if product.getIsOfTheMoment() %}oui{% endif %}</td>
-                <td>{{ product.getPrice()|number_format_currency(open_miam_miam.currency) }}</td>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Is organic food ?</th>
+                <th>Is of the moment ?</th>
+                <th>Price</th>
                 {% for branch in producer.branches %}
-                    <td>{% if product.hasBranch(branch) %}oui{% endif %}</td>
+                    <th>{{ branch.name }}</th>
                 {% endfor %}
-                <td>
-                    {% if product.getAvailability() is constant('AVAILABILITY_UNAVAILABLE', product) %}
-                        Unavailable
-                    {% elseif product.getAvailability() is constant('AVAILABILITY_AVAILABLE', product) %}
-                        Available
-                    {% elseif product.getAvailability() is constant('AVAILABILITY_AVAILABLE_AT', product) %}
-                        Available at {{ product.availableAt|date('m-d') }}
-                    {% elseif product.getAvailability() is constant('AVAILABILITY_ACCORDING_TO_STOCK', product) %}
-                        {{ product.stock }} in stock
-                    {% endif  %}
-                </td>
-                <td>
-                    <a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.getId(), 'productId': product.getId()}) }}">Edit</a>
-                    <a href="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.getId(), 'productId': product.getId()}) }}">Delete</a>
-                </td>
+                <th>Availability</th>
+                <th>&nbsp;</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.getRef() }}</td>
+                    <td>{{ product.getName() }}</td>
+                    <td>{% if product.getIsBio() %}oui{% endif %}</td>
+                    <td>{% if product.getIsOfTheMoment() %}oui{% endif %}</td>
+                    <td>{{ product.getPrice()|number_format_currency(open_miam_miam.currency) }}</td>
+                    {% for branch in producer.branches %}
+                        <td>{% if product.hasBranch(branch) %}oui{% endif %}</td>
+                    {% endfor %}
+                    <td>
+                        {% if product.getAvailability() is constant('AVAILABILITY_UNAVAILABLE', product) %}
+                            Unavailable
+                        {% elseif product.getAvailability() is constant('AVAILABILITY_AVAILABLE', product) %}
+                            Available
+                        {% elseif product.getAvailability() is constant('AVAILABILITY_AVAILABLE_AT', product) %}
+                            Available at {{ product.availableAt|date('m-d') }}
+                        {% elseif product.getAvailability() is constant('AVAILABILITY_ACCORDING_TO_STOCK', product) %}
+                            {{ product.stock }} in stock
+                        {% endif  %}
+                    </td>
+                    <td>
+                        <a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.getId(), 'productId': product.getId()}) }}">Edit</a>
+                        <a href="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.getId(), 'productId': product.getId()}) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

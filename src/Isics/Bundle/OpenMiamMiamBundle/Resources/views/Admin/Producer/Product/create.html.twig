@@ -6,9 +6,10 @@
  # with this source code in the file LICENSE.
  #}
 
-{% embed 'IsicsOpenMiamMiamBundle::Admin\\Producer\\base.html.twig' with {'producer': producer} %}
-{% endembed %}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
-{{ form(form) }}
+{% block content %}
+    {{ form(form) }}
 
-<a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.getId()}) }}">Return to list</a>
+    <a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.getId()}) }}">Return to list</a>
+{% endblock %}
