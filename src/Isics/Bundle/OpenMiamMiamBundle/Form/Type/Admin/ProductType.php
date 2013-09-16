@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -79,6 +80,14 @@ class ProductType extends AbstractType
                 ))
                 ->add('price_info', 'text', array(
                     'required' => false
+                ))
+                ->add('availability', 'choice', array(
+                    'choices' => array(
+                        Product::AVAILABILITY_UNAVAILABLE => 'Unavailable',
+                        Product::AVAILABILITY_AVAILABLE_AT => 'Available at',
+                        Product::AVAILABILITY_ACCORDING_TO_STOCK => 'In stock',
+                        Product::AVAILABILITY_AVAILABLE => 'Available'
+                    )
                 ))
                 ->add('Save', 'submit');
 

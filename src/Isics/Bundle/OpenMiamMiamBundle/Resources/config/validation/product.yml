@@ -38,3 +38,5 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnit: ~
         allowDecimalQuantity:
             - Type: bool
+        availability:
+            - Choice: { callback: getAvailabilityStatus}

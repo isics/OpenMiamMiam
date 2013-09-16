@@ -190,7 +190,7 @@ class Product
         $this->isOfTheMoment        = false;
         $this->allowDecimalQuantity = false;
         $this->deleteImage          = false;
-        $this->availability         = self::AVAILABILITY_UNAVAILABLE;
+        $this->availability         = self::AVAILABILITY_AVAILABLE;
         $this->hasPrice             = null !== $this->price;
 
         $this->branches = new ArrayCollection();
@@ -554,6 +554,21 @@ class Product
     public function getAvailability()
     {
         return $this->availability;
+    }
+
+    /**
+     * Returns availability status
+     *
+     * return array
+     */
+    public static function getAvailabilityStatus()
+    {
+        return array(
+            Product::AVAILABILITY_UNAVAILABLE,
+            Product::AVAILABILITY_ACCORDING_TO_STOCK,
+            Product::AVAILABILITY_AVAILABLE_AT,
+            Product::AVAILABILITY_AVAILABLE
+        );
     }
 
     /**
