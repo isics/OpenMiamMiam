@@ -1,0 +1,23 @@
+# General
+branch:         "Comptoir"
+calendar:       "Calendrier"
+checkout:       "Commander"
+dashboard:      "Tableau de bord"
+logout:         "Déconnexion"
+managers:       "Gestionnaires"
+orders:         "Commandes"
+producer:       "Producteur"
+producer.infos: "Infos producteur"
+products:       "Produits"
+
+# Cart
+cart.title: "Mon panier"
+
+# Admin login
+admin.login.title:                "Accès gestionnaire"
+admin.login.email.placeholder:    "Adresse e-mail"
+admin.login.password.placeholder: "Mot de passe"
+admin.login.submit:               "Connexion"
+
+# Admin index
+admin.index.title: "Choisissez un rôle :"

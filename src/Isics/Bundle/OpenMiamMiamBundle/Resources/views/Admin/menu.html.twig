@@ -1,0 +1,28 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% block root %}
+    {% set currentItem = none %}
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <select id="admin-switcher" class="form-control">
+                {% for child in item.children %}
+                    <option value="{{ child.uri }}"{% if matcher.isAncestor(child) %} selected="selected"{% set currentItem = child %}{% endif %}>{{ child.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <nav>
+        <ul class="nav nav-pills nav-stacked well">
+            {% for child in currentItem.children %}
+                <li{% if matcher.isCurrent(child) %} class="active"{% endif %}><a href="{{ child.uri }}">{{ child.label|raw }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}

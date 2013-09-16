@@ -11,9 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin;
 
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\AdminResourceChoiceType;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -31,77 +29,20 @@ class GeneralController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $adminManager = $this->get('open_miam_miam.admin_manager');
-        $adminResourceCollection = $adminManager->findAvailableAdminResources();
-        $nbChoices = count($adminResourceCollection);
+        $adminManager     = $this->get('open_miam_miam.admin_manager');
+        $adminResources   = $adminManager->findAvailableAdminResources();
+        $nbAdminResources = count($adminResources);
 
-        if ($nbChoices == 0) {
+        if (0 === $nbAdminResources) {
             throw new AccessDeniedException();
         }
 
-        if ($nbChoices == 1) {
-            return $this->redirect($adminResourceCollection->getFirst()->getRoute());
+        if (1 === $nbAdminResources) {
+            $adminMenu = $this->get('open_miam_miam.menu.admin');
+
+            return $this->redirect($adminMenu->getFirstChild()->getUri());
         }
 
-        $form = $this->getChoicesForm($adminResourceCollection);
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $adminResource = $adminResourceCollection[$data['admin']];
-
-                return $this->redirect($adminResource->getRoute());
-            }
-        }
-
-        return $this->render('IsicsOpenMiamMiamBundle:Admin:index.html.twig', array('form' => $form->createView()));
-    }
-
-    /**
-     * Displays administrations choices
-     *
-     * @param mixed $object
-     *
-     * @throws \LogicException
-     * @throws AccessDeniedException
-     *
-     * @return Response
-     */
-    public function chooseAreaAction($object)
-    {
-        $adminManager = $this->get('open_miam_miam.admin_manager');
-        $adminResourceCollection = $adminManager->findAvailableAdminResources();
-        if (count($adminResourceCollection) == 0) {
-            throw new AccessDeniedException();
-        }
-
-        // Retrieve current admin resource from object
-        $currentAdminResource = $adminResourceCollection->getByObject($object);
-        if (null === $currentAdminResource) {
-            throw new \LogicException('Unknown administration resource');
-        }
-
-        $form = $this->getChoicesForm($adminResourceCollection, $currentAdminResource);
-
-        return $this->render('IsicsOpenMiamMiamBundle:Admin:chooseArea.html.twig', array('form' => $form->createView()));
-    }
-
-    /**
-     * Returns administration areas choices form
-     *
-     * @param AdminResourceCollection $adminResourceCollection
-     * @param AdminResourceInterface $adminResource
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function getChoicesForm(AdminResourceCollection $adminResourceCollection, AdminResourceInterface $adminResource = null)
-    {
-        $adminResourceChoiceType = new AdminResourceChoiceType($adminResourceCollection);
-
-        return $this->createForm(
-            $adminResourceChoiceType,
-            array('admin' => null === $adminResource ? null : $adminResourceCollection->getOffset($adminResource)),
-            array('action' => $this->generateUrl('open_miam_miam.admin'), 'method' => 'POST')
-        );
+        return $this->render('IsicsOpenMiamMiamBundle:Admin:index.html.twig');
     }
 }

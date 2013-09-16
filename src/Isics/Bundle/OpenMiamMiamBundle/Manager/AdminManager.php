@@ -11,11 +11,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -40,11 +39,6 @@ class AdminManager
     protected $objectManager;
 
     /**
-     * @var RouterInterface $router
-     */
-    protected $router;
-
-    /**
      * @var AdminResourceCollection $adminResourceCollection;
      */
     protected $adminResourceCollection;
@@ -55,16 +49,12 @@ class AdminManager
      * Constructs object
      *
      * @param SecurityContextInterface $securityContext
-     * @param ObjectManager $objectManager
-     * @param RouterInterface $router
+     * @param ObjectManager            $objectManager
      */
-    public function __construct(SecurityContextInterface $securityContext,
-                                ObjectManager $objectManager,
-                                RouterInterface $router)
+    public function __construct(SecurityContextInterface $securityContext, ObjectManager $objectManager)
     {
         $this->securityContext = $securityContext;
         $this->objectManager = $objectManager;
-        $this->router = $router;
         $this->adminResourceCollection = new AdminResourceCollection();
     }
 
@@ -77,7 +67,7 @@ class AdminManager
     {
         $producers = $this->findAvailableProducers();
         foreach ($producers as $producer) {
-            $this->adminResourceCollection->add(new ProducerAdminResource($producer, $this->router));
+            $this->adminResourceCollection->add(new ProducerAdminResource($producer));
         }
 
         return $this->adminResourceCollection;

@@ -1,0 +1,23 @@
+# General
+branch:         "Branch"
+calendar:       "Calendar"
+checkout:       "Checkout"
+dashboard:      "Dashboard"
+logout:         "Logout"
+managers:       "Managers"
+orders:         "Orders"
+producer:       "Producer"
+producer.infos: "Producer infos"
+products:       "Products"
+
+# Cart
+cart.title: "My cart"
+
+# Admin login
+admin.login.title:                "Manager access"
+admin.login.email.placeholder:    "Email address"
+admin.login.password.placeholder: "Password"
+admin.login.submit:               "Sign in"
+
+# Admin index
+admin.index.title: "Choose a role:"

@@ -12,44 +12,14 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 
 /**
- * Class AdminResourceInterface
+ * Interface AdminResourceInterface
  */
 interface AdminResourceInterface
 {
     /**
-     * Returns resource
-     *
-     * @return mixed
-     */
-    public function getResource();
-
-    /**
-     * Returns the name
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * Returns the type
+     * Returns type of resource
      *
      * @return string
      */
     public function getType();
-
-    /**
-     * Returns the route
-     *
-     * @return string
-     */
-    public function getRoute();
-
-    /**
-     * Returns true if object is equal to resource
-     *
-     * @param mixed $object
-     *
-     * @return boolean
-     */
-    public function equals($object);
 }

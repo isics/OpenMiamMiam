@@ -12,64 +12,27 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Class AdminResource
+ * Class ProducerAdminResource
  */
-final class ProducerAdminResource extends AdminResource
+class ProducerAdminResource extends EntityAdminResource
 {
     /**
-     * Constructs object
+     * Constructor
      *
-     * @param Producer $producer
-     * @param RouterInterface $router
+     * @param Producer $producer Producer
      */
-    public function __construct(Producer $producer, RouterInterface $router)
+    public function __construct(Producer $producer)
     {
-        parent::__construct($producer, $router);
+        $this->entity = $producer;
     }
 
     /**
-     * Returns the name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->resource->getName();
-    }
-
-    /**
-     * Returns the type
-     *
-     * @return string
+     * @see AdminResourceInterface
      */
     public function getType()
     {
         return 'producer';
-    }
-
-    /**
-     * Returns the route
-     *
-     * @return string
-     */
-    public function getRoute()
-    {
-        return $this->router->generate('open_miam_miam.admin.producer.dashboard', array('id' => $this->resource->getId()));
-    }
-
-    /**
-     * Returns true if object is equal to resource
-     *
-     * @param mixed $object
-     *
-     * @return boolean
-     */
-    public function equals($object)
-    {
-        return get_class($object) === get_class($this->resource) && $object->getId() === $this->resource->getId();
     }
 }

@@ -1,0 +1,81 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OpenMiamMiam - Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block stylesheet %}
+            {% stylesheets
+                '@IsicsOpenMiamMiamBundle/Resources/assets/less/bootstrap.less'
+                '@IsicsOpenMiamMiamBundle/Resources/assets/less/admin.less'
+                filter='?uglifycss'
+                output='cache/css/*.css'
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+    </head>
+    <body>
+        <header class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-links">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">OpenMiamMiam - Admin</a>
+                </div>
+                {% if app.user %}
+                    <div id="header-links" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">{{ app.user }}</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}">{% trans %}logout{% endtrans %} <span class="glyphicon glyphicon-off"></span></a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="container">
+            {% block global_content %}
+                {% block content %}{% endblock %}
+            {% endblock %}
+        </div>
+
+        <footer>
+            <hr />
+            <div class="container">
+                <small>
+                    <p class="text-center">
+                        <a href="https://github.com/isics/OpenMiamMiam">OpenMiamMiam</a> is an open source software developed by <a href="http://www.isics.fr">Isics</a>.
+                    </p>
+                    <p class="text-center">
+                        Code licensed under the <a href="https://github.com/isics/OpenMiamMiam/blob/master/LICENSE">AGPL v3 license</a>.
+                    </p>
+                </small>
+            </div>
+        </footer>
+
+        {% block javascript %}
+            {% javascripts
+                'js/jquery-2.0.3.min.js'
+                'bootstrap/js/button.js'
+                'bootstrap/js/collapse.js'
+                'bootstrap/js/transition.js'
+                '@IsicsOpenMiamMiamBundle/Resources/assets/js/admin.js'
+                filter='?uglifyjs2'
+                output='cache/js/*.js'
+            %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>
