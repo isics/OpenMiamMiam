@@ -19,6 +19,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProductType extends AbstractType
 {
     /**
+     * @var array $buyingUnits
+     */
+    protected $buyingUnits;
+
+    /**
+     * Constructs type
+     *
+     * @param array $buyingUnits
+     */
+    public function __construct(array $buyingUnits = array())
+    {
+        $this->buyingUnits = array_combine(array_values($buyingUnits), array_values($buyingUnits));
+    }
+
+    /**
      * @see AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -45,6 +60,11 @@ class ProductType extends AbstractType
                     'required' => false
                 ))
                 ->add('description', 'textarea', array(
+                    'required' => false
+                ))
+                ->add('buyingUnit', 'choice', array(
+                    'empty_value' => 'Without unit',
+                    'choices' => $this->buyingUnits,
                     'required' => false
                 ))
                 ->add('price', 'text', array(

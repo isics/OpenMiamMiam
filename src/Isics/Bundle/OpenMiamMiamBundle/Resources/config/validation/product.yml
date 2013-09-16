@@ -29,4 +29,5 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - File:
                 maxSize: 5120k
                 mimeTypes: [image/jpeg, image/gif, image/png]
-
+        buyingUnit:
+            - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnit: ~

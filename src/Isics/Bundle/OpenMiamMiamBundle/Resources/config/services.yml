@@ -11,6 +11,7 @@ parameters:
         - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/cartItem.yml"
 
     open_miam_miam.cart_item_validator.class:       'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
+    open_miam_miam.buying_unit_validator.class:     'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'
     open_miam_miam.branch_occurrence_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
     open_miam_miam.cart_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
     open_miam_miam.admin_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
@@ -18,6 +19,8 @@ parameters:
     open_miam_miam.product_manager.class:           'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
     open_miam_miam.menu_builder.class:              'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:                'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
+    open_miam_miam.form.type.hidden_product.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
+    open_miam_miam.form.type.product.class:         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
 
 services:
     # Validators
@@ -27,23 +30,35 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_cart_item_validator}
 
+    open_miam_miam.buying_unit_validator:
+        class:     %open_miam_miam.buying_unit_validator.class%
+        arguments: [%open_miam_miam.buying_units%]
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam.buying_unit_validator}
+
     # Form types
     open_miam_miam.form.type.hidden_product:
-        class:     Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType
+        class:     %open_miam_miam.form.type.hidden_product.class%
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: open_miam_miam_hidden_product }
 
+    open_miam_miam.form.type.product:
+        class:     %open_miam_miam.form.type.product.class%
+        arguments: [%open_miam_miam.buying_units%]
+        tags:
+            - { name: form.type, alias: open_miam_miam_admin_product }
+
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
-        class: Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
         arguments: [%open_miam_miam.currency%, @open_miam_miam.product_manager]
         tags:
             - { name: twig.extension }
 
     # Menus
     open_miam_miam.menu_builder:
-        class:      %open_miam_miam.menu_builder.class%
+        class:     %open_miam_miam.menu_builder.class%
         arguments: [@knp_menu.factory, @translator, @open_miam_miam.admin_manager]
 
     open_miam_miam.menu.admin:

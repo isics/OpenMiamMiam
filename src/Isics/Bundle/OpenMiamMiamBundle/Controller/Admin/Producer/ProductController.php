@@ -133,7 +133,11 @@ class ProductController extends BaseController
             );
         }
 
-        return $this->createForm(new ProductType(), $product, array('action' => $action, 'method' => 'POST'));
+        return $this->createForm(
+            $this->get('open_miam_miam.form.type.product'),
+            $product,
+            array('action' => $action, 'method' => 'POST')
+        );
     }
 
     /**
