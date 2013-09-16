@@ -25,3 +25,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
         priceInfo:
             - Length:
                 max: 128
+        imageFile:
+            - File:
+                maxSize: 5120k
+                mimeTypes: [image/jpeg, image/gif, image/png]
+
