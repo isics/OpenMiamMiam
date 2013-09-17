@@ -138,8 +138,8 @@ class Builder
         ));
         $menu[$menuName]->addChild('Calendar', array(
             'uri'             => '#',
-            // 'route'           => 'open_miam_miam.admin.producer.list_products',
-            // 'routeParameters' => array('id' => $producer->getId()),
+             'route'           => 'open_miam_miam.admin.producer.calendar',
+             'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'time', $this->translator->trans('calendar')),
         ));
         $menu[$menuName]->addChild('Managers', array(

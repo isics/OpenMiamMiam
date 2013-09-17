@@ -34,3 +34,7 @@ open_miam_miam.admin.producer.edit_product:
 open_miam_miam.admin.producer.delete_product:
     pattern:  /producer/{id}/products/{productId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:delete }
+
+open_miam_miam.admin.producer.calendar:
+    pattern:  /producer/{id}/calendar
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Calendar:index }
