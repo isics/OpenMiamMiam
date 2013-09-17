@@ -5,9 +5,12 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% extends 'IsicsOpenMiamMiamBundle:Cart:showAddForm.html.twig' %}
 
-<h1>
-    <a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">
-        {% trans %}branch{% endtrans %} {{ branch.name }}
-    </a>
-</h1>
+{% block availability %}
+    <td>{{ parent() }}</td>
+{% endblock %}
+
+{% block form %}
+    <td>{{ parent() }}</td>
+{% endblock %}

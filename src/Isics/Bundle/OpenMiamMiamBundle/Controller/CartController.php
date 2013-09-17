@@ -79,12 +79,13 @@ class CartController extends Controller
     /**
      * Shows add form
      *
-     * @param Branch  $branch  Branch
-     * @param Product $product Product
+     * @param Branch  $branch   Branch
+     * @param Product $product  Product
+     * @param string  $view     The view name
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAddFormAction(Branch $branch, Product $product)
+    public function showAddFormAction(Branch $branch, Product $product, $view = null)
     {
         $cart = $this->getCart($branch);
 
@@ -119,7 +120,11 @@ class CartController extends Controller
             $renderParameters['form'] = $form->createView();
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Cart:showAddForm.html.twig', $renderParameters);
+        if (null === $view) {
+            $view = 'IsicsOpenMiamMiamBundle:Cart:showAddForm.html.twig';
+        }
+
+        return $this->render($view, $renderParameters);
     }
 
     /**
@@ -147,7 +152,7 @@ class CartController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'notice',
-                'Item has been added to cart.'
+                'message.cart.added'
             );
         }
 
@@ -183,7 +188,7 @@ class CartController extends Controller
 
             $this->get('session')->getFlashBag()->add(
                 'notice',
-                'Cart has been updated.'
+                'message.cart.updated'
             );
 
             return $this->redirect($this->generateUrl(

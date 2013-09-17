@@ -1,17 +1,43 @@
 # General
+add:            "Ajouter"
 branch:         "Comptoir"
 calendar:       "Calendrier"
 checkout:       "Commander"
 dashboard:      "Tableau de bord"
 logout:         "Déconnexion"
 managers:       "Gestionnaires"
+order:          "Commander"
 orders:         "Commandes"
+photo:          "Photo"
+price:          "Prix"
 producer:       "Producteur"
 producer.infos: "Infos producteur"
+product:        "Produit"
 products:       "Produits"
+quantity:       "Quantité"
+total:          "Total"
+update:         "Mettre à jour"
+
+# Zones
+zone.header.branch.change:    "Changer de comptoir"
+zone.occurrence.order.before: "Commandez avant le"
+zone.occurrence.order.from:   "Commandez à partir du"
+zone.occurrence.no.next.date: "Aucun comptoir planifié"
+zone.producers.title:         "Les producteurs"
+zone.producers.link:          "Tous les producteurs"
+zone.next_occurences.title:   "Prochains comptoirs"
+zone.location.title:          "S'y rendre"
 
 # Cart
 cart.title: "Mon panier"
+
+# Availability
+availability:                 "Dispo"
+availability.available:       "Dispo"
+availability.in_stock:        "%stock% en stock"
+availability.out_of_stock:    "Trop tard!"
+availability.producer_absent: "Producteur absent"
+availability.available_at:    "Dispo le %date%"
 
 # Admin login
 admin.login.title:                "Accès gestionnaire"
@@ -21,3 +47,7 @@ admin.login.submit:               "Connexion"
 
 # Admin index
 admin.index.title: "Choisissez un rôle :"
+
+# Messages
+message.cart.added:   "Le produit a été ajouté à votre panier."
+message.cart.updated: "Votre panier a été mis à jour."

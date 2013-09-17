@@ -1,0 +1,94 @@
+@import "variables.less";
+@import "../../../../../../../web/bootstrap/less/mixins.less";
+
+//
+// Header
+//
+#header-logo,
+#header-branch-name,
+#branch-occurrence,
+#cart-summary {
+    .make-md-column(3);
+}
+
+//
+// Branch name
+//
+#header-branch-change-link {
+    display: block;
+    font-size: @font-size-small;
+}
+
+//
+// Branch occurrence
+//
+#branch-occurrence-hours {
+    display: block;
+}
+
+#branch-occurrence-order-period {
+    color: @brand-danger;
+    font-size: @font-size-small;
+}
+
+//
+// Quantity
+//
+.input-quantity {
+    width: 60px;
+    text-align: right;
+}
+
+//
+// Products table (category)
+//
+.table-products th:nth-child(1),
+.table-products th:nth-child(n+4) {
+    text-align: center;
+}
+
+.table-products td:nth-child(2) {
+    width: 100%;
+}
+
+.table-products td {
+    vertical-align: middle !important;
+}
+
+.table-products td:nth-child(3),
+.table-products td:nth-child(6) {
+    white-space: nowrap;
+}
+
+.table-products td:nth-child(4) {
+    font-weight: bold;
+    text-align: right;
+}
+
+.table-products .label {
+    display: block;
+}
+.table-products td:nth-child(1),
+.table-products td:nth-child(6) {
+    text-align: center;
+}
+
+//
+// Cart / Products table
+//
+.table-cart-products th:nth-child(n+3) {
+    text-align: center;
+}
+
+.table-cart-products td:nth-child(1) {
+    width: 100%;
+}
+
+.table-cart-products td {
+    vertical-align: middle !important;
+}
+
+.table-cart-products td:nth-child(even) {
+    font-weight: bold;
+    text-align: right;
+}

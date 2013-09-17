@@ -5,13 +5,10 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-
  <nav>
-    <ul>
+    <div class="list-group" role="navigation">
         {% for category in categories %}
-            <li>
-                <a href="{{ path('open_miam_miam_branch_category', {'branch_slug': branch.slug, 'category_slug': category.slug}) }}">{{ category.name }}</a>
-            </li>
+            <a class="list-group-item" href="{{ path('open_miam_miam_branch_category', {'branch_slug': branch.slug, 'category_slug': category.slug}) }}">{{ category.name }}</a>
         {% endfor %}
-    </ul>
+    </div>
  </nav>

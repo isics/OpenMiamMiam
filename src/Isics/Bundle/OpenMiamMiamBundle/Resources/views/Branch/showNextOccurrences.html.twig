@@ -5,12 +5,15 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-
-<div id="next-occurrences">
-    <h2>Next occurrences</h2>
-    <ul>
-    {% for branchOccurrence in branchOccurrences %}
-        <li>{{ branchOccurrence.begin|date('y-m-d H:i') }} - {{ branchOccurrence.end|date('H:i') }}</li>
-    {% endfor %}
-    </ul>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title"><span class="glyphicon glyphicon-time"></span> {{ 'zone.next_occurences.title'|trans }}</h2>
+    </div>
+    <div class="panel-body">
+        <ul class="list-unstyled">
+        {% for branchOccurrence in branchOccurrences %}
+            <li>{{ branchOccurrence.begin|format_datetime('eee dd MMM HH:mm') }} - {{ branchOccurrence.end|format_time('HH:mm') }}</li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>

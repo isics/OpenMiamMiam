@@ -25,7 +25,7 @@ class CartItemType extends AbstractType
         $builder->add('product', 'open_miam_miam_hidden_product');
         $builder->add('quantity', 'integer');
         if ($options['submit_button']) {
-            $builder->add('Add to cart', 'submit');
+            $builder->add('add', 'submit');
         }
     }
 
