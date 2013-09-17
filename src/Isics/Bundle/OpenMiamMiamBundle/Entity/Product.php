@@ -358,7 +358,7 @@ class Product
      *
      * @return Product
      */
-    public function setImageFile(UploadedFile $imageFile)
+    public function setImageFile(UploadedFile $imageFile = null)
     {
         $this->imageFile = $imageFile;
 
