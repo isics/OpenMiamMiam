@@ -176,7 +176,15 @@ class Product
     /**
      * @var Doctrine\Common\Collections\Collection $branches
      *
-     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Branch", inversedBy="products")
+     * @ORM\JoinTable(name="branch_has_product",
+     *   joinColumns={
+     *      @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     *   },
+     *   inverseJoinColumns={
+     *      @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
+     *   }
+     * )
      */
     private $branches;
 
@@ -192,8 +200,7 @@ class Product
         $this->deleteImage          = false;
         $this->availability         = self::AVAILABILITY_AVAILABLE;
         $this->hasPrice             = null !== $this->price;
-
-        $this->branches = new ArrayCollection();
+        $this->branches             = new ArrayCollection();
     }
 
     /**

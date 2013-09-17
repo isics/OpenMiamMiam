@@ -1,6 +1,6 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ref
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [ref,producer]
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Product:
     properties:
         name:
@@ -11,6 +11,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - NotNull: ~
             - Length:
                 max: 16
+        producer:
+            - NotNull: ~
         category:
             - NotNull: ~
         isBio:

@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Isics\OpenMiamMiamBundle\Entity\Branch
  *
  * @ORM\Table(name="branch")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository")
  */
 class Branch
 {
@@ -138,15 +138,7 @@ class Branch
     /**
      * @var Doctrine\Common\Collections\Collection $products
      *
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="branches")
-     * @ORM\JoinTable(name="branch_has_product",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="branch__id", referencedColumnName="id", onDelete="CASCADE")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
-     *   }
-     * )
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="branches")
      */
     private $products;
 
@@ -486,6 +478,7 @@ class Branch
      */
     public function addProduct(Product $product)
     {
+        $product->addBranch($this);
         $this->products[] = $product;
 
         return $this;
@@ -498,6 +491,7 @@ class Branch
      */
     public function removeProduct(Product $product)
     {
+        $product->removeBranch($this);
         $this->products->removeElement($product);
     }
 

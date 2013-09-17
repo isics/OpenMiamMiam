@@ -15,7 +15,9 @@ use Symfony\Component\Validator\Constraint;
 
 class Product extends Constraint
 {
-    public $requiredMessage = 'Required.';
+    public $requiredMessage = 'This value should not be null.';
+
+    public $invalidBranchesMessage = 'At least one branch is invalid.';
 
     /**
      * {@inheritDoc}
@@ -25,5 +27,15 @@ class Product extends Constraint
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
+    public function validatedBy()
+    {
+        return 'open_miam_miam.product_validator';
     }
 }

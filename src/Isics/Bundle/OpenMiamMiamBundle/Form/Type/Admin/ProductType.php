@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,6 +40,8 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $product = $options['data'];
+
         $builder->add('name', 'text')
                 ->add('ref', 'text')
                 ->add('category', 'entity', array(
@@ -95,9 +98,19 @@ class ProductType extends AbstractType
                 ->add('availableAt', 'date', array(
                     'required' => false
                 ))
+                ->add('branches', 'entity', array(
+                    'class' => 'IsicsOpenMiamMiamBundle:Branch',
+                    'property' => 'name',
+                    'empty_value' => '',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'by_reference' => false,
+                    'query_builder' => function(EntityRepository $er) use ($product) {
+                        return $er->getBranchesForProducerQueryBuilder($product->getProducer());
+                    },
+                ))
                 ->add('Save', 'submit');
 
-        $product = $options['data'];
         if (null !== $product->getImage()) {
             $builder->add('deleteImage', 'checkbox', array(
                 'required' => false
