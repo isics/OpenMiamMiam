@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Form\DataTransformer\ProductToIdentifierDataTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -26,9 +27,9 @@ class HiddenProductType extends AbstractType
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager Entity Manager
+     * @param ObjectManager $entityManager Entity Manager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
