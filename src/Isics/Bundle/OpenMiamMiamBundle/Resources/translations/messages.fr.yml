@@ -33,6 +33,7 @@ cart.title: "Mon panier"
 
 # Availability
 availability:                 "Dispo"
+availability.unavailable:     "Non dispo"
 availability.available:       "Dispo"
 availability.in_stock:        "%stock% en stock"
 availability.out_of_stock:    "Trop tard!"
@@ -47,6 +48,18 @@ admin.login.submit:               "Connexion"
 
 # Admin index
 admin.index.title: "Choisissez un rôle :"
+
+# Admin / Producer / Products
+admin.producer.products.list.title:                  '{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits'
+admin.producer.products.list.create_button:          'Nouveau produit'
+admin.producer.products.list.edit_button:            'Modifier le produit'
+admin.producer.products.list.delete_button:          'Supprimer le produit'
+admin.producer.products.list.table.ref:              'Réf'
+admin.producer.products.list.table.product:          'Produit'
+admin.producer.products.list.table.is_bio:           'Bio ?'
+admin.producer.products.list.table.is_of_the_moment: 'Du moment ?'
+admin.producer.products.list.table.price:            'Prix'
+admin.producer.products.list.table.availability:     'Dispo'
 
 # Messages
 message.cart.added:   "Le produit a été ajouté à votre panier."
