@@ -23,21 +23,21 @@ class LoadProducerData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        foreach (array('Beth Rave', 'Elsa Dorsa', 'Roméo Frigo') as $name) {
+        foreach (array('Beth Rave', 'Elsa Dorsa', 'Romeo Frigo') as $name) {
             $producer = new Producer();
             $producer->setName($name);
             $manager->persist($producer);
 
             $this->getReference('association')->addProducer($producer);
-            $this->getReference('branch Lorem')->addProducer($producer);
-            $this->getReference('branch Ipsum')->addProducer($producer);
+            $this->getReference('Branch 1')->addProducer($producer);
+            $this->getReference('Branch 2')->addProducer($producer);
 
-            $this->addReference('producer '.$name, $producer);
+            $this->addReference($name, $producer);
         }
 
         $manager->persist($this->getReference('association'));
-        $manager->persist($this->getReference('branch Lorem'));
-        $manager->persist($this->getReference('branch Ipsum'));
+        $manager->persist($this->getReference('Branch 1'));
+        $manager->persist($this->getReference('Branch 2'));
 
         $manager->flush();
     }

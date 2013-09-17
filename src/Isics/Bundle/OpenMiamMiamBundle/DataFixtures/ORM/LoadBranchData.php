@@ -27,7 +27,7 @@ class LoadBranchData extends AbstractFixture implements OrderedFixtureInterface
         $faker = Faker\Factory::create();
         $faker->addProvider(new Faker\Provider\fr_FR\Address($faker));
 
-        foreach (array('Lorem', 'Ipsum') as $name) {
+        foreach (array('Branch 1', 'Branch 2') as $name) {
             $branch = new Branch();
             $branch->setName($name);
             $branch->setAssociation($this->getReference('association'));
@@ -38,7 +38,7 @@ class LoadBranchData extends AbstractFixture implements OrderedFixtureInterface
 
             $manager->persist($branch);
 
-            $this->addReference('branch '.$name, $branch);
+            $this->addReference($name, $branch);
         }
 
         $manager->flush();

@@ -45,10 +45,10 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $aclProvider = $this->container->get('security.acl.provider');
 
         # ACLs
-        $objectIdentity1 = ObjectIdentity::fromDomainObject($this->getReference('producer Beth Rave'));
+        $objectIdentity1 = ObjectIdentity::fromDomainObject($this->getReference('Beth Rave'));
         $acl1 = $aclProvider->findAcl($objectIdentity1);
 
-        $objectIdentity2 = ObjectIdentity::fromDomainObject($this->getReference('producer Elsa Dorsa'));
+        $objectIdentity2 = ObjectIdentity::fromDomainObject($this->getReference('Elsa Dorsa'));
         $acl2 = $aclProvider->findAcl($objectIdentity2);
 
 

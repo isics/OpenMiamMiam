@@ -24,7 +24,7 @@ class LoadAssociationData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         $association = new Association();
-        $association->setName('L\'Asso Sisson');
+        $association->setName('Friends of organic food');
         $association->setClosingDelay(86400);
         $association->setOpeningDelay(86400);
         $association->setDefaultCommission(10);

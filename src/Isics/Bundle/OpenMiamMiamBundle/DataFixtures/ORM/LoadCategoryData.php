@@ -23,13 +23,13 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        foreach (array('Fruits et Légumes', 'Laitages', 'Viande') as $name) {
+        foreach (array('Fruits and vegetables', 'Dairy produce', 'Meat') as $name) {
             $category = new Category();
             $category->setName($name);
 
             $manager->persist($category);
 
-            $this->addReference('category '.$name, $category);
+            $this->addReference($name, $category);
         }
 
         $manager->flush();

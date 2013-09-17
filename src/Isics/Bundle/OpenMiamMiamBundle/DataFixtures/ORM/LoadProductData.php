@@ -38,66 +38,70 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        // TODO : traduire les fixtures
-
         $productManager = $this->container->get('open_miam_miam.product_manager');
 
-        $product = $productManager->createForProducer($this->getReference('producer Beth Rave'));
-        $product->setName('Panier de légumes');
-        $product->setCategory($this->getReference('category Fruits et Légumes'));
+        $product = $productManager->createForProducer($this->getReference('Beth Rave'));
+        $product->setName('Basket of vegetables');
+        $product->setCategory($this->getReference('Fruits and vegetables'));
         $product->setPrice(15);
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
-        $manager->persist($product);
-        $this->getReference('branch Lorem')->addProduct($product);
-        $this->getReference('branch Ipsum')->addProduct($product);
+        $productManager->save($product);
 
-        $product = $productManager->createForProducer($this->getReference('producer Elsa Dorsa'));
-        $product->setName('Côte de bœuf');
-        $product->setCategory($this->getReference('category Viande'));
+        $this->getReference('Branch 1')->addProduct($product);
+        $this->getReference('Branch 2')->addProduct($product);
+
+        $product = $productManager->createForProducer($this->getReference('Elsa Dorsa'));
+        $product->setName('Prime rib of beef');
+        $product->setCategory($this->getReference('Meat'));
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE_AT);
         $product->setAvailableAt(new \DateTime('next month'));
-        $manager->persist($product);
-        $this->getReference('branch Lorem')->addProduct($product);
+        $productManager->save($product);
 
-        $product = $productManager->createForProducer($this->getReference('producer Elsa Dorsa'));
-        $product->setName('Merguez');
-        $product->setCategory($this->getReference('category Viande'));
-        $product->setDescription('100% agneau');
+        $this->getReference('Branch 1')->addProduct($product);
+
+        $product = $productManager->createForProducer($this->getReference('Elsa Dorsa'));
+        $product->setName('Sausages');
+        $product->setCategory($this->getReference('Meat'));
+        $product->setDescription('100% lamb');
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
-        $manager->persist($product);
-        $this->getReference('branch Lorem')->addProduct($product);
+        $productManager->save($product);
 
-        $product = $productManager->createForProducer($this->getReference('producer Roméo Frigo'));
-        $product->setName('Beurre');
-        $product->setCategory($this->getReference('category Laitages'));
+        $this->getReference('Branch 1')->addProduct($product);
+
+        $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
+        $product->setName('Butter');
+        $product->setCategory($this->getReference('Dairy produce'));
         $product->setPrice(.4);
         $product->setAvailability(Product::AVAILABILITY_ACCORDING_TO_STOCK);
         $product->setStock(14);
-        $manager->persist($product);
-        $this->getReference('branch Lorem')->addProduct($product);
-        $this->getReference('branch Ipsum')->addProduct($product);
+        $productManager->save($product);
 
-        $product = $productManager->createForProducer($this->getReference('producer Roméo Frigo'));
-        $product->setName('Yahourt nature');
-        $product->setCategory($this->getReference('category Laitages'));
+        $this->getReference('Branch 1')->addProduct($product);
+        $this->getReference('Branch 2')->addProduct($product);
+
+        $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
+        $product->setName('Plain yoghurt ');
+        $product->setCategory($this->getReference('Dairy produce'));
         $product->setPrice(.5);
         $product->setAvailability(Product::AVAILABILITY_ACCORDING_TO_STOCK);
         $product->setStock(0);
-        $manager->persist($product);
-        $this->getReference('branch Lorem')->addProduct($product);
-        $this->getReference('branch Ipsum')->addProduct($product);
+        $productManager->save($product);
 
-        $product = $productManager->createForProducer($this->getReference('producer Roméo Frigo'));
-        $product->setName('Yahourt aux fruits');
-        $product->setCategory($this->getReference('category Laitages'));
+        $this->getReference('Branch 1')->addProduct($product);
+        $this->getReference('Branch 2')->addProduct($product);
+
+        $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
+        $product->setName('Fruit yoghurt');
+        $product->setCategory($this->getReference('Dairy produce'));
         $product->setPrice(.6);
         $product->setAvailability(Product::AVAILABILITY_UNAVAILABLE);
-        $manager->persist($product);
-        $this->getReference('branch Lorem')->addProduct($product);
-        $this->getReference('branch Ipsum')->addProduct($product);
+        $productManager->save($product);
 
-        $manager->persist($this->getReference('branch Lorem'));
-        $manager->persist($this->getReference('branch Ipsum'));
+        $this->getReference('Branch 1')->addProduct($product);
+        $this->getReference('Branch 2')->addProduct($product);
+
+        $manager->persist($this->getReference('Branch 1'));
+        $manager->persist($this->getReference('Branch 2'));
 
         $manager->flush();
     }
