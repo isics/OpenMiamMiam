@@ -108,4 +108,4 @@ services:
 
     open_miam_miam.producer_attendances_manager:
         class: %open_miam_miam.producer_attendances_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager]

@@ -17,6 +17,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendances;
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchAttendances;
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchOccurrenceAttendance;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class ProducerAttendancesManager
@@ -34,11 +36,26 @@ class ProducerAttendancesManager
     /**
      * Constructs object
      *
+     * @param array $config
      * @param ObjectManager $objectManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(array $config, ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
+
+        $resolver = new OptionsResolver();
+        $this->setDefaultOptions($resolver);
+        $this->config = $resolver->resolve($config);
+    }
+
+    /**
+     * Set the defaults options
+     *
+     * @param OptionsResolverInterface $resolver
+     */
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array('nb_next_producer_attendances_to_define'));
     }
 
     /**
@@ -109,12 +126,10 @@ class ProducerAttendancesManager
      * Returns next attendances of a producer
      *
      * @param Producer $producer
-     * @param boolean $open
-     * @param int $limit
      *
      * @return ProducerAttendances
      */
-    public function getNextAttendancesOf(Producer $producer, $open = true, $limit = null)
+    public function getNextAttendancesOf(Producer $producer)
     {
         $branchOccurrenceRepository = $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
         $producerAttendanceRepository = $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:ProducerAttendance');
@@ -122,7 +137,11 @@ class ProducerAttendancesManager
         $attendances = new ProducerAttendances($producer);
         foreach ($producer->getBranches() as $branch) {
             $branchAttendances = new ProducerBranchAttendances($producer, $branch);
-            $branchOccurrences = $branchOccurrenceRepository->findAllNextForBranch($branch, $open, $limit);
+            $branchOccurrences = $branchOccurrenceRepository->findAllNextForBranch(
+                $branch,
+                true,
+                $this->config['nb_next_producer_attendances_to_define']
+            );
 
             $producerAttendances = $producerAttendanceRepository->findBy(array(
                 'producer' => $producer,
@@ -148,5 +167,39 @@ class ProducerAttendancesManager
         }
 
         return $attendances;
+    }
+
+    /**
+     * Returns unknown attendances count
+     *
+     * @param ProducerAttendances $attendances
+     *
+     * @return int
+     */
+    public function getNbUnknownAttendances(ProducerAttendances $attendances)
+    {
+        $count = 0;
+        foreach ($attendances as $branchAttendances) {
+            $count += $this->getNbUnknownBranchAttendances($branchAttendances);
+        }
+
+        return $count;
+    }
+
+    /**
+     * Returns unknown branch attendances count
+     *
+     * @param ProducerBranchAttendances $branchAttendances
+     *
+     * @return int
+     */
+    public function getNbUnknownBranchAttendances(ProducerBranchAttendances $branchAttendances)
+    {
+        $count = 0;
+        foreach ($branchAttendances as $branchOccurrenceAttendance) {
+            $count += $branchOccurrenceAttendance->getAttendance() ==  ProducerBranchOccurrenceAttendance::ATTENDANCE_UNKNOWN ?  1 : 0;
+        }
+
+        return $count;
     }
 }
