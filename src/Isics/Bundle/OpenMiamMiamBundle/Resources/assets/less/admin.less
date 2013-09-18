@@ -8,6 +8,25 @@ h1 {
     margin: 0 0 2*@line-height-computed 0 !important;
 }
 
+.panel-group {
+    margin-bottom: @line-height-computed;
+}
+
+.checkbox label {
+    font-weight: bold;
+}
+
+.disabled {
+    background-color: @gray-lighter;
+}
+
+.list-errors {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+    color: @alert-danger-text;
+}
+
 //
 // Producer / Products
 //
@@ -29,4 +48,15 @@ h1 {
 
 .table-products .label {
     display: block;
+}
+
+//
+// Producer / Product form
+//
+#open_miam_miam_admin_product_stock,
+#open_miam_miam_admin_product_availableAt_day,
+#open_miam_miam_admin_product_availableAt_month,
+#open_miam_miam_admin_product_availableAt_year {
+    display: inline;
+    width: 10%;
 }

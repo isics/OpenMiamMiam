@@ -5,11 +5,22 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
-{% block content %}
-    {{ form(form) }}
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
-    <a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.getId()}) }}">Return to list</a>
+{% block content %}
+    <h1>{{ 'admin.producer.products.form.new_title'|trans }}</h1>
+
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\Product\\form.html.twig' with {'form': form} %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.PanelForm;
+            new OpenMiamMiam.ProducerProductForm;
+        });
+    </script>
 {% endblock %}

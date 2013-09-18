@@ -5,16 +5,23 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
 {% block content %}
-    {{ form(form) }}
-
-    <a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.getId()}) }}">Return to list</a>
-
     {% set product = form.vars.data %}
-    {% if product.getImage is not null %}
-        <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.getName }}" />
-    {% endif %}
+    <h1>{{ 'admin.producer.products.form.edit_title'|trans({'%name%': product.name, '%ref%': product.ref}) }}</h1>
+
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\Product\\form.html.twig' with {'form': form} %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.PanelForm;
+            new OpenMiamMiam.ProducerProductForm;
+        });
+    </script>
 {% endblock %}

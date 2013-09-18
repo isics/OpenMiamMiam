@@ -51,13 +51,11 @@ class ProductType extends AbstractType
                         return $er->createQueryBuilder('c')->orderBy('c.name', 'ASC');
                     },
                 ))
-                ->add('isBio', 'choice', array(
-                    'choices' => array(true => 'yes', false => 'no'),
-                    'expanded' => true
+                ->add('isBio', 'checkbox', array(
+                    'required' => false
                 ))
-                ->add('isOfTheMoment', 'choice', array(
-                    'choices' => array(true => 'yes', false => 'no'),
-                    'expanded' => true
+                ->add('isOfTheMoment', 'checkbox', array(
+                    'required' => false
                 ))
                 ->add('imageFile', 'file', array(
                     'required' => false
@@ -73,23 +71,23 @@ class ProductType extends AbstractType
                 ->add('allowDecimalQuantity', 'checkbox', array(
                     'required' => false
                 ))
-                ->add('hasPrice', 'choice', array(
-                    'choices' => array(true => 'yes', false => 'no'),
-                    'expanded' => true
+                ->add('hasPrice', 'checkbox', array(
+                    'required' => false
                 ))
                 ->add('price', 'text', array(
                     'required' => false
                 ))
-                ->add('price_info', 'text', array(
+                ->add('priceInfo', 'text', array(
                     'required' => false
                 ))
                 ->add('availability', 'choice', array(
                     'choices' => array(
-                        Product::AVAILABILITY_UNAVAILABLE => 'Unavailable',
-                        Product::AVAILABILITY_AVAILABLE_AT => 'Available at',
-                        Product::AVAILABILITY_ACCORDING_TO_STOCK => 'In stock',
-                        Product::AVAILABILITY_AVAILABLE => 'Available'
-                    )
+                        Product::AVAILABILITY_AVAILABLE => 'availability.available',
+                        Product::AVAILABILITY_ACCORDING_TO_STOCK => 'availability.in_stock',
+                        Product::AVAILABILITY_AVAILABLE_AT => 'availability.available_at',
+                        Product::AVAILABILITY_UNAVAILABLE => 'availability.unavailable',
+                    ),
+                    'expanded' => true,
                 ))
                 ->add('stock', 'text', array(
                     'required' => false
@@ -108,7 +106,7 @@ class ProductType extends AbstractType
                         return $er->getBranchesForProducerQueryBuilder($product->getProducer());
                     },
                 ))
-                ->add('Save', 'submit');
+                ->add('save', 'submit');
 
         if (null !== $product->getImage()) {
             $builder->add('deleteImage', 'checkbox', array(
