@@ -41,7 +41,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         # Services
-        $manipulator = $this->container->get('fos_user.util.user_manipulator');
+        $userManager = $this->container->get('fos_user.user_manager');
         $aclProvider = $this->container->get('security.acl.provider');
 
         # ACLs
@@ -51,19 +51,56 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $objectIdentity2 = ObjectIdentity::fromDomainObject($this->getReference('Elsa Dorsa'));
         $acl2 = $aclProvider->findAcl($objectIdentity2);
 
-
         # User 1
-        $manipulator->create("foo@bar.com", "secret3", "foo@bar.com", true, false);
+        $user = $userManager->createUser();
+        $user->setUsername('foo@bar.com');
+        $user->setPlainPassword('secret3');
+        $user->setEmail('foo@bar.com');
+        $user->setEnabled(true);
+        $user->setSuperAdmin(false);
+        $user->setFirstname('Foo');
+        $user->setLastname('Bar');
+        $user->setAddress1('First line of address');
+        $user->setAddress2('Second line of address');
+        $user->setZipCode('AA9A 9AA');
+        $user->setCity('York');
+        $userManager->updateUser($user);
 
         # User 2
-        $manipulator->create("john@doe.com", "secret1", "john@doe.com", true, false);
-        $securityIdentity1 = new UserSecurityIdentity('john@doe.com', 'Isics\Bundle\OpenMiamMiamBundle\Entity\User');
+        $user = $userManager->createUser();
+        $user->setUsername('john@doe.com');
+        $user->setPlainPassword('secret1');
+        $user->setEmail('john@doe.com');
+        $user->setEnabled(true);
+        $user->setSuperAdmin(false);
+        $user->setFirstname('John');
+        $user->setLastname('Doe');
+        $user->setAddress1('First line of address');
+        $user->setAddress2('Second line of address');
+        $user->setZipCode('AA9A 9AA');
+        $user->setCity('London');
+        $userManager->updateUser($user);
+
+        $securityIdentity1 = new UserSecurityIdentity('john@doe.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
         $acl1->insertObjectAce($securityIdentity1, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($acl1);
 
         # User 3
-        $manipulator->create("john@smith.com", "secret2", "john@smith.com", true, false);
-        $securityIdentity2 = new UserSecurityIdentity('john@smith.com', 'Isics\Bundle\OpenMiamMiamBundle\Entity\User');
+        $user = $userManager->createUser();
+        $user->setUsername('john@smith.com');
+        $user->setPlainPassword('secret2');
+        $user->setEmail('john@smith.com');
+        $user->setEnabled(true);
+        $user->setSuperAdmin(false);
+        $user->setFirstname('John');
+        $user->setLastname('Smith');
+        $user->setAddress1('First line of address');
+        $user->setAddress2('Second line of address');
+        $user->setZipCode('AA9A 9AA');
+        $user->setCity('Liverpool');
+        $userManager->updateUser($user);
+
+        $securityIdentity2 = new UserSecurityIdentity('john@smith.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
         $acl1->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($acl1);
 

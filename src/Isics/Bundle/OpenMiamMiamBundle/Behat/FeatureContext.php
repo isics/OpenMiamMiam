@@ -100,7 +100,7 @@ class FeatureContext extends BehatContext
             if (!empty($data['managers'])) {
                 $managers = explode(',', $data['managers']);
                 foreach ($managers as $manager) {
-                    $securityIdentity = new UserSecurityIdentity(trim($manager), 'Isics\Bundle\OpenMiamMiamBundle\Entity\User');
+                    $securityIdentity = new UserSecurityIdentity(trim($manager), 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
                     $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
                     $aclProvider->updateAcl($acl);
                 }
@@ -494,16 +494,22 @@ class FeatureContext extends BehatContext
      */
     public function thereAreFollowingUsers(TableNode $table)
     {
-        $manipulator = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $userManager = $this->getContainer()->get('fos_user.user_manager');
 
         foreach ($table->getHash() as $data) {
-            $manipulator->create(
-                $data['email'],
-                $data['password'],
-                $data['email'],
-                $active = true,
-                $superAdmin = false
-            );
+            $user = $userManager->createUser();
+            $user->setUsername($data['email']);
+            $user->setPlainPassword($data['password']);
+            $user->setEmail($data['email']);
+            $user->setEnabled(true);
+            $user->setSuperAdmin(false);
+            $user->setFirstname($data['firstname']);
+            $user->setLastname($data['lastname']);
+            $user->setAddress1($data['address_1']);
+            $user->setAddress2($data['address_2']);
+            $user->setZipCode($data['zip_code']);
+            $user->setCity($data['city']);
+            $userManager->updateUser($user);
         }
     }
 

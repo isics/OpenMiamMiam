@@ -84,7 +84,7 @@ stof_doctrine_extensions:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: Isics\Bundle\OpenMiamMiamBundle\Entity\User
+    user_class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User
 
 # LiipImagineBundle Configuration
 liip_imagine:
