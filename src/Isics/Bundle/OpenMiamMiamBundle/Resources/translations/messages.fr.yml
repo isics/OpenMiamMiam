@@ -25,7 +25,7 @@ zone.occurrence.order.from:   "Commandez à partir du"
 zone.occurrence.no.next.date: "Aucun comptoir planifié"
 zone.producers.title:         "Les producteurs"
 zone.producers.link:          "Tous les producteurs"
-zone.next_occurences.title:   "Prochains comptoirs"
+zone.next_occurrences.title:   "Prochains comptoirs"
 zone.location.title:          "S'y rendre"
 
 # Cart
