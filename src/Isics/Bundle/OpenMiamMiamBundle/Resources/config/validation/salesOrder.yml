@@ -1,0 +1,4 @@
+Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation:
+    properties:
+        termsOfSaleChecked:
+            - "True": ~

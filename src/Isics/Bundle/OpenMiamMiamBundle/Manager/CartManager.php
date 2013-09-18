@@ -128,15 +128,4 @@ class CartManager
 
         return $this->carts[$branch->getId()];
     }
-
-    /**
-     * Creates an order
-     *
-     * @param Cart $cart Cart
-     */
-    public function createOrder(Cart $cart)
-    {
-
-    }
-
 }

@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model;
 
-class OrderConfirmation
+class SalesOrderConfirmation
 {
     /**
      * @var bool

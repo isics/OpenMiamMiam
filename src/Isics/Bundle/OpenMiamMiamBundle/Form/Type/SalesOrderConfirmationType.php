@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class OrderConfirmationType extends AbstractType
+class SalesOrderConfirmationType extends AbstractType
 {
     /**
      * @see AbstractType
@@ -34,7 +34,7 @@ class OrderConfirmationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\OrderConfirmation',
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation',
         ));
     }
 
@@ -43,6 +43,6 @@ class OrderConfirmationType extends AbstractType
      */
     public function getName()
     {
-        return 'open_miam_miam_order_confirmation';
+        return 'open_miam_miam_sales_order_confirmation';
     }
 }

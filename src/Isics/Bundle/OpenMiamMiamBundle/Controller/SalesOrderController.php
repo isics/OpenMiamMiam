@@ -12,17 +12,17 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\OrderConfirmationType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderConfirmationType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
-use Isics\Bundle\OpenMiamMiamBundle\Model\OrderConfirmation;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderController extends Controller
+class SalesOrderController extends Controller
 {
     /**
-     * Confirms order
+     * Confirms sales order
      *
      * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
      *
@@ -39,11 +39,11 @@ class OrderController extends Controller
         }
 
         $form = $this->createForm(
-            new OrderConfirmationType(),
-            new OrderConfirmation(),
+            new SalesOrderConfirmationType(),
+            new SalesOrderConfirmation(),
             array(
                 'action' => $this->generateUrl(
-                    'open_miam_miam_order_confirm',
+                    'open_miam_miam_sales_order_confirm',
                     array('branch_slug' => $cart->getBranch()->getSlug())
                 ),
                 'method' => 'POST'
@@ -53,11 +53,12 @@ class OrderController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                die('TODO');
+                $orderManager = $this->get('open_miam_miam.sales_order_manager');
+                $order = $orderManager->createFromCart($cart);
             }
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Order:confirm.html.twig', array(
+        return $this->render('IsicsOpenMiamMiamBundle:SalesOrder:confirm.html.twig', array(
             'branch' => $branch,
             'cart'   => $cart,
             'user'   => $this->get('security.context')->getToken()->getUser(),
