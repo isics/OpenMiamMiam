@@ -18,7 +18,8 @@ quantity:             "Quantité"
 total:                "Total"
 update:               "Mettre à jour"
 consumer:             "Consommateur"
-withdrawing.products: "Retrait des produits"
+withdrawing_products: "Retrait des produits"
+number:               "n°"
 
 # Zones
 zone.header.branch.change:    "Changer de comptoir"
@@ -34,7 +35,8 @@ zone.location.title:          "S'y rendre"
 cart.title: "Mon panier"
 
 # Order process
-
+order.confirm: "Confirmez votre commande"
+order.your_order: "Votre commande"
 
 # Availability
 availability:                 "Dispo"
