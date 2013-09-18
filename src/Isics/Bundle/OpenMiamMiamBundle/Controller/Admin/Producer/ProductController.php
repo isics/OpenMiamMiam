@@ -145,13 +145,12 @@ class ProductController extends BaseController
      *
      * @ParamConverter("product", class="IsicsOpenMiamMiamBundle:Product", options={"mapping": {"productId": "id"}})
      *
-     * @param Request $request
      * @param Producer $producer
      * @param Product $product
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Producer $producer, Product $product)
+    public function deleteAction(Producer $producer, Product $product)
     {
         $this->secure($producer);
 

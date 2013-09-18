@@ -5,10 +5,9 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
+
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
-    <h1>{% trans %}dashboard{% endtrans %}</h1>
-
-    {{ nbAttendancesUnknown }}
+    {{ form(form) }}
 {% endblock %}

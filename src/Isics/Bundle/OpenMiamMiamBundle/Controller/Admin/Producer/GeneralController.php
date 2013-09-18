@@ -27,8 +27,11 @@ class GeneralController extends BaseController
     {
         $this->secure($producer);
 
+        $attendancesManager = $this->get('open_miam_miam.producer_attendances_manager');
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:showDashboard.html.twig', array(
             'producer' => $producer,
+            'nbAttendancesUnknown' => $attendancesManager->getNbUnknownAttendances($attendancesManager->getNextAttendancesOf($producer))
         ));
     }
 }
