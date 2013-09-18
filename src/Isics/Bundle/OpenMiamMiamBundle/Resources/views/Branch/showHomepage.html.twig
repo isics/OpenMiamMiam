@@ -6,6 +6,10 @@
  # with this source code in the file LICENSE.
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
+    {% block header_branch_name %}
+        <h1>{{ parent () }}</h1>
+    {% endblock %}
+
     {% block content %}
         {{ branch.presentation }}
     {% endblock %}
