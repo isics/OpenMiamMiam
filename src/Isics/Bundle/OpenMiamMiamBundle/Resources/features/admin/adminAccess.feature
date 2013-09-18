@@ -4,10 +4,10 @@ Feature: Admin authentication & authorization
 
   Background:
     Given there are following users:
-      | email          | password |
-      | foo@bar.com    | secret1  |
-      | john@doe.com   | secret2  |
-      | john@smith.com | secret3  |
+      | email          | password | firstname | lastname | address_1             | address_2       | zip_code | city      |
+      | foo@bar.com    | secret1  | Foo       | Bar      | First line of address | Second line of  | AA9A 9AA | York      |
+      | john@doe.com   | secret2  | John      | Doe      | First line of address | Second line of  | AA9A 9AA | Liverpool |
+      | john@smith.com | secret3  | John      | Smith    | First line of address | Second line of  | AA9A 9AA | London    |
     Given there are following producers:
       | name        | managers                  |
       | Beth Rave   | john@doe.com              |
