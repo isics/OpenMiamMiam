@@ -27,6 +27,56 @@ h1 {
     color: @alert-danger-text;
 }
 
+#admin-switcher {
+    font-weight: bold;
+}
+
+//
+// Producer dashboard
+//
+#producer-dashboard .panel {
+    border-width: 5px;
+    font-size: @font-size-medium;
+    line-height: 50px;
+    text-align: center;
+}
+
+#producer-dashboard .panel span {
+    font-size: 50px;
+    text-align: right;
+}
+
+#producer-dashboard .panel strong {
+    font-size: 100px;
+    line-height: 100px;
+}
+
+#producer-dashboard .panel a,
+#producer-dashboard .panel span,
+#producer-dashboard .panel strong {
+    display: block;
+}
+
+#producer-dashboard .panel a:hover {
+    text-decoration: none;
+}
+
+#producer-dashboard .panel-success a {
+    color: @alert-success-text;
+}
+
+#producer-dashboard .panel-success a:hover {
+    color: darken(@alert-success-text, 15%);
+}
+
+#producer-dashboard .panel-danger a {
+    color: @alert-danger-text;
+}
+
+#producer-dashboard .panel-danger a:hover {
+    color: darken(@alert-danger-text, 15%);
+}
+
 //
 // Producer / Products
 //
@@ -59,4 +109,16 @@ h1 {
 #open_miam_miam_admin_product_availableAt_year {
     display: inline;
     width: 10%;
+}
+
+//
+// Producer / Calendar
+//
+.table-calendar th:nth-child(n+2),
+.table-calendar td:nth-child(n+2) {
+    text-align: center;
+}
+
+.table-calendar td:nth-child(4) label {
+    font-weight: bold;
 }

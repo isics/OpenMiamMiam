@@ -1,19 +1,13 @@
 # General
 add:                  "Ajouter"
 branch:               "Comptoir"
-calendar:             "Calendrier"
 checkout:             "Commander"
-dashboard:            "Tableau de bord"
 logout:               "Déconnexion"
-managers:             "Gestionnaires"
 order:                "Commander"
-orders:               "Commandes"
 photo:                "Photo"
 price:                "Prix"
 producer:             "Producteur"
-producer.infos:       "Infos producteur"
 product:              "Produit"
-products:             "Produits"
 quantity:             "Quantité"
 total:                "Total"
 update:               "Mettre à jour"
@@ -38,6 +32,11 @@ cart.title: "Mon panier"
 order.confirm: "Confirmez votre commande"
 order.your_order: "Votre commande"
 
+# Attendance
+attendance.yes:     "Oui"
+attendance.no:      "Non"
+attendance.unknown: "Inconnue"
+
 # Availability
 availability:                 "Dispo"
 availability.unavailable:     "Non dispo"
@@ -48,8 +47,8 @@ availability.producer_absent: "Producteur absent"
 availability.available_at:    "Dispo le %date%"
 
 # Admin common
-admin.save:   'Enregistrer'
-admin.return: 'Retourner à la liste'
+admin.save:   "Enregistrer"
+admin.return: "Retourner à la liste"
 
 # Admin login
 admin.login.title:                "Accès gestionnaire"
@@ -60,46 +59,71 @@ admin.login.submit:               "Connexion"
 # Admin index
 admin.index.title: "Choisissez un rôle :"
 
+# Admin / Producer / Menu
+admin.producer.menu.dashboard:      "Tableau de bord"
+admin.producer.menu.orders:         "Commandes"
+admin.producer.menu.products:       "Produits"
+admin.producer.menu.calendar:       "Calendrier de présence"
+admin.producer.menu.managers:       "Gestionnaires"
+admin.producer.menu.producer_infos: "Infos producteur"
+
+# Admin / Producer / Dashboard
+admin.producer.dashboard.title:                  "Tableau de bord producteur"
+admin.producer.dashboard.orders_to_prepare:      "[0,1]commande à préparer|]1,Inf]commandes à préparer"
+admin.producer.dashboard.products_out_of_stock:  "[0,1]produit en rupture|]1,Inf]produits en rupture"
+admin.producer.dashboard.attendances_to_confirm: "[0,1]date à confirmer|]1,Inf]dates à confirmer"
+
 # Admin / Producer / Products
-admin.producer.products.list.title:                    '{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits'
-admin.producer.products.list.create:                   'Nouveau produit'
-admin.producer.products.list.edit:                     'Modifier le produit'
-admin.producer.products.list.delete:                   'Supprimer le produit'
-admin.producer.products.list.ref:                      'Réf'
-admin.producer.products.list.product:                  'Produit'
-admin.producer.products.list.is_bio:                   'Bio ?'
-admin.producer.products.list.is_of_the_moment:         'Du moment ?'
-admin.producer.products.list.price:                    'Prix'
-admin.producer.products.list.availability:             'Dispo'
-admin.producer.products.form.new_title:                'Nouveau produit'
-admin.producer.products.form.edit_title:               'Produit "%name%" (%ref%)'
-admin.producer.products.form.fieldset.main:            'Principal'
-admin.producer.products.form.fieldset.description:     'Description'
-admin.producer.products.form.fieldset.price:           'Prix'
-admin.producer.products.form.fieldset.availability:    'Disponibilité'
-admin.producer.products.form.name:                     'Nom du produit'
-admin.producer.products.form.ref:                      'Référence producteur'
-admin.producer.products.form.category:                 'Catégorie'
-admin.producer.products.form.is_bio:                   'Produit bio'
-admin.producer.products.form.image:                    'Image'
-admin.producer.products.form.delete_image:             'Supprimer l''image'
-admin.producer.products.form.description:              'Description'
-admin.producer.products.form.buying_unit:              'Unité d''achat'
-admin.producer.products.form.buying_unit.without_unit: 'sans unité'
-admin.producer.products.form.allow_decimal_quantity:   'Quantité décimale'
-admin.producer.products.form.has_no_price:             'Définir lors de la préparation de commande'
-admin.producer.products.form.price:                    'Prix'
-admin.producer.products.form.price_info:               'Indications sur le prix'
-admin.producer.products.form.price_info.placeholder:   'Prix au kg, poids moyen, etc.'
-admin.producer.products.form.availability:             'Disponibilité'
-admin.producer.products.form.stock:                    'Stock'
-admin.producer.products.form.available_at:             'Disponible le'
-admin.producer.products.form.branches:                 'Comptoir(s) où trouver ce produit'
-admin.producer.products.form.is_of_the_moment:         'Produit du moment !'
+admin.producer.products.list.title:                    "{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits"
+admin.producer.products.list.create:                   "Nouveau produit"
+admin.producer.products.list.edit:                     "Modifier le produit"
+admin.producer.products.list.delete:                   "Supprimer le produit"
+admin.producer.products.list.ref:                      "Réf"
+admin.producer.products.list.product:                  "Produit"
+admin.producer.products.list.is_bio:                   "Bio ?"
+admin.producer.products.list.is_of_the_moment:         "Du moment ?"
+admin.producer.products.list.price:                    "Prix"
+admin.producer.products.list.availability:             "Dispo"
+admin.producer.products.form.new_title:                "Nouveau produit"
+admin.producer.products.form.edit_title:               "Produit %name% (%ref%)"
+admin.producer.products.form.fieldset.main:            "Principal"
+admin.producer.products.form.fieldset.description:     "Description"
+admin.producer.products.form.fieldset.price:           "Prix"
+admin.producer.products.form.fieldset.availability:    "Disponibilité"
+admin.producer.products.form.name:                     "Nom du produit"
+admin.producer.products.form.ref:                      "Référence producteur"
+admin.producer.products.form.category:                 "Catégorie"
+admin.producer.products.form.is_bio:                   "Produit bio"
+admin.producer.products.form.image:                    "Image"
+admin.producer.products.form.delete_image:             "Supprimer l'image"
+admin.producer.products.form.description:              "Description"
+admin.producer.products.form.buying_unit:              "Unité d'achat"
+admin.producer.products.form.buying_unit.without_unit: "sans unité"
+admin.producer.products.form.allow_decimal_quantity:   "Quantité décimale"
+admin.producer.products.form.has_no_price:             "Définir lors de la préparation de commande"
+admin.producer.products.form.price:                    "Prix"
+admin.producer.products.form.price_info:               "Indications sur le prix"
+admin.producer.products.form.price_info.placeholder:   "Prix au kg, poids moyen, etc."
+admin.producer.products.form.availability:             "Disponibilité"
+admin.producer.products.form.stock:                    "Stock"
+admin.producer.products.form.available_at:             "Disponible le"
+admin.producer.products.form.branches:                 "Comptoir(s) où trouver ce produit"
+admin.producer.products.form.is_of_the_moment:         "Produit du moment !"
+admin.producer.products.message.created:               "Le produit a bien été créé."
+admin.producer.products.message.updated:               "Le produit a bien été mis à jour."
+admin.producer.products.message.deleted:               "Le produit a bien été supprimé."
+
+# Admin / Producer / Calendar
+admin.producer.calendar.title:              "Calendrier de présence"
+admin.producer.calendar.at:                 "Le"
+admin.producer.calendar.from:               "De"
+admin.producer.calendar.to:                 "A"
+admin.producer.calendar.attendance:         "Présence"
+admin.producer.calendar.attendance.yes:     "Oui"
+admin.producer.calendar.attendance.no:      "Non"
+admin.producer.calendar.attendance.unknown: "Ne sais pas encore"
+admin.producer.calendar.message.updated:    "Votre calendrier de présence a été pris en compte."
 
 # Messages
-message.cart.added:      "Le produit a été ajouté à votre panier."
-message.cart.updated:    "Votre panier a été mis à jour."
-message.product.created: "Le produit a bien été créé."
-message.product.updated: "Le produit a bien été mis à jour."
-message.product.deleted: "Le produit a bien été supprimé."
+message.cart.added:       "Le produit a été ajouté à votre panier."
+message.cart.updated:     "Votre panier a été mis à jour."

@@ -123,36 +123,36 @@ class Builder
         $menu[$menuName]->addChild('Dashboard', array(
             'route'           => 'open_miam_miam.admin.producer.dashboard',
             'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'home', $this->translator->trans('dashboard')),
+            'label'           => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.producer.menu.dashboard')),
         ));
         $menu[$menuName]->addChild('Orders', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $object->getId()),
-            'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('orders')),
+            'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('admin.producer.menu.orders')),
         ));
         $menu[$menuName]->addChild('Products', array(
             'route'           => 'open_miam_miam.admin.producer.list_products',
             'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'list', $this->translator->trans('products')),
+            'label'           => sprintf($this->labelFormat, 'list', $this->translator->trans('admin.producer.menu.products')),
         ));
         $menu[$menuName]->addChild('Calendar', array(
             'uri'             => '#',
              'route'           => 'open_miam_miam.admin.producer.calendar',
              'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'time', $this->translator->trans('calendar')),
+            'label'           => sprintf($this->labelFormat, 'time', $this->translator->trans('admin.producer.menu.calendar')),
         ));
         $menu[$menuName]->addChild('Managers', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('managers')),
+            'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.producer.menu.managers')),
         ));
         $menu[$menuName]->addChild('Producer infos', array(
             'uri'             => '#',
             // 'route'           => 'open_miam_miam.admin.producer.list_products',
             // 'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('producer.infos')),
+            'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.producer.menu.producer_infos')),
         ));
     }
 

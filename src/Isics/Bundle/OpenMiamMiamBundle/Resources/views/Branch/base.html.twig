@@ -14,7 +14,9 @@
         </div>
 
         <div id="header-branch-name">
-            <a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}"><strong>{{ branch.name }}</strong></a>
+            {% block header_branch_name %}
+                <a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}"><strong>{{ branch.name }}</strong></a>
+            {% endblock %}
             <a href="{{ path('open_miam_miam_homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
         </div>
 

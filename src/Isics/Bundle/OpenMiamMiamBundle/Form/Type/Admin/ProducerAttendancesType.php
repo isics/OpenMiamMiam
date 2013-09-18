@@ -24,7 +24,7 @@ class ProducerAttendancesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('branchAttendances', 'collection', array('type' => new ProducerBranchAttendancesType()))
-                ->add('Save', 'submit');
+                ->add('save', 'submit');
     }
 
     /**

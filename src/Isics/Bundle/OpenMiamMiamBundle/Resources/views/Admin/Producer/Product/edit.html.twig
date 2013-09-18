@@ -7,8 +7,6 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
-{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
-
 {% block content %}
     {% set product = form.vars.data %}
     <h1>{{ 'admin.producer.products.form.edit_title'|trans({'%name%': product.name, '%ref%': product.ref}) }}</h1>

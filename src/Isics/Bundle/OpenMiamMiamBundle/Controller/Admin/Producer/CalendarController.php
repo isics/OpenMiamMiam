@@ -48,7 +48,7 @@ class CalendarController extends BaseController
             if ($form->isValid()) {
                 $attendancesManager->updateAttendances($form->getData());
 
-                $this->get('session')->getFlashBag()->add('notice', 'Calendar updated.');
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.calendar.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.calendar', array('id' => $producer->getId())));
             }
