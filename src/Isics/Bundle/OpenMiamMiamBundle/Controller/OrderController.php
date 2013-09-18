@@ -12,9 +12,12 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\OrderConfirmationType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
+use Isics\Bundle\OpenMiamMiamBundle\Model\OrderConfirmation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderController extends Controller
 {
@@ -23,21 +26,42 @@ class OrderController extends Controller
      *
      * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
      *
+     * @param Request $request
      * @param Branch $branch Branch
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function confirmAction(Branch $branch)
+    public function confirmAction(Request $request, Branch $branch)
     {
         $cart = $this->get('open_miam_miam.cart_manager')->get($branch);
         if (count($cart->getItems()) == 0) {
             return $this->redirectToCart($cart);
         }
 
+        $form = $this->createForm(
+            new OrderConfirmationType(),
+            new OrderConfirmation(),
+            array(
+                'action' => $this->generateUrl(
+                    'open_miam_miam_order_confirm',
+                    array('branch_slug' => $cart->getBranch()->getSlug())
+                ),
+                'method' => 'POST'
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                die('TODO');
+            }
+        }
+
         return $this->render('IsicsOpenMiamMiamBundle:Order:confirm.html.twig', array(
             'branch' => $branch,
             'cart'   => $cart,
-            'user'   => $this->get('security.context')->getToken()->getUser()
+            'user'   => $this->get('security.context')->getToken()->getUser(),
+            'form'   => $form->createView()
         ));
     }
 

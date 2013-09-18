@@ -9,7 +9,8 @@ parameters:
     validator.mapping.loader.yaml_files_loader.mapping_files:
         - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/product.yml"
         - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/cartItem.yml"
-        - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/ProducerAttendances.yml"
+        - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/producerAttendances.yml"
+        - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/order.yml"
 
     open_miam_miam.cart_item_validator.class:                    'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
     open_miam_miam.buying_unit_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'

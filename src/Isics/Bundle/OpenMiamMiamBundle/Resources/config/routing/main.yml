@@ -58,8 +58,6 @@ open_miam_miam_cart_update:
 open_miam_miam_order_confirm:
     pattern:  /{branch_slug}/order/confirm
     defaults: { _controller: IsicsOpenMiamMiamBundle:Order:Confirm }
-    requirements:
-        _method: GET
 
 #
 # Catalog
