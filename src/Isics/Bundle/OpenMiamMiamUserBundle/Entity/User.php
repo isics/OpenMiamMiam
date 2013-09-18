@@ -47,11 +47,11 @@ class User extends BaseUser
     private $address2;
 
     /**
-     * @var string $zipCode
+     * @var string $zipcode
      *
-     * @ORM\Column(name="zipCode", type="string", length=8, nullable=false)
+     * @ORM\Column(name="zipcode", type="string", length=8, nullable=false)
      */
-    private $zipCode;
+    private $zipcode;
 
     /**
      * @var string $city
@@ -163,11 +163,11 @@ class User extends BaseUser
     /**
      * Sets zip code
      *
-     * @param string $zipCode
+     * @param string $zipcode
      */
-    public function setZipCode($zipCode)
+    public function setZipcode($zipcode)
     {
-        $this->zipCode = $zipCode;
+        $this->zipcode = $zipcode;
     }
 
     /**
@@ -175,8 +175,8 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getZipCode()
+    public function getZipcode()
     {
-        return $this->zipCode;
+        return $this->zipcode;
     }
 }

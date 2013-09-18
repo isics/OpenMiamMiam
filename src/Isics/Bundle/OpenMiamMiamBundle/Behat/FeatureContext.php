@@ -507,7 +507,7 @@ class FeatureContext extends BehatContext
             $user->setLastname($data['lastname']);
             $user->setAddress1($data['address_1']);
             $user->setAddress2($data['address_2']);
-            $user->setZipCode($data['zip_code']);
+            $user->setZipcode($data['zip_code']);
             $user->setCity($data['city']);
             $userManager->updateUser($user);
         }

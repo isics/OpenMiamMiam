@@ -9,16 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\DataFixtures\ORM;
+namespace Isics\Bundle\OpenMiamMiamUserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -42,14 +39,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     {
         # Services
         $userManager = $this->container->get('fos_user.user_manager');
-        $aclProvider = $this->container->get('security.acl.provider');
-
-        # ACLs
-        $objectIdentity1 = ObjectIdentity::fromDomainObject($this->getReference('Beth Rave'));
-        $acl1 = $aclProvider->findAcl($objectIdentity1);
-
-        $objectIdentity2 = ObjectIdentity::fromDomainObject($this->getReference('Elsa Dorsa'));
-        $acl2 = $aclProvider->findAcl($objectIdentity2);
 
         # User 1
         $user = $userManager->createUser();
@@ -62,7 +51,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setLastname('Bar');
         $user->setAddress1('First line of address');
         $user->setAddress2('Second line of address');
-        $user->setZipCode('AA9A 9AA');
+        $user->setZipcode('AA9A 9AA');
         $user->setCity('York');
         $userManager->updateUser($user);
 
@@ -77,13 +66,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setLastname('Doe');
         $user->setAddress1('First line of address');
         $user->setAddress2('Second line of address');
-        $user->setZipCode('AA9A 9AA');
+        $user->setZipcode('AA9A 9AA');
         $user->setCity('London');
         $userManager->updateUser($user);
-
-        $securityIdentity1 = new UserSecurityIdentity('john@doe.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
-        $acl1->insertObjectAce($securityIdentity1, MaskBuilder::MASK_OWNER);
-        $aclProvider->updateAcl($acl1);
 
         # User 3
         $user = $userManager->createUser();
@@ -96,16 +81,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setLastname('Smith');
         $user->setAddress1('First line of address');
         $user->setAddress2('Second line of address');
-        $user->setZipCode('AA9A 9AA');
+        $user->setZipcode('AA9A 9AA');
         $user->setCity('Liverpool');
         $userManager->updateUser($user);
-
-        $securityIdentity2 = new UserSecurityIdentity('john@smith.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
-        $acl1->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OWNER);
-        $aclProvider->updateAcl($acl1);
-
-        $acl2->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OWNER);
-        $aclProvider->updateAcl($acl2);
     }
 
     /**
@@ -113,6 +91,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function getOrder()
     {
-        return 8;
+        return 1;
     }
 }
