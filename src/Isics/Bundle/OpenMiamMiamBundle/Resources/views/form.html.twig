@@ -1,0 +1,99 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form %}
+{% spaceless %}
+    {% set attr = attr|merge({'role': 'form'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock form %}
+
+{% block form_row %}
+{% spaceless %}
+    {% if 'checkbox' in form.vars.block_prefixes %}
+        <div class="checkbox">
+            {{ form_errors(form) }}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                {{ block('checkbox_widget') }}
+                {{ label|trans({}, translation_domain) }}
+            </label>
+        </div>
+    {% else %}
+        <div class="form-group{% if form.vars.errors %} has-error{% endif %}">
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_row %}
+
+{% block form_label %}
+{% spaceless %}
+    {% set label_attr = label_attr|merge({'class': 'control-label'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock form_label %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul class="list-errors">
+        {% for error in errors %}
+            <li>{{ error.message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_widget_simple %}
+{% spaceless %}
+    {% set type = type|default('text') %}
+    {% if type != 'file' %}
+        {% set attr = attr|merge({'class': 'form-control'}) %}
+    {% endif %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock form_widget_simple %}
+
+{% block choice_widget_collapsed %}
+{% spaceless %}
+    {% set attr = attr|merge({'class': 'form-control'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+{% block textarea_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({'class': 'form-control'}) %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock textarea_widget %}
+
+{% block choice_widget_expanded %}
+{% spaceless %}
+    {% for child in form %}
+        {% if 'checkbox' in child.vars.block_prefixes %}
+            <div class="checkbox">
+                <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                    {{ form_widget(child) }}
+                    {{ child.vars.label|trans({}, translation_domain) }}
+                </label>
+            </div>
+        {% elseif 'radio' in child.vars.block_prefixes %}
+            <div class="radio">
+                <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+                    {{ form_widget(child) }}
+                    {{ child.vars.label|trans({}, translation_domain) }}
+                </label>
+            </div>
+        {% else %}
+            {{ form_widget(child) }}
+            {{ form_label(child) }}
+        {% endif %}
+    {% endfor %}
+{% endspaceless %}
+{% endblock choice_widget_expanded %}

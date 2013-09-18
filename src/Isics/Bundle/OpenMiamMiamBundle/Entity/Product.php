@@ -84,6 +84,7 @@ class Product
      * @var boolean $isBio
      *
      * @ORM\Column(name="is_bio", type="boolean", nullable=false)
+     * @todo rename to "isOrganicFood"
      */
     private $isBio;
 

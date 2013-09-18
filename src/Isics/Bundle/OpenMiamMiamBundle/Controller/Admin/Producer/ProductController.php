@@ -60,7 +60,7 @@ class ProductController extends BaseController
             if ($form->isValid()) {
                 $productManager->save($product);
 
-                $this->get('session')->getFlashBag()->add('notice', 'Product created.');
+                $this->get('session')->getFlashBag()->add('notice', 'message.product.created');
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.producer.edit_product',
@@ -97,7 +97,7 @@ class ProductController extends BaseController
                 $productManager = $this->get('open_miam_miam.product_manager');
                 $productManager->save($product);
 
-                $this->get('session')->getFlashBag()->add('notice', 'Product updated.');
+                $this->get('session')->getFlashBag()->add('notice', 'message.product.updated');
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.producer.edit_product',
@@ -157,7 +157,7 @@ class ProductController extends BaseController
         $productManager = $this->get('open_miam_miam.product_manager');
         $productManager->delete($product);
 
-        $this->get('session')->getFlashBag()->add('notice', 'Product deleted.');
+        $this->get('session')->getFlashBag()->add('notice', 'message.product.deleted');
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.producer.list_products',
