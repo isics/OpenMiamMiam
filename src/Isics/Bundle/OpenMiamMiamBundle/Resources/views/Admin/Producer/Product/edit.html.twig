@@ -15,6 +15,6 @@
 
     {% set product = form.vars.data %}
     {% if product.getImage is not null %}
-        <img src="{{ asset(get_image_product_path(product))|imagine_filter('admin') }}" alt="{{ product.getName }}" />
+        <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.getName }}" />
     {% endif %}
 {% endblock %}

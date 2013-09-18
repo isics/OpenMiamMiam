@@ -1,19 +1,42 @@
-{% if productAvailability.isAvailable %}
-    {% if productAvailability.reason is constant('REASON_IN_STOCK', productAvailability) %}
-        stock level: {{ product.stock }}
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% block availability %}
+    {% if productAvailability.isAvailable %}
+        <span class="label label-success">
+            {% if productAvailability.reason is constant('REASON_IN_STOCK', productAvailability) %}
+                {{ 'availability.in_stock'|trans({'%stock%': product.stock}) }}
+            {% else %}
+                {{ 'availability.available'|trans }}
+            {% endif %}
+        </span>
     {% else %}
-        available
+        {% if productAvailability.reason is constant('REASON_PRODUCER_ABSENT', productAvailability) %}
+            <span class="label label-default">{{ 'availability.producer_absent'|trans }}</span>
+        {% elseif productAvailability.reason is constant('REASON_OUT_OF_STOCK', productAvailability) %}
+            <span class="label label-danger">{{ 'availability.out_of_stock'|trans }}</span>
+        {% elseif productAvailability.reason is constant('REASON_AVAILABLE_AT', productAvailability) %}
+            <span class="label label-warning">{{ 'availability.available_at'|trans({'%date%': product.availableAt|format_date}) }}</span>
+        {% endif %}
     {% endif %}
-{% else %}
-    {% if productAvailability.reason is constant('REASON_PRODUCER_ABSENT', productAvailability) %}
-        Producer absent
-    {% elseif productAvailability.reason is constant('REASON_OUT_OF_STOCK', productAvailability) %}
-        Too late!
-    {% elseif productAvailability.reason is constant('REASON_AVAILABLE_AT', productAvailability) %}
-        Available at {{ product.availableAt|date('m-d') }}
-    {% endif %}
-{% endif %}
+{% endblock %}
 
-{% if form is defined %}
-    {{ form(form) }}
-{% endif %}
+{% block form %}
+    {% if form is defined %}
+        {{ form_start(form, {'attr': {'class': 'form form-inline'}}) }}
+            {{ form_errors(form) }}
+
+            {{ form_errors(form.quantity) }}
+            {{ form_widget(form.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
+
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-shopping-cart"></span> {{ 'add'|trans }}
+            </button>
+            {% do form.add.setRendered %}
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}

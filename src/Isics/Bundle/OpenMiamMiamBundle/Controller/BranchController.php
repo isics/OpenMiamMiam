@@ -18,20 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BranchController extends Controller
 {
     /**
-     * Shows Branch header
-     *
-     * @param Branch $branch
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showHeaderAction(Branch $branch)
-    {
-        return $this->render('IsicsOpenMiamMiamBundle:Branch:showHeader.html.twig', array(
-            'branch' => $branch,
-        ));
-    }
-
-    /**
      * Shows branch homepage
      *
      * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})

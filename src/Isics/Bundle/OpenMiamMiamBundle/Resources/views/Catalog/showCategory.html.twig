@@ -5,23 +5,31 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
     {% block content %}
-        <h2>{{ category.name }}</h2>
+        <h1>{{ category.name }}</h1>
 
-        <table>
+        <table class="table table-bordered table-striped table-products">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Producer</th>
-                    <th>Price</th>
-                    <th>&nbsp;</th>
+                    <th>{{ 'photo'|trans }}</th>
+                    <th>{{ 'product'|trans }}</th>
+                    <th>{{ 'producer'|trans }}</th>
+                    <th>{{ 'price'|trans }}</th>
+                    <th>{{ 'availability'|trans }}</th>
+                    <th>{{ 'order'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
                     <tr>
+                        <td>
+                        {% if product.image is not null %}
+                            <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                        {% else %}
+                            <span class="glyphicon glyphicon-picture photo-placeholder-s"></span>
+                        {% endif %}
+                        </td>
                         <td>
                             <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': category.slug, 'product_slug': product.slug}) }}">
                                 {{ product.name }}
@@ -29,13 +37,11 @@
                         </td>
                         <td>
                             <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
-                                {{ product.producer }}
+                                <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
                             </a>
                         </td>
                         <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
-                        <td>
-                            {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product})) }}
-                        </td>
+                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Cart:showAddFormTd.html.twig'})) }}
                     </tr>
                 {% endfor %}
             </tbody>

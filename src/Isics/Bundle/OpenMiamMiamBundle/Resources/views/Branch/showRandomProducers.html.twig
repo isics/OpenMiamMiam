@@ -5,20 +5,22 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-
-<div id="producers">
-    <h2>Discover our producers</h2>
-    <ul>
-    {% for producer in producers %}
-        <li>
-            <a href="{{ path('open_miam_miam_producer', {'producer_slug': producer.slug}) }}">
-                {{ producer }}
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-
-    <p>
-        <a href="#">See all producers</a>
-    </p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title"><span class="glyphicon glyphicon-user"></span> {{ 'zone.producers.title'|trans }}</h2>
+    </div>
+    <div class="panel-body">
+        <ul class="list-unstyled">
+        {% for producer in producers %}
+            <li>
+                <a href="{{ path('open_miam_miam_producer', {'producer_slug': producer.slug}) }}">
+                    {{ producer }}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="panel-footer">
+        <a href="#">{{ 'zone.producers.link'|trans }}</a>
+    </div>
 </div>
