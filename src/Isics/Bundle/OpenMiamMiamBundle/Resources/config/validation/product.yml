@@ -12,8 +12,10 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - Length:
                 max: 16
         producer:
+            - Valid: ~
             - NotNull: ~
         category:
+            - Valid: ~
             - NotNull: ~
         isBio:
             - Type: bool
