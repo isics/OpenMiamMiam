@@ -11,20 +11,23 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
 
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerBranchAttendanceType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerBranchOccurrenceAttendanceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProducerAttendancesType extends AbstractType
+class ProducerBranchAttendancesType extends AbstractType
 {
     /**
      * @see AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('branchAttendances', 'collection', array('type' => new ProducerBranchAttendancesType()))
-                ->add('Save', 'submit');
+        $builder->add(
+            'branchOccurrenceAttendances',
+            'collection',
+            array('type' => new ProducerBranchOccurrenceAttendanceType())
+        );
     }
 
     /**
@@ -33,7 +36,7 @@ class ProducerAttendancesType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendances',
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchAttendances',
         ));
     }
 

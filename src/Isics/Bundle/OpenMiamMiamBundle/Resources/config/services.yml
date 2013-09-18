@@ -10,18 +10,19 @@ parameters:
         - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/product.yml"
         - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamBundle/Resources/config/validation/cartItem.yml"
 
-    open_miam_miam.cart_item_validator.class:       'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
-    open_miam_miam.buying_unit_validator.class:     'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'
-    open_miam_miam.product_validator.class:         'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProductValidator'
-    open_miam_miam.branch_occurrence_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
-    open_miam_miam.cart_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
-    open_miam_miam.admin_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
-    open_miam_miam.acl_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
-    open_miam_miam.product_manager.class:           'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
-    open_miam_miam.menu_builder.class:              'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
-    open_miam_miam.menu_voter.class:                'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
-    open_miam_miam.form.type.hidden_product.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
-    open_miam_miam.form.type.product.class:         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
+    open_miam_miam.cart_item_validator.class:          'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
+    open_miam_miam.buying_unit_validator.class:        'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'
+    open_miam_miam.product_validator.class:            'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProductValidator'
+    open_miam_miam.branch_occurrence_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
+    open_miam_miam.cart_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
+    open_miam_miam.admin_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
+    open_miam_miam.acl_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
+    open_miam_miam.product_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
+    open_miam_miam.menu_builder.class:                 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
+    open_miam_miam.menu_voter.class:                   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
+    open_miam_miam.form.type.hidden_product.class:     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
+    open_miam_miam.form.type.product.class:            'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
+    open_miam_miam.producer_attendances_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
 
 services:
     # Validators
@@ -104,3 +105,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: preRemove }
+
+    open_miam_miam.producer_attendances_manager:
+        class: %open_miam_miam.producer_attendances_manager.class%
+        arguments: [@doctrine.orm.entity_manager]

@@ -12,7 +12,6 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
