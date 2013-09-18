@@ -69,12 +69,13 @@
                             <div class="form-group">
                                 <label for="open_miam_miam_admin_product_price">{{ 'admin.producer.products.form.price'|trans }}</label>
                                 <div class="input-group">
+                                    {{ form_errors(form.price) }}
                                     {{ form_widget(form.price)}}
                                     <span class="input-group-addon">{{ open_miam_miam.currency }}</span>
                                 </div>
                                 <label>
-                                    {{ form_widget(form.hasPrice) }}
-                                    {{ 'admin.producer.products.form.has_price'|trans }}
+                                    {{ form_widget(form.hasNoPrice) }}
+                                    {{ 'admin.producer.products.form.has_no_price'|trans }}
                                 </label>
                             </div>
                         </div>

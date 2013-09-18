@@ -134,9 +134,9 @@ class Product
     private $allowDecimalQuantity;
 
     /**
-     * @var boolean $hasPrice
+     * @var boolean $hasNoPrice
      */
-    private $hasPrice;
+    private $hasNoPrice;
 
     /**
      * @var decimal $price
@@ -151,7 +151,6 @@ class Product
      * @ORM\Column(name="price_info", type="string", length=128, nullable=true)
      */
     private $priceInfo;
-
 
     /**
      * @var integer $availability
@@ -200,7 +199,7 @@ class Product
         $this->allowDecimalQuantity = false;
         $this->deleteImage          = false;
         $this->availability         = self::AVAILABILITY_AVAILABLE;
-        $this->hasPrice             = null !== $this->price;
+        $this->hasNoPrice           = null === $this->price;
         $this->branches             = new ArrayCollection();
     }
 
@@ -492,30 +491,30 @@ class Product
     }
 
     /**
-     * Set hasPrice flag
+     * Set hasNoPrice flag
      *
-     * @param boolean $hasPrice
+     * @param boolean $hasNoPrice
      * @return Product
      */
-    public function setHasPrice($hasPrice)
+    public function setHasNoPrice($hasNoPrice)
     {
-        $this->hasPrice = (bool)$hasPrice;
+        $this->hasNoPrice = (bool)$hasNoPrice;
 
         return $this;
     }
 
     /**
-     * Get hasPrice flag
+     * Get hasNoPrice flag
      *
      * @return float
      */
-    public function getHasPrice()
+    public function getHasNoPrice()
     {
-        if (null === $this->hasPrice) {
-            $this->hasPrice = null !== $this->price;
+        if (null === $this->hasNoPrice) {
+            $this->hasNoPrice = null === $this->price;
         }
 
-        return $this->hasPrice;
+        return $this->hasNoPrice;
     }
 
     /**

@@ -35,7 +35,7 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
                 maxSize: 5120k
         deleteImage:
             - Type: bool
-        hasPrice:
+        hasNoPrice:
             - Type: bool
         buyingUnit:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnit: ~

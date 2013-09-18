@@ -73,7 +73,7 @@ class ProductType extends AbstractType
                 ->add('allowDecimalQuantity', 'checkbox', array(
                     'required' => false
                 ))
-                ->add('hasPrice', 'checkbox', array(
+                ->add('hasNoPrice', 'checkbox', array(
                     'required' => false
                 ))
                 ->add('price', 'text', array(

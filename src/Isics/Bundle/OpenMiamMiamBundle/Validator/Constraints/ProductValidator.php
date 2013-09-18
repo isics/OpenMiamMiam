@@ -53,7 +53,7 @@ class ProductValidator extends ConstraintValidator
         }
 
         // Price validation
-        if (!$product->getHasPrice()) {
+        if ($product->getHasNoPrice()) {
             $product->setPrice(null);
         } elseif (null === $product->getPrice()) {
             $this->context->addViolationAt('price', $constraint->requiredMessage, array(), null);
