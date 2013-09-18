@@ -89,6 +89,6 @@ fos_user:
 # LiipImagineBundle Configuration
 liip_imagine:
     filter_sets:
-        admin:
+        s:
             filters:
                 thumbnail: { size: [100, 100], mode: outbound }
