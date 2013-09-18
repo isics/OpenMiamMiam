@@ -35,6 +35,7 @@ class IsicsOpenMiamMiamExtension extends Extension
         $container->setParameter('open_miam_miam.customer', $config['customer']);
         $container->setParameter('open_miam_miam.order', $config['order']);
         $container->setParameter('open_miam_miam.buying_units', $config['buying_units']);
+        $container->setParameter('open_miam_miam.producer', $config['producer']);
     }
 
     /**
