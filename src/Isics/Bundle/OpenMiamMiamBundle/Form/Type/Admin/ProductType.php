@@ -17,6 +17,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+// @todo (all branches selected by default)
+// @todo (only next years)
 class ProductType extends AbstractType
 {
     /**
