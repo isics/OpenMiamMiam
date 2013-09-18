@@ -28,6 +28,44 @@ h1 {
 }
 
 //
+// Producer dashboard
+//
+#producer-dashboard .panel {
+    border-width: 5px;
+    font-size: @font-size-large;
+    line-height: 50px;
+    text-align: center;
+}
+
+#producer-dashboard .panel span {
+    font-size: 50px;
+    text-align: right;
+}
+
+#producer-dashboard .panel strong {
+    font-size: 100px;
+    line-height: 100px;
+}
+
+#producer-dashboard .panel a,
+#producer-dashboard .panel span,
+#producer-dashboard .panel strong {
+    display: block;
+}
+
+#producer-dashboard .panel a:hover {
+    text-decoration: none;
+}
+
+#producer-dashboard .panel-danger a {
+    color: @alert-danger-text;
+}
+
+#producer-dashboard .panel-danger a:hover {
+    color: darken(@alert-danger-text, 15%);
+}
+
+//
 // Producer / Products
 //
 .table-products th:nth-child(n+3),

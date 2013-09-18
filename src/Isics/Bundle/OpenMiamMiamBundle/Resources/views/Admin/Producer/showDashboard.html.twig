@@ -8,7 +8,47 @@
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
-    <h1>{% trans %}dashboard{% endtrans %}</h1>
+    <h1>{{ 'admin.producer.dashboard.title'|trans }}</h1>
 
-    {{ nbAttendancesUnknown }}
+    <div id="producer-dashboard" class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <strong>
+                            0
+                        </strong>
+                        {{ 'admin.producer.dashboard.orders_to_prepare'|transchoice(0) }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-list"></span>
+                        <strong>
+                            0
+                        </strong>
+                        {{ 'admin.producer.dashboard.products_out_of_stock'|transchoice(0) }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-{% if nbUnknownAttendances > 0 %}danger{% else %}default{% endif %}">
+                <div class="panel-body">
+                    <a href="{{ path('open_miam_miam.admin.producer.calendar', {'id': producer.id}) }}">
+                        <span class="glyphicon glyphicon-time"></span>
+                        <strong>
+                            {{ nbUnknownAttendances }}
+                        </strong>
+                        {{ 'admin.producer.dashboard.attendances_to_confirm'|transchoice(nbUnknownAttendances) }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
