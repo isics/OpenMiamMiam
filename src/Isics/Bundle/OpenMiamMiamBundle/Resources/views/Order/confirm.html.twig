@@ -1,0 +1,57 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
+    {% block content %}
+        <h1></h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>{{ 'consumer'|trans }}</h2>
+                <p>
+                    {{ user.firstname }} {{ user.lastname }}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h2>{{ 'withdrawing.products'|trans }}</h2>
+            </div>
+        </div>
+        <table class="table table-bordered table-striped table-cart-products">
+            <thead>
+                <tr>
+                    <th>{{ 'product'|trans }}</th>
+                    <th>{{ 'price'|trans }}</th>
+                    <th>{{ 'quantity'|trans }}</th>
+                    <th>{{ 'total'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.items %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': item.product.category.slug, 'product_slug': item.product.slug}) }}">
+                                {{ item.product.name }}
+                            </a>
+                        </td>
+                        <td>{{ item.product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total|number_format_currency(open_miam_miam.currency) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">{{ 'total'|trans }}</th>
+                    <td>{{ cart.total|number_format_currency(open_miam_miam.currency) }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <p>
+            <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}">Back to cart</a>
+        </p>
+    {% endblock %}
+{% endembed %}

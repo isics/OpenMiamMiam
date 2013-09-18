@@ -1,22 +1,24 @@
 # General
-add:            "Ajouter"
-branch:         "Comptoir"
-calendar:       "Calendrier"
-checkout:       "Commander"
-dashboard:      "Tableau de bord"
-logout:         "Déconnexion"
-managers:       "Gestionnaires"
-order:          "Commander"
-orders:         "Commandes"
-photo:          "Photo"
-price:          "Prix"
-producer:       "Producteur"
-producer.infos: "Infos producteur"
-product:        "Produit"
-products:       "Produits"
-quantity:       "Quantité"
-total:          "Total"
-update:         "Mettre à jour"
+add:                  "Ajouter"
+branch:               "Comptoir"
+calendar:             "Calendrier"
+checkout:             "Commander"
+dashboard:            "Tableau de bord"
+logout:               "Déconnexion"
+managers:             "Gestionnaires"
+order:                "Commander"
+orders:               "Commandes"
+photo:                "Photo"
+price:                "Prix"
+producer:             "Producteur"
+producer.infos:       "Infos producteur"
+product:              "Produit"
+products:             "Produits"
+quantity:             "Quantité"
+total:                "Total"
+update:               "Mettre à jour"
+consumer:             "Consommateur"
+withdrawing.products: "Retrait des produits"
 
 # Zones
 zone.header.branch.change:    "Changer de comptoir"
@@ -25,11 +27,14 @@ zone.occurrence.order.from:   "Commandez à partir du"
 zone.occurrence.no.next.date: "Aucun comptoir planifié"
 zone.producers.title:         "Les producteurs"
 zone.producers.link:          "Tous les producteurs"
-zone.next_occurrences.title:   "Prochains comptoirs"
+zone.next_occurrences.title:  "Prochains comptoirs"
 zone.location.title:          "S'y rendre"
 
 # Cart
 cart.title: "Mon panier"
+
+# Order process
+
 
 # Availability
 availability:                 "Dispo"

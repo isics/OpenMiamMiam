@@ -28,3 +28,4 @@ security:
 
     access_control:
         - { path: ^/admin/, role: ROLE_USER }
+        - { path: ^(?!/admin/).*/?order/, role: ROLE_USER }

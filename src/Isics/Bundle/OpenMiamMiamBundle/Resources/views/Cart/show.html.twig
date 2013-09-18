@@ -50,5 +50,9 @@
                 Keep shoping
             </a>
         </p>
+        <a href="{{ path('open_miam_miam_order_confirm', {'branch_slug': branch.slug}) }}" class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            {{ 'checkout'|trans }}
+        </a>
     {% endblock %}
 {% endembed %}
