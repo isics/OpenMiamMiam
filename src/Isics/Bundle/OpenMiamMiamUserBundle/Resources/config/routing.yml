@@ -1,3 +1,4 @@
+# Front
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -16,3 +17,16 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+# Admin
+open_miam_miam_user.admin.security.login:
+    pattern:  /admin/login
+    defaults: { _controller: IsicsOpenMiamMiamUserBundle:Security:login }
+
+open_miam_miam_user.admin.security.login_check:
+    pattern:  /admin/login_check
+    defaults: { _controller: IsicsOpenMiamMiamUserBundle:Security:login }
+
+open_miam_miam_user.admin.security.logout:
+    pattern:  /admin/logout
+    defaults: { _controller: FOSUserBundle:Security:logout }

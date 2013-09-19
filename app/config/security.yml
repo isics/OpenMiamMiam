@@ -18,7 +18,19 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        admin:
+            pattern: ^/admin
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: form.csrf_provider
+                check_path: /admin/login_check
+                login_path: /admin/login
+            logout:
+                path:        /admin/logout
+                target:      /admin
+            anonymous: true
+
+        front:
            pattern: ^/
            form_login:
                provider: fos_userbundle
@@ -27,5 +39,6 @@ security:
            anonymous: true
 
     access_control:
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_USER }
         - { path: ^(?!/admin/).*/?order/, role: ROLE_USER }

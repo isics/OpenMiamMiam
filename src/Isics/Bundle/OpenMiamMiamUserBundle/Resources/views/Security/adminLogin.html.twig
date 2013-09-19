@@ -1,4 +1,4 @@
-{% extends "IsicsOpenMiamMiamBundle::base.html.twig" %}
+{% extends "IsicsOpenMiamMiamBundle:Admin:base.html.twig" %}
 
 {% block content %}
     <div class="row">
@@ -9,7 +9,7 @@
                 <div class="alert alert-danger">{{ error|trans({}, 'FOSUserBundle') }}</div>
             {% endif %}
 
-            <form action="{{ path("fos_user_security_check") }}" method="post">
+            <form action="{{ path("open_miam_miam_user.admin.security.login_check") }}" method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
                 <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control" placeholder="{% trans %}admin.login.email.placeholder{% endtrans %}" />
