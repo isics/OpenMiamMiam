@@ -14,7 +14,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+
 
 class IsicsOpenMiamMiamExtension extends Extension
 {
@@ -36,6 +38,25 @@ class IsicsOpenMiamMiamExtension extends Extension
         $container->setParameter('open_miam_miam.order', $config['order']);
         $container->setParameter('open_miam_miam.buying_units', $config['buying_units']);
         $container->setParameter('open_miam_miam.producer', $config['producer']);
+
+        $this->loadValidationFiles($container);
+    }
+
+    /**
+     * Loads validation files
+     *
+     * @param ContainerBuilder $container
+     */
+    private function loadValidationFiles(ContainerBuilder $container)
+    {
+        $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
+
+        $finder = new Finder();
+        foreach ($finder->files()->name('*.yml')->in(__DIR__.'/../Resources/config/validation') as $file) {
+            $yamlMappingFiles[] = (string) $file;
+        }
+
+        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
     }
 
     /**

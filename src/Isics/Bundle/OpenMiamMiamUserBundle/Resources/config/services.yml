@@ -1,7 +1,3 @@
-parameters:
-    validator.mapping.loader.yaml_files_loader.mapping_files:
-        - "%kernel.root_dir%/../src/Isics/Bundle/OpenMiamMiamUserBundle/Resources/config/validation.yml"
-
 services:
     open_miam_miam.form.type.user_registration:
         class: Isics\Bundle\OpenMiamMiamUserBundle\Form\Type\RegistrationType
@@ -9,7 +5,7 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_user_registration }
 
-    open_miam_miam.form.type.user_registration:
+    open_miam_miam.form.type.user_profile:
         class: Isics\Bundle\OpenMiamMiamUserBundle\Form\Type\ProfileType
         arguments: [%fos_user.model.user.class%]
         tags:
