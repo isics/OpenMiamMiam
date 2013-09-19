@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
@@ -48,7 +49,7 @@ class SalesOrder
      *
      * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="salesOrder", cascade="all")
      */
-    private $salesOrderRows = array();
+    private $salesOrderRows;
 
     /**
      * @var string $ref
@@ -131,6 +132,11 @@ class SalesOrder
     private $consumerComment;
 
 
+
+    public function __construct()
+    {
+        $this->salesOrderRows = new ArrayCollection();
+    }
 
     /**
      * @param string $consumerComment
@@ -329,7 +335,7 @@ class SalesOrder
      */
     public function setSalesOrderRows($salesOrderRows)
     {
-        $this->salesOrderRows = array();
+        $this->salesOrderRows = new ArrayCollection();
 
         foreach ($salesOrderRows as $row) {
             $this->addSalesOrderRow($row);
