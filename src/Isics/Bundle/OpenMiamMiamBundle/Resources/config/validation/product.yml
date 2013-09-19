@@ -44,7 +44,7 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
         availability:
             - Choice: { callback: getAvailabilityStatus}
         stock:
-            - Range:
-                min: 0
+            - Type:
+                type: numeric
         availableAt:
             - Date: ~
