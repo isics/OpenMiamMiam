@@ -9,6 +9,13 @@
     {% block title %}{{ 'cart.title'|trans }} - {{ parent() }}{% endblock %}
 
     {% block content %}
+        <ol class="breadcrumb">
+            <li><a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
+            <li class="active">{{ 'cart.title'|trans }}</li>
+        </ol>
+
+        <h1>{{ 'cart.title'|trans }}</h1>
+
         {% set showNoPriceStatement = false %}
         {{ form_start(form) }}
             {{ form_errors(form) }}
@@ -64,12 +71,18 @@
                 {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
             {% endif %}
 
-        {{ form_end(form) }}
+            <button type="submit" class="btn btn-primary btn-lg pull-right" name="open_miam_miam_cart[checkout]" value="checkout" />
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+                {{ 'checkout'|trans }}
+            </button>
+            {% do form.checkout.setRendered %}
 
-        <p>
-            <a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">
-                Keep shoping
-            </a>
-        </p>
+            <button type="submit" class="btn btn-default btn-lg" name="open_miam_miam_cart[update]" value="update" />
+                <span class="glyphicon glyphicon-refresh"></span>
+                {{ 'update'|trans }}
+            </button>
+            {% do form.update.setRendered %}
+
+        {{ form_end(form) }}
     {% endblock %}
 {% endembed %}

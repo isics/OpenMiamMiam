@@ -9,17 +9,15 @@
     <div class="panel-heading">
         <h2 class="panel-title"><span class="glyphicon glyphicon-user"></span> {{ 'zone.producers.title'|trans }}</h2>
     </div>
-    <div class="panel-body">
-        <ul class="list-unstyled">
-        {% for producer in producers %}
-            <li>
-                <a href="{{ path('open_miam_miam_producer', {'producer_slug': producer.slug}) }}">
-                    {{ producer }}
-                </a>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
+    <ul class="list-group">
+    {% for producer in producers %}
+        <li class="list-group-item">
+            <a href="{{ path('open_miam_miam_producer', {'producer_slug': producer.slug}) }}">
+                {{ producer }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
     <div class="panel-footer">
         <a href="#">{{ 'zone.producers.link'|trans }}</a>
     </div>

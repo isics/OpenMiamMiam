@@ -11,18 +11,15 @@
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block stylesheet %}
-            {% stylesheets
-                '@IsicsOpenMiamMiamBundle/Resources/assets/less/bootstrap.less'
-                '@IsicsOpenMiamMiamBundle/Resources/assets/less/front.less'
-                filter='?uglifycss'
-                output='cache/css/*.css'
-            %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets %}
+            {% include 'IsicsOpenMiamMiamBundle::baseStylesheets.html.twig' %}
         {% endblock %}
     </head>
     <body>
         <div class="container">
+            <p class="text-right">
+                <span class="glyphicon glyphicon-user"></span> <a href="#">{{ 'my_account'|trans }}</a>
+            </p>
+
             <header>
                 {% block header %}{% endblock %}
             </header>
@@ -39,17 +36,7 @@
         </div>
 
         {% block javascript %}
-            {% javascripts
-                'js/jquery-2.0.3.min.js'
-                'bootstrap/js/button.js'
-                'bootstrap/js/collapse.js'
-                'bootstrap/js/transition.js'
-                '@IsicsOpenMiamMiamBundle/Resources/assets/js/front.js'
-                filter='?uglifyjs2'
-                output='cache/js/*.js'
-            %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
+            {% include 'IsicsOpenMiamMiamBundle::baseJavascripts.html.twig' %}
         {% endblock %}
     </body>
 </html>

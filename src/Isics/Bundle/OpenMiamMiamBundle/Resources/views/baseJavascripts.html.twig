@@ -1,0 +1,11 @@
+{% javascripts
+    'js/jquery-2.0.3.min.js'
+    'bootstrap/js/button.js'
+    'bootstrap/js/collapse.js'
+    'bootstrap/js/transition.js'
+    '@IsicsOpenMiamMiamBundle/Resources/assets/js/front.js'
+    filter='?uglifyjs2'
+    output='cache/js/*.js'
+%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}

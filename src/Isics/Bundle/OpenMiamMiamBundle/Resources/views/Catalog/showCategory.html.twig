@@ -9,6 +9,11 @@
     {% block title %}{{ category.name }} - {{ parent() }}{% endblock %}
 
     {% block content %}
+        <ol class="breadcrumb">
+            <li><a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
+            <li class="active">{{ category.name }}</li>
+        </ol>
+
         <h1>{{ category.name }}</h1>
 
         {% set showNoPriceStatement = false %}

@@ -29,14 +29,18 @@
                     <p>
                         <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
                             {% if product.image is not null %}
-                                <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                                <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
                             {% else %}
-                                -
+                                <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
                             {% endif %}
                         </a>
                     </p>
                     <p>
-                        {{ product.priceInfo }}
+                        {% if product.priceInfo %}
+                            {{ product.priceInfo }}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
                     </p>
                     <p>
                         <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
@@ -52,7 +56,7 @@
                         {% endif %}
                     </p>
                     <p>
-                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Cart:showAddFormTd.html.twig'})) }}
+                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product})) }}
                     </p>
                 </div>
             </div>

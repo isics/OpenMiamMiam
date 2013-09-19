@@ -31,16 +31,19 @@
 <div id="cart-summary">
     {% if not cart.isClosed %}
         {% if cart.nbItems > 0 %}
-            <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}">
-                {{ 'cart.title'|trans }} ({{ cart.nbItems }}</span>)
-                {{ cart.total|number_format_currency(open_miam_miam.currency) }}
-            </a>
-            <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}" class="btn btn-primary btn-lg">
+            <strong>
+                {{ 'cart.title'|trans }}
+                <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}">
+                    ({{ cart.nbItems }}</span>)
+                    {{ cart.total|number_format_currency(open_miam_miam.currency) }}
+                </a>
+            </strong>
+            <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}" class="btn btn-primary btn-block">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
                 {{ 'checkout'|trans }}
             </a>
         {% else %}
-            {{ 'cart.title'|trans }}
+            <strong>{{ 'cart.title'|trans }}</strong>
         {% endif %}
     {% endif %}
 </div>

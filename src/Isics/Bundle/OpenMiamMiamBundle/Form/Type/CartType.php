@@ -26,8 +26,8 @@ class CartType extends AbstractType implements EventSubscriberInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('items', 'collection', array('type' => new CartItemType(), 'allow_delete' => true));
-        $builder->add('Update', 'submit');
-        $builder->add('Checkout', 'submit');
+        $builder->add('update', 'submit');
+        $builder->add('checkout', 'submit');
 
         $builder->addEventSubscriber($this);
     }

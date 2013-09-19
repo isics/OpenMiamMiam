@@ -11,24 +11,57 @@
 //
 // Header
 //
-#header-logo,
+header {
+    .make-row();
+    margin-top: @line-height-computed;
+
+    strong {
+        font-size: @font-size-large;
+    }
+}
+
+#header-logo {
+    .make-md-column(3);
+    text-align: center;
+}
+
+#header-main {
+    .make-md-column(9);
+
+    .panel-body {
+        padding: 0 15px !important;
+    }
+}
+
+#header-main-body {
+    .make-row();
+}
+
+#header-branch-name {
+    h1 {
+        margin: 0;
+        font-size: @font-size-large;
+        line-height: @line-height-base;
+    }
+}
+
 #header-branch-name,
 #branch-occurrence,
 #cart-summary {
-    .make-md-column(3);
+    .make-md-column(4);
+    padding: 5px 15px;
 }
 
-//
-// Branch name
-//
+#branch-occurrence {
+    border-right: 1px solid @panel-default-border;
+    border-left: 1px solid @panel-default-border;
+}
+
 #header-branch-change-link {
     display: block;
     font-size: @font-size-small;
 }
 
-//
-// Branch occurrence
-//
 #branch-occurrence-hours {
     display: block;
 }
@@ -36,6 +69,13 @@
 #branch-occurrence-order-period {
     color: @brand-danger;
     font-size: @font-size-small;
+}
+
+//
+// Breadcrumb
+//
+.breadcrumb {
+    margin-bottom: 0;
 }
 
 //
