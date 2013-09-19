@@ -36,11 +36,11 @@
                     <tbody>
                         {% for salesOrder in branchOccurrenceSalesOrders %}
                             <tr>
-                                <td>{{ salesOrder.ref }}</td>
+                                <td><a href="#">{{ salesOrder.ref }}</a></td>
                                 <td>{{ salesOrder.date|format_date }}</td>
                                 <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }}</td>
                                 <td>{{ salesOrder.salesOrderRows|length }}</td>
-                                <td>{{ salesOrder.subTotalByProducer(producer) }}</td>
+                                <td>{{ salesOrder.subTotalByProducer(producer)|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
