@@ -37,7 +37,7 @@ class SalesOrderRow
      *
      * @ORM\ManyToOne(targetEntity="SalesOrder", inversedBy="salesOrderRows")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sales_order_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="sales_order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     private $salesOrder;
@@ -47,7 +47,7 @@ class SalesOrderRow
      *
      * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      * })
      */
     private $product;
@@ -73,6 +73,8 @@ class SalesOrderRow
      */
     private $total;
 
+
+    
     /**
      * @param int $id
      */

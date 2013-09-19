@@ -58,6 +58,8 @@ class ProducerAttendance
      */
     private $isAttendee;
 
+
+
     /**
      * Get id
      *

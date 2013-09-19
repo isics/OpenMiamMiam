@@ -37,7 +37,7 @@ class Branch
      *
      * @ORM\ManyToOne(targetEntity="Association")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     private $association;
@@ -141,6 +141,8 @@ class Branch
      * @ORM\ManyToMany(targetEntity="Product", mappedBy="branches")
      */
     private $products;
+
+
 
     /**
      * Constructor
