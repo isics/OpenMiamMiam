@@ -15,13 +15,13 @@ Feature: Admin authentication & authorization
       | Romeo Frigo |                           |
 
   Scenario: Access to the login page
-    Given I am on "/login"
-    Then I should be on "/login"
+    Given I am on "/admin/login"
+    Then I should be on "/admin/login"
     And I should see "Manager access"
 
   Scenario: Redirect to the login
     Given I am on "/admin"
-    Then I should be on "/login"
+    Then I should be on "/admin/login"
     And I should see "Manager access"
 
   Scenario: Log to the administration area but have no credentials
