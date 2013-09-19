@@ -138,7 +138,6 @@ class Association
      */
     private $defaultCommission;
 
-
     /**
      * @var Doctrine\Common\Collections\Collection $producers
      *
@@ -153,6 +152,8 @@ class Association
      * )
      */
     private $producers;
+
+
 
     /**
      * Constructor

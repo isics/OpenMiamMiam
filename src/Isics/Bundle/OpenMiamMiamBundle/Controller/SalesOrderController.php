@@ -55,6 +55,9 @@ class SalesOrderController extends Controller
             if ($form->isValid()) {
                 $orderManager = $this->get('open_miam_miam.sales_order_manager');
                 $order = $orderManager->createFromCart($cart);
+
+                var_dump($order);
+                die('ok');
             }
         }
 

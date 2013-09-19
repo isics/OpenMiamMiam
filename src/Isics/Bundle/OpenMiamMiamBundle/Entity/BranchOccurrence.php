@@ -36,7 +36,7 @@ class BranchOccurrence
      *
      * @ORM\ManyToOne(targetEntity="Branch")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="branch_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="branch_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
     private $branch;
@@ -61,6 +61,8 @@ class BranchOccurrence
      * @ORM\OneToMany(targetEntity="ProducerAttendance", mappedBy="branchOccurrence")
      */
     private $producerAttendances;
+
+
 
     /**
      * Constructor
