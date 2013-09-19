@@ -97,4 +97,7 @@ liip_imagine:
     filter_sets:
         s:
             filters:
-                thumbnail: { size: [100, 100], mode: outbound }
+                thumbnail: { size: [80, 80], mode: outbound }
+        m:
+            filters:
+                thumbnail: { size: [300, 300], mode: outbound }
