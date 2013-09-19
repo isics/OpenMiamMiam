@@ -1,3 +1,8 @@
+Isics\Bundle\OpenMiamMiamBundle\Model\Cart:
+    properties:
+        items:
+            - Valid: ~
+
 Isics\Bundle\OpenMiamMiamBundle\Model\CartItem:
     constraints:
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItem: ~

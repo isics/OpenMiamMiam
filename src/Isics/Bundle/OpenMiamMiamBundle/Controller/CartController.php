@@ -17,6 +17,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartItemType;
 use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -51,6 +52,8 @@ class CartController extends Controller
      *
      * @param Branch $branch Branch
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Branch $branch)
@@ -69,6 +72,13 @@ class CartController extends Controller
                 'method' => 'PUT',
             )
         );
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($cart);
+        $violationMapper = new ViolationMapper();
+        foreach ($errors as $error) {
+            $violationMapper->mapViolation($error, $form);
+        }
 
         return $this->render('IsicsOpenMiamMiamBundle:Cart:show.html.twig', array(
             'branch' => $branch,
@@ -185,6 +195,13 @@ class CartController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $cart->setItems($updatedCart->getItems());
+
+            if ($form->get('Checkout')->isClicked()) {
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam_sales_order_confirm',
+                    array('branch_slug' => $branch->getSlug())
+                ));
+            }
 
             $this->get('session')->getFlashBag()->add(
                 'notice',

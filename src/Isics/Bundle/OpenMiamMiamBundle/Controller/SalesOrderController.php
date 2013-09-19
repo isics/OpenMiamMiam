@@ -35,7 +35,10 @@ class SalesOrderController extends Controller
     public function confirmAction(Request $request, Branch $branch)
     {
         $cart = $this->get('open_miam_miam.cart_manager')->get($branch);
-        if (count($cart->getItems()) == 0) {
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($cart);
+        if (count($errors) > 0 || count($cart->getItems()) == 0) {
             return $this->redirectToCart($cart);
         }
 
