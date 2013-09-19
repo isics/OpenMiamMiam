@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('upload_path')->defaultValue('/uploads/products')->end()
                     ->end()
                 ->end()
-                ->arrayNode('customer')
+                ->arrayNode('consumer')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('ref_prefix')->defaultValue('CU')->end()
