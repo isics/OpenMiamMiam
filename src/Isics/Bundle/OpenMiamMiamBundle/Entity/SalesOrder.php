@@ -21,7 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Isics\OpenMiamMiamBundle\Entity\SalesOrder
  *
  * @ORM\Table(name="sales_order")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository")
  */
 class SalesOrder
 {

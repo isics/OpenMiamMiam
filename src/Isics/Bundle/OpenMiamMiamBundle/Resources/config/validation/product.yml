@@ -1,7 +1,7 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [ref,producer]
-        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Product:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Product: ~
     properties:
         name:
             - NotNull: ~

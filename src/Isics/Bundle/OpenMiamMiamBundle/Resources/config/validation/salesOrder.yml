@@ -4,6 +4,8 @@ Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation:
             - "True": ~
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrder: ~
     properties:
         branchOccurrence:
             - NotNull: ~
@@ -55,6 +57,9 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
     properties:
         product:
             - NotNull: { groups: [FromCart] }
+            - Valid: ~
+        producer:
+            - NotNull: ~
             - Valid: ~
         name:
             - NotNull: ~

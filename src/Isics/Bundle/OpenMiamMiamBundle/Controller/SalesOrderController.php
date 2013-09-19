@@ -62,7 +62,7 @@ class SalesOrderController extends Controller
                 $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
                 $orderManager = $this->get('open_miam_miam.sales_order_manager');
 
-                $order = $orderManager->processSalesOrder(
+                $order = $orderManager->processSalesOrderFromCart(
                     $cart,
                     $branchOccurrenceManager->getNext($branch),
                     $user,

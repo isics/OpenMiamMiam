@@ -80,11 +80,9 @@ class SalesOrderManager
      * @param User $user
      * @param SalesOrderConfirmation $confirmation
      *
-     * @throws \DomainException
-     *
      * @return SalesOrder
      */
-    public function processSalesOrder(Cart $cart,
+    public function processSalesOrderFromCart(Cart $cart,
                                       BranchOccurrence $branchOccurrence,
                                       User $user,
                                       SalesOrderConfirmation $confirmation = null)
@@ -95,12 +93,7 @@ class SalesOrderManager
             $order->setConsumerComment($confirmation->getConsumerComment());
         }
 
-        $errors = $this->validator->validate($order, array('FromCart'));
-        if (count($errors) > 0) {
-            throw new \DomainException('Invalid order.');
-        }
-
-        $this->save($order);
+        $this->save($order, true);
 
         $cart->clearItems();
 
@@ -138,6 +131,7 @@ class SalesOrderManager
 
             $orderRow = new SalesOrderRow();
             $orderRow->setProduct($product);
+            $orderRow->setProducer($product->getProducer());
             $orderRow->setName($product->getName());
             $orderRow->setRef($product->getRef());
             $orderRow->setIsBio($product->getIsBio());
@@ -155,8 +149,11 @@ class SalesOrderManager
      * Saves sales order
      *
      * @param SalesOrder $order
+     * @param boolean $fromCart
+     *
+     * @throws \DomainException
      */
-    public function save(SalesOrder $order)
+    public function save(SalesOrder $order, $fromCart = false)
     {
         // Increase reference for order
         $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
@@ -169,6 +166,10 @@ class SalesOrderManager
             $this->config['ref_prefix'],
             str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
         ));
+
+        if ($fromCart && count($this->validator->validate($order, array('Default', 'FromCart'))) > 0) {
+            throw new \DomainException('Invalid order');
+        }
 
         // Update product stocks
         foreach ($order->getSalesOrderRows() as $row) {

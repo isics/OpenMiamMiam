@@ -13,6 +13,8 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -51,6 +53,16 @@ class SalesOrderRow
      * })
      */
     private $product;
+
+    /**
+     * @var Producer
+     *
+     * @ORM\ManyToOne(targetEntity="Producer")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="producer_id", referencedColumnName="id", nullable=false)
+     * })
+     */
+    private $producer;
 
     /**
      * @var string $name
@@ -116,7 +128,7 @@ class SalesOrderRow
     /**
      * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Product $product
      */
-    public function setProduct($product)
+    public function setProduct(Product $product = null)
     {
         $this->product = $product;
     }
@@ -127,6 +139,22 @@ class SalesOrderRow
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Producer $producer
+     */
+    public function setProducer(Producer $producer)
+    {
+        $this->producer = $producer;
+    }
+
+    /**
+     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Producer
+     */
+    public function getProducer()
+    {
+        return $this->producer;
     }
 
     /**
