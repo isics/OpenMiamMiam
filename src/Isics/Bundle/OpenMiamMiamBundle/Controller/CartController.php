@@ -196,7 +196,7 @@ class CartController extends Controller
         if ($form->isValid()) {
             $cart->setItems($updatedCart->getItems());
 
-            if ($form->get('Checkout')->isClicked()) {
+            if ($form->get('checkout')->isClicked()) {
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam_sales_order_confirm',
                     array('branch_slug' => $branch->getSlug())

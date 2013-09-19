@@ -10,19 +10,25 @@
 {% block title %}{{ branch.name }}{% endblock %}
 
 {% block header %}
-    <div class="row">
-        <div id="header-logo">
-            OpenMiamMiam
-        </div>
+    <div id="header-logo">
+        {% block header_logo %}<strong>OpenMiamMiam</strong>{% endblock %}
+    </div>
 
-        <div id="header-branch-name">
-            {% block header_branch_name %}
-                <a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}"><strong>{{ branch.name }}</strong></a>
-            {% endblock %}
-            <a href="{{ path('open_miam_miam_homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
-        </div>
+    <div id="header-main">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="header-main-body">
+                    <div id="header-branch-name">
+                                {% block header_branch_name %}
+                                    <strong>{{ branch.name }}</strong>
+                                {% endblock %}
+                                <a href="{{ path('open_miam_miam_homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
+                    </div>
 
-        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:Summarize', {'branch': branch})) }}
+                    {{ render(controller('IsicsOpenMiamMiamBundle:Cart:Summarize', {'branch': branch})) }}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 

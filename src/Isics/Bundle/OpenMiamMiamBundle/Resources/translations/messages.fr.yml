@@ -2,6 +2,7 @@
 add:                  "Ajouter"
 branch:               "Comptoir"
 checkout:             "Commander"
+homepage:             "Accueil"
 logout:               "Déconnexion"
 order:                "Commander"
 photo:                "Photo"
@@ -15,6 +16,7 @@ consumer:             "Consommateur"
 withdrawing_products: "Retrait des produits"
 number:               "n°"
 no_price_statement:   "Le prix sera défini lors de la préparation de la commande."
+my_account:           "Mon compte"
 
 # Zones
 zone.header.branch.change:         "changer de comptoir"

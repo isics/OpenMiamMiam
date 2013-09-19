@@ -101,7 +101,7 @@ Feature: Branch cart
     And I follow "Basket of vegetables"
     And I press "Add"
     And I change quantity to "3"
-    When I press "Update"
+    When I press "update"
     Then I should see "My cart (1) €45.00"
     And I should see "Cart has been updated."
 
@@ -110,7 +110,7 @@ Feature: Branch cart
     And I follow "Basket of vegetables"
     And I press "Add"
     And I change quantity to "0"
-    When I press "Update"
+    When I press "update"
     Then I should not see "My cart (1)"
     And I should see "Cart has been updated."
 

@@ -4,6 +4,7 @@ branch:         "Branch"
 checkout:       "Checkout"
 logout:         "Logout"
 producer:       "Producer"
+update:         "Update"
 
 # Cart
 cart.title: "My cart"

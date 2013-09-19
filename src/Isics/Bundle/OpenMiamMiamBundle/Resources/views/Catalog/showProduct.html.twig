@@ -9,6 +9,12 @@
     {% block title %}{{ product.name }} - {{ parent() }}{% endblock %}
 
     {% block content %}
+        <ol class="breadcrumb">
+            <li><a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
+            <li><a href="{{ path('open_miam_miam_branch_category', {'branch_slug': branch.slug, 'category_slug': product.category.slug}) }}">{{ product.category.name }}</a></li>
+            <li class="active">{{ product.name }}</li>
+        </ol>
+
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
                 <h1>{{ product.name }}</h1>

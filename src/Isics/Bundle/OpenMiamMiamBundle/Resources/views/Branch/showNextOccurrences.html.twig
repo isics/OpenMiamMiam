@@ -9,11 +9,9 @@
     <div class="panel-heading">
         <h2 class="panel-title"><span class="glyphicon glyphicon-time"></span> {{ 'zone.next_occurrences.title'|trans }}</h2>
     </div>
-    <div class="panel-body">
-        <ul class="list-unstyled">
-        {% for branchOccurrence in branchOccurrences %}
-            <li>{{ branchOccurrence.begin|format_datetime('eee dd MMM HH:mm') }} - {{ branchOccurrence.end|format_time('HH:mm') }}</li>
-        {% endfor %}
-        </ul>
-    </div>
+    <ul class="list-group">
+    {% for branchOccurrence in branchOccurrences %}
+        <li class="list-group-item">{{ branchOccurrence.begin|format_datetime('eee dd MMM HH:mm') }} - {{ branchOccurrence.end|format_time('HH:mm') }}</li>
+    {% endfor %}
+    </ul>
 </div>
