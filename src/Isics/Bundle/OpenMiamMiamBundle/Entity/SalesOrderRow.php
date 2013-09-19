@@ -53,6 +53,28 @@ class SalesOrderRow
     private $product;
 
     /**
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=128, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string $ref
+     *
+     * @ORM\Column(name="ref", type="string", length=16, nullable=false)
+     */
+    private $ref;
+
+    /**
+     * @var boolean $isBio
+     *
+     * @ORM\Column(name="is_bio", type="boolean", nullable=false)
+     * @todo rename to "isOrganicFood"
+     */
+    private $isBio;
+
+    /**
      * @var decimal
      *
      * @ORM\Column(name="unit_price", type="decimal", precision=10, scale=2, nullable=true)
@@ -74,7 +96,7 @@ class SalesOrderRow
     private $total;
 
 
-    
+
     /**
      * @param int $id
      */
@@ -169,5 +191,53 @@ class SalesOrderRow
     public function getUnitPrice()
     {
         return $this->unitPrice;
+    }
+
+    /**
+     * @param boolean $isBio
+     */
+    public function setIsBio($isBio)
+    {
+        $this->isBio = $isBio;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsBio()
+    {
+        return $this->isBio;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $ref
+     */
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRef()
+    {
+        return $this->ref;
     }
 }
