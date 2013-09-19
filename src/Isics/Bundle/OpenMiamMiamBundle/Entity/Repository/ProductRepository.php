@@ -81,6 +81,8 @@ class ProductRepository extends EntityRepository
      * @param Branch  $branch Branch
      * @param integer $limit  Limit
      *
+     * @todo Retrieve only products available for order
+     *
      * @return array
      */
     public function findOfTheMomentForBranch(Branch $branch, $limit = 3)
@@ -97,6 +99,10 @@ class ProductRepository extends EntityRepository
             ->setParameter('branch', $branch)
             ->getQuery()
             ->getResult();
+
+        if (empty($productsIds)) {
+            return array();
+        }
 
         // Groups products by producer
         $productsIdsByProducer = array();

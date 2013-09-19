@@ -1,0 +1,57 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% if nbProducts == 1 %}
+    {% set colClass = 'col-md-12' %}
+{% elseif nbProducts == 2 %}
+    {% set colClass = 'col-md-6' %}
+{% elseif nbProducts == 3 %}
+    {% set colClass = 'col-md-4' %}
+{% endif %}
+
+<h2>Les produits du moment</h2>
+
+<div class="row">
+    {% for product in products %}
+        <div class="{{ colClass }}">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>
+                        <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
+                            {{ product.name }}
+                        </a>
+                    </h3>
+                    <p>
+                        <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
+                            {% if product.image is not null %}
+                                <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                            {% else %}
+                                <span class="glyphicon glyphicon-picture photo-placeholder-s"></span>
+                            {% endif %}
+                        </a>
+                    </p>
+                    <p>
+                        {{ product.priceInfo }}
+                    </p>
+                    <p>
+                        <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
+                            <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
+                        </a>
+                    </p>
+                    <p>
+                        {% if not product.hasNoPrice %}
+                            {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                        {% endif %}
+                    </p>
+                    <p>
+                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Cart:showAddFormTd.html.twig'})) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

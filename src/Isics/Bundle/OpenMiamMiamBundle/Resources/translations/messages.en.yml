@@ -1,14 +1,9 @@
 # General
+add:            "Add"
 branch:         "Branch"
-calendar:       "Calendar"
 checkout:       "Checkout"
-dashboard:      "Dashboard"
 logout:         "Logout"
-managers:       "Managers"
-orders:         "Orders"
 producer:       "Producer"
-producer.infos: "Producer infos"
-products:       "Products"
 
 # Cart
 cart.title: "My cart"
@@ -21,3 +16,16 @@ admin.login.submit:               "Sign in"
 
 # Admin index
 admin.index.title: "Choose a role:"
+
+# Availability
+availability:                 "Availability"
+availability.unavailable:     "Unavailable"
+availability.available:       "Available"
+availability.in_stock:        "%stock% in stock"
+availability.out_of_stock:    "Too late!"
+availability.producer_absent: "Producer absent"
+availability.available_at:    "Available at %date%"
+
+# Messages
+message.cart.added:       "Item has been added to cart."
+message.cart.updated:     "Cart has been updated."

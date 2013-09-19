@@ -59,9 +59,9 @@ class ProducerRepository extends EntityRepository
     public function findAllIds()
     {
         $ids = $this->createQueryBuilder('p')
-                ->select('p.id')
-                ->getQuery()
-                ->getResult();
+            ->select('p.id')
+            ->getQuery()
+            ->getResult();
 
         $flattenIds = array();
         foreach ($ids as $id) {

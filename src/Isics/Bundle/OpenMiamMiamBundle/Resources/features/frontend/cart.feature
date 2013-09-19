@@ -47,8 +47,8 @@ Feature: Branch cart
 
   Scenario Outline: See empty branch cart summary
     Given I am on "<url>"
-    Then I should see "My cart (0)"
-    And I should see the next date "<date>" formated "m-d"
+    Then I should see "My cart"
+    And I should see the next date "<date>" formated "l d F"
 
   Examples:
     | url       | date      |
@@ -61,7 +61,7 @@ Feature: Branch cart
       | tomorrow | 12 a.m. | 2 a.m. |
     And I am on "/branch-1"
     Then I should not see "My cart"
-    And I should see the next date "+ 1 week" formated "m-d"
+    And I should see the next date "+ 1 week" formated "l d F"
 
   Scenario: Orders closed 2/2
     Given branch "Branch 1" has following calendar:
@@ -69,11 +69,11 @@ Feature: Branch cart
       | yesterday | 10 p.m. | 11:59 p.m. |
     And I am on "/branch-1"
     Then I should not see "My cart"
-    And I should see the next date "+ 1 week" formated "m-d"
+    And I should see the next date "+ 1 week" formated "l d F"
 
   Scenario: Add a product via category page
     Given I am on "/branch-1/fruits-and-vegetables"
-    When I press "Add to cart"
+    When I press "Add"
     Then I should be on "/branch-1/cart"
     And I should see "My cart (1) €15.00"
     And I should see "Item has been added to cart."
@@ -81,7 +81,7 @@ Feature: Branch cart
   Scenario: Add a product via product page
     Given I am on "/branch-1/fruits-and-vegetables"
     And I follow "Basket of vegetables"
-    When I press "Add to cart"
+    When I press "Add"
     Then I should be on "/branch-1/cart"
     And I should see "My cart (1) €15.00"
     And I should see "Item has been added to cart."
@@ -89,9 +89,9 @@ Feature: Branch cart
   Scenario: Add an existing product via product page
     Given I am on "/branch-1/fruits-and-vegetables"
     And I follow "Basket of vegetables"
-    And I press "Add to cart"
+    And I press "Add"
     And I follow "Basket of vegetables"
-    When I press "Add to cart"
+    When I press "Add"
     Then I should be on "/branch-1/cart"
     And I should see "My cart (1) €30.00"
     And I should see "Item has been added to cart."
@@ -99,7 +99,7 @@ Feature: Branch cart
   Scenario: Update quantity
     Given I am on "/branch-1/fruits-and-vegetables"
     And I follow "Basket of vegetables"
-    And I press "Add to cart"
+    And I press "Add"
     And I change quantity to "3"
     When I press "Update"
     Then I should see "My cart (1) €45.00"
@@ -108,36 +108,36 @@ Feature: Branch cart
   Scenario: Reset quantity (remove)
     Given I am on "/branch-1/fruits-and-vegetables"
     And I follow "Basket of vegetables"
-    And I press "Add to cart"
+    And I press "Add"
     And I change quantity to "0"
     When I press "Update"
-    Then I should see "My cart (0)"
+    Then I should not see "My cart (1)"
     And I should see "Cart has been updated."
 
   Scenario: Product available
     Given I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
-    Then I should see "Add to cart"
+    Then I should see "Add"
     And I should see "Available"
 
   Scenario: Product available with stock management
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "10"
     Given I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
-    Then I should see "Add to cart"
-    And I should see "stock level: 10"
+    Then I should see "Add"
+    And I should see "10.00 in stock"
 
   Scenario: Producer absent
     Given I am on "/branch-2/fruits-and-vegetables/basket-of-vegetables"
-    Then I should not see "Add to cart"
+    Then I should not see "Add"
     And I should see "Producer absent"
 
   Scenario: Product not yet available
     Given Product "Basket of vegetables" of producer "Beth Rave" will be available at "+ 3 weeks"
     And I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
-    Then I should not see "Add to cart"
+    Then I should not see "Add"
     And I should see "Available at"
 
   Scenario: Product is out of stock
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "0"
     And I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
-    Then I should not see "Add to cart"
+    Then I should not see "Add"
     And I should see "Too late!"
