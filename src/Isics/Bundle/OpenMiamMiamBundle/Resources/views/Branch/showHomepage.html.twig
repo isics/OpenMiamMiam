@@ -11,6 +11,8 @@
     {% endblock %}
 
     {% block content %}
+        {{ render(controller('IsicsOpenMiamMiamBundle:Catalog:ShowProductsOfTheMoment', {'branch': branch})) }}
+
         {{ branch.presentation }}
     {% endblock %}
 {% endembed %}

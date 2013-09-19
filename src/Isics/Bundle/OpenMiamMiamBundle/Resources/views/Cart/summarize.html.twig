@@ -32,9 +32,9 @@
     {% if not cart.isClosed %}
         {% if cart.nbItems > 0 %}
             <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}">
-                {{ 'cart.title'|trans }} <span class="badge">{{ cart.nbItems }}</span>
+                {{ 'cart.title'|trans }} ({{ cart.nbItems }}</span>)
+                {{ cart.total|number_format_currency(open_miam_miam.currency) }}
             </a>
-            {{ cart.total|number_format_currency(open_miam_miam.currency) }}
             <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}" class="btn btn-primary btn-lg">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
                 {{ 'checkout'|trans }}

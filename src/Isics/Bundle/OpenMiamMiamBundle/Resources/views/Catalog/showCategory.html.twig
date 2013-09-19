@@ -6,6 +6,8 @@
  # with this source code in the file LICENSE.
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
+    {% block title %}{{ category.name }} - {{ parent() }}{% endblock %}
+
     {% block content %}
         <h1>{{ category.name }}</h1>
 
@@ -34,13 +36,18 @@
                             <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': category.slug, 'product_slug': product.slug}) }}">
                                 {{ product.name }}
                             </a>
+                            {{ product.priceInfo }}
                         </td>
                         <td>
                             <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
                                 <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
                             </a>
                         </td>
-                        <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                        <td>
+                            {% if not product.hasNoPrice %}
+                                {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                            {% endif %}
+                        </td>
                         {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Cart:showAddFormTd.html.twig'})) }}
                     </tr>
                 {% endfor %}
