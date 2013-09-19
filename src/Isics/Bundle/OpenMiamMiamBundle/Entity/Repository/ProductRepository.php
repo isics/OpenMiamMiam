@@ -76,6 +76,63 @@ class ProductRepository extends EntityRepository
     }
 
     /**
+     * Finds products of the moment visible in a branch
+     *
+     * @param Branch  $branch Branch
+     * @param integer $limit  Limit
+     *
+     * @return array
+     */
+    public function findOfTheMomentForBranch(Branch $branch, $limit = 3)
+    {
+        // Retrieves all products of the moment ids and producer ids
+        $productsIds = $this->createQueryBuilder('p')
+            ->select('p.id as product_id, pr.id as producer_id')
+            ->innerJoin('p.branches', 'b')
+            ->innerJoin('p.producer', 'pr')
+            ->where('p.availability != :availability')
+            ->andWhere('b = :branch')
+            ->andWhere('p.isOfTheMoment = true')
+            ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
+            ->setParameter('branch', $branch)
+            ->getQuery()
+            ->getResult();
+
+        // Groups products by producer
+        $productsIdsByProducer = array();
+        foreach ($productsIds as $productIds) {
+            if (!array_key_exists($productIds['producer_id'], $productsIdsByProducer)) {
+                $productsIdsByProducer[$productIds['producer_id']] = array();
+            }
+            $productsIdsByProducer[$productIds['producer_id']][] = $productIds['product_id'];
+        }
+
+        // Randomizes producers
+        shuffle($productsIdsByProducer);
+
+        // Truncates
+        array_splice($productsIdsByProducer, $limit);
+
+        // Creates products ids (1 random by remaining producer)
+        $productsIds = array();
+        foreach ($productsIdsByProducer as $producerProductsIds) {
+            $productsIds[] = $producerProductsIds[array_rand($producerProductsIds)];
+        }
+
+        // Retrieves products
+        $products = $this->createQueryBuilder('p')
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $productsIds)
+            ->getQuery()
+            ->getResult();
+
+        // Randomizes products
+        shuffle($products);
+
+        return $products;
+    }
+
+    /**
      * Returns producer's products
      *
      * @param Producer $producer
@@ -85,11 +142,11 @@ class ProductRepository extends EntityRepository
     public function findForProducer(Producer $producer)
     {
         return $this->createQueryBuilder('p')
-                ->addSelect('b')
-                ->leftJoin('p.branches', 'b')
-                ->where('p.producer = :producer')
-                ->setParameter('producer', $producer)
-                ->getQuery()
-                ->getResult();
+            ->addSelect('b')
+            ->leftJoin('p.branches', 'b')
+            ->where('p.producer = :producer')
+            ->setParameter('producer', $producer)
+            ->getQuery()
+            ->getResult();
     }
 }

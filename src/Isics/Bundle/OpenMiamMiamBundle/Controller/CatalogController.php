@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CatalogController extends Controller
 {
     /**
-     * Shows Categories
+     * Shows categories
      *
      * @param Branch $branch
      *
@@ -93,6 +93,32 @@ class CatalogController extends Controller
             'branch'   => $branch,
             'category' => $category,
             'product'  => $product,
+        ));
+    }
+
+    /**
+     * Shows products of the moment
+     *
+     * @param Branch  $branch
+     * @param integer $limit
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showProductsOfTheMomentAction(Branch $branch, $limit = 3)
+    {
+        $products = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Product')
+            ->findOfTheMomentForBranch($branch, $limit);
+
+        $nbProducts = count($products);
+
+        if (0 === $nbProducts) {
+            return new Response();
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Catalog:showProductsOfTheMoment.html.twig', array(
+            'branch'     => $branch,
+            'products'   => $products,
+            'nbProducts' => $nbProducts,
         ));
     }
 }
