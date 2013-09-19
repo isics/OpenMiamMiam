@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 
 class CartItem implements \Serializable
 {

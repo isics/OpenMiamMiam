@@ -14,9 +14,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendances;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchAttendances;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchOccurrenceAttendance;
+use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerAttendances;
+use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances;
+use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenceAttendance;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 

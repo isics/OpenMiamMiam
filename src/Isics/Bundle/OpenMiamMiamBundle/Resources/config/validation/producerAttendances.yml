@@ -1,4 +1,4 @@
-Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendances:
+Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerAttendances:
     properties:
         producer:
             - Valid: ~
@@ -6,7 +6,7 @@ Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendances:
         branchAttendances:
             - Valid: ~
 
-Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchAttendances:
+Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances:
     properties:
         producer:
             - Valid: ~
@@ -17,7 +17,7 @@ Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchAttendances:
         branchOccurrenceAttendances:
             - Valid: ~
 
-Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchOccurrenceAttendance:
+Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenceAttendance:
     constraints:
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendance: ~
     properties:

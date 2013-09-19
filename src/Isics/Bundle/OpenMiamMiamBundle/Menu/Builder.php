@@ -127,8 +127,8 @@ class Builder
         ));
         $menu[$menuName]->addChild('Orders', array(
             'uri'             => '#',
-            // 'route'           => 'open_miam_miam.admin.producer.list_products',
-            // 'routeParameters' => array('id' => $object->getId()),
+            'route'           => 'open_miam_miam.admin.producer.list_sales_order',
+            'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('admin.producer.menu.orders')),
         ));
         $menu[$menuName]->addChild('Products', array(

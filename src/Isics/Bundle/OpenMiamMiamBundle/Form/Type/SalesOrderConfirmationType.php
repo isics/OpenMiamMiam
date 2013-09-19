@@ -34,7 +34,7 @@ class SalesOrderConfirmationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation',
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation',
         ));
     }
 

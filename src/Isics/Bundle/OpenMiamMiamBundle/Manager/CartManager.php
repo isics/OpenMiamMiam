@@ -15,8 +15,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Exception\CartExpiredException;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
-use Isics\Bundle\OpenMiamMiamBundle\Model\CartItem;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\SecurityContext;
 

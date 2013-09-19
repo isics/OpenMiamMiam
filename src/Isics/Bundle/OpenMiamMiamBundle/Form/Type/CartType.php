@@ -38,7 +38,7 @@ class CartType extends AbstractType implements EventSubscriberInterface
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'         => 'Isics\Bundle\OpenMiamMiamBundle\Model\Cart',
+            'data_class'         => 'Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart',
             'cascade_validation' => true,
         ));
     }

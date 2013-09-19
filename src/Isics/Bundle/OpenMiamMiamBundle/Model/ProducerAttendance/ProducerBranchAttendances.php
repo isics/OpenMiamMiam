@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerBranchOccurrenceAttendance;
+use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenceAttendance;
 
 class ProducerBranchAttendances implements \IteratorAggregate
 {

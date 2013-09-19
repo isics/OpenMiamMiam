@@ -35,7 +35,7 @@ class CartItemType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => 'Isics\Bundle\OpenMiamMiamBundle\Model\CartItem',
+            'data_class'    => 'Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem',
             'submit_button' => false,
         ));
     }
