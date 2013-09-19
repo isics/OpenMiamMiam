@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderConfirmationType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation;
@@ -38,6 +39,8 @@ class SalesOrderController extends Controller
             return $this->redirectToCart($cart);
         }
 
+        $user = $this->get('security.context')->getToken()->getUser();
+
         $form = $this->createForm(
             new SalesOrderConfirmationType(),
             new SalesOrderConfirmation(),
@@ -53,19 +56,53 @@ class SalesOrderController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
                 $orderManager = $this->get('open_miam_miam.sales_order_manager');
-                $order = $orderManager->createFromCart($cart);
 
-                var_dump($order);
-                die('ok');
+                $order = $orderManager->processSalesOrder(
+                    $cart,
+                    $branchOccurrenceManager->getNext($branch),
+                    $user,
+                    $form->getData()
+                );
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam_sales_order_confirm_creation',
+                    array('branch_slug' => $branch->getSlug(), 'id' => $order->getId())
+                ));
             }
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:SalesOrder:confirm.html.twig', array(
             'branch' => $branch,
             'cart'   => $cart,
-            'user'   => $this->get('security.context')->getToken()->getUser(),
+            'user'   => $user,
             'form'   => $form->createView()
+        ));
+    }
+
+    /**
+     * Confirms sales order
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     *
+     * @param Branch $branch Branch
+     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmCreationAction(Branch $branch, SalesOrder $order)
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        if ($user->getId() !== $order->getUser()->getId()) {
+            throw $this->createNotFoundException('Sales order not found');
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:SalesOrder:confirmCreation.html.twig', array(
+            'branch' => $branch,
+            'order' => $order
         ));
     }
 

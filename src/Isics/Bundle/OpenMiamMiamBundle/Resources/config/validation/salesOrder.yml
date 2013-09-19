@@ -2,3 +2,79 @@ Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrderConfirmation:
     properties:
         termsOfSaleChecked:
             - "True": ~
+
+Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
+    properties:
+        branchOccurrence:
+            - NotNull: ~
+            - Valid: ~
+        salesOrderRows:
+            - Valid: ~
+        ref:
+            - NotNull: ~
+            - Length:
+                max: 16
+        date:
+            - NotNull: ~
+            - Date: ~
+        total:
+            - NotNull: ~
+            - Type:
+                type: numeric
+        User:
+            - NotNull: { groups: [FromCart] }
+            - Valid: ~
+        firstname:
+            - NotNull: { groups: [FromCart] }
+            - Length:
+                max: 128
+        lastname:
+            - NotNull: { groups: [FromCart] }
+            - Length:
+                max: 128
+        address1:
+            - NotNull: { groups: [FromCart] }
+            - Length:
+                max: 64
+        address2:
+            - Length:
+                max: 64
+        zipcode:
+            - NotNull: { groups: [FromCart] }
+            - Length:
+                max: 8
+        city:
+            - NotNull: { groups: [FromCart] }
+            - Length:
+                max: 64
+        consumerComment:
+            - Length:
+                max: 255
+
+Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
+    properties:
+        product:
+            - NotNull: { groups: [FromCart] }
+            - Valid: ~
+        name:
+            - NotNull: ~
+            - Length:
+                max: 128
+        ref:
+            - NotNull: ~
+            - Length:
+                max: 16
+        isBio:
+            - Type:
+                type: boolean
+        unitPrice:
+            - Type:
+                type: numeric
+        quantity:
+            - NotNull: ~
+            - Type:
+                type: numeric
+        total:
+            - NotNull: ~
+            - Type:
+                type: numeric

@@ -59,6 +59,10 @@ open_miam_miam_sales_order_confirm:
     pattern:  /{branch_slug}/order/confirm
     defaults: { _controller: IsicsOpenMiamMiamBundle:SalesOrder:Confirm }
 
+open_miam_miam_sales_order_confirm_creation:
+    pattern:  /{branch_slug}/order/{id}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:SalesOrder:ConfirmCreation }
+
 #
 # Catalog
 #

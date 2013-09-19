@@ -75,6 +75,8 @@ class CartManager
      *
      * @param Branch $branch Branch
      *
+     * @throws \Isics\Bundle\OpenMiamMiamBundle\Exception\CartExpiredException
+     *
      * @return Cart
      */
     public function get(Branch $branch)

@@ -125,3 +125,4 @@ services:
 
     open_miam_miam.sales_order_manager:
         class: %open_miam_miam.sales_order_manager.class%
+        arguments: [%open_miam_miam.order%, @doctrine.orm.entity_manager, @validator]

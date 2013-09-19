@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -45,7 +46,7 @@ class SalesOrder
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="salesOrder")
+     * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="salesOrder", cascade="all")
      */
     private $salesOrderRows = array();
 
@@ -71,23 +72,33 @@ class SalesOrder
     private $total;
 
     /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="salesOrders")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    private $user;
+
+    /**
      * @var string $firstname
      *
-     * @ORM\Column(name="firstname", type="string", length=128, nullable=false)
+     * @ORM\Column(name="firstname", type="string", length=128, nullable=true)
      */
     private $firstname;
 
     /**
      * @var string $lastname
      *
-     * @ORM\Column(name="lastname", type="string", length=128, nullable=false)
+     * @ORM\Column(name="lastname", type="string", length=128, nullable=true)
      */
     private $lastname;
 
     /**
      * @var string $address1
      *
-     * @ORM\Column(name="address1", type="string", length=64, nullable=false)
+     * @ORM\Column(name="address1", type="string", length=64, nullable=true)
      */
     private $address1;
 
@@ -101,16 +112,41 @@ class SalesOrder
     /**
      * @var string $zipcode
      *
-     * @ORM\Column(name="zipcode", type="string", length=8, nullable=false)
+     * @ORM\Column(name="zipcode", type="string", length=8, nullable=true)
      */
     private $zipcode;
 
     /**
      * @var string $city
      *
-     * @ORM\Column(name="city", type="string", length=64, nullable=false)
+     * @ORM\Column(name="city", type="string", length=64, nullable=true)
      */
     private $city;
+
+    /**
+     * @var string $consumerComment
+     *
+     * @ORM\Column(name="consumer_comment", type="string", length=255, nullable=true)
+     */
+    private $consumerComment;
+
+
+
+    /**
+     * @param string $consumerComment
+     */
+    public function setConsumerComment($consumerComment)
+    {
+        $this->consumerComment = $consumerComment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConsumerComment()
+    {
+        return $this->consumerComment;
+    }
 
     /**
      * @param string $address1
@@ -313,6 +349,23 @@ class SalesOrder
      */
     public function addSalesOrderRow(SalesOrderRow $row)
     {
+        $row->setSalesOrder($this);
         $this->salesOrderRows[] = $row;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
