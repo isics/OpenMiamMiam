@@ -14,6 +14,7 @@ parameters:
 
     open_miam_miam.branch_occurrence_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
     open_miam_miam.cart_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
+    open_miam_miam.consumer_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
     open_miam_miam.admin_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
     open_miam_miam.acl_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
     open_miam_miam.product_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
@@ -75,7 +76,10 @@ services:
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
-        arguments: [%open_miam_miam.currency%, @open_miam_miam.product_manager]
+        arguments:
+            - %open_miam_miam.currency%
+            - @open_miam_miam.product_manager
+            - @open_miam_miam.consumer_manager
         tags:
             - { name: twig.extension }
 
@@ -109,6 +113,10 @@ services:
         class: %open_miam_miam.admin_manager.class%
         arguments: [@security.context, @doctrine.orm.entity_manager]
         shared: true
+
+    open_miam_miam.consumer_manager:
+        class: %open_miam_miam.consumer_manager.class%
+        arguments: [%open_miam_miam.consumer%]
 
     open_miam_miam.product_manager:
         class: %open_miam_miam.product_manager.class%

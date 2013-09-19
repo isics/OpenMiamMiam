@@ -19,9 +19,9 @@ All available configuration options are listed below with their default values.
         product:
             ref_prefix:          PR                # Product ref prefix
             ref_pad_length:      3                 # Product ref pad length (example: "PR001")
-        customer:
-            ref_prefix:          CU                # Customer ref prefix
-            ref_pad_length:      6                 # Customer ref pad length (example: "CU000001")
+        consumer:
+            ref_prefix:          CU                # Consumer ref prefix
+            ref_pad_length:      6                 # Consumer ref pad length (example: "CU000001")
         order:
             ref_prefix:          OR                # Order ref prefix
             ref_pad_length:      6                 # Order ref pad length (example: "OR000001")
