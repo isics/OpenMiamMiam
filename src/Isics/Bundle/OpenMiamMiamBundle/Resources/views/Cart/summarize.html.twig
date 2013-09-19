@@ -32,8 +32,8 @@
     {% if not cart.isClosed %}
         {% if cart.nbItems > 0 %}
             <strong>
-                {{ 'cart.title'|trans }}
                 <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}">
+                    {{ 'cart.title'|trans }}
                     ({{ cart.nbItems }}</span>)
                     {{ cart.total|number_format_currency(open_miam_miam.currency) }}
                 </a>

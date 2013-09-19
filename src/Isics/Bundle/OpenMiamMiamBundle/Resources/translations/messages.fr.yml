@@ -1,7 +1,7 @@
 # General
 add:                  "Ajouter"
 branch:               "Comptoir"
-checkout:             "Commander"
+checkout:             "Passer ma commande"
 homepage:             "Accueil"
 logout:               "Déconnexion"
 order:                "Commander"
@@ -34,8 +34,24 @@ cart.title: "Mon panier"
 cart.empty: "Votre panier est vide."
 
 # Order process
-order.confirm:    "Confirmez votre commande"
-order.your_order: "Votre commande"
+order.confirm.title:                 "Confirmez votre commande"
+order.confirm.consumer.title:        "Consommateur"
+order.confirm.consumer.update:       "Mettre à jour mes coordonnées"
+order.confirm.withdrawal.title:      "Retrait des produits"
+order.confirm.withdrawal.update:     "Changer le mode de retrait"
+order.confirm.cart.title:            "Votre commande"
+order.confirm.cart.update:           "Modifier ma commande"
+order.confirm.submit:                "Je confirme ma commande"
+order.confirm.consumer_comment:      "N'hésitez pas à nous laisser un commentaire :"
+order.confirm.terms_of_sale_checked: "J'ai lu et je suis en accord avec les conditions générales de vente."
+order.confirmed.title:               "Votre commande a été enregistrée !"
+
+# Login
+login.title: "Identifiez-vous"
+login.existing.title: "Déjà client ?"
+login.new.title: "Nouveau client ?"
+login.submit: "S'identifier"
+login.register: "Créer un compte"
 
 # Attendance
 attendance.yes:     "Oui"
