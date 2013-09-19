@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
@@ -172,7 +173,7 @@ class SalesOrderManager
         // Update product stocks
         foreach ($order->getSalesOrderRows() as $row) {
             $product = $row->getProduct();
-            if (null !== $product) {
+            if (null !== $product && $product->getAvailability() == Product::AVAILABILITY_ACCORDING_TO_STOCK) {
                 $product->setStock($product->getStock()-$row->getQuantity());
                 $this->objectManager->persist($product);
             }
