@@ -77,6 +77,15 @@ admin.producer.dashboard.orders_to_prepare:      "[0,1]commande à préparer|]1,
 admin.producer.dashboard.products_out_of_stock:  "[0,1]produit en rupture|]1,Inf]produits en rupture"
 admin.producer.dashboard.attendances_to_confirm: "[0,1]date à confirmer|]1,Inf]dates à confirmer"
 
+# Admin / Producer / Sales orders
+admin.producer.sales_orders.list.title:          "Commandes à préparer"
+admin.producer.sales_orders.list.ref:            "Réf"
+admin.producer.sales_orders.list.date:           "Date"
+admin.producer.sales_orders.list.consumer:       "Client"
+admin.producer.sales_orders.list.nb_articles:    "Nb articles"
+admin.producer.sales_orders.list.producer_total: "Montant producteur"
+admin.producer.sales_orders.list.not_yet_order:  "Il n'y a pas encore de commande pour ce comptoir."
+
 # Admin / Producer / Products
 admin.producer.products.list.title:                    "{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits"
 admin.producer.products.list.create:                   "Nouveau produit"

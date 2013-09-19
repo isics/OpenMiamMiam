@@ -18,32 +18,41 @@
         {% for branchOccurrenceSalesOrders in salesOrders %}
             <h2>
                 {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
-                - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date('dd/MM/YYYY') }}
+                - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
             </h2>
-            <table class="table table-bordered table-striped table-products">
-                <thead>
-                    <tr>
-                        <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
-                        <th>{{ 'admin.producer.sales_orders.list.date'|trans }}</th>
-                        <th>{{ 'admin.producer.sales_orders.list.consumer'|trans }}</th>
-                        <th>{{ 'admin.producer.sales_orders.list.nb_articles'|trans }}</th>
-                        <th>{{ 'admin.producer.products.list.price'|trans }}</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for salesOrder in branchOccurrenceSalesOrders %}
+
+            {% if branchOccurrenceSalesOrders|length > 0 %}
+                <table class="table table-bordered table-striped table-sales-orders">
+                    <thead>
                         <tr>
-                            <td>{{ salesOrder.ref }}</td>
-                            <td>{{ salesOrder.date|format_date('dd/MM/YYYY') }}</td>
-                            <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }}</td>
-                            <td>{{ salesOrder.salesOrderRows|length }}</td>
-                            <td>{{ salesOrder.subTotalByProducer(producer) }}</td>
-                            <td></td>
+                            <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
+                            <th>{{ 'admin.producer.sales_orders.list.date'|trans }}</th>
+                            <th>{{ 'admin.producer.sales_orders.list.consumer'|trans }}</th>
+                            <th>{{ 'admin.producer.sales_orders.list.nb_articles'|trans }}</th>
+                            <th>{{ 'admin.producer.sales_orders.list.producer_total'|trans }}</th>
+                            <th>&nbsp;</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for salesOrder in branchOccurrenceSalesOrders %}
+                            <tr>
+                                <td>{{ salesOrder.ref }}</td>
+                                <td>{{ salesOrder.date|format_date }}</td>
+                                <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }}</td>
+                                <td>{{ salesOrder.salesOrderRows|length }}</td>
+                                <td>{{ salesOrder.subTotalByProducer(producer) }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">
+                    <span class="glyphicon glyphicon-ban-circle"></span> <em>{{ 'admin.producer.sales_orders.list.not_yet_order'|trans }}</em>
+                </p>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
