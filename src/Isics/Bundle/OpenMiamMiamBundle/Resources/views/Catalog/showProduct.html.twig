@@ -9,16 +9,60 @@
     {% block title %}{{ product.name }} - {{ parent() }}{% endblock %}
 
     {% block content %}
-        <h1>{{ product.name }}</h1>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+                <h1>{{ product.name }}</h1>
+            </div>
+        </div>
 
-        <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
-            <span class="glyphicon glyphicon-user"></span>  {{ product.producer }}
-        </a>
+        <div class="row">
+            <div class="col-md-4">
+                {% if product.image is not null %}
+                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                {% else %}
+                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                {% if product.priceInfo %}
+                    <p>
+                        {{ product.priceInfo }}
+                    </p>
+                {% endif %}
 
-        {{ product.description }}
+                <dl>
+                    <dt>{{ 'producer'|trans }}</dt>
+                    <dd>
+                        <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
+                            <span class="glyphicon glyphicon-user"></span>  {{ product.producer }}
+                        </a>
+                    </dd>
+                    <dt>{{ 'price'|trans }}</dt>
+                    <dd>
+                        {% if not product.hasNoPrice %}
+                            {% set showNoPriceStatement = false %}
+                            {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                        {% else %}
+                            {% set showNoPriceStatement = true %}
+                            <span class="glyphicon glyphicon-time"></span>
+                        {% endif %}
+                    </dd>
 
-        {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                    {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Catalog:showProductAddForm.html.twig'})) }}
+            </div>
+        </div>
 
-        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product})) }}
+        <div class="clearfix">&nbsp;</div>
+
+        {% if product.description %}
+            <div class="well">
+                {{ product.description }}
+            </div>
+        {% endif %}
+
+        {% if showNoPriceStatement %}
+            {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
+        {% endif %}
+
     {% endblock %}
 {% endembed %}

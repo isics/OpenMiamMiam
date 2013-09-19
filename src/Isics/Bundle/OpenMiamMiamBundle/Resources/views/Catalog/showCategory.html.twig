@@ -11,6 +11,7 @@
     {% block content %}
         <h1>{{ category.name }}</h1>
 
+        {% set showNoPriceStatement = false %}
         <table class="table table-bordered table-striped table-products">
             <thead>
                 <tr>
@@ -26,11 +27,11 @@
                 {% for product in products %}
                     <tr>
                         <td>
-                        {% if product.image is not null %}
-                            <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
-                        {% else %}
-                            <span class="glyphicon glyphicon-picture photo-placeholder-s"></span>
-                        {% endif %}
+                            {% if product.image is not null %}
+                                <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                            {% else %}
+                                <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                            {% endif %}
                         </td>
                         <td>
                             <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': category.slug, 'product_slug': product.slug}) }}">
@@ -43,15 +44,23 @@
                                 <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
                             </a>
                         </td>
-                        <td>
+                        <td{% if product.hasNoPrice %} class="td-no-price"{% endif %}>
                             {% if not product.hasNoPrice %}
                                 {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                            {% else %}
+                                {% set showNoPriceStatement = true %}
+                                <span class="glyphicon glyphicon-time"></span>*
                             {% endif %}
                         </td>
-                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Cart:showAddFormTd.html.twig'})) }}
+                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Catalog:showCategoryAddForm.html.twig'})) }}
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        {% if showNoPriceStatement %}
+            {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
+        {% endif %}
+
     {% endblock %}
 {% endembed %}

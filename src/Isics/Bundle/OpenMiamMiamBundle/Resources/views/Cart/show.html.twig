@@ -9,6 +9,7 @@
     {% block title %}{{ 'cart.title'|trans }} - {{ parent() }}{% endblock %}
 
     {% block content %}
+        {% set showNoPriceStatement = false %}
         {{ form_start(form) }}
             {{ form_errors(form) }}
             <table class="table table-bordered table-striped table-cart-products">
@@ -28,13 +29,26 @@
                                     {{ item.vars.data.product.name }}
                                 </a>
                             </td>
-                            <td>{{ item.vars.data.product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                            <td{% if item.vars.data.product.hasNoPrice %} class="td-no-price"{% endif %}>
+                                {% if not item.vars.data.product.hasNoPrice %}
+                                    {{ item.vars.data.product.price|number_format_currency(open_miam_miam.currency) }}
+                                {% else %}
+                                    {% set showNoPriceStatement = true %}
+                                    <span class="glyphicon glyphicon-time"></span>*
+                                {% endif %}
+                            </td></td>
                             <td>
                                 {{ form_widget(item.product) }}
                                 {{ form_errors(item.quantity) }}
                                 {{ form_widget(item.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
                             </td>
-                            <td>{{ item.vars.data.total|number_format_currency(open_miam_miam.currency) }}</td>
+                            <td{% if item.vars.data.product.hasNoPrice %} class="td-no-price"{% endif %}>
+                                {% if not item.vars.data.product.hasNoPrice %}
+                                    {{ item.vars.data.total|number_format_currency(open_miam_miam.currency) }}
+                                {% else %}
+                                    <span class="glyphicon glyphicon-time"></span>*
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -45,6 +59,11 @@
                     </tr>
                 </tfoot>
             </table>
+
+            {% if showNoPriceStatement %}
+                {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
+            {% endif %}
+
         {{ form_end(form) }}
 
         <p>

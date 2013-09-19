@@ -12,5 +12,11 @@
 {% endblock %}
 
 {% block form %}
-    <td>{{ parent() }}</td>
+    <td>
+        {% if form is defined %}
+            {{ parent() }}
+        {% else %}
+            -
+        {% endif %}
+    </td>
 {% endblock %}
