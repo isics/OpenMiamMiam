@@ -17,9 +17,9 @@
                     <a href="#">
                         <span class="glyphicon glyphicon-shopping-cart"></span>
                         <strong>
-                            0
+                            {{ nbSalesOrderToPrepare }}
                         </strong>
-                        {{ 'admin.producer.dashboard.orders_to_prepare'|transchoice(0) }}
+                        {{ 'admin.producer.dashboard.orders_to_prepare'|transchoice(nbSalesOrderToPrepare) }}
                     </a>
                 </div>
             </div>

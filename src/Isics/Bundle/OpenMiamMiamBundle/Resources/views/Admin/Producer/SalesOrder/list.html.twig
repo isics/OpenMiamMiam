@@ -10,11 +10,40 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6">
-            <h1></h1>
+            <h1>{{ 'admin.producer.sales_orders.list.title'|transchoice(salesOrders|length, {'%nb%': salesOrders|length}) }}</h1>
         </div>
     </div>
 
     <div class="table-responsive">
-
+        {% for branchOccurrenceSalesOrders in salesOrders %}
+            <h2>
+                {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
+                - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date('dd/MM/YYYY') }}
+            </h2>
+            <table class="table table-bordered table-striped table-products">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.list.date'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.list.consumer'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.list.nb_articles'|trans }}</th>
+                        <th>{{ 'admin.producer.products.list.price'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salesOrder in branchOccurrenceSalesOrders %}
+                        <tr>
+                            <td>{{ salesOrder.ref }}</td>
+                            <td>{{ salesOrder.date|format_date('dd/MM/YYYY') }}</td>
+                            <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }}</td>
+                            <td>{{ salesOrder.salesOrderRows|length }}</td>
+                            <td>{{ salesOrder.subTotalByProducer(producer) }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
     </div>
 {% endblock %}

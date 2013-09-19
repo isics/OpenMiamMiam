@@ -29,7 +29,7 @@ class SalesOrderController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list.html.twig', array(
             'producer' => $producer,
-            'salesOrder' => $this->get('open_miam_miam.producer_sales_order_manager')->getForNextBranchOccurrences($producer)
+            'salesOrders' => $this->get('open_miam_miam.producer_sales_order_manager')->getForNextBranchOccurrences($producer)
         ));
     }
 }

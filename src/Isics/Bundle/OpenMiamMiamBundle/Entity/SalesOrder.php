@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -373,5 +374,24 @@ class SalesOrder
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Returns subtotal of sales order rows of a producer
+     *
+     * @param Producer $producer
+     *
+     * @return float
+     */
+    public function getSubTotalByProducer(Producer $producer)
+    {
+        $total = 0;
+        foreach ($this->getSalesOrderRows() as $row) {
+            if ($row->getProducer()->getId() == $producer->getId()) {
+                $total += $row->getTotal();
+            }
+        }
+
+        return $total;
     }
 }

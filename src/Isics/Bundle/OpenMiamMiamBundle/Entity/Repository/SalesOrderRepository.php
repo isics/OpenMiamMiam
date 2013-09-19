@@ -12,7 +12,9 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 
 class SalesOrderRepository extends EntityRepository
 {
@@ -41,5 +43,31 @@ class SalesOrderRepository extends EntityRepository
         $result = $qb->getQuery()->getSingleResult();
 
         return $result['counter'] == 0;
+    }
+
+    /**
+     * Returns sales order for a producer (concerned by at least one row)
+     *
+     * @param Producer $producer
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function findForProducer(Producer $producer, BranchOccurrence $branchOccurrence = null)
+    {
+        $qb = $this->createQueryBuilder('so')
+                ->addSelect('bo, sor')
+                ->innerJoin('so.salesOrderRows', 'sor')
+                ->innerJoin('so.branchOccurrence', 'bo')
+                ->where('sor.producer = :producer')
+                ->setParameter('producer', $producer)
+                ->addOrderBy('so.id');
+
+        if (null !== $branchOccurrence) {
+            $qb->andWhere('so.branchOccurrence = :branchOccurrence')
+                ->setParameter('branchOccurrence', $branchOccurrence);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
