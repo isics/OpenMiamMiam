@@ -19,10 +19,10 @@
             <div class="panel-body">
                 <div id="header-main-body">
                     <div id="header-branch-name">
-                                {% block header_branch_name %}
-                                    <strong>{{ branch.name }}</strong>
-                                {% endblock %}
-                                <a href="{{ path('open_miam_miam_homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
+                        {% block header_branch_name %}
+                            <strong>{{ branch.name }}</strong>
+                        {% endblock %}
+                        <a href="{{ path('open_miam_miam_homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
                     </div>
 
                     {{ render(controller('IsicsOpenMiamMiamBundle:Cart:Summarize', {'branch': branch})) }}
@@ -46,4 +46,3 @@
         </div>
     </div>
 {% endblock %}
-

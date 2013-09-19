@@ -31,6 +31,7 @@ zone.products_of_the_moment.title: "Les produits du moment"
 
 # Cart
 cart.title: "Mon panier"
+cart.empty: "Votre panier est vide."
 
 # Order process
 order.confirm:    "Confirmez votre commande"
