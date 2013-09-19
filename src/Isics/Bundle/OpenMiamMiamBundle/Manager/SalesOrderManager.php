@@ -162,12 +162,23 @@ class SalesOrderManager
         $association->setOrderRefCounter($association->getOrderRefCounter()+1);
         $this->objectManager->persist($association);
 
+        // Sets ref
         $order->setRef(sprintf(
             '%s%s',
             $this->config['ref_prefix'],
             str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
         ));
 
+        // Update product stocks
+        foreach ($order->getSalesOrderRows() as $row) {
+            $product = $row->getProduct();
+            if (null !== $product) {
+                $product->setStock($product->getStock()-$row->getQuantity());
+                $this->objectManager->persist($product);
+            }
+        }
+
+        // Save
         $this->objectManager->persist($order);
 
         $this->objectManager->flush();
