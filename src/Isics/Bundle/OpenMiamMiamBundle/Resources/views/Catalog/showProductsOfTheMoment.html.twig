@@ -13,9 +13,10 @@
     {% set colClass = 'col-md-4' %}
 {% endif %}
 
-<h2>Les produits du moment</h2>
+<h2><span class="glyphicon glyphicon-tags"></span> {{ 'zone.products_of_the_moment.title'|trans }}</h2>
 
 <div class="row">
+    {% set showNoPriceStatement = false %}
     {% for product in products %}
         <div class="{{ colClass }}">
             <div class="panel panel-default">
@@ -30,7 +31,7 @@
                             {% if product.image is not null %}
                                 <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
                             {% else %}
-                                <span class="glyphicon glyphicon-picture photo-placeholder-s"></span>
+                                -
                             {% endif %}
                         </a>
                     </p>
@@ -45,6 +46,9 @@
                     <p>
                         {% if not product.hasNoPrice %}
                             {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                        {% else %}
+                            {% set showNoPriceStatement = true %}
+                            <span class="glyphicon glyphicon-time"></span>*
                         {% endif %}
                     </p>
                     <p>
@@ -55,3 +59,7 @@
         </div>
     {% endfor %}
 </div>
+
+{% if showNoPriceStatement %}
+    {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
+{% endif %}

@@ -14,22 +14,24 @@ update:               "Mettre à jour"
 consumer:             "Consommateur"
 withdrawing_products: "Retrait des produits"
 number:               "n°"
+no_price_statement:   "Le prix sera défini lors de la préparation de la commande."
 
 # Zones
-zone.header.branch.change:    "Changer de comptoir"
-zone.occurrence.order.before: "Commandez avant le"
-zone.occurrence.order.from:   "Commandez à partir du"
-zone.occurrence.no.next.date: "Aucun comptoir planifié"
-zone.producers.title:         "Les producteurs"
-zone.producers.link:          "Tous les producteurs"
-zone.next_occurrences.title:  "Prochains comptoirs"
-zone.location.title:          "S'y rendre"
+zone.header.branch.change:         "changer de comptoir"
+zone.occurrence.order.before:      "Commandez avant le"
+zone.occurrence.order.from:        "Commandez à partir du"
+zone.occurrence.no.next.date:      "Aucun comptoir planifié"
+zone.producers.title:              "Les producteurs"
+zone.producers.link:               "Tous les producteurs"
+zone.next_occurrences.title:       "Prochains comptoirs"
+zone.location.title:               "S'y rendre"
+zone.products_of_the_moment.title: "Les produits du moment"
 
 # Cart
 cart.title: "Mon panier"
 
 # Order process
-order.confirm: "Confirmez votre commande"
+order.confirm:    "Confirmez votre commande"
 order.your_order: "Votre commande"
 
 # Attendance
