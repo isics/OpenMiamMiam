@@ -139,7 +139,7 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Returns producer's products
+     * Returns products of a producer
      *
      * @param Producer $producer
      *
@@ -148,11 +148,45 @@ class ProductRepository extends EntityRepository
     public function findForProducer(Producer $producer)
     {
         return $this->createQueryBuilder('p')
-            ->addSelect('b')
-            ->leftJoin('p.branches', 'b')
-            ->where('p.producer = :producer')
-            ->setParameter('producer', $producer)
-            ->getQuery()
-            ->getResult();
+                ->addSelect('b')
+                ->leftJoin('p.branches', 'b')
+                ->where('p.producer = :producer')
+                ->setParameter('producer', $producer)
+                ->getQuery()
+                ->getResult();
+    }
+
+    /**
+     * Returns queryBuilder to find out of stock products of a producer
+     *
+     * @param Producer $producer
+     *
+     * @return QueryBuilder
+     */
+    public function getOutOfStockForProducerQueryBuilder(Producer $producer)
+    {
+        return $this->createQueryBuilder('p')
+                ->where('p.producer = :producer')
+                ->setParameter('producer', $producer)
+                ->andWhere('p.availability = :availability')
+                ->setParameter('availability', Product::AVAILABILITY_ACCORDING_TO_STOCK)
+                ->andWhere('p.stock <= 0');
+    }
+
+    /**
+     * Returns count of out of stock products of a producer
+     *
+     * @param Producer $producer
+     *
+     * @return int
+     */
+    public function countOutOfStockProductsForProducer(Producer $producer)
+    {
+        $result = $this->getOutOfStockForProducerQueryBuilder($producer)
+                ->select('COUNT(p.id) AS counter')
+                ->getQuery()
+                ->getSingleResult();
+
+        return $result['counter'];
     }
 }

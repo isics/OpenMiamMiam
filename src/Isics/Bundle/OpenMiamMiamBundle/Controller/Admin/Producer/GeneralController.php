@@ -31,7 +31,8 @@ class GeneralController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:showDashboard.html.twig', array(
             'producer'             => $producer,
-            'nbUnknownAttendances' => $attendancesManager->getNbUnknownAttendances($attendancesManager->getNextAttendancesOf($producer))
+            'nbUnknownAttendances' => $attendancesManager->getNbUnknownAttendances($attendancesManager->getNextAttendancesOf($producer)),
+            'nbOutOfStockProducts' => $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Product')->countOutOfStockProductsForProducer($producer)
         ));
     }
 }

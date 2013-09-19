@@ -25,14 +25,14 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-success">
+            <div class="panel panel-{% if nbUnknownAttendances > 0 %}danger{% else %}success{% endif %}">
                 <div class="panel-body">
                     <a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.id}) }}">
                         <span class="glyphicon glyphicon-list"></span>
                         <strong>
-                            0
+                            {{ nbOutOfStockProducts }}
                         </strong>
-                        {{ 'admin.producer.dashboard.products_out_of_stock'|transchoice(0) }}
+                        {{ 'admin.producer.dashboard.products_out_of_stock'|transchoice(nbOutOfStockProducts) }}
                     </a>
                 </div>
             </div>
