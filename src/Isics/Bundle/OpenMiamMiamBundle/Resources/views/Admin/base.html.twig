@@ -36,7 +36,7 @@
                 {% if app.user %}
                     <div id="header-links" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">{{ app.user }}</a></li>
+                            <li><a href="{{ path('fos_user_profile_edit') }}">{{ app.user }}</a></li>
                             <li><a href="{{ path('fos_user_security_logout') }}">{% trans %}logout{% endtrans %} <span class="glyphicon glyphicon-off"></span></a></li>
                         </ul>
                     </div>

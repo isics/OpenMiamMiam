@@ -85,6 +85,12 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User
+    registration:
+        form:
+            type: open_miam_miam_user_registration
+    profile:
+        form:
+            type: open_miam_miam_user_profile
 
 # LiipImagineBundle Configuration
 liip_imagine:
