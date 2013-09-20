@@ -40,9 +40,13 @@
                 {% endif %}
             </ul>
 
-            <header>
-                {% block header %}{% endblock %}
-            </header>
+            {% block header %}
+                <header>
+                    <div id="header-logo">
+                        {% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}
+                    </div>
+                </header>
+            {% endblock %}
 
             {% block global_content %}
                 {% include 'IsicsOpenMiamMiamBundle::messages.html.twig' %}
