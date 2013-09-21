@@ -115,7 +115,7 @@ class Product
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="string", nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 

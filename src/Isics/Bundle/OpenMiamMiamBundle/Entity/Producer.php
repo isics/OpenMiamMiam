@@ -50,7 +50,7 @@ class Producer
     /**
      * @var string $presentation
      *
-     * @ORM\Column(name="presentation", type="string", nullable=true)
+     * @ORM\Column(name="presentation", type="text", nullable=true)
      */
     private $presentation;
 
