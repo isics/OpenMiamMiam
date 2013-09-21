@@ -14,14 +14,14 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        {% for branchOccurrenceSalesOrders in salesOrders %}
-            <h2>
-                {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
-                - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
-            </h2>
+    {% for branchOccurrenceSalesOrders in salesOrders %}
+        <h2>
+            {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
+            - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
+        </h2>
 
-            {% if branchOccurrenceSalesOrders|length > 0 %}
+        {% if branchOccurrenceSalesOrders|length > 0 %}
+            <div class="table-responsive">
                 <table class="table table-bordered table-striped table-sales-orders">
                     <thead>
                         <tr>
@@ -48,11 +48,9 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            {% else %}
-                <p class="text-muted">
-                    <span class="glyphicon glyphicon-ban-circle"></span> <em>{{ 'admin.producer.sales_orders.list.not_yet_order'|trans }}</em>
-                </p>
-            {% endif %}
-        {% endfor %}
-    </div>
+            </div>
+        {% else %}
+            {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.list.no_order'|trans} %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}

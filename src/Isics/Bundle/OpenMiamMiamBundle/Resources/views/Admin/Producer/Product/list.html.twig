@@ -20,55 +20,59 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-products">
-            <thead>
-                <tr>
-                    <th>{{ 'admin.producer.products.list.ref'|trans }}</th>
-                    <th>{{ 'admin.producer.products.list.product'|trans }}</th>
-                    <th>{{ 'admin.producer.products.list.is_bio'|trans }}</th>
-                    <th>{{ 'admin.producer.products.list.is_of_the_moment'|trans }}</th>
-                    <th>{{ 'admin.producer.products.list.price'|trans }}</th>
-                    {% for branch in producer.branches %}
-                        <th>{{ branch.name }}</th>
-                    {% endfor %}
-                    <th>{{ 'admin.producer.products.list.availability'|trans }}</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
+    {% if products|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-products">
+                <thead>
                     <tr>
-                        <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.ref }}</a></td>
-                        <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.name }}</a></td>
-                        <td>{% if product.isBio %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
-                        <td>{% if product.isOfTheMoment %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
-                        <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                        <th>{{ 'admin.producer.products.list.ref'|trans }}</th>
+                        <th>{{ 'admin.producer.products.list.product'|trans }}</th>
+                        <th>{{ 'admin.producer.products.list.is_bio'|trans }}</th>
+                        <th>{{ 'admin.producer.products.list.is_of_the_moment'|trans }}</th>
+                        <th>{{ 'admin.producer.products.list.price'|trans }}</th>
                         {% for branch in producer.branches %}
-                            <td>{% if product.hasBranch(branch) %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                            <th>{{ branch.name }}</th>
                         {% endfor %}
-                        <td>
-                            {% if product.availability is constant('AVAILABILITY_UNAVAILABLE', product) %}
-                                <span class="label label-danger">{{ 'availability.unavailable'|trans }}</span>
-                            {% elseif product.availability is constant('AVAILABILITY_AVAILABLE', product) %}
-                                <span class="label label-success">{{ 'availability.available'|trans }}</span>
-                            {% elseif product.availability is constant('AVAILABILITY_AVAILABLE_AT', product) %}
-                                <span class="label label-warning">{{ 'availability.available_at'|trans({'%date%': product.availableAt|format_date}) }}</span>
-                            {% elseif product.availability is constant('AVAILABILITY_ACCORDING_TO_STOCK', product) %}
-                                {% if product.stock > 0 %}
-                                    <span class="label label-success">{{ 'availability.in_stock'|trans({'%stock%': product.stock}) }}</span>
-                                {% else %}
-                                    <span class="label label-danger">{{ 'availability.out_of_stock'|trans }}</span>
-                                {% endif  %}
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.products.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.products.list.delete'|trans }}"><span class="glyphicon glyphicon-trash"></span></a>
-                        </td>
+                        <th>{{ 'admin.producer.products.list.availability'|trans }}</th>
+                        <th>&nbsp;</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.ref }}</a></td>
+                            <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.name }}</a></td>
+                            <td>{% if product.isBio %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                            <td>{% if product.isOfTheMoment %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                            <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                            {% for branch in producer.branches %}
+                                <td>{% if product.hasBranch(branch) %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                            {% endfor %}
+                            <td>
+                                {% if product.availability is constant('AVAILABILITY_UNAVAILABLE', product) %}
+                                    <span class="label label-danger">{{ 'availability.unavailable'|trans }}</span>
+                                {% elseif product.availability is constant('AVAILABILITY_AVAILABLE', product) %}
+                                    <span class="label label-success">{{ 'availability.available'|trans }}</span>
+                                {% elseif product.availability is constant('AVAILABILITY_AVAILABLE_AT', product) %}
+                                    <span class="label label-warning">{{ 'availability.available_at'|trans({'%date%': product.availableAt|format_date}) }}</span>
+                                {% elseif product.availability is constant('AVAILABILITY_ACCORDING_TO_STOCK', product) %}
+                                    {% if product.stock > 0 %}
+                                        <span class="label label-success">{{ 'availability.in_stock'|trans({'%stock%': product.stock}) }}</span>
+                                    {% else %}
+                                        <span class="label label-danger">{{ 'availability.out_of_stock'|trans }}</span>
+                                    {% endif  %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.products.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a href="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.products.list.delete'|trans }}"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.products.list.no_product'|trans} %}
+    {% endif %}
 {% endblock %}
