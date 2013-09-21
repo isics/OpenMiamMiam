@@ -199,7 +199,7 @@ class Product
         $this->allowDecimalQuantity = false;
         $this->deleteImage          = false;
         $this->availability         = self::AVAILABILITY_AVAILABLE;
-        $this->hasNoPrice           = null === $this->price;
+        $this->hasNoPrice           = (null === $this->id) ? false : (null === $this->price);
         $this->branches             = new ArrayCollection();
     }
 
