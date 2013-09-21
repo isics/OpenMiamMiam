@@ -34,37 +34,13 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h2 class="panel-title">
-                    <span class="glyphicon glyphicon-picture"></span>
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                        {{ 'admin.producer.products.form.fieldset.description'|trans }}
-                    </a>
-                </h2>
-            </div>
-            <div id="collapse2" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <div class="form-group">
-                        {{ form_label(form.imageFile, 'admin.producer.products.form.image'|trans) }}
-                        {% if product.image is not null %}
-                            <p><img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" /></p>
-                            {{ form_row(form.deleteImage, {'label': 'admin.producer.products.form.delete_image'|trans}) }}
-                        {% endif %}
-                        {{ form_errors(form.imageFile) }}
-                        {{ form_widget(form.imageFile) }}
-                    </div>
-                    {{ form_row(form.description, {'label': 'admin.producer.products.form.description'|trans}) }}
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h2 class="panel-title">
                     <span class="glyphicon glyphicon-euro"></span>
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                         {{ 'admin.producer.products.form.fieldset.price'|trans }}
                     </a>
                 </h2>
             </div>
-            <div id="collapse3" class="panel-collapse collapse">
+            <div id="collapse2" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -94,17 +70,41 @@
             <div class="panel-heading">
                 <h2 class="panel-title">
                     <span class="glyphicon glyphicon-thumbs-up"></span>
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                         {{ 'admin.producer.products.form.fieldset.availability'|trans }}
                     </a>
                 </h2>
             </div>
-            <div id="collapse4" class="panel-collapse collapse">
+            <div id="collapse3" class="panel-collapse collapse">
                 <div class="panel-body">
                     {{ form_row(form.availability, {'label': 'admin.producer.products.form.availability'|trans}) }}
                     {{ form_row(form.stock, {'label': 'admin.producer.products.form.stock'|trans}) }}
                     {{ form_row(form.availableAt, {'label': 'admin.producer.products.form.available_at'|trans}) }}
                     {{ form_row(form.branches, {'label': 'admin.producer.products.form.branches'|trans}) }}
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    <span class="glyphicon glyphicon-picture"></span>
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                        {{ 'admin.producer.products.form.fieldset.description'|trans }}
+                    </a>
+                </h2>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group">
+                        {{ form_label(form.imageFile, 'admin.producer.products.form.image'|trans) }}
+                        {% if product.image is not null %}
+                            <p><img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" /></p>
+                            {{ form_row(form.deleteImage, {'label': 'admin.producer.products.form.delete_image'|trans}) }}
+                        {% endif %}
+                        {{ form_errors(form.imageFile) }}
+                        {{ form_widget(form.imageFile) }}
+                    </div>
+                    {{ form_row(form.description, {'label': 'admin.producer.products.form.description'|trans}) }}
                 </div>
             </div>
         </div>
