@@ -68,10 +68,10 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
+                            <div class="form-group{% if form.price.vars.errors|length > 0 %} has-error{% endif %}">
                                 <label for="open_miam_miam_admin_product_price">{{ 'admin.producer.products.form.price'|trans }}</label>
+                                {{ form_errors(form.price) }}
                                 <div class="input-group">
-                                    {{ form_errors(form.price) }}
                                     {{ form_widget(form.price)}}
                                     <span class="input-group-addon">{{ open_miam_miam.currency }}</span>
                                 </div>
