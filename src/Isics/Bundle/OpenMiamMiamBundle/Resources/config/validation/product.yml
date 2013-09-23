@@ -21,9 +21,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - Type: bool
         isOfTheMoment:
             - Type: bool
-        description:
-            - Length:
-                max: 255
         price:
             - Range:
                 min: 0.01
