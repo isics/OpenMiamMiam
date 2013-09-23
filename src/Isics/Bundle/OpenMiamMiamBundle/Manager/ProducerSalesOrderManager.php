@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerBranchOccurrenceSalesOrders;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrders;
 
 /**
@@ -54,8 +55,12 @@ class ProducerSalesOrderManager
         foreach ($producer->getBranches() as $branch) {
             $branchOccurrence = $branchOccurrenceRepository->findOneNextForBranch($branch, true);
             $orders = $salesOrderRepository->findForProducer($producer, $branchOccurrence);
+
             $branchOccurrenceSaleOrders = new ProducerBranchOccurrenceSalesOrders($producer, $branchOccurrence);
-            $branchOccurrenceSaleOrders->setSalesOrders($orders);
+            foreach ($orders as $order) {
+                $branchOccurrenceSaleOrders->addSalesOrder(new ProducerSalesOrder($producer, $order));
+            }
+
             $producerSalesOrders->addProducerBranchOccurrenceSalesOrders($branchOccurrenceSaleOrders);
         }
 

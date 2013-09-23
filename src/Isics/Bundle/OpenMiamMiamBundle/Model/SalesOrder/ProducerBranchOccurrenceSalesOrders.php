@@ -13,7 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 
 class ProducerBranchOccurrenceSalesOrders implements \IteratorAggregate, \Countable
 {
@@ -76,11 +76,17 @@ class ProducerBranchOccurrenceSalesOrders implements \IteratorAggregate, \Counta
     }
 
     /**
-     * @param SalesOrder $order
+     * @param ProducerSalesOrder $order
+     *
+     * @throws \LogicException
      */
-    public function addSalesOrder(SalesOrder $order)
+    public function addSalesOrder(ProducerSalesOrder $order)
     {
-        $this->salesOrders[$order->getId()] = $order;
+        if ($order->getProducer()->getId() !== $this->producer->getId()) {
+            throw new \LogicException('Invalid ProducerSalesOrder for ProducerBranchOccurrenceSalesOrders.');
+        }
+
+        $this->salesOrders[$order->getSalesOrder()->getId()] = $order;
     }
 
     /**

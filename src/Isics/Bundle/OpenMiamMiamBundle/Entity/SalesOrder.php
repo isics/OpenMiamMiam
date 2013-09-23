@@ -69,7 +69,7 @@ class SalesOrder
     /**
      * @var integer $total
      *
-     * @ORM\Column(name="total", type="integer", nullable=false)
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $total;
 
@@ -377,6 +377,25 @@ class SalesOrder
     }
 
     /**
+     * Returns sales order rows of a producer
+     *
+     * @param Producer $producer
+     *
+     * @return array
+     */
+    public function getSalesOrderRowsForProducer(Producer $producer)
+    {
+        $rows = array();
+        foreach ($this->getSalesOrderRows() as $row) {
+            if ($row->getProducer()->getId() == $producer->getId()) {
+                $rows[] = $row;
+            }
+        }
+
+        return $rows;
+    }
+
+    /**
      * Returns subtotal of sales order rows of a producer
      *
      * @param Producer $producer
@@ -386,12 +405,22 @@ class SalesOrder
     public function getSubTotalByProducer(Producer $producer)
     {
         $total = 0;
-        foreach ($this->getSalesOrderRows() as $row) {
-            if ($row->getProducer()->getId() == $producer->getId()) {
-                $total += $row->getTotal();
-            }
+        foreach ($this->getSalesOrderRowsForProducer($producer) as $row) {
+            $total += $row->getTotal();
         }
 
         return $total;
+    }
+
+    /**
+     * Computes order
+     */
+    public function compute()
+    {
+        $this->total = 0;
+        foreach ($this->getSalesOrderRows() as $row) {
+            $row->compute();
+            $this->total += $row->getTotal();
+        }
     }
 }
