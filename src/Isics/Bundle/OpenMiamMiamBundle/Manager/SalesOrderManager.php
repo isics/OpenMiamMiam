@@ -153,7 +153,7 @@ class SalesOrderManager
      */
     public function save(SalesOrder $order, array $validationContext = null)
     {
-        if (null !== $order->getId()) {
+        if (null === $order->getId()) {
             // Increase reference for order
             $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
             $association->setOrderRefCounter($association->getOrderRefCounter()+1);
