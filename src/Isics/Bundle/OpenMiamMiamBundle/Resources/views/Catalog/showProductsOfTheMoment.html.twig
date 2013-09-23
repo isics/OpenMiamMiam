@@ -15,7 +15,7 @@
 
 <h2><span class="glyphicon glyphicon-tags"></span> {{ 'zone.products_of_the_moment.title'|trans }}</h2>
 
-<div class="row">
+<div id="products-of-the-moment" class="row">
     {% set showNoPriceStatement = false %}
     {% for product in products %}
         <div class="{{ colClass }}">
@@ -23,8 +23,7 @@
                 <div class="panel-body">
                     <h3>
                         <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
-                            {{ product.name }}
-                        </a>
+                            {{ product.name }}</a>{% if product.isBio %}&nbsp;<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
                     </h3>
                     <p>
                         <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">

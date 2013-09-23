@@ -60,7 +60,7 @@
             <tbody>
                 {% for item in cart.items %}
                     <tr>
-                        <td>{{ item.product.name }}</a></td>
+                        <td>{{ item.product.name }}{% if product.isBio %} <strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}</td>
                         <td>{{ item.product.price|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>{{ item.quantity }}</td>
                         <td>{{ item.total|number_format_currency(open_miam_miam.currency) }}</td>

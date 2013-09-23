@@ -34,8 +34,8 @@
                             <tr>
                                 <td>
                                     <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': item.vars.data.product.category.slug, 'product_slug': item.vars.data.product.slug}) }}">
-                                        {{ item.vars.data.product.name }}
-                                    </a>
+                                        {{ item.vars.data.product.name }}</a>
+                                    {% if product.isBio %}<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
                                 </td>
                                 <td{% if item.vars.data.product.hasNoPrice %} class="td-no-price"{% endif %}>
                                     {% if not item.vars.data.product.hasNoPrice %}
