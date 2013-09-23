@@ -34,15 +34,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for salesOrder in branchOccurrenceSalesOrders %}
+                        {% for producerSalesOrder in branchOccurrenceSalesOrders %}
                             <tr>
-                                <td><a href="#">{{ salesOrder.ref }}</a></td>
-                                <td>{{ salesOrder.date|format_date }}</td>
-                                <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }}</td>
-                                <td>{{ salesOrder.salesOrderRows|length }}</td>
-                                <td>{{ salesOrder.subTotalByProducer(producer)|number_format_currency(open_miam_miam.currency) }}</td>
+                                <td>{{ producerSalesOrder.salesOrder.ref }}</td>
+                                <td>{{ producerSalesOrder.salesOrder.date|format_date }}</td>
+                                <td>{{ producerSalesOrder.salesOrder.firstname }} {{ producerSalesOrder.salesOrder.lastname }}</td>
+                                <td>{{ producerSalesOrder.salesOrderRows|length }}</td>
+                                <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a href="{{ path('open_miam_miam.admin.producer.edit_sales_order', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
                             </tr>
                         {% endfor %}

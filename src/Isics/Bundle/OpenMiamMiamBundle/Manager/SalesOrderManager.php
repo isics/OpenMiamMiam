@@ -93,7 +93,7 @@ class SalesOrderManager
             $order->setConsumerComment($confirmation->getConsumerComment());
         }
 
-        $this->save($order, true);
+        $this->save($order, array('Default', 'FromCart'));
 
         $cart->clearItems();
 
@@ -114,7 +114,6 @@ class SalesOrderManager
         $order = new SalesOrder();
 
         $order->setDate(new \DateTime());
-        $order->setTotal($cart->getTotal());
 
         $order->setBranchOccurrence($branchOccurrence);
 
@@ -137,7 +136,6 @@ class SalesOrderManager
             $orderRow->setIsBio($product->getIsBio());
             $orderRow->setUnitPrice($product->getPrice());
             $orderRow->setQuantity($item->getQuantity());
-            $orderRow->setTotal($item->getTotal());
 
             $order->addSalesOrderRow($orderRow);
         }
@@ -149,35 +147,39 @@ class SalesOrderManager
      * Saves sales order
      *
      * @param SalesOrder $order
-     * @param boolean $fromCart
+     * @param array $validationContext
      *
      * @throws \DomainException
      */
-    public function save(SalesOrder $order, $fromCart = false)
+    public function save(SalesOrder $order, array $validationContext = null)
     {
-        // Increase reference for order
-        $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
-        $association->setOrderRefCounter($association->getOrderRefCounter()+1);
-        $this->objectManager->persist($association);
+        if (null === $order->getId()) {
+            // Increase reference for order
+            $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
+            $association->setOrderRefCounter($association->getOrderRefCounter()+1);
+            $this->objectManager->persist($association);
 
-        // Sets ref
-        $order->setRef(sprintf(
-            '%s%s',
-            $this->config['ref_prefix'],
-            str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
-        ));
-
-        if ($fromCart && count($this->validator->validate($order, array('Default', 'FromCart'))) > 0) {
-            throw new \DomainException('Invalid order');
+            // Sets ref
+            $order->setRef(sprintf(
+                '%s%s',
+                $this->config['ref_prefix'],
+                str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
+            ));
         }
 
         // Update product stocks
         foreach ($order->getSalesOrderRows() as $row) {
             $product = $row->getProduct();
             if (null !== $product && $product->getAvailability() == Product::AVAILABILITY_ACCORDING_TO_STOCK) {
-                $product->setStock($product->getStock()-$row->getQuantity());
+                $product->setStock(($product->getStock()-($row->getQuantity()-$row->getOldQuantity())));
                 $this->objectManager->persist($product);
             }
+        }
+
+        $order->compute();
+
+        if (null !== $validationContext && count($this->validator->validate($order, $validationContext)) > 0) {
+            throw new \DomainException('Invalid order');
         }
 
         // Save

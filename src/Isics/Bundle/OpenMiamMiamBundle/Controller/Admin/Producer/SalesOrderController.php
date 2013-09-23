@@ -13,6 +13,11 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerSalesOrderType;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 
 class SalesOrderController extends BaseController
 {
@@ -30,6 +35,53 @@ class SalesOrderController extends BaseController
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list.html.twig', array(
             'producer' => $producer,
             'salesOrders' => $this->get('open_miam_miam.producer_sales_order_manager')->getForNextBranchOccurrences($producer)
+        ));
+    }
+
+    /**
+     * Update a sales order
+     *
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
+     *
+     * @param Request $request
+     * @param Producer $producer
+     * @param SalesOrder $order
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Producer $producer, SalesOrder $order)
+    {
+        $this->secure($producer);
+
+        $form = $this->createForm(
+            new ProducerSalesOrderType(),
+            new ProducerSalesOrder($producer, $order),
+            array(
+                'action' => $this->generateUrl(
+                    'open_miam_miam.admin.producer.edit_sales_order',
+                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                ),
+                'method' => 'POST'
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $this->get('open_miam_miam.sales_order_manager')->save($order);
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.producer.list_sales_orders',
+                    array('id' => $producer->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit.html.twig', array(
+            'producer' => $producer,
+            'form' => $form->createView()
         ));
     }
 }

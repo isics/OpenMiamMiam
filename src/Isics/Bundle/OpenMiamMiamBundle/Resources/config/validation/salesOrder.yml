@@ -54,6 +54,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
                 max: 255
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
+    constraints:
+            - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderRow: ~
     properties:
         product:
             - NotNull: { groups: [FromCart] }
@@ -73,13 +75,13 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
             - Type:
                 type: boolean
         unitPrice:
-            - Type:
-                type: numeric
+            - Range:
+                min: 0
         quantity:
             - NotNull: ~
-            - Type:
-                type: numeric
+            - Range:
+                min: 0
         total:
             - NotNull: ~
-            - Type:
-                type: numeric
+            - Range:
+                min: 0

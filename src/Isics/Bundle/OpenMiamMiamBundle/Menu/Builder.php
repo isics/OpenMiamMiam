@@ -126,8 +126,7 @@ class Builder
             'label'           => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.producer.menu.dashboard')),
         ));
         $menu[$menuName]->addChild('Orders', array(
-            'uri'             => '#',
-            'route'           => 'open_miam_miam.admin.producer.list_sales_order',
+            'route'           => 'open_miam_miam.admin.producer.list_sales_orders',
             'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('admin.producer.menu.orders')),
         ));

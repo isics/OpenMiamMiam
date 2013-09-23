@@ -47,9 +47,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
         $productManager->save($product);
 
-        $this->getReference('Branch 1')->addProduct($product);
-        $this->getReference('Branch 2')->addProduct($product);
-
         $product = $productManager->createForProducer($this->getReference('Elsa Dorsa'));
         $product->setName('Prime rib of beef');
         $product->setCategory($this->getReference('Meat'));
@@ -57,16 +54,12 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $product->setAvailableAt(new \DateTime('next month'));
         $productManager->save($product);
 
-        $this->getReference('Branch 1')->addProduct($product);
-
         $product = $productManager->createForProducer($this->getReference('Elsa Dorsa'));
         $product->setName('Sausages');
         $product->setCategory($this->getReference('Meat'));
         $product->setDescription('100% lamb');
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
         $productManager->save($product);
-
-        $this->getReference('Branch 1')->addProduct($product);
 
         $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
         $product->setName('Butter');
@@ -76,9 +69,6 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $product->setStock(14);
         $productManager->save($product);
 
-        $this->getReference('Branch 1')->addProduct($product);
-        $this->getReference('Branch 2')->addProduct($product);
-
         $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
         $product->setName('Plain yoghurt ');
         $product->setCategory($this->getReference('Dairy produce'));
@@ -87,21 +77,12 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $product->setStock(0);
         $productManager->save($product);
 
-        $this->getReference('Branch 1')->addProduct($product);
-        $this->getReference('Branch 2')->addProduct($product);
-
         $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
         $product->setName('Fruit yoghurt');
         $product->setCategory($this->getReference('Dairy produce'));
         $product->setPrice(.6);
         $product->setAvailability(Product::AVAILABILITY_UNAVAILABLE);
         $productManager->save($product);
-
-        $this->getReference('Branch 1')->addProduct($product);
-        $this->getReference('Branch 2')->addProduct($product);
-
-        $manager->persist($this->getReference('Branch 1'));
-        $manager->persist($this->getReference('Branch 2'));
 
         $manager->flush();
     }

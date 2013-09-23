@@ -22,6 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="sales_order_row")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class SalesOrderRow
 {
@@ -101,9 +102,14 @@ class SalesOrderRow
     private $quantity;
 
     /**
+     * @var decimal
+     */
+    private $oldQuantity;
+
+    /**
      * @var integer $total
      *
-     * @ORM\Column(name="total", type="integer", nullable=false)
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $total;
 
@@ -126,7 +132,7 @@ class SalesOrderRow
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Product $product
+     * @param Product $product
      */
     public function setProduct(Product $product = null)
     {
@@ -134,7 +140,7 @@ class SalesOrderRow
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -142,7 +148,7 @@ class SalesOrderRow
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Producer $producer
+     * @param Producer $producer
      */
     public function setProducer(Producer $producer)
     {
@@ -150,7 +156,7 @@ class SalesOrderRow
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Producer
+     * @return Producer
      */
     public function getProducer()
     {
@@ -158,7 +164,7 @@ class SalesOrderRow
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\decimal $quantity
+     * @param decimal
      */
     public function setQuantity($quantity)
     {
@@ -166,11 +172,19 @@ class SalesOrderRow
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\decimal
+     * @return decimal
      */
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getOldQuantity()
+    {
+        return $this->oldQuantity;
     }
 
     /**
@@ -267,5 +281,25 @@ class SalesOrderRow
     public function getRef()
     {
         return $this->ref;
+    }
+
+    /**
+     * Computes row
+     */
+    public function compute()
+    {
+        if (null !== $this->unitPrice) {
+            $this->total = $this->quantity*$this->unitPrice;
+        } elseif (null === $this->total) {
+            $this->total = 0;
+        }
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function postLoad()
+    {
+        $this->oldQuantity = $this->quantity;
     }
 }

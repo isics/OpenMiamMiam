@@ -46,7 +46,7 @@ class SalesOrderRepository extends EntityRepository
     }
 
     /**
-     * Returns sales order for a producer (concerned by at least one row)
+     * Returns sales orders for a producer (concerned by at least one row)
      *
      * @param Producer $producer
      * @param BranchOccurrence $branchOccurrence
