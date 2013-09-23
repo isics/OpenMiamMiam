@@ -118,3 +118,10 @@ stfalcon_tinymce:
                 - { title: "Titre", block: "h2" }
                 - { title: "Sous-titre", block: "h3" }
                 - { title: "Paragraphe", block: "p" }
+
+# Services
+services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }

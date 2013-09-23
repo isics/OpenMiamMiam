@@ -30,6 +30,7 @@ assetic:
 #swiftmailer:
 #    delivery_address: me@example.com
 
+# Services
 services:
     twig.extension.debug:
         class: Twig_Extensions_Extension_Debug

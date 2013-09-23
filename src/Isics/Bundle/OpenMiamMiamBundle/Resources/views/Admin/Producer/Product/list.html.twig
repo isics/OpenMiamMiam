@@ -31,7 +31,7 @@
                         <th>{{ 'admin.producer.products.list.is_bio'|trans }}</th>
                         <th>{{ 'admin.producer.products.list.price'|trans }}</th>
                         {% for branch in producer.branches %}
-                            <th>{{ branch.name }}</th>
+                            <th>{{ branch.name|truncate(8) }}</th>
                         {% endfor %}
                         <th>{{ 'admin.producer.products.list.availability'|trans }}</th>
                         <th>&nbsp;</th>
