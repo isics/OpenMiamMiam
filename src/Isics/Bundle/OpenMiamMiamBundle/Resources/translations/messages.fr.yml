@@ -105,7 +105,7 @@ admin.producer.sales_orders.list.producer_total: "Montant producteur"
 
 # Admin / Producer / Products
 admin.producer.products.list.title:                    "{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits"
-admin.producer.products.list.no_product:               "Il n'y a pas encore de produits."
+admin.producer.products.list.no_product:               "Il n'y a pas encore de produit."
 admin.producer.products.list.create:                   "Nouveau produit"
 admin.producer.products.list.edit:                     "Modifier le produit"
 admin.producer.products.list.delete:                   "Supprimer le produit"
