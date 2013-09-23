@@ -104,7 +104,7 @@
                         {{ form_errors(form.imageFile) }}
                         {{ form_widget(form.imageFile) }}
                     </div>
-                    {{ form_row(form.description, {'label': 'admin.producer.products.form.description'|trans}) }}
+                    {{ form_row(form.description, {'label': 'admin.producer.products.form.description'|trans, 'attr': {'class': 'tinymce'}}) }}
                 </div>
             </div>
         </div>

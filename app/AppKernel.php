@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
             new Isics\Bundle\OpenMiamMiamUserBundle\IsicsOpenMiamMiamUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

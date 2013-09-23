@@ -101,3 +101,20 @@ liip_imagine:
         m:
             filters:
                 thumbnail: { size: [300, 300], mode: outbound }
+
+# StfalconTinymceBundle
+stfalcon_tinymce:
+    include_jquery: true
+    tinymce_jquery: true
+    theme:
+        simple:
+            theme:     "modern"
+            menubar:   false
+            statusbar: false
+            plugins:
+                - "autolink lists textcolor"
+            toolbar1: "bold,italic,underline,forecolor,styleselect,bullist,numlist,undo,redo,removeformat"
+            style_formats:
+                - { title: "Titre", block: "h2" }
+                - { title: "Sous-titre", block: "h3" }
+                - { title: "Paragraphe", block: "p" }
