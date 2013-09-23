@@ -18,6 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Isics\OpenMiamMiamBundle\Entity\Category
  *
+ * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="category")
  * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\CategoryRepository")
  */
@@ -53,6 +54,37 @@ class Category
      * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
      */
     private $products;
+
+    /**
+     * @Gedmo\TreeLeft
+     * @ORM\Column(name="lft", type="integer")
+     */
+    private $lft;
+
+    /**
+     * @Gedmo\TreeLevel
+     * @ORM\Column(name="lvl", type="integer")
+     */
+    private $lvl;
+
+    /**
+     * @Gedmo\TreeRight
+     * @ORM\Column(name="rgt", type="integer")
+     */
+    private $rgt;
+
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @ORM\OrderBy({"lft" = "ASC"})
+     */
+    private $children;
 
 
 
@@ -95,6 +127,14 @@ class Category
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns string
+     */
+    public function getIndentedName()
+    {
+        return str_repeat('--', $this->lvl).' '.$this->getName();
     }
 
     /**
@@ -151,5 +191,53 @@ class Category
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @param Category $parent
+     */
+    public function setParent(Category $parent = null)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return Parent
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @return array
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
     }
 }

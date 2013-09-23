@@ -11,20 +11,25 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-// @todo (all branches selected by default)
 // @todo (only next years)
-class ProductType extends AbstractType
+class ProductType extends AbstractType  implements EventSubscriberInterface
 {
     /**
      * @var array $buyingUnits
      */
     protected $buyingUnits;
+
+
 
     /**
      * Constructs type
@@ -41,18 +46,15 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $product = $options['data'];
-
         $builder->add('name', 'text')
-                ->add('ref', 'text')
                 ->add('category', 'entity', array(
                     'class' => 'IsicsOpenMiamMiamBundle:Category',
-                    'property' => 'name',
-                    'empty_value' => '',
+                    'property' => 'indentedName',
                     'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('c')->orderBy('c.name', 'ASC');
+                        return $er->getNodesHierarchyQueryBuilder();
                     },
                 ))
+                ->add('ref', 'text')
                 ->add('isBio', 'checkbox', array(
                     'required' => false
                 ))
@@ -97,21 +99,47 @@ class ProductType extends AbstractType
                 ->add('availableAt', 'date', array(
                     'required' => false
                 ))
-                ->add('branches', 'entity', array(
-                    'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                    'property' => 'name',
-                    'empty_value' => '',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'by_reference' => false,
-                    'query_builder' => function(EntityRepository $er) use ($product) {
-                        return $er->getBranchesForProducerQueryBuilder($product->getProducer());
-                    },
-                ))
+                ->addEventSubscriber($this)
                 ->add('save', 'submit');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $product = $event->getData();
+
+        if (null === $product) {
+            return;
+        }
+
+        $producer = $product->getProducer();
+        if (null !== $producer) {
+            $form->add('branches', 'entity', array(
+                'class' => 'IsicsOpenMiamMiamBundle:Branch',
+                'property' => 'name',
+                'empty_value' => '',
+                'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false,
+                'query_builder' => function(EntityRepository $er) use ($producer) {
+                    return $er->getBranchesForProducerQueryBuilder($producer);
+                },
+            ));
+        }
 
         if (null !== $product->getImage()) {
-            $builder->add('deleteImage', 'checkbox', array(
+            $form->add('deleteImage', 'checkbox', array(
                 'required' => false
             ));
         }

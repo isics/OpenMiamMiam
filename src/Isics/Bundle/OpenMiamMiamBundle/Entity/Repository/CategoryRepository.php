@@ -11,11 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 
-class CategoryRepository extends EntityRepository
+class CategoryRepository extends NestedTreeRepository
 {
     /**
      * Finds categories available in a branch (categories with products)
@@ -26,16 +28,16 @@ class CategoryRepository extends EntityRepository
      */
     public function findAllAvailableInBranch(Branch $branch)
     {
-        return $this->createQueryBuilder('c')
-            ->innerJoin('c.products', 'p')
-            ->innerJoin('p.branches', 'b')
-            ->where('p.availability != :availability')
-            ->andWhere('b = :branch')
-            ->groupBy('c.id')
-            ->addOrderBy('c.name')
-            ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
-            ->setParameter('branch', $branch)
-            ->getQuery()
-            ->getResult();
+        return $this->getRootNodesQueryBuilder()
+//                ->innerJoin('node.products', 'p', Join::ON, 'p.id = 2')
+//                ->innerJoin('p.branches', 'b')
+//                ->where('p.availability != :availability')
+//                ->andWhere('b = :branch')
+//                ->groupBy('node.id')
+//                ->addOrderBy('node.name')
+//                ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
+//                ->setParameter('branch', $branch)
+                ->getQuery()
+                ->getResult();
     }
 }

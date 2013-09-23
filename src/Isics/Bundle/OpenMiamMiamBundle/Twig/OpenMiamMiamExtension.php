@@ -11,6 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
@@ -63,7 +65,8 @@ class OpenMiamMiamExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath')
+            'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath'),
+            'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay')
         );
     }
 
@@ -89,6 +92,19 @@ class OpenMiamMiamExtension extends \Twig_Extension
     public function getImageProductPath(Product $product)
     {
         return $this->productManager->getImagePath($product);
+    }
+
+    /**
+     * Returns products to display
+     *
+     * @param Branch $branch
+     * @param Category $category
+     *
+     * @return array
+     */
+    public function getProductsToDisplay(Branch $branch, Category $category)
+    {
+        return $this->productManager->getProductsToDisplay($branch, $category);
     }
 
     /**

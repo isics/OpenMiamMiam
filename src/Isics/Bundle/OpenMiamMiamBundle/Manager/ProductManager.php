@@ -12,6 +12,8 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Filesystem\Filesystem;
@@ -224,5 +226,45 @@ class ProductManager
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
+    }
+
+    /**
+     * Returns visible products for branch and category
+     *
+     * @param Branch $branch
+     * @param Category $category
+     *
+     * @return array
+     */
+    public function getProductsToDisplay(Branch $branch, Category $category)
+    {
+        // TODO stock products to display in a new member of category : $productsToDisplay[branch][category]
+        return $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:Product')->findAllVisibleInBranchAndCategory(
+            $branch,
+            $category
+        );
+    }
+
+    /**
+     * Returns true if category has products to display
+     *
+     * @param Branch $branch
+     * @param Category $category
+     *
+     * @return bool
+     */
+    public function hasCategoryProductsToDisplay(Branch $branch, Category $category)
+    {
+        if (count($this->getProductsToDisplay($branch, $category)) > 0) {
+            return true;
+        }
+
+        foreach ($category->getChildren() as $child) {
+            if ($this->hasCategoryProductsToDisplay($branch, $child)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

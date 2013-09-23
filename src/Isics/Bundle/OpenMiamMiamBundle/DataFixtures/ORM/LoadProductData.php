@@ -49,14 +49,14 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
 
         $product = $productManager->createForProducer($this->getReference('Elsa Dorsa'));
         $product->setName('Prime rib of beef');
-        $product->setCategory($this->getReference('Meat'));
+        $product->setCategory($this->getReference('Beef'));
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE_AT);
         $product->setAvailableAt(new \DateTime('next month'));
         $productManager->save($product);
 
         $product = $productManager->createForProducer($this->getReference('Elsa Dorsa'));
         $product->setName('Sausages');
-        $product->setCategory($this->getReference('Meat'));
+        $product->setCategory($this->getReference('Pork'));
         $product->setDescription('100% lamb');
         $product->setAvailability(Product::AVAILABILITY_AVAILABLE);
         $productManager->save($product);

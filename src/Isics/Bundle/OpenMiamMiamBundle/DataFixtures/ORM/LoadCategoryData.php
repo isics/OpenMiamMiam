@@ -23,14 +23,39 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        foreach (array('Fruits and vegetables', 'Dairy produce', 'Meat') as $name) {
-            $category = new Category();
-            $category->setName($name);
+        $fruitsAndVegetables = new Category();
+        $fruitsAndVegetables->setName('Fruits and vegetables');
+        $this->addReference($fruitsAndVegetables->getName(), $fruitsAndVegetables);
 
-            $manager->persist($category);
+        $dairyProduce = new Category();
+        $dairyProduce->setName('Dairy produce');
+        $this->addReference($dairyProduce->getName(), $dairyProduce);
 
-            $this->addReference($name, $category);
-        }
+        $meat = new Category();
+        $meat->setName('Meat');
+        $this->addReference($meat->getName(), $meat);
+
+        $beef = new Category();
+        $beef->setName('Beef');
+        $beef->setParent($meat);
+        $this->addReference($beef->getName(), $beef);
+
+        $lamb = new Category();
+        $lamb->setName('Lamb');
+        $lamb->setParent($meat);
+        $this->addReference($lamb->getName(), $lamb);
+
+        $pork = new Category();
+        $pork->setName('Pork');
+        $pork->setParent($meat);
+        $this->addReference($pork->getName(), $pork);
+
+        $manager->persist($fruitsAndVegetables);
+        $manager->persist($dairyProduce);
+        $manager->persist($meat);
+        $manager->persist($beef);
+        $manager->persist($lamb);
+        $manager->persist($pork);
 
         $manager->flush();
     }

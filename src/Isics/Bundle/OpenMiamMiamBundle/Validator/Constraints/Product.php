@@ -19,6 +19,8 @@ class Product extends Constraint
 
     public $invalidBranchesMessage = 'At least one branch is invalid.';
 
+    public $invalidCategoryMessage = 'The category must be a final node.';
+
     /**
      * {@inheritDoc}
      *

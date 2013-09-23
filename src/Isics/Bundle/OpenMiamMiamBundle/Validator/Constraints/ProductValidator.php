@@ -72,5 +72,10 @@ class ProductValidator extends ConstraintValidator
         } elseif (null === $product->getAvailableAt()) {
             $this->context->addViolationAt('availableAt', $constraint->requiredMessage, array(), null);
         }
+
+        // Category is leaf
+        if ($product->getCategory()->getRgt()-$product->getCategory()->getlft() > 1) {
+            $this->context->addViolationAt('category', $constraint->invalidCategoryMessage, array(), null);
+        }
     }
 }
