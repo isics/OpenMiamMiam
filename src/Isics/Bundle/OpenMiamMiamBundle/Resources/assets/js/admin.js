@@ -163,3 +163,23 @@ OpenMiamMiam.ProducerProductForm = function() {
 
     return object;
 }();
+
+
+OpenMiamMiam.ProducerProductDeleteDialog = function() {
+
+    var object = function() {
+        this.handleConfirmation();
+    };
+
+    object.prototype = {
+        handleConfirmation: function() {
+            $('[href=#delete-dialog]').on('click', function(e) {
+                e.preventDefault();
+
+                $('#delete-dialog .btn-danger').attr('href', $(this).data('url'));
+            });
+        }
+    };
+
+    return object;
+}();

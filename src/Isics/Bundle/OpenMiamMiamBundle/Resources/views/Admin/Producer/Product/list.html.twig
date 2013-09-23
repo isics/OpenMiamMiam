@@ -64,7 +64,7 @@
                             </td>
                             <td>
                                 <a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.products.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a href="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.products.list.delete'|trans }}"><span class="glyphicon glyphicon-trash"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.products.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -83,7 +83,18 @@
                 </table>
             </div>
         {% endif %}
+
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\Product\\deleteDialog.html.twig' %}
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.products.list.no_product'|trans} %}
     {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.ProducerProductDeleteDialog;
+        });
+    </script>
 {% endblock %}

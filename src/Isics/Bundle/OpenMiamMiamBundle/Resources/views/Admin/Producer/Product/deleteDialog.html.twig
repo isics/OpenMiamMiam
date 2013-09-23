@@ -1,0 +1,26 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+<div class="modal fade" id="delete-dialog" role="dialog" aria-labelledby="Delete confirmation" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{ 'admin.producer.products.delete_dialog.title'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    {{ 'admin.producer.products.delete_dialog.message'|trans }}
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'admin.producer.products.delete_dialog.cancel'|trans }}</button>
+                <a href="#" class="btn btn-danger">{{ 'admin.producer.products.delete_dialog.confirm'|trans }}</a>
+            </div>
+        </div>
+    </div>
+</div>
