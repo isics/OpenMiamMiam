@@ -704,6 +704,20 @@ class Product
     }
 
     /**
+     * Set branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches Branches
+     */
+    public function setBranches($branches)
+    {
+        $this->branches = new ArrayCollection();
+
+        foreach ($branches as $branch) {
+            $this->addBranch($branch);
+        }
+    }
+
+    /**
      * Returns true if product has branch
      *
      * @param Branch $branch
