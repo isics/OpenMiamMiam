@@ -62,7 +62,7 @@
 
         {% if product.description %}
             <div class="well">
-                {{ product.description }}
+                {{ product.description|raw }}
             </div>
         {% endif %}
 
