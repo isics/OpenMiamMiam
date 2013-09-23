@@ -10,53 +10,57 @@
 {% block content %}
     <h1>{{ 'admin.producer.calendar.title'|trans }}</h1>
 
-    {{ form_start(form) }}
+    {% if form.children.branchAttendances.children|length > 0 %}
+        {{ form_start(form) }}
 
-        {% for child1 in form.children.branchAttendances.children %}
-            <h2>{{ child1.vars.data.branch.name }}</h2>
+            {% for child1 in form.children.branchAttendances.children %}
+                <h2>{{ child1.vars.data.branch.name }}</h2>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-calendar">
-                    <thead>
-                        <tr>
-                            <th>{{ 'admin.producer.calendar.at'|trans }}</th>
-                            <th>{{ 'admin.producer.calendar.from'|trans }}</th>
-                            <th>{{ 'admin.producer.calendar.to'|trans }}</th>
-                            <th>{{ 'admin.producer.calendar.attendance'|trans }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for child2 in child1.children.branchOccurrenceAttendances.children %}
-                            {% set branchOccurenceAttendance = child2.vars.data %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-calendar">
+                        <thead>
                             <tr>
-                                <td>{{ branchOccurenceAttendance.branchOccurrence.begin|format_date('eeee dd MMMM YYYY') }}</td>
-                                <td>{{ branchOccurenceAttendance.branchOccurrence.begin|format_time }}</td>
-                                <td>{{ branchOccurenceAttendance.branchOccurrence.end|format_time }}</td>
-                                <td>
-                                    <label class="radio-inline">
-                                        {{ form_widget(child2.children.attendance.children[0]) }}
-                                        {{ 'admin.producer.calendar.attendance.yes'|trans }}
-                                    </label>
-                                    <label class="radio-inline">
-                                        {{ form_widget(child2.children.attendance.children[1]) }}
-                                        {{ 'admin.producer.calendar.attendance.no'|trans }}
-                                    </label>
-                                    <label class="radio-inline">
-                                        {{ form_widget(child2.children.attendance.children[2]) }}
-                                        {{ 'admin.producer.calendar.attendance.unknown'|trans }}
-                                    </label>
-                                </td>
+                                <th>{{ 'admin.producer.calendar.at'|trans }}</th>
+                                <th>{{ 'admin.producer.calendar.from'|trans }}</th>
+                                <th>{{ 'admin.producer.calendar.to'|trans }}</th>
+                                <th>{{ 'admin.producer.calendar.attendance'|trans }}</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% endfor %}
+                        </thead>
+                        <tbody>
+                            {% for child2 in child1.children.branchOccurrenceAttendances.children %}
+                                {% set branchOccurenceAttendance = child2.vars.data %}
+                                <tr>
+                                    <td>{{ branchOccurenceAttendance.branchOccurrence.begin|format_date('eeee dd MMMM YYYY') }}</td>
+                                    <td>{{ branchOccurenceAttendance.branchOccurrence.begin|format_time }}</td>
+                                    <td>{{ branchOccurenceAttendance.branchOccurrence.end|format_time }}</td>
+                                    <td>
+                                        <label class="radio-inline">
+                                            {{ form_widget(child2.children.attendance.children[0]) }}
+                                            {{ 'admin.producer.calendar.attendance.yes'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            {{ form_widget(child2.children.attendance.children[1]) }}
+                                            {{ 'admin.producer.calendar.attendance.no'|trans }}
+                                        </label>
+                                        <label class="radio-inline">
+                                            {{ form_widget(child2.children.attendance.children[2]) }}
+                                            {{ 'admin.producer.calendar.attendance.unknown'|trans }}
+                                        </label>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
 
-        <button type="submit" class="btn btn-primary btn-lg" />
-            <span class="glyphicon glyphicon-floppy-save"></span>
-            {{ 'admin.save'|trans }}
-        </button>
-        {% do form.save.setRendered %}
-    {{ form_end(form) }}
+            <button type="submit" class="btn btn-primary btn-lg" />
+                <span class="glyphicon glyphicon-floppy-save"></span>
+                {{ 'admin.save'|trans }}
+            </button>
+            {% do form.save.setRendered %}
+        {{ form_end(form) }}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.calendar.no_occurence'|trans} %}
+    {% endif %}
 {% endblock %}

@@ -24,7 +24,7 @@ class SalesOrderConfirmationType extends AbstractType
     {
         $builder->add('termsOfSaleChecked', 'checkbox')
                 ->add('consumerComment', 'textarea', array('required' => false))
-                ->add('Save', 'submit');
+                ->add('save', 'submit');
 
     }
 

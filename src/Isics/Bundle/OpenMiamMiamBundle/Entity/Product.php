@@ -115,7 +115,7 @@ class Product
     /**
      * @var string $description
      *
-     * @ORM\Column(name="description", type="string", nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
@@ -199,7 +199,7 @@ class Product
         $this->allowDecimalQuantity = false;
         $this->deleteImage          = false;
         $this->availability         = self::AVAILABILITY_AVAILABLE;
-        $this->hasNoPrice           = null === $this->price;
+        $this->hasNoPrice           = (null === $this->id) ? false : (null === $this->price);
         $this->branches             = new ArrayCollection();
     }
 
@@ -701,6 +701,20 @@ class Product
     public function getBranches()
     {
         return $this->branches;
+    }
+
+    /**
+     * Set branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches Branches
+     */
+    public function setBranches($branches)
+    {
+        $this->branches = new ArrayCollection();
+
+        foreach ($branches as $branch) {
+            $this->addBranch($branch);
+        }
     }
 
     /**

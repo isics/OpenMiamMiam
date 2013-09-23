@@ -12,7 +12,9 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class OpenMiamMiamExtension extends \Twig_Extension
 {
@@ -27,12 +29,30 @@ class OpenMiamMiamExtension extends \Twig_Extension
     private $productManager;
 
     /**
+     * @var ConsumerManager $consumerManager
+     */
+    private $consumerManager;
+
+    /**
      * Constructor
      */
-    public function __construct($currency, ProductManager $productManager)
+    public function __construct($currency, ProductManager $productManager, ConsumerManager $consumerManager)
     {
-        $this->currency = $currency;
-        $this->productManager = $productManager;
+        $this->currency        = $currency;
+        $this->productManager  = $productManager;
+        $this->consumerManager = $consumerManager;
+    }
+
+    /**
+     * Returns available filters
+     *
+     * @return array
+     */
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('format_consumer_ref', array($this, 'formatConsumerRef')),
+        );
     }
 
     /**
@@ -45,6 +65,18 @@ class OpenMiamMiamExtension extends \Twig_Extension
         return array(
             'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath')
         );
+    }
+
+    /**
+     * Format consumer ref
+     *
+     * @param User $user
+     *
+     * @return string
+     */
+    public function formatConsumerRef(User $user)
+    {
+        return $this->consumerManager->formatRef($user);
     }
 
     /**

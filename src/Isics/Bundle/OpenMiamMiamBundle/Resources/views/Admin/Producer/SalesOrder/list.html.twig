@@ -14,14 +14,14 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        {% for branchOccurrenceSalesOrders in salesOrders %}
-            <h2>
-                {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
-                - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
-            </h2>
+    {% for branchOccurrenceSalesOrders in salesOrders %}
+        <h2>
+            {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
+            - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
+        </h2>
 
-            {% if branchOccurrenceSalesOrders|length > 0 %}
+        {% if branchOccurrenceSalesOrders|length > 0 %}
+            <div class="table-responsive">
                 <table class="table table-bordered table-striped table-sales-orders">
                     <thead>
                         <tr>
@@ -40,7 +40,7 @@
                                 <td>{{ producerSalesOrder.salesOrder.date|format_date }}</td>
                                 <td>{{ producerSalesOrder.salesOrder.firstname }} {{ producerSalesOrder.salesOrder.lastname }}</td>
                                 <td>{{ producerSalesOrder.salesOrderRows|length }}</td>
-                                <td>{{ producerSalesOrder.total }}</td>
+                                <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
                                     <a href="{{ path('open_miam_miam.admin.producer.edit_sales_order', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                                 </td>
@@ -48,11 +48,9 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            {% else %}
-                <p class="text-muted">
-                    <span class="glyphicon glyphicon-ban-circle"></span> <em>{{ 'admin.producer.sales_orders.list.not_yet_order'|trans }}</em>
-                </p>
-            {% endif %}
-        {% endfor %}
-    </div>
+            </div>
+        {% else %}
+            {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.list.no_order'|trans} %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}

@@ -50,7 +50,7 @@
                             {{ product.price|number_format_currency(open_miam_miam.currency) }}
                         {% else %}
                             {% set showNoPriceStatement = true %}
-                            <span class="glyphicon glyphicon-time"></span>
+                            <span class="glyphicon glyphicon-time"></span>*
                         {% endif %}
                     </dd>
 
@@ -62,7 +62,7 @@
 
         {% if product.description %}
             <div class="well">
-                {{ product.description }}
+                {{ product.description|raw }}
             </div>
         {% endif %}
 

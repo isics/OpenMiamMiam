@@ -38,7 +38,7 @@ Feature: Admin authentication & authorization
     When I fill username field with "foo@bar.com"
     And I fill password field with "secret1"
     And I press login button
-    Then I should be on "/admin/producer/2/dashboard"
+    Then I should be on "/admin/producers/2/dashboard"
     And the administration area switcher should be on "Elsa Dorsa"
 
   Scenario: Choose administration area after logged in
@@ -50,7 +50,7 @@ Feature: Admin authentication & authorization
     Then I should be on "/admin/"
     And I should see "Choose a role"
     When I follow "Elsa Dorsa"
-    Then I should be on "/admin/producer/2/dashboard"
+    Then I should be on "/admin/producers/2/dashboard"
     And the administration area switcher should be on "Elsa Dorsa"
 
   Scenario: Attempt to access not permitted administration area after login
@@ -59,6 +59,6 @@ Feature: Admin authentication & authorization
     When I fill username field with "foo@bar.com"
     And I fill password field with "secret1"
     And I press login button
-    Then I should be on "/admin/producer/2/dashboard"
-    When I go to "/admin/producer/3/dashboard"
+    Then I should be on "/admin/producers/2/dashboard"
+    When I go to "/admin/producers/3/dashboard"
     Then the response status code should be 403

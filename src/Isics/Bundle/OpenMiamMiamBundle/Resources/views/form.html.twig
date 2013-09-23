@@ -2,7 +2,7 @@
 
 {% block form %}
 {% spaceless %}
-    {% set attr = attr|merge({'role': 'form'}) %}
+    {% set attr = attr|merge({'role': (attr.role|default('') ~ ' form')|trim}) %}
     {{ parent() }}
 {% endspaceless %}
 {% endblock form %}
@@ -32,7 +32,7 @@
 
 {% block form_label %}
 {% spaceless %}
-    {% set label_attr = label_attr|merge({'class': 'control-label'}) %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' control-label')|trim}) %}
     {{ parent() }}
 {% endspaceless %}
 {% endblock form_label %}
@@ -53,7 +53,7 @@
 {% spaceless %}
     {% set type = type|default('text') %}
     {% if type != 'file' %}
-        {% set attr = attr|merge({'class': 'form-control'}) %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
     {% endif %}
     {{ parent() }}
 {% endspaceless %}
@@ -61,14 +61,14 @@
 
 {% block choice_widget_collapsed %}
 {% spaceless %}
-    {% set attr = attr|merge({'class': 'form-control'}) %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
     {{ parent() }}
 {% endspaceless %}
 {% endblock choice_widget_collapsed %}
 
 {% block textarea_widget %}
 {% spaceless %}
-    {% set attr = attr|merge({'class': 'form-control'}) %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}
     {{ parent() }}
 {% endspaceless %}
 {% endblock textarea_widget %}

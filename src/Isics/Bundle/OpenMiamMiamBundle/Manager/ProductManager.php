@@ -90,6 +90,9 @@ class ProductManager
             str_pad($producer->getProductRefCounter()+1, $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
         ));
 
+        // Select all producer branches
+        $product->setBranches($producer->getBranches());
+
         return $product;
     }
 

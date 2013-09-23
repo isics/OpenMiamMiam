@@ -10,19 +10,44 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
         {% block stylesheet %}
             {% include 'IsicsOpenMiamMiamBundle::baseStylesheets.html.twig' %}
         {% endblock %}
     </head>
     <body>
         <div class="container">
-            <p class="text-right">
-                <span class="glyphicon glyphicon-user"></span> <a href="#">{{ 'my_account'|trans }}</a>
-            </p>
+            <ul class="nav nav-pills pull-right">
+                {% if app.user %}
+                    <li>
+                        <a href="{{ path('fos_user_profile_edit') }}">
+                            <span class="glyphicon glyphicon-user"></span>
+                            {{ 'my_account'|trans }} ({{ app.user }})
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            <span class="glyphicon glyphicon-off"></span>
+                            {{ 'logout'|trans }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ path('fos_user_profile_edit') }}">
+                            <span class="glyphicon glyphicon-user"></span>
+                            {{ 'my_account'|trans }}
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
 
-            <header>
-                {% block header %}{% endblock %}
-            </header>
+            {% block header %}
+                <header>
+                    <div id="header-logo">
+                        {% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}
+                    </div>
+                </header>
+            {% endblock %}
 
             {% block global_content %}
                 {% include 'IsicsOpenMiamMiamBundle::messages.html.twig' %}
