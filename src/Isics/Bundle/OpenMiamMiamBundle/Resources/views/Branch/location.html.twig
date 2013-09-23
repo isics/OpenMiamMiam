@@ -11,7 +11,7 @@
     </div>
     <div class="panel-body">
         {{ branch.address1 }}<br />
-        {% if branch.address2 in not null %}{{ branch.address2 }}<br />{% endif %}
+        {% if branch.address2 is not null %}{{ branch.address2 }}<br />{% endif %}
         {{ branch.zipcode }}
         {{ branch.city }}
     </div>
