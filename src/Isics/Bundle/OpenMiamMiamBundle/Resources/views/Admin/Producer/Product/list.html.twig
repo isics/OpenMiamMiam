@@ -21,6 +21,7 @@
     </div>
 
     {% if products|length > 0 %}
+        {% set has_product_of_the_moment = false %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-products">
                 <thead>
@@ -38,7 +39,7 @@
                 </thead>
                 <tbody>
                     {% for product in products %}
-                        <tr{% if product.isOfTheMoment %} class="success"{% endif %}>
+                        <tr{% if product.isOfTheMoment %} class="success"{% set has_product_of_the_moment = true %}{% endif %}>
                             <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.ref }}</a></td>
                             <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.name }}</a></td>
                             <td>{% if product.isBio %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
@@ -71,15 +72,17 @@
             </table>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-legend">
-                <tbody>
-                    <tr>
-                        <td class="success">* {{ 'admin.producer.products.list.is_of_the_moment'|trans }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        {% if has_product_of_the_moment%}
+            <div class="table-responsive">
+                <table class="table table-bordered table-legend">
+                    <tbody>
+                        <tr>
+                            <td class="success">* {{ 'admin.producer.products.list.is_of_the_moment'|trans }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.products.list.no_product'|trans} %}
     {% endif %}
