@@ -12,6 +12,7 @@
     <h1>{{ 'admin.producer.products.form.edit_title'|trans({'%name%': product.name, '%ref%': product.ref}) }}</h1>
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\Product\\form.html.twig' with {'form': form} %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\Product\\deleteDialog.html.twig' %}
 {% endblock %}
 
 {% block javascript %}
@@ -20,6 +21,7 @@
         $(function() {
             new OpenMiamMiam.PanelForm;
             new OpenMiamMiam.ProducerProductForm;
+            new OpenMiamMiam.ProducerProductDeleteDialog;
         });
     </script>
     {{ tinymce_init() }}

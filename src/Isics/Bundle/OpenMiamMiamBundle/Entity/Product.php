@@ -598,7 +598,11 @@ class Product
      */
     public function getStock()
     {
-        return $this->stock;
+        if ('.00' === substr($this->stock, -3)) {
+            return substr($this->stock, 0, -3);
+        } else {
+            return $this->stock;
+        }
     }
 
     /**

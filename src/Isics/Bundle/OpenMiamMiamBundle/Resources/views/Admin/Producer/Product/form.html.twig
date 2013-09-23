@@ -120,5 +120,10 @@
         <span class="glyphicon glyphicon-floppy-save"></span>
         {{ 'admin.save'|trans }}
     </button>
+
+    {% if product.id is not null %}
+        <a data-url="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-lg" title="{{ 'admin.producer.products.form.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+    {% endif %}
+
     {% do form.save.setRendered %}
 {{ form_end(form) }}

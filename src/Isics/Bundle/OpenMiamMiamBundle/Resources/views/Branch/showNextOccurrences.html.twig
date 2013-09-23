@@ -11,7 +11,18 @@
     </div>
     <ul class="list-group">
     {% for branchOccurrence in branchOccurrences %}
-        <li class="list-group-item">{{ branchOccurrence.begin|format_datetime('eee dd MMM HH:mm') }} - {{ branchOccurrence.end|format_time('HH:mm') }}</li>
+        <li class="list-group-item">
+            {% if loop.index == 1 %}
+                <strong>
+                    {{ branchOccurrence.begin|format_datetime('eeee dd MMMM') }}
+                </strong>
+                <strong>
+                    {{ branchOccurrence.begin|format_datetime('HH:mm') }} - {{ branchOccurrence.end|format_time('HH:mm') }}
+                </strong>
+            {% else %}
+                {{ branchOccurrence.begin|format_datetime('eee dd MMM HH:mm') }} - {{ branchOccurrence.end|format_time('HH:mm') }}
+            {% endif %}
+        </li>
     {% endfor %}
     </ul>
 </div>

@@ -123,7 +123,7 @@ Feature: Branch cart
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "10"
     Given I am on "/branch-1/fruits-and-vegetables/basket-of-vegetables"
     Then I should see "Add"
-    And I should see "10.00 in stock"
+    And I should see "10 in stock"
 
   Scenario: Producer absent
     Given I am on "/branch-2/fruits-and-vegetables/basket-of-vegetables"
