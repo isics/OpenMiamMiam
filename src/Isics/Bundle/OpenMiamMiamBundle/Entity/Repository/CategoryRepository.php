@@ -11,7 +11,6 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
-use Doctrine\ORM\Query\Expr\Join;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
@@ -29,15 +28,45 @@ class CategoryRepository extends NestedTreeRepository
     public function findAllAvailableInBranch(Branch $branch)
     {
         return $this->getRootNodesQueryBuilder()
-//                ->innerJoin('node.products', 'p', Join::ON, 'p.id = 2')
-//                ->innerJoin('p.branches', 'b')
-//                ->where('p.availability != :availability')
-//                ->andWhere('b = :branch')
-//                ->groupBy('node.id')
-//                ->addOrderBy('node.name')
-//                ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
-//                ->setParameter('branch', $branch)
+                ->add('from', 'IsicsOpenMiamMiamBundle:Category node, IsicsOpenMiamMiamBundle:Product p')
+                ->innerJoin('p.category', 'pc')
+                ->innerJoin('p.branches', 'b')
+                ->andWhere('p.availability != :availability')
+                ->andWhere('b = :branch')
+                ->andWhere('pc.lft >= node.lft')
+                ->andWhere('pc.rgt <= node.rgt')
+                ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
+                ->setParameter('branch', $branch)
                 ->getQuery()
                 ->getResult();
+    }
+
+    /**
+     * Returns true if category has products to display
+     *
+     * @param Branch $branch Branch
+     * @param Category $category
+     *
+     * @return array
+     */
+    public function hasProductAvailableInBranch(Branch $branch, Category $category)
+    {
+        $result = $this->createQueryBuilder('c')
+                ->addSelect('COUNT(c.id) AS counter')
+                ->add('from', 'IsicsOpenMiamMiamBundle:Category c, IsicsOpenMiamMiamBundle:Product p')
+                ->innerJoin('p.category', 'pc')
+                ->innerJoin('p.branches', 'b')
+                ->where('c.id = :categoryId')
+                ->andWhere('p.availability != :availability')
+                ->andWhere('b = :branch')
+                ->andWhere('pc.lft >= c.lft')
+                ->andWhere('pc.rgt <= c.rgt')
+                ->setParameter('categoryId', $category->getId())
+                ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
+                ->setParameter('branch', $branch)
+                ->getQuery()
+                ->getSingleResult();
+
+        return $result['counter'] > 0;
     }
 }

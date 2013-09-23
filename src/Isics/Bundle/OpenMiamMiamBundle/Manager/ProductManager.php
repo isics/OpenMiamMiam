@@ -244,27 +244,4 @@ class ProductManager
             $category
         );
     }
-
-    /**
-     * Returns true if category has products to display
-     *
-     * @param Branch $branch
-     * @param Category $category
-     *
-     * @return bool
-     */
-    public function hasCategoryProductsToDisplay(Branch $branch, Category $category)
-    {
-        if (count($this->getProductsToDisplay($branch, $category)) > 0) {
-            return true;
-        }
-
-        foreach ($category->getChildren() as $child) {
-            if ($this->hasCategoryProductsToDisplay($branch, $child)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

@@ -53,7 +53,7 @@ class CatalogController extends Controller
      */
     public function showCategoryAction(Branch $branch, Category $category)
     {
-        if (0 === $this->get('open_miam_miam.product_manager')->hasCategoryProductsToDisplay($branch, $category)) {
+        if (!$this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Category')->hasProductAvailableInBranch($branch, $category)) {
             throw $this->createNotFoundException('No product was found in this category.');
         }
 
