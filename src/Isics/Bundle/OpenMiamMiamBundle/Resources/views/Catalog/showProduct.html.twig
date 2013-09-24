@@ -10,8 +10,8 @@
 
     {% block content %}
         <ol class="breadcrumb">
-            <li><a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
-            <li><a href="{{ path('open_miam_miam_branch_category', {'branch_slug': branch.slug, 'category_slug': product.category.slug}) }}">{{ product.category.name }}</a></li>
+            <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
+            <li><a href="{{ path('open_miam_miam.catalog.category', {'branchSlug': branch.slug, 'categorySlug': product.category.slug}) }}">{{ product.category.name }}</a></li>
             <li class="active">{{ product.name }}</li>
         </ol>
 
@@ -39,7 +39,7 @@
                 <dl>
                     <dt>{{ 'producer'|trans }}</dt>
                     <dd>
-                        <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
+                        <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
                             <span class="glyphicon glyphicon-user"></span>  {{ product.producer }}
                         </a>
                     </dd>

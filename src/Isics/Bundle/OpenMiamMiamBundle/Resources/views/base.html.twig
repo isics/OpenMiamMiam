@@ -17,7 +17,7 @@
     </head>
     <body>
         <div class="container">
-            <ul class="nav nav-pills pull-right">
+            <ul id="header-nav" class="nav nav-pills pull-right">
                 {% if app.user %}
                     <li>
                         <a href="{{ path('fos_user_profile_edit') }}">

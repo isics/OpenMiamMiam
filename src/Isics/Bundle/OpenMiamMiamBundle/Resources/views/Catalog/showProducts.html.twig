@@ -1,4 +1,10 @@
-{% set showNoPriceStatement = false %}
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
 <table class="table table-bordered table-condensed table-striped table-products">
     <thead>
     <tr>
@@ -16,13 +22,13 @@
         <tr>
             <td>
                 {% if product.image is not null %}
-                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('s') }}" alt="{{ product.name }}" />
                 {% else %}
-                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('s') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('s') }}" alt="{{ product.name }}" />
                 {% endif %}
             </td>
             <td>
-                <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
+                <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
                     {{ product.name }}
                 </a>
                 {{ product.priceInfo }}
@@ -35,7 +41,7 @@
                 {% endif %}
             </td>
             <td>
-                <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
+                <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
                     <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
                 </a>
             </td>
@@ -43,7 +49,6 @@
                 {% if not product.hasNoPrice %}
                     {{ product.price|number_format_currency(open_miam_miam.currency) }}
                 {% else %}
-                    {% set showNoPriceStatement = true %}
                     <span class="glyphicon glyphicon-time"></span>*
                 {% endif %}
             </td>
@@ -52,8 +57,3 @@
     {% endfor %}
     </tbody>
 </table>
-
-{% if showNoPriceStatement %}
-    {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
-{% endif %}
-

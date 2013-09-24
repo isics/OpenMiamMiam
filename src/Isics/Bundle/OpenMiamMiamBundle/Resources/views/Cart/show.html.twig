@@ -10,7 +10,7 @@
 
     {% block content %}
         <ol class="breadcrumb">
-            <li><a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
+            <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
             <li class="active">{{ 'cart.title'|trans }}</li>
         </ol>
 
@@ -33,7 +33,7 @@
                         {% for item in form.items %}
                             <tr>
                                 <td>
-                                    <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': item.vars.data.product.category.slug, 'product_slug': item.vars.data.product.slug}) }}">
+                                    <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': item.vars.data.product.slug, 'productId': item.vars.data.product.id}) }}">
                                         {{ item.vars.data.product.name }}</a>
                                     {% if item.vars.data.product.isBio %}<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
                                 </td>
