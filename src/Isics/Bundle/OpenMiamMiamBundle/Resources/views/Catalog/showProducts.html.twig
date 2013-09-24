@@ -4,6 +4,7 @@
     <tr>
         <th>{{ 'photo'|trans }}</th>
         <th>{{ 'product'|trans }}</th>
+        <th>{{ 'bio'|trans }}</th>
         <th>{{ 'producer'|trans }}</th>
         <th>{{ 'price'|trans }}</th>
         <th>{{ 'availability'|trans }}</th>
@@ -25,6 +26,13 @@
                     {{ product.name }}
                 </a>
                 {{ product.priceInfo }}
+            </td>
+            <td>
+                {% if product.isBio %}
+                    <strong class="bio"><span>{{ 'bio'|trans }}</span></strong>
+                {% else %}
+                    &nbsp;
+                {% endif %}
             </td>
             <td>
                 <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
