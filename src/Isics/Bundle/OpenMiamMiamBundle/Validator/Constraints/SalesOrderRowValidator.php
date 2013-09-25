@@ -28,7 +28,7 @@ class SalesOrderRowValidator extends ConstraintValidator
         $product = $row->getProduct();
         if (null !== $product && $product->getAvailability() == Product::AVAILABILITY_ACCORDING_TO_STOCK) {
             if ($product->getStock()-($row->getQuantity()-$row->getOldQuantity()) < 0) {
-                $this->context->addViolationAt('quantity', $constraint->invalidQuantityMessage, array(), null);
+                $this->context->addViolationAt('quantity', 'error.sales_order.not_enough_stock', array(), null);
             }
         }
     }

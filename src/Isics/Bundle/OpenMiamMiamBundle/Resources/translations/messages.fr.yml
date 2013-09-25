@@ -190,3 +190,20 @@ message.cart.updated: "Votre panier a été mis à jour."
 
 # Activités
 activity_stream.product.updated: "a mis à jour le produit %name%."
+
+# Erreurs
+error.invalid:  "Cette valeur n'est pas valide"
+error.required: "Cette valeur est requise"
+
+error.sales_order.not_enough_stock: "Pas assez de stock"
+error.sales_order.ref_not_unique:   "La référence doit être unique"
+
+error.calendar.invalid_branch_occurrence:   "Comptoir invalide"
+error.calendar.invalid_producer_attendance: "Présence invalide"
+
+error.product.invalid_branches:    "Au moins un comptoir est invalide"
+error_product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
+
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
+error.cart.product_unavailable:           "Produit indisponible"
+error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"

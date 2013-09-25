@@ -48,7 +48,7 @@ class ProductValidator extends ConstraintValidator
 
         foreach ($product->getBranches() as $branch) {
             if (!in_array($branch, $availableBranches)) {
-                $this->context->addViolationAt('Branches', $constraint->invalidBranchesMessage, array(), null);
+                $this->context->addViolationAt('Branches', 'error.product.invalid_branches');
             }
         }
 
@@ -56,26 +56,26 @@ class ProductValidator extends ConstraintValidator
         if ($product->getHasNoPrice()) {
             $product->setPrice(null);
         } elseif (null === $product->getPrice()) {
-            $this->context->addViolationAt('price', $constraint->requiredMessage, array(), null);
+            $this->context->addViolationAt('price', 'error.required');
         }
 
         // Stock validation
         if (ProductEntity::AVAILABILITY_ACCORDING_TO_STOCK !== $product->getAvailability()) {
             $product->setStock(null);
         } elseif (null === $product->getStock()) {
-            $this->context->addViolationAt('stock', $constraint->requiredMessage, array(), null);
+            $this->context->addViolationAt('stock', 'error.required');
         }
 
         // Availability date validation
         if (ProductEntity::AVAILABILITY_AVAILABLE_AT !== $product->getAvailability()) {
             $product->setAvailableAt(null);
         } elseif (null === $product->getAvailableAt()) {
-            $this->context->addViolationAt('availableAt', $constraint->requiredMessage, array(), null);
+            $this->context->addViolationAt('availableAt', 'error.required');
         }
 
         // Category is leaf
         if ($product->getCategory()->getRgt()-$product->getCategory()->getlft() > 1) {
-            $this->context->addViolationAt('category', $constraint->invalidCategoryMessage, array(), null);
+            $this->context->addViolationAt('category', 'error_product.category_not_a_leaf');
         }
     }
 }

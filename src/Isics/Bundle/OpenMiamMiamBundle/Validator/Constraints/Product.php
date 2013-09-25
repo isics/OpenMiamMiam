@@ -15,12 +15,6 @@ use Symfony\Component\Validator\Constraint;
 
 class Product extends Constraint
 {
-    public $requiredMessage = 'This value should not be null.';
-
-    public $invalidBranchesMessage = 'At least one branch is invalid.';
-
-    public $invalidCategoryMessage = 'The category must be a final node.';
-
     /**
      * {@inheritDoc}
      *

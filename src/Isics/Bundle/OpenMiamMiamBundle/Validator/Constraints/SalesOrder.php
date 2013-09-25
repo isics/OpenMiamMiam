@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraint;
 
 class SalesOrder extends Constraint
 {
-    public $notUniqueRefMessage = 'Ref is not unique.';
+    public $notUniqueRefMessage = 'error.sales_order.ref_not_unique';
 
     /**
      * {@inheritDoc}
