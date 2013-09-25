@@ -105,7 +105,7 @@ class SalesOrderController extends Controller
 
         return $this->render('IsicsOpenMiamMiamBundle:SalesOrder:confirmCreation.html.twig', array(
             'branch' => $branch,
-            'order' => $order
+            'order'  => $order
         ));
     }
 

@@ -9,9 +9,7 @@
 
 {% block content %}
     <h1>{{ 'register.confirmed.title'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}</h1>
-    <p>
-        {{ 'register.confirmed.message'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}
-    </p>
+    {{ 'register.confirmed.body_html'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email})|raw }}
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
         {% if targetUrl is not empty %}
