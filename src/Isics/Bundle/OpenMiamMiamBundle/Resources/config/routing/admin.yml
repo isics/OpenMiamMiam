@@ -15,34 +15,34 @@ open_miam_miam.admin:
 #
 # Admin Producer
 #
-open_miam_miam.admin.producer.dashboard:
+open_miam_miam.admin.producer.show_dashboard:
     pattern:  /producers/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:showDashboard }
 
-open_miam_miam.admin.producer.list_products:
+open_miam_miam.admin.producer.product.list:
     pattern:  /producers/{id}/products
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:list }
 
-open_miam_miam.admin.producer.create_product:
+open_miam_miam.admin.producer.product.create:
     pattern:  /producers/{id}/products/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:create }
 
-open_miam_miam.admin.producer.edit_product:
+open_miam_miam.admin.producer.product.edit:
     pattern:  /producers/{id}/products/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:edit }
 
-open_miam_miam.admin.producer.delete_product:
+open_miam_miam.admin.producer.product.delete:
     pattern:  /producers/{id}/products/{productId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:delete }
 
-open_miam_miam.admin.producer.calendar:
+open_miam_miam.admin.producer.calendar.edit:
     pattern:  /producers/{id}/calendar
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Calendar:index }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Calendar:edit }
 
-open_miam_miam.admin.producer.list_sales_orders:
+open_miam_miam.admin.producer.sales_orders.list:
     pattern:  /producers/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list }
 
-open_miam_miam.admin.producer.edit_sales_order:
+open_miam_miam.admin.producer.sales_order.edit:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
