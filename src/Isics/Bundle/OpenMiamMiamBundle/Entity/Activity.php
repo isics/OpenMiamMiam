@@ -44,7 +44,7 @@ class Activity
      *
      * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="activityLogs")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $user;

@@ -53,26 +53,34 @@ class ActivityManager
      * @param array $transParams
      * @param mixed $object
      * @param mixed $target
+     * @param string $userName
      *
      * @throws \DomainException
      *
      * @return Activity
      */
-    public function create($transKey, array $transParams = null, $object = null, $target = null)
+    public function create($transKey, array $transParams = null, $object = null, $target = null, $userName = null)
     {
-        $user = $this->securityContext->getToken()->getUser();
-        if (!$user instanceof User) {
-            throw new \DomainException('Invalid user.');
-        }
-
         $propertyAccessor = new PropertyAccessor();
-
         $activity = new Activity();
-        $activity->setUser($user);
-        $activity->setUserName($user->getFirstname().' '.$user->getLastname());
         $activity->setDate(new \DateTime());
         $activity->setTransKey($transKey);
         $activity->setTransParams($transParams);
+
+        if (null !== $this->securityContext->getToken()) {
+            $user = $this->securityContext->getToken()->getUser();
+            if (!$user instanceof User) {
+                throw new \DomainException('Invalid user.');
+            }
+
+            $activity->setUser($user);
+            $activity->setUserName($user->getFirstname().' '.$user->getLastname());
+        } elseif (null !== $userName) {
+            $activity->setUserName($userName);
+        } else {
+            $activity->setUserName('System');
+        }
+
         if (null !== $object) {
             $metadata = $this->entityManager->getClassMetadata(get_class($object));
             $identifierFieldName = $metadata->getSingleIdentifierFieldName();
