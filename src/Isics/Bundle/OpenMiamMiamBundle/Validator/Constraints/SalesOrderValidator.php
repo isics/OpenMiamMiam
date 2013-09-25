@@ -42,7 +42,7 @@ class SalesOrderValidator extends ConstraintValidator
     {
         // Unique ref for association
         if (!$this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->isRefUnique($order)) {
-            $this->context->addViolationAt('ref', $constraint->notUniqueRefMessage, array(), null);
+            $this->context->addViolationAt('ref', 'error.sales_order.ref_not_unique');
         }
     }
 }

@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Constraint;
 
 class SalesOrderRow extends Constraint
 {
-    public $invalidQuantityMessage = 'Not enough stock.';
-
     /**
      * {@inheritDoc}
      *

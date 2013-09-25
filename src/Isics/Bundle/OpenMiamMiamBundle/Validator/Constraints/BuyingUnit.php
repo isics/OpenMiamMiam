@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Constraint;
 
 class BuyingUnit extends Constraint
 {
-    public $message = 'Invalid.';
-
     /**
      * {@inheritDoc}
      *

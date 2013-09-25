@@ -15,10 +15,6 @@ use Symfony\Component\Validator\Constraint;
 
 class ProducerBranchOccurrenceAttendance extends Constraint
 {
-    public $invalidBranchOccurrenceMessage = 'Invalid branch occurrence.';
-
-    public $invalidProducerAttendanceMessage = 'Invalid producer attendance.';
-
     /**
      * {@inheritDoc}
      *

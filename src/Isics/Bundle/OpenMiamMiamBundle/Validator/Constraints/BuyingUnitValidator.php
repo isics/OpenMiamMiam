@@ -40,7 +40,7 @@ class BuyingUnitValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (null !== $value && !in_array($value, $this->buyingUnits)) {
-            $this->context->addViolation($constraint->message);
+            $this->context->addViolation('error.invalid');
         }
     }
 }

@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Exception;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Cart;
 
 class CartExpiredException extends \RuntimeException
 {

@@ -40,10 +40,14 @@ class ProductManager
     protected $kernel;
 
     /**
+     * @var ActivityManager $activityManager
+     */
+    protected $activityManager;
+
+    /**
      * @var array $config
      */
     protected $config;
-
 
 
     /**
@@ -52,11 +56,13 @@ class ProductManager
      * @param array $config
      * @param EntityManager $entityManager
      * @param KernelInterface $kernel
+     * @param ActivityManager $activityManager
      */
-    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel)
+    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel, ActivityManager $activityManager)
     {
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
+        $this->activityManager = $activityManager;
 
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
@@ -105,20 +111,29 @@ class ProductManager
      */
     public function save(Product $product)
     {
-        // Save object
-        $this->entityManager->persist($product);
+        $producer = $product->getProducer();
 
-        // Increase producer product reference counter
         if (null === $product->getId()) {
-            $producer = $product->getProducer();
+            // Increase producer product reference counter
             $producer->setProductRefCounter($producer->getProductRefCounter()+1);
             $this->entityManager->persist($producer);
+
+            // Activity transKey
+            $activityTransKey = 'activity_stream.product.created';
+        } else {
+            $activityTransKey = 'activity_stream.product.updated';
         }
 
+        // Save object
+        $this->entityManager->persist($product);
         $this->entityManager->flush();
 
         // Process image file
         $this->processImageFile($product);
+
+        // Activity
+        $activity = $this->activityManager->createFromEntity($activityTransKey, array('%name%' => $product->getName()), $product, $producer);
+        $this->entityManager->persist($activity);
     }
 
     /**
@@ -245,5 +260,17 @@ class ProductManager
             $branch,
             $category
         );
+    }
+
+    /**
+     * Returns activities of a product
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getActivities(Product $product)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByObjectAndTarget($product, $product->getProducer());
     }
 }

@@ -38,23 +38,17 @@ class CartItemValidator extends ConstraintValidator
     {
         // Validates that product exists in branch
         if (!$cartItem->getProduct()->getBranches()->contains($cartItem->getCart()->getBranch())) {
-            $this->context->addViolationAt('product', sprintf(
-                'Product unavailable in branch "%s"!',
-                $cartItem->getCart()->getBranch()->getName()
-            ));
+            $this->context->addViolationAt('product', 'error.cart.product_unavailable_in_branch', array('branch' => $cartItem->getCart()->getBranch()->getName()));
         }
 
         // Validates that product is available
         if (!$this->branchOccurrenceManager->getProductAvailability($cartItem->getCart()->getBranch(), $cartItem->getProduct())->isAvailable()) {
-            $this->context->addViolationAt('product', 'Product unavailable!');
+            $this->context->addViolationAt('product', 'error.cart.product_unavailable');
         }
 
         // Validates stock
         if (Product::AVAILABILITY_ACCORDING_TO_STOCK === $cartItem->getProduct()->getAvailability() && $cartItem->getProduct()->getStock() < $cartItem->getQuantity()) {
-            $this->context->addViolationAt('product', sprintf(
-                'Not enough stock! (remaining: %s)',
-                $cartItem->getProduct()->getStock()
-            ));
+            $this->context->addViolationAt('product', 'error.cart.not_enough_stock', array('rest' => $cartItem->getProduct()->getStock()));
         }
     }
 }
