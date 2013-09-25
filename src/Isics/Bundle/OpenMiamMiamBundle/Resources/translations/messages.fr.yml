@@ -67,9 +67,9 @@ register.zipcode:               "Code postal"
 register.city:                  "Ville"
 register.cancel:                "Annuler"
 register.submit:                "S'inscrire"
-register.confirmation.title:    "Bienvenue %firstname% !"
-register.confirmation.message:  "Votre compte a bien été créé."
-register.confirmation.next:     "Continuer"
+register.confirmed.title:       "Bienvenue %firstname% !"
+register.confirmed.message:     "Votre compte a bien été créé."
+register.confirmed.next:        "Continuer"
 
 # Attendance
 attendance.yes:     "Oui"

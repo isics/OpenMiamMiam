@@ -8,9 +8,9 @@
 {% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
 {% block content %}
-    <h1>{{ 'register.confirmation.title'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}</h1>
+    <h1>{{ 'register.confirmed.title'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}</h1>
     <p>
-        {{ 'register.confirmation.message'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}
+        {{ 'register.confirmed.message'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}
     </p>
     {% if app.session is not empty %}
         {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
@@ -18,7 +18,7 @@
             <p>
                 <a href="{{ targetUrl }}" class="btn btn-primary btn-lg">
                     <span class="glyphicon glyphicon-circle-arrow-right"></span>
-                    {{ 'register.confirmation.next'|trans }}
+                    {{ 'register.confirmed.next'|trans }}
                 </a>
             </p>
         {% endif %}
