@@ -104,7 +104,7 @@ services:
     # Managers
     open_miam_miam.activity_manager:
         class: %open_miam_miam.activity_manager.class%
-        arguments: [@security.context, @doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager]
 
     open_miam_miam.branch_occurrence_manager:
         class:     %open_miam_miam.branch_occurrence_manager.class%

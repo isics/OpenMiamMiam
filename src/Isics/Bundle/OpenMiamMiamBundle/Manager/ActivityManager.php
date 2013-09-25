@@ -25,11 +25,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class ActivityManager
 {
     /**
-     * @var SecurityContextInterface $securityContext
-     */
-    protected $securityContext;
-
-    /**
      * @var EntityManager $entityManager
      */
     protected $entityManager;
@@ -39,12 +34,10 @@ class ActivityManager
     /**
      * Constructs object
      *
-     * @param SecurityContextInterface $securityContext
-     * @param EntityManager            $entityManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(SecurityContextInterface $securityContext, EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
     }
 
@@ -59,7 +52,7 @@ class ActivityManager
      *
      * @return Activity
      */
-    public function createFromEntity($transKey, array $transParams = null, $object = null, $target = null, User $user = null)
+    public function createFromEntities($transKey, array $transParams = null, $object = null, $target = null, User $user = null)
     {
         $propertyAccessor = new PropertyAccessor();
         $activity = new Activity();
@@ -67,17 +60,10 @@ class ActivityManager
         $activity->setTransKey($transKey);
         $activity->setTransParams($transParams);
 
-        if (null === $user && null !== $this->securityContext->getToken()) {
-            $user = $this->securityContext->getToken()->getUser();
-            if (!$user instanceof User) {
-                throw new \DomainException('Invalid user.');
-            }
-        }
         if (null !== $user) {
             $activity->setUser($user);
             $activity->setUserName($user->getFirstname().' '.$user->getLastname());
         }
-
         if (null !== $object) {
             $metadata = $this->entityManager->getClassMetadata(get_class($object));
             $identifierFieldName = $metadata->getSingleIdentifierFieldName();

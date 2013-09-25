@@ -58,7 +58,7 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager->save($product);
+                $productManager->save($product, $this->get('security.context')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.created');
 
@@ -96,7 +96,7 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager->save($product);
+                $productManager->save($product, $this->get('security.context')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.updated');
 

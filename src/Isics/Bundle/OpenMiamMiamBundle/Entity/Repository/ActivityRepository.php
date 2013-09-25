@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ActivityRepository extends EntityRepository
@@ -20,32 +21,42 @@ class ActivityRepository extends EntityRepository
     /**
      * Returns activities for object and target
      *
-     * @param $object
-     * @param $target
+     * @param mixed $object
+     * @param mixed $target
+     * @param User $user
      *
      * @return array
      */
-    public function findByObjectAndTarget($object, $target)
+    public function findByEntities($object = null, $target = null, User $user = null)
     {
         $propertyAccessor = new PropertyAccessor();
 
-        $objectMetadata = $this->getEntityManager()->getClassMetadata(get_class($object));
-        $objectIdentifierFieldName = $objectMetadata->getSingleIdentifierFieldName();
+        $qb = $this->createQueryBuilder('a')->addOrderBy('a.date', 'DESC');
 
-        $targetMetadata = $this->getEntityManager()->getClassMetadata(get_class($target));
-        $targetIdentifierFieldName = $targetMetadata->getSingleIdentifierFieldName();
+        if (null !== $object) {
+            $objectMetadata = $this->getEntityManager()->getClassMetadata(get_class($object));
+            $objectIdentifierFieldName = $objectMetadata->getSingleIdentifierFieldName();
 
-        return $this->createQueryBuilder('a')
-                ->where('a.objectType = :objectType')
-                ->setParameter('objectType', $objectMetadata->getName())
-                ->andWhere('a.objectId = :objectId')
-                ->setParameter('objectId', $propertyAccessor->getValue($object, $objectIdentifierFieldName))
-                ->andWhere('a.targetType = :targetType')
-                ->setParameter('targetType', $targetMetadata->getName())
-                ->andWhere('a.targetId = :targetId')
-                ->setParameter('targetId', $propertyAccessor->getValue($target, $targetIdentifierFieldName))
-                ->addOrderBy('a.date')
-                ->getQuery()
-                ->getResult();
+            $qb->andWhere('a.objectType = :objectType')
+                    ->setParameter('objectType', $objectMetadata->getName())
+                    ->andWhere('a.objectId = :objectId')
+                    ->setParameter('objectId', $propertyAccessor->getValue($object, $objectIdentifierFieldName));
+        }
+
+        if (null !== $target) {
+            $targetMetadata = $this->getEntityManager()->getClassMetadata(get_class($target));
+            $targetIdentifierFieldName = $targetMetadata->getSingleIdentifierFieldName();
+
+            $qb->andWhere('a.targetType = :targetType')
+                    ->setParameter('targetType', $targetMetadata->getName())
+                    ->andWhere('a.targetId = :targetId')
+                    ->setParameter('targetId', $propertyAccessor->getValue($target, $targetIdentifierFieldName));
+        }
+
+        if (null !== $user) {
+            $qb->andWhere('a.user = :user')->setParameter('user', $user);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

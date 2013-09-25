@@ -16,6 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -108,8 +109,9 @@ class ProductManager
      * Saves a product
      *
      * @param Product $product
+     * @param User $user
      */
-    public function save(Product $product)
+    public function save(Product $product, User $user = null)
     {
         $producer = $product->getProducer();
 
@@ -132,8 +134,15 @@ class ProductManager
         $this->processImageFile($product);
 
         // Activity
-        $activity = $this->activityManager->createFromEntity($activityTransKey, array('%name%' => $product->getName()), $product, $producer);
+        $activity = $this->activityManager->createFromEntities(
+            $activityTransKey,
+            array('%name%' => $product->getName()),
+            $product,
+            $producer,
+            $user
+        );
         $this->entityManager->persist($activity);
+        $this->entityManager->flush();
     }
 
     /**
@@ -271,6 +280,6 @@ class ProductManager
      */
     public function getActivities(Product $product)
     {
-        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByObjectAndTarget($product, $product->getProducer());
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($product, $product->getProducer());
     }
 }
