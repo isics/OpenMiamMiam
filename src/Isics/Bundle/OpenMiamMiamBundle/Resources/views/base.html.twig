@@ -17,29 +17,31 @@
     </head>
     <body>
         <div class="container">
-            <ul id="header-nav" class="nav nav-pills pull-right">
-                {% if app.user %}
-                    <li>
-                        <a href="{{ path('fos_user_profile_edit') }}">
-                            <span class="glyphicon glyphicon-user"></span>
-                            {{ 'my_account'|trans }} ({{ app.user }})
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('fos_user_security_logout') }}">
-                            <span class="glyphicon glyphicon-off"></span>
-                            {{ 'logout'|trans }}
-                        </a>
-                    </li>
-                {% else %}
-                    <li>
-                        <a href="{{ path('fos_user_profile_edit') }}">
-                            <span class="glyphicon glyphicon-user"></span>
-                            {{ 'my_account'|trans }}
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
+            {% block header_nav %}
+                <ul id="header-nav" class="nav nav-pills pull-right">
+                    {% if app.user %}
+                        <li>
+                            <a href="{{ path('fos_user_profile_edit') }}">
+                                <span class="glyphicon glyphicon-user"></span>
+                                {{ 'my_account'|trans }} ({{ app.user }})
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('fos_user_security_logout') }}">
+                                <span class="glyphicon glyphicon-off"></span>
+                                {{ 'logout'|trans }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ path('fos_user_profile_edit') }}">
+                                <span class="glyphicon glyphicon-user"></span>
+                                {{ 'my_account'|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endblock %}
 
             {% block header %}
                 <header>

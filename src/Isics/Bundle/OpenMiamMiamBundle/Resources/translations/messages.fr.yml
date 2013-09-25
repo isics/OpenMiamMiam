@@ -48,11 +48,28 @@ order.confirm.terms_of_sale_checked: "J'ai lu et je suis en accord avec les cond
 order.confirmed.title:               "Votre commande a été enregistrée !"
 
 # Login
-login.title: "Identifiez-vous"
+login.title:          "Identifiez-vous"
 login.existing.title: "Déjà client ?"
-login.new.title: "Nouveau client ?"
-login.submit: "S'identifier"
-login.register: "Créer un compte"
+login.new.title:      "Nouveau client ?"
+login.submit:         "S'identifier"
+login.register:       "Créer un compte"
+
+# Register
+register.title:                 "Créez votre compte :"
+register.firstname:             "Prénom"
+register.lastname:              "Nom"
+register.email:                 "Adresse e-mail"
+register.password:              "Mot de passe"
+register.password_confirmation: "Vérification"
+register.address1:              "Adresse"
+register.address2:              "Complément"
+register.zipcode:               "Code postal"
+register.city:                  "Ville"
+register.cancel:                "Annuler"
+register.submit:                "S'inscrire"
+register.confirmation.title:    "Bienvenue %firstname% !"
+register.confirmation.message:  "Votre compte a bien été créé."
+register.confirmation.next:     "Continuer"
 
 # Attendance
 attendance.yes:     "Oui"

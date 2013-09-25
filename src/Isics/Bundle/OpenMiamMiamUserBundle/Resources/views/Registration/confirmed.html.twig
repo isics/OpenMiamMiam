@@ -1,11 +1,26 @@
-{% extends "IsicsOpenMiamMiamBundle::base.html.twig" %}
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
 {% block content %}
-    {% block fos_user_content %}
-        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-        {% if app.session is not empty %}
-            {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
-            {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>{% endif %}
+    <h1>{{ 'register.confirmation.title'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}</h1>
+    <p>
+        {{ 'register.confirmation.message'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%email%': user.email}) }}
+    </p>
+    {% if app.session is not empty %}
+        {% set targetUrl = app.session.get('_security.' ~ app.security.token.providerKey ~ '.target_path') %}
+        {% if targetUrl is not empty %}
+            <p>
+                <a href="{{ targetUrl }}" class="btn btn-primary btn-lg">
+                    <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                    {{ 'register.confirmation.next'|trans }}
+                </a>
+            </p>
         {% endif %}
-    {% endblock fos_user_content %}
+    {% endif %}
 {% endblock content %}
