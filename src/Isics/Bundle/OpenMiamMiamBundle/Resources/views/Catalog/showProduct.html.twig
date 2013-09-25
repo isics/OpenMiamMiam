@@ -9,9 +9,14 @@
     {% block title %}{{ product.name }} - {{ parent() }}{% endblock %}
 
     {% block content %}
+        {% set root_category = product.category %}
+        {% if root_category.parent is not null %}
+            {% set root_category = root_category.parent %}
+        {% endif %}
+
         <ol class="breadcrumb">
             <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
-            <li><a href="{{ path('open_miam_miam.catalog.category', {'branchSlug': branch.slug, 'categorySlug': product.category.slug}) }}">{{ product.category.name }}</a></li>
+            <li><a href="{{ path('open_miam_miam.catalog.category', {'branchSlug': branch.slug, 'categorySlug': product.category.slug}) }}">{{ root_category.name }}</a></li>
             <li class="active">{{ product.name }}</li>
         </ol>
 

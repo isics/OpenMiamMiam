@@ -8,12 +8,18 @@
 {% extends 'IsicsOpenMiamMiamBundle:Cart:showAddForm.html.twig' %}
 
 {% block availability %}
-    <td>{{ parent() }}</td>
+    <td>
+        {% if not cart.closed %}
+            {{ parent() }}
+        {% else %}
+            -
+        {% endif %}
+    </td>
 {% endblock %}
 
 {% block form %}
     <td>
-        {% if form is defined %}
+        {% if cart.closed or form is defined %}
             {{ parent() }}
         {% else %}
             -

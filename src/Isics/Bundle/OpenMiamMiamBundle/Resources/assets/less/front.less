@@ -50,6 +50,10 @@ header {
 #header-cart {
     .make-md-column(4);
     padding: 5px 15px;
+
+    strong {
+        display: block;
+    }
 }
 
 #header-branch-occurrence {
@@ -66,10 +70,17 @@ header {
     display: block;
 }
 
-#header-branch-occurrence-order-period {
+#header-branch-occurrence-order-from {
+    color: @brand-danger;
+    font-size: @font-size-medium;
+    font-weight: bold;
+}
+
+#header-branch-occurrence-order-before {
     color: @brand-danger;
     font-size: @font-size-small;
 }
+
 
 //
 // Breadcrumb
@@ -157,6 +168,7 @@ header {
     }
 
     td:nth-child(1),
+    td:nth-child(6),
     td:nth-child(7) {
         text-align: center;
     }

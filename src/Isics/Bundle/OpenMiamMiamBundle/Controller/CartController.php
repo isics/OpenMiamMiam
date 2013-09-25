@@ -99,35 +99,33 @@ class CartController extends Controller
     {
         $cart = $this->getCart($branch);
 
-        if ($cart->isClosed()) {
-            return new Response();
-        }
-
-        $branchOccurrenceManager = $this->container->get('open_miam_miam.branch_occurrence_manager');
-
-        $productAvailability = $branchOccurrenceManager->getProductAvailability($branch, $product);
-
         $renderParameters = array(
-            'product'             => $product,
-            'productAvailability' => $productAvailability,
+            'cart'    => $cart,
+            'product' => $product,
         );
 
-        if ($productAvailability->isAvailable()) {
-            $cartItem = $cart->createItem();
-            $cartItem->setProduct($product);
-            $cartItem->setQuantity(1);
+        if (!$cart->isClosed()) {
+            $branchOccurrenceManager = $this->container->get('open_miam_miam.branch_occurrence_manager');
+            $productAvailability     = $branchOccurrenceManager->getProductAvailability($branch, $product);
+            $renderParameters['productAvailability'] = $productAvailability;
 
-            $form = $this->createForm(
-                new CartItemType(),
-                $cartItem,
-                array(
-                    'action'        => $this->generateUrl('open_miam_miam.cart.add', array('branchSlug' => $branch->getSlug())),
-                    'method'        => 'POST',
-                    'submit_button' => true,
-                )
-            );
+            if ($productAvailability->isAvailable()) {
+                $cartItem = $cart->createItem();
+                $cartItem->setProduct($product);
+                $cartItem->setQuantity(1);
 
-            $renderParameters['form'] = $form->createView();
+                $form = $this->createForm(
+                    new CartItemType(),
+                    $cartItem,
+                    array(
+                        'action'        => $this->generateUrl('open_miam_miam.cart.add', array('branchSlug' => $branch->getSlug())),
+                        'method'        => 'POST',
+                        'submit_button' => true,
+                    )
+                );
+
+                $renderParameters['form'] = $form->createView();
+            }
         }
 
         if (null === $view) {

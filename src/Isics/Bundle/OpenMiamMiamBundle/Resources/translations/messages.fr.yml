@@ -32,8 +32,10 @@ zone.location.title:               "S'y rendre"
 zone.products_of_the_moment.title: "Les produits du moment"
 
 # Cart
-cart.title: "Mon panier"
-cart.empty: "Votre panier est vide."
+cart.title:                 "Mon panier"
+cart.empty:                 "Votre panier est vide."
+cart.order_closed:          "Attendez encore un peu !"
+cart.add_form.order_closed: "Bientôt!"
 
 # Order process
 order.confirm.title:                 "Confirmez votre commande"
