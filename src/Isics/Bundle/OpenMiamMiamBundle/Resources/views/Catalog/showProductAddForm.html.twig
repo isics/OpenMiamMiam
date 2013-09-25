@@ -8,13 +8,17 @@
 {% extends 'IsicsOpenMiamMiamBundle:Cart:showAddForm.html.twig' %}
 
 {% block availability %}
-        <dt>{{ 'availability'|trans }}</dt>
-        <dd>{{ parent() }}</dd>
+        {% if not cart.closed %}
+            <dt>{{ 'availability'|trans }}</dt>
+            <dd>{{ parent() }}</dd>
+        {% endif %}
     </dl>
 {% endblock %}
 
 {% block form %}
-    {% if form is defined %}
+    {% if cart.closed %}
+        {{ parent() }}
+    {% elseif form is defined %}
         <div class="panel panel-primary">
             <div class="panel-body">
                 {{ parent() }}
