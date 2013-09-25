@@ -14,7 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-use Isics\Bundle\OpenMiamMiamBundle\Exception\CartExpiredException;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartExpiredException;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -75,7 +75,7 @@ class CartManager
      *
      * @param Branch $branch Branch
      *
-     * @throws \Isics\Bundle\OpenMiamMiamBundle\Exception\CartExpiredException
+     * @throws \Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartExpiredException
      *
      * @return Cart
      */
