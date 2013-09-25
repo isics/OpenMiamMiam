@@ -22,11 +22,11 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3>
-                        <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
+                        <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
                             {{ product.name }}</a>{% if product.isBio %}&nbsp;<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
                     </h3>
                     <p>
-                        <a href="{{ path('open_miam_miam_branch_product', {'branch_slug': branch.slug, 'category_slug': product.category.slug, 'product_slug': product.slug}) }}">
+                        <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
                             {% if product.image is not null %}
                                 <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
                             {% else %}
@@ -42,7 +42,7 @@
                         {% endif %}
                     </p>
                     <p>
-                        <a href="{{ path('open_miam_miam_producer', {'producer_slug': product.producer.slug}) }}">
+                        <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
                             <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
                         </a>
                     </p>

@@ -8,46 +8,46 @@
 #
 # General
 #
-open_miam_miam_homepage:
+open_miam_miam.homepage:
     pattern:  /
     defaults: { _controller: IsicsOpenMiamMiamBundle:General:showHomepage }
 
-open_miam_miam_association:
-    pattern:  /association/{association_slug}
+open_miam_miam.association:
+    pattern:  /association/{associationSlug}
     defaults: { _controller: IsicsOpenMiamMiamBundle:General:showAssociation }
 
-open_miam_miam_producer:
-    pattern:  /producer/{producer_slug}
+open_miam_miam.producer:
+    pattern:  /producer/{producerSlug}
     defaults: { _controller: IsicsOpenMiamMiamBundle:General:showProducer }
 
 #
 # Branch
 #
-open_miam_miam_branch_homepage:
-    pattern:  /{branch_slug}
+open_miam_miam.branch.homepage:
+    pattern:  /{branchSlug}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showHomepage }
 
-open_miam_miam_branch_producers:
-    pattern:  /{branch_slug}/producers
+open_miam_miam.branch.producers:
+    pattern:  /{branchSlug}/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:listProducers }
 
 #
 # Cart
 #
-open_miam_miam_cart_show:
-    pattern:  /{branch_slug}/cart
+open_miam_miam.cart.show:
+    pattern:  /{branchSlug}/cart
     defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:show }
     requirements:
         _method: GET
 
-open_miam_miam_cart_add:
-    pattern:  /{branch_slug}/cart
+open_miam_miam.cart.add:
+    pattern:  /{branchSlug}/cart
     defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:add }
     requirements:
         _method: POST
 
-open_miam_miam_cart_update:
-    pattern:  /{branch_slug}/cart
+open_miam_miam.cart.update:
+    pattern:  /{branchSlug}/cart
     defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:update }
     requirements:
         _method: PUT
@@ -55,21 +55,24 @@ open_miam_miam_cart_update:
 #
 # Order
 #
-open_miam_miam_sales_order_confirm:
-    pattern:  /{branch_slug}/order/confirm
+open_miam_miam.sales_order.confirm:
+    pattern:  /{branchSlug}/order/confirm
     defaults: { _controller: IsicsOpenMiamMiamBundle:SalesOrder:Confirm }
 
-open_miam_miam_sales_order_confirm_creation:
-    pattern:  /{branch_slug}/order/{id}
+open_miam_miam.sales_order.confirm_creation:
+    pattern:  /{branchSlug}/order/{id}
     defaults: { _controller: IsicsOpenMiamMiamBundle:SalesOrder:ConfirmCreation }
 
 #
 # Catalog
 #
-open_miam_miam_branch_category:
-    pattern:  /{branch_slug}/{category_slug}
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Catalog:showCategory }
-
-open_miam_miam_branch_product:
-    pattern:  /{branch_slug}/{category_slug}/{product_slug}
+open_miam_miam.catalog.product:
+    pattern:  /{branchSlug}/{productSlug}-{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Catalog:showProduct }
+    requirements:
+        productSlug: '[^/]+'
+        productId:   '\d+'
+
+open_miam_miam.catalog.category:
+    pattern:  /{branchSlug}/{categorySlug}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Catalog:showCategory }

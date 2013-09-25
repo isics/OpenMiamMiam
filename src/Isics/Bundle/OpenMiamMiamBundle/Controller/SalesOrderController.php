@@ -25,7 +25,7 @@ class SalesOrderController extends Controller
     /**
      * Confirms sales order
      *
-     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
      * @param Request $request
      * @param Branch $branch Branch
@@ -49,8 +49,8 @@ class SalesOrderController extends Controller
             new SalesOrderConfirmation(),
             array(
                 'action' => $this->generateUrl(
-                    'open_miam_miam_sales_order_confirm',
-                    array('branch_slug' => $cart->getBranch()->getSlug())
+                    'open_miam_miam.sales_order.confirm',
+                    array('branchSlug' => $cart->getBranch()->getSlug())
                 ),
                 'method' => 'POST'
             )
@@ -70,8 +70,8 @@ class SalesOrderController extends Controller
                 );
 
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam_sales_order_confirm_creation',
-                    array('branch_slug' => $branch->getSlug(), 'id' => $order->getId())
+                    'open_miam_miam.sales_order.confirm_creation',
+                    array('branchSlug' => $branch->getSlug(), 'id' => $order->getId())
                 ));
             }
         }
@@ -87,7 +87,7 @@ class SalesOrderController extends Controller
     /**
      * Confirms sales order
      *
-     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
      * @param Branch $branch Branch
      * @param SalesOrder $order
@@ -118,6 +118,6 @@ class SalesOrderController extends Controller
      */
     protected function redirectToCart(Cart $cart)
     {
-        return $this->redirect($this->generateUrl('open_miam_miam_cart_show', array('branch_slug' => $cart->getBranch()->getSlug())));
+        return $this->redirect($this->generateUrl('open_miam_miam.cart.show', array('branchSlug' => $cart->getBranch()->getSlug())));
     }
 }

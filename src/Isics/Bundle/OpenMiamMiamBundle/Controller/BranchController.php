@@ -20,7 +20,7 @@ class BranchController extends Controller
     /**
      * Shows branch homepage
      *
-     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
      * @param Branch $branch
      *
