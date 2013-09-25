@@ -12,7 +12,6 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Form\DataTransformer\ProductToIdentifierDataTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
