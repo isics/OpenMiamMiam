@@ -1,4 +1,5 @@
 # General
+system:               "Le système"
 add:                  "Ajouter"
 bio:                  "Bio"
 branch:               "Comptoir"
@@ -189,6 +190,7 @@ message.cart.added:   "Le produit a été ajouté à votre panier."
 message.cart.updated: "Votre panier a été mis à jour."
 
 # Activités
+activity_stream.product.created: "a créé le produit %name%."
 activity_stream.product.updated: "a mis à jour le produit %name%."
 
 # Erreurs

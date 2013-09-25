@@ -52,7 +52,7 @@ class Activity
     /**
      * @var string $userName
      *
-     * @ORM\Column(name="user_name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="user_name", type="string", length=255, nullable=true)
      */
     private $userName;
 

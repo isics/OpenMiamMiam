@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class ActivityManager
 {
     /**
-     * @var SecurityContext $securityContext
+     * @var SecurityContextInterface $securityContext
      */
     protected $securityContext;
 
@@ -53,13 +53,13 @@ class ActivityManager
      * @param array $transParams
      * @param mixed $object
      * @param mixed $target
-     * @param string $userName
+     * @param User $user
      *
      * @throws \DomainException
      *
      * @return Activity
      */
-    public function create($transKey, array $transParams = null, $object = null, $target = null, $userName = null)
+    public function createFromEntity($transKey, array $transParams = null, $object = null, $target = null, User $user = null)
     {
         $propertyAccessor = new PropertyAccessor();
         $activity = new Activity();
@@ -67,18 +67,15 @@ class ActivityManager
         $activity->setTransKey($transKey);
         $activity->setTransParams($transParams);
 
-        if (null !== $this->securityContext->getToken()) {
+        if (null === $user && null !== $this->securityContext->getToken()) {
             $user = $this->securityContext->getToken()->getUser();
             if (!$user instanceof User) {
                 throw new \DomainException('Invalid user.');
             }
-
+        }
+        if (null !== $user) {
             $activity->setUser($user);
             $activity->setUserName($user->getFirstname().' '.$user->getLastname());
-        } elseif (null !== $userName) {
-            $activity->setUserName($userName);
-        } else {
-            $activity->setUserName('System');
         }
 
         if (null !== $object) {

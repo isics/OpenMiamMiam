@@ -124,16 +124,16 @@ class ProductManager
             $activityTransKey = 'activity_stream.product.updated';
         }
 
-        // Activity
-        $activity = $this->activityManager->create($activityTransKey, array('%name%' => $product->getName()), $product, $producer);
-        $this->entityManager->persist($activity);
-
         // Save object
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
         // Process image file
         $this->processImageFile($product);
+
+        // Activity
+        $activity = $this->activityManager->createFromEntity($activityTransKey, array('%name%' => $product->getName()), $product, $producer);
+        $this->entityManager->persist($activity);
     }
 
     /**
