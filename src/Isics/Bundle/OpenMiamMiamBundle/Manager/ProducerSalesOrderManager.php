@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerBranchOccurrenceSalesOrders;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
@@ -24,18 +24,18 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrders;
 class ProducerSalesOrderManager
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * Constructs object
      *
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -49,8 +49,8 @@ class ProducerSalesOrderManager
     {
         $producerSalesOrders = new ProducerSalesOrders($producer);
 
-        $branchOccurrenceRepository = $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
-        $salesOrderRepository = $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
+        $branchOccurrenceRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
+        $salesOrderRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
 
         foreach ($producer->getBranches() as $branch) {
             $branchOccurrence = $branchOccurrenceRepository->findOneNextForBranch($branch, true);

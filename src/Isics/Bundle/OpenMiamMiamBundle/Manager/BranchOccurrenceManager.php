@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProductAvailability;
@@ -19,9 +19,9 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\ProductAvailability;
 class BranchOccurrenceManager
 {
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var array
@@ -31,11 +31,11 @@ class BranchOccurrenceManager
     /**
      * Constructor
      *
-     * @param ObjectManager $objectManager Object Manager
+     * @param EntityManager $entityManager Object Manager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->dates         = array();
     }
 
@@ -53,7 +53,7 @@ class BranchOccurrenceManager
         }
 
         if (!array_key_exists('in_progress', $this->dates[$branch->getId()])) {
-            $this->dates[$branch->getId()]['in_progress'] = $this->objectManager
+            $this->dates[$branch->getId()]['in_progress'] = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
                 ->findOneInProgressForBranch($branch);
         }
@@ -75,7 +75,7 @@ class BranchOccurrenceManager
         }
 
         if (!array_key_exists('next', $this->dates[$branch->getId()])) {
-            $this->dates[$branch->getId()]['next'] = $this->objectManager
+            $this->dates[$branch->getId()]['next'] = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
                 ->findOneNextForBranch($branch);
         }

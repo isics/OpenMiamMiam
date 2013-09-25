@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -22,18 +22,18 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class ProductToIdentifierDataTransformer implements DataTransformerInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * Constructor
      *
-     * @param ObjectManager $objectManager Entity Manager
+     * @param EntityManager $entityManager Entity Manager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -61,7 +61,7 @@ class ProductToIdentifierDataTransformer implements DataTransformerInterface
             return null;
         }
 
-        $product = $this->objectManager
+        $product = $this->entityManager
             ->getRepository('IsicsOpenMiamMiamBundle:Product')
             ->find($value);
 

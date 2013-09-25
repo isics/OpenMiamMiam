@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
@@ -30,9 +30,9 @@ use Symfony\Component\Validator\ValidatorInterface;
 class SalesOrderManager
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var ValidatorInterface $validator
@@ -49,12 +49,12 @@ class SalesOrderManager
      * Constructs object
      *
      * @param array $config
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @param ValidatorInterface $validator
      */
-    public function __construct(array $config, ObjectManager $objectManager, ValidatorInterface $validator)
+    public function __construct(array $config, EntityManager $entityManager, ValidatorInterface $validator)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->validator = $validator;
 
         $resolver = new OptionsResolver();
@@ -157,7 +157,7 @@ class SalesOrderManager
             // Increase reference for order
             $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
             $association->setOrderRefCounter($association->getOrderRefCounter()+1);
-            $this->objectManager->persist($association);
+            $this->entityManager->persist($association);
 
             // Sets ref
             $order->setRef(sprintf(
@@ -172,7 +172,7 @@ class SalesOrderManager
             $product = $row->getProduct();
             if (null !== $product && $product->getAvailability() == Product::AVAILABILITY_ACCORDING_TO_STOCK) {
                 $product->setStock(($product->getStock()-($row->getQuantity()-$row->getOldQuantity())));
-                $this->objectManager->persist($product);
+                $this->entityManager->persist($product);
             }
         }
 
@@ -183,8 +183,8 @@ class SalesOrderManager
         }
 
         // Save
-        $this->objectManager->persist($order);
+        $this->entityManager->persist($order);
 
-        $this->objectManager->flush();
+        $this->entityManager->flush();
     }
 }
