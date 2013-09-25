@@ -18,10 +18,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Isics\OpenMiamMiamBundle\Entity\ActivityLog
  *
- * @ORM\Table(name="activity_log")
- * @ORM\Entity
+ * @ORM\Table(name="activity")
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\ActivityRepository")
  */
-class ActivityLog
+class Activity
 {
     /**
      * @var integer $id
@@ -31,6 +31,13 @@ class ActivityLog
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @var \DateTime $date
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
 
     /**
      * @var User $user
@@ -50,11 +57,18 @@ class ActivityLog
     private $userName;
 
     /**
-     * @var string $message
+     * @var string $transKey
      *
-     * @ORM\Column(name="message", type="string", length=255, nullable=false)
+     * @ORM\Column(name="trans_key", type="string", length=64, nullable=false)
      */
-    private $message;
+    private $transKey;
+
+    /**
+     * @var string $transParams
+     *
+     * @ORM\Column(name="trans_params", type="array", nullable=true)
+     */
+    private $transParams;
 
     /**
      * @var string $objectId
@@ -66,7 +80,7 @@ class ActivityLog
     /**
      * @var string $objectType
      *
-     * @ORM\Column(name="object_type", type="string", length=32, nullable=true)
+     * @ORM\Column(name="object_type", type="string", length=255, nullable=true)
      */
     private $objectType;
 
@@ -80,9 +94,11 @@ class ActivityLog
     /**
      * @var string $targetType
      *
-     * @ORM\Column(name="target_type", type="string", length=32, nullable=true)
+     * @ORM\Column(name="target_type", type="string", length=255, nullable=true)
      */
     private $targetType;
+
+
 
     /**
      * @param int $id
@@ -101,19 +117,35 @@ class ActivityLog
     }
 
     /**
-     * @param string $message
+     * @param string $transKey
      */
-    public function setMessage($message)
+    public function setTransKey($transKey)
     {
-        $this->message = $message;
+        $this->transKey = $transKey;
     }
 
     /**
      * @return string
      */
-    public function getMessage()
+    public function getTransKey()
     {
-        return $this->message;
+        return $this->transKey;
+    }
+
+    /**
+     * @param array $transParams
+     */
+    public function setTransParams(array $transParams = null)
+    {
+        $this->transParams = $transParams;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTransParams()
+    {
+        return $this->transParams;
     }
 
     /**
@@ -210,5 +242,21 @@ class ActivityLog
     public function getUserName()
     {
         return $this->userName;
+    }
+
+    /**
+     * @param \DateTime $date
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

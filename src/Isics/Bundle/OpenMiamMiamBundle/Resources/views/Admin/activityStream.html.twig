@@ -1,0 +1,8 @@
+<h2>{{ 'admin.activity_stream.title'|trans }}</h2>
+
+<dl class="dl-horizontal">
+    {% for activity in activities %}
+        <dt>{{ activity.date|format_datetime }}</dt>
+        <dd>{{ activity.userName }} {{ activity.transKey|trans(activity.transParams) }}</dd>
+    {% endfor %}
+</dl>

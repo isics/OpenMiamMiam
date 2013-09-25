@@ -90,11 +90,12 @@ class ProductController extends BaseController
     {
         $this->secure($producer);
 
+        $productManager = $this->get('open_miam_miam.product_manager');
+
         $form = $this->getForm($product);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager = $this->get('open_miam_miam.product_manager');
                 $productManager->save($product);
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.updated');
@@ -108,7 +109,8 @@ class ProductController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\Product:edit.html.twig', array(
             'producer' => $producer,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'activities' => $productManager->getActivities($product)
         ));
     }
 

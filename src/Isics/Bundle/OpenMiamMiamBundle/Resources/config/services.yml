@@ -12,6 +12,7 @@ parameters:
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
 
+    open_miam_miam.activity_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
     open_miam_miam.branch_occurrence_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
     open_miam_miam.cart_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
     open_miam_miam.consumer_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
@@ -101,6 +102,10 @@ services:
             - { name: knp_menu.voter, request: true }
 
     # Managers
+    open_miam_miam.activity_manager:
+        class: %open_miam_miam.activity_manager.class%
+        arguments: [@security.context, @doctrine.orm.entity_manager]
+
     open_miam_miam.branch_occurrence_manager:
         class:     %open_miam_miam.branch_occurrence_manager.class%
         arguments: [@doctrine.orm.entity_manager]
@@ -120,7 +125,7 @@ services:
 
     open_miam_miam.product_manager:
         class: %open_miam_miam.product_manager.class%
-        arguments: [%open_miam_miam.product%, @doctrine.orm.entity_manager, @kernel]
+        arguments: [%open_miam_miam.product%, @doctrine.orm.entity_manager, @kernel, @open_miam_miam.activity_manager]
 
     open_miam_miam.acl_manager:
         class:     %open_miam_miam.acl_manager.class%

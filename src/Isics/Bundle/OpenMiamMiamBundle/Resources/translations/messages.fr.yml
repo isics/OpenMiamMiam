@@ -69,8 +69,9 @@ availability.producer_absent: "Producteur absent"
 availability.available_at:    "Dispo le %date%"
 
 # Admin common
-admin.save:   "Enregistrer"
-admin.return: "Retourner à la liste"
+admin.save:                  "Enregistrer"
+admin.return:                "Retourner à la liste"
+admin.activity_stream.title: "Flux d'activité"
 
 # Admin login
 admin.login.title:                "Accès gestionnaire"
@@ -164,3 +165,6 @@ admin.producer.calendar.message.updated:    "Le calendrier de présence a été 
 # Messages
 message.cart.added:   "Le produit a été ajouté à votre panier."
 message.cart.updated: "Votre panier a été mis à jour."
+
+# Activités
+activity_stream.product.updated: "a mis à jour le produit %name%."
