@@ -93,7 +93,7 @@ class SalesOrderManager
             $order->setConsumerComment($confirmation->getConsumerComment());
         }
 
-        $this->save($order, array('Default', 'FromCart'));
+        $this->save($order);
 
         $cart->clearItems();
 
@@ -147,11 +147,8 @@ class SalesOrderManager
      * Saves sales order
      *
      * @param SalesOrder $order
-     * @param array $validationContext
-     *
-     * @throws \DomainException
      */
-    public function save(SalesOrder $order, array $validationContext = null)
+    public function save(SalesOrder $order)
     {
         if (null === $order->getId()) {
             // Increase reference for order
@@ -176,11 +173,8 @@ class SalesOrderManager
             }
         }
 
+        // Compute order's data (total...)
         $order->compute();
-
-        if (null !== $validationContext && count($this->validator->validate($order, $validationContext)) > 0) {
-            throw new \DomainException('Invalid order');
-        }
 
         // Save
         $this->entityManager->persist($order);

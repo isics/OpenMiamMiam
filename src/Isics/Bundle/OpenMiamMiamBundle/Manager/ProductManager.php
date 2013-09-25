@@ -109,9 +109,11 @@ class ProductManager
         $this->entityManager->persist($product);
 
         // Increase producer product reference counter
-        $producer = $product->getProducer();
-        $producer->setProductRefCounter($producer->getProductRefCounter()+1);
-        $this->entityManager->persist($producer);
+        if (null === $product->getId()) {
+            $producer = $product->getProducer();
+            $producer->setProductRefCounter($producer->getProductRefCounter()+1);
+            $this->entityManager->persist($producer);
+        }
 
         $this->entityManager->flush();
 
