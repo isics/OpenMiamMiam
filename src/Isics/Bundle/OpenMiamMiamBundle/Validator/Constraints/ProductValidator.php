@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product as ProductEntity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,18 +19,18 @@ use Symfony\Component\Validator\ConstraintValidator;
 class ProductValidator extends ConstraintValidator
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * Constructs validator
      *
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -42,7 +42,7 @@ class ProductValidator extends ConstraintValidator
     public function validate($product, Constraint $constraint)
     {
         // Branches validation
-        $availableBranches = $this->objectManager
+        $availableBranches = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:Branch')
                 ->findForProducer($product->getProducer());
 

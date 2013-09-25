@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Exception\CartExpiredException;
@@ -38,9 +38,9 @@ class CartManager
     protected $branchOccurrenceManager;
 
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var Session
@@ -56,14 +56,14 @@ class CartManager
      * Constructor
      *
      * @param BranchOccurrenceManager $branchOccurrenceManager Branch Occurrence Manager
-     * @param ObjectManager           $objectManager           Object Manager
+     * @param EntityManager           $entityManager           Object Manager
      * @param Session                 $session                 Session
      * @param SecurityContext         $securityContext         Security context
      */
-    public function __construct(BranchOccurrenceManager $branchOccurrenceManager, ObjectManager $objectManager, Session $session, SecurityContext $securityContext)
+    public function __construct(BranchOccurrenceManager $branchOccurrenceManager, EntityManager $entityManager, Session $session, SecurityContext $securityContext)
     {
         $this->branchOccurrenceManager = $branchOccurrenceManager;
-        $this->objectManager           = $objectManager;
+        $this->entityManager           = $entityManager;
         $this->session                 = $session;
         $this->securityContext         = $securityContext;
 
@@ -101,7 +101,7 @@ class CartManager
                         $productIds[] = $cartItem->getProductId();
                     }
 
-                    $products = $this->objectManager
+                    $products = $this->entityManager
                         ->getRepository('IsicsOpenMiamMiamBundle:Product')
                         ->findById($productIds);
 

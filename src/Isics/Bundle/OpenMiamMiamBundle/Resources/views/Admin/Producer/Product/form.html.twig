@@ -121,7 +121,7 @@
         {{ form_row(form.isOfTheMoment, {'label': 'admin.producer.products.form.is_of_the_moment'|trans}) }}
     </div>
 
-    <a href="{{ path('open_miam_miam.admin.producer.list_products', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    <a href="{{ path('open_miam_miam.admin.producer.product.list', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 
     <button type="submit" class="btn btn-primary btn-lg" />
         <span class="glyphicon glyphicon-floppy-save"></span>
@@ -129,7 +129,7 @@
     </button>
 
     {% if product.id is not null %}
-        <a data-url="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-lg" title="{{ 'admin.producer.products.form.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+        <a data-url="{{ path('open_miam_miam.admin.producer.product.delete', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-lg" title="{{ 'admin.producer.products.form.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
     {% endif %}
 
     {% do form.save.setRendered %}

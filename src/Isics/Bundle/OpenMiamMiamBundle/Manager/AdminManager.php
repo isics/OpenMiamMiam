@@ -13,7 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -34,9 +34,9 @@ class AdminManager
     protected $securityContext;
 
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var AdminResourceCollection $adminResourceCollection;
@@ -49,12 +49,12 @@ class AdminManager
      * Constructs object
      *
      * @param SecurityContextInterface $securityContext
-     * @param ObjectManager            $objectManager
+     * @param EntityManager            $entityManager
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectManager $objectManager)
+    public function __construct(SecurityContextInterface $securityContext, EntityManager $entityManager)
     {
         $this->securityContext = $securityContext;
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->adminResourceCollection = new AdminResourceCollection();
     }
 
@@ -80,7 +80,7 @@ class AdminManager
      */
     public function findAvailableProducers()
     {
-        return $this->findAvailableEntities($this->objectManager->getRepository('IsicsOpenMiamMiamBundle:Producer'));
+        return $this->findAvailableEntities($this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Producer'));
     }
 
     /**
@@ -90,7 +90,7 @@ class AdminManager
      */
     public function findAvailableAssociations()
     {
-        return $this->findAvailableEntities($this->objectManager->getRepository('IsicsOpenMiamMiamBundle:Association'));
+        return $this->findAvailableEntities($this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Association'));
     }
 
     /**

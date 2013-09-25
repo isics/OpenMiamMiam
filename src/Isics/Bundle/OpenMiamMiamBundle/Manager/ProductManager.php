@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
@@ -30,9 +30,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProductManager
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var KernelInterface $kernel
@@ -50,12 +50,12 @@ class ProductManager
      * Constructs object
      *
      * @param array $config
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @param KernelInterface $kernel
      */
-    public function __construct(array $config, ObjectManager $objectManager, KernelInterface $kernel)
+    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->kernel = $kernel;
 
         $resolver = new OptionsResolver();
@@ -106,14 +106,16 @@ class ProductManager
     public function save(Product $product)
     {
         // Save object
-        $this->objectManager->persist($product);
+        $this->entityManager->persist($product);
 
         // Increase producer product reference counter
-        $producer = $product->getProducer();
-        $producer->setProductRefCounter($producer->getProductRefCounter()+1);
-        $this->objectManager->persist($producer);
+        if (null === $product->getId()) {
+            $producer = $product->getProducer();
+            $producer->setProductRefCounter($producer->getProductRefCounter()+1);
+            $this->entityManager->persist($producer);
+        }
 
-        $this->objectManager->flush();
+        $this->entityManager->flush();
 
         // Process image file
         $this->processImageFile($product);
@@ -126,8 +128,8 @@ class ProductManager
      */
     public function delete(Product $product)
     {
-        $this->objectManager->remove($product);
-        $this->objectManager->flush();
+        $this->entityManager->remove($product);
+        $this->entityManager->flush();
     }
 
     /**
@@ -196,8 +198,8 @@ class ProductManager
 
         $product->setImage(null);
 
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
     }
 
     /**
@@ -224,8 +226,8 @@ class ProductManager
         $product->setImage($filename);
         $product->setImageFile(null);
 
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
     }
 
     /**
@@ -239,7 +241,7 @@ class ProductManager
     public function getProductsToDisplay(Branch $branch, Category $category)
     {
         // TODO stock products to display in a new member of category : $productsToDisplay[branch][category]
-        return $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:Product')->findAllVisibleInBranchAndCategory(
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Product')->findAllVisibleInBranchAndCategory(
             $branch,
             $category
         );

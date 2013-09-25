@@ -13,7 +13,7 @@
             <h1>{{ 'admin.producer.products.list.title'|transchoice(products|length, {'%nb%': products|length}) }}</h1>
         </div>
         <div class="col-md-6">
-            <a href="{{ path('open_miam_miam.admin.producer.create_product', {'id': producer.id}) }}" class="btn btn-primary btn-lg pull-right">
+            <a href="{{ path('open_miam_miam.admin.producer.product.create', {'id': producer.id}) }}" class="btn btn-primary btn-lg pull-right">
                 <span class="glyphicon glyphicon-plus-sign"></span>
                 {{ 'admin.producer.products.list.create'|trans }}
             </a>
@@ -40,8 +40,8 @@
                 <tbody>
                     {% for product in products %}
                         <tr{% if product.isOfTheMoment %} class="success"{% set has_product_of_the_moment = true %}{% endif %}>
-                            <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.ref }}</a></td>
-                            <td><a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}">{{ product.name }}</a></td>
+                            <td><a href="{{ path('open_miam_miam.admin.producer.product.edit', {'id': producer.id, 'productId': product.id}) }}">{{ product.ref }}</a></td>
+                            <td><a href="{{ path('open_miam_miam.admin.producer.product.edit', {'id': producer.id, 'productId': product.id}) }}">{{ product.name }}</a></td>
                             <td>{% if product.isBio %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
                             <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
                             {% for branch in producer.branches %}
@@ -63,8 +63,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{{ path('open_miam_miam.admin.producer.edit_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.products.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a data-url="{{ path('open_miam_miam.admin.producer.delete_product', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.products.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                                <a href="{{ path('open_miam_miam.admin.producer.product.edit', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.products.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.producer.product.delete', {'id': producer.id, 'productId': product.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.products.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
                             </td>
                         </tr>
                     {% endfor %}

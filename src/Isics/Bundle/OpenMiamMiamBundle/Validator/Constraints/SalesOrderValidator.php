@@ -11,25 +11,25 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class SalesOrderValidator extends ConstraintValidator
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * Constructs validator
      *
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -41,7 +41,7 @@ class SalesOrderValidator extends ConstraintValidator
     public function validate($order, Constraint $constraint)
     {
         // Unique ref for association
-        if (!$this->objectManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->isRefUnique($order)) {
+        if (!$this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->isRefUnique($order)) {
             $this->context->addViolationAt('ref', $constraint->notUniqueRefMessage, array(), null);
         }
     }
