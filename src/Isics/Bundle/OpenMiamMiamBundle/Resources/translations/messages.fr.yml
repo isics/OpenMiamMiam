@@ -46,13 +46,35 @@ order.confirm.submit:                "Je confirme ma commande"
 order.confirm.consumer_comment:      "N'hésitez pas à nous laisser un commentaire :"
 order.confirm.terms_of_sale_checked: "J'ai lu et je suis en accord avec les conditions générales de vente."
 order.confirmed.title:               "Votre commande a été enregistrée !"
+order.confirmed.body_html:           |
+    <p>Féliciations %firstname% !</p>
+    <p>La commande <strong>%ref%</strong> a bien été enregistrée.</p>
+    <p>Un e-mail récapitulatif vous a été envoyé.</p>
 
 # Login
-login.title: "Identifiez-vous"
+login.title:          "Identifiez-vous"
 login.existing.title: "Déjà client ?"
-login.new.title: "Nouveau client ?"
-login.submit: "S'identifier"
-login.register: "Créer un compte"
+login.new.title:      "Nouveau client ?"
+login.submit:         "S'identifier"
+login.register:       "Créer un compte"
+
+# Register
+register.title:                 "Créez votre compte :"
+register.firstname:             "Prénom"
+register.lastname:              "Nom"
+register.email:                 "Adresse e-mail"
+register.password:              "Mot de passe"
+register.password_confirmation: "Vérification"
+register.address1:              "Adresse"
+register.address2:              "Complément"
+register.zipcode:               "Code postal"
+register.city:                  "Ville"
+register.cancel:                "Annuler"
+register.submit:                "S'inscrire"
+register.confirmed.title:       "Bienvenue %firstname% !"
+register.confirmed.body_html:   |
+    <p>Votre compte a bien été créé.<p>
+register.confirmed.next:        "Continuer"
 
 # Attendance
 attendance.yes:     "Oui"
