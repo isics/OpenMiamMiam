@@ -75,7 +75,7 @@ class ProductValidator extends ConstraintValidator
 
         // Category is leaf
         if ($product->getCategory()->getRgt()-$product->getCategory()->getlft() > 1) {
-            $this->context->addViolationAt('category', 'error_product.category_not_a_leaf');
+            $this->context->addViolationAt('category', 'error.product.category_not_a_leaf');
         }
     }
 }

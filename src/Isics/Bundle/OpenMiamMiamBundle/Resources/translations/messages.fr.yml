@@ -122,13 +122,23 @@ admin.producer.dashboard.products_out_of_stock:  "[0,1]produit en rupture|]1,Inf
 admin.producer.dashboard.attendances_to_confirm: "[0,1]date à confirmer|]1,Inf]dates à confirmer"
 
 # Admin / Producer / Sales orders
-admin.producer.sales_orders.list.title:          "Commandes à préparer"
-admin.producer.sales_orders.list.no_order:       "Il n'y a pas encore de commande pour ce comptoir."
-admin.producer.sales_orders.list.ref:            "Réf"
-admin.producer.sales_orders.list.date:           "Date"
-admin.producer.sales_orders.list.consumer:       "Client"
-admin.producer.sales_orders.list.nb_articles:    "Nb articles"
-admin.producer.sales_orders.list.producer_total: "Montant producteur"
+admin.producer.sales_orders.list.title:                      "Commandes à préparer"
+admin.producer.sales_orders.list.no_order:                   "Il n'y a pas encore de commande pour ce comptoir."
+admin.producer.sales_orders.list.ref:                        "Réf"
+admin.producer.sales_orders.list.date:                       "Date"
+admin.producer.sales_orders.list.consumer:                   "Client"
+admin.producer.sales_orders.list.nb_articles:                "Nb articles"
+admin.producer.sales_orders.list.producer_total:             "Montant producteur"
+admin.producer.sales_orders.form.edit_title:                 "Commande %ref%"
+admin.producer.sales_orders.form.consumer:                   "Consommateur"
+admin.producer.sales_orders.form.withdrawal_title:           "Retrait des produits"
+admin.producer.sales_orders.form.total:                      "Total"
+admin.producer.sales_orders.form.sales_order_row.ref:        "Réf"
+admin.producer.sales_orders.form.sales_order_row.product:    "Produit"
+admin.producer.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
+admin.producer.sales_orders.form.sales_order_row.quantity:   "Quantité"
+admin.producer.sales_orders.form.sales_order_row.total:      "Total"
+admin.producer.sales_orders.message.updated:                 "La commande a bien été mise à jour"
 
 # Admin / Producer / Products
 admin.producer.products.list.title:                    "{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits"
@@ -195,18 +205,24 @@ message.cart.updated: "Votre panier a été mis à jour."
 activity_stream.product.created: "a créé le produit %name%."
 activity_stream.product.updated: "a mis à jour le produit %name%."
 
+activity_stream.sales_order.created: "a passé la commande %ref%"
+activity_stream.sales_order.updated: "a modifié la commande %ref%"
+activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %ref% de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)"
+activity_stream.sales_order.row.quantity_updated: "a modifié le produit %ref% de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)"
+activity_stream.sales_order.row.total_updated: "a modifié le produit %ref% de la commande %order_ref% (total %old_total% -> %total%)"
+
 # Erreurs
 error.invalid:  "Cette valeur n'est pas valide"
 error.required: "Cette valeur est requise"
 
-error.sales_order.not_enough_stock: "Pas assez de stock"
+error.sales_order.not_enough_stock: "Pas assez de stock (reste %rest%)"
 error.sales_order.ref_not_unique:   "La référence doit être unique"
 
 error.calendar.invalid_branch_occurrence:   "Comptoir invalide"
 error.calendar.invalid_producer_attendance: "Présence invalide"
 
 error.product.invalid_branches:    "Au moins un comptoir est invalide"
-error_product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
+error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
 
 error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
 error.cart.product_unavailable:           "Produit indisponible"

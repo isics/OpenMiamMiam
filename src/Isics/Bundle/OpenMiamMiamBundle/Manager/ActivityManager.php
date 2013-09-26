@@ -81,4 +81,19 @@ class ActivityManager
 
         return $activity;
     }
+
+    /**
+     * @param float $number
+     * @param int $decimal
+     * @return string
+     */
+    public function formatFloatNumber($number, $decimal = 2) {
+        $number = number_format($number, 2);
+        $decimal += 1;
+        if ('.00' === substr($number, -$decimal)) {
+            return substr($number, 0, -$decimal);
+        }
+
+        return $number;
+    }
 }

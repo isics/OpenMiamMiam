@@ -53,9 +53,11 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
 
+        $producerSalesOrder = new ProducerSalesOrder($producer, $order);
+
         $form = $this->createForm(
             new ProducerSalesOrderType(),
-            new ProducerSalesOrder($producer, $order),
+            $producerSalesOrder,
             array(
                 'action' => $this->generateUrl(
                     'open_miam_miam.admin.producer.sales_order.edit',
@@ -68,20 +70,26 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->get('open_miam_miam.sales_order_manager')->save($order);
+                $this->get('open_miam_miam.sales_order_manager')->save(
+                    $order,
+                    $producer,
+                    $this->get('security.context')->getToken()->getUser()
+                );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
 
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.producer.sales_orders.list',
-                    array('id' => $producer->getId())
+                    'open_miam_miam.admin.producer.sales_order.edit',
+                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
                 ));
             }
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit.html.twig', array(
             'producer' => $producer,
-            'form' => $form->createView()
+            'producerSalesOrder' => $producerSalesOrder,
+            'form' => $form->createView(),
+            'activities' => $this->get('open_miam_miam.producer_sales_order_manager')->getActivities($producerSalesOrder)
         ));
     }
 }

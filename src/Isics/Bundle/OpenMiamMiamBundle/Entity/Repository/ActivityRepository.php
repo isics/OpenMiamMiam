@@ -12,12 +12,62 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ActivityRepository extends EntityRepository
 {
+    /**
+     * Returns QueryBuilder to find activities by object from entity
+     * @param $object
+     * @param QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder|QueryBuilder
+     */
+    public function findByObjectFromEntityQueryBuilder($object, QueryBuilder $qb = null)
+    {
+        $propertyAccessor = new PropertyAccessor();
+
+        $qb = null === $qb ? $this->createQueryBuilder('a') : $qb;
+
+        $metadata = $this->getEntityManager()->getClassMetadata(get_class($object));
+
+        $idFieldName = $metadata->getSingleIdentifierFieldName();
+
+        $qb->andWhere('a.objectType = :objectType')
+                ->setParameter('objectType', $metadata->getName())
+                ->andWhere('a.objectId = :objectId')
+                ->setParameter('objectId', $propertyAccessor->getValue($object, $idFieldName));
+
+        return $qb;
+    }
+
+    /**
+     * Returns QueryBuilder to find activities by target from entity
+     * @param $target
+     * @param QueryBuilder $qb
+     *
+     * @return \Doctrine\ORM\QueryBuilder|QueryBuilder
+     */
+    public function findByTargetFromEntityQueryBuilder($target, QueryBuilder $qb = null)
+    {
+        $propertyAccessor = new PropertyAccessor();
+
+        $qb = null === $qb ? $this->createQueryBuilder('a') : $qb;
+
+        $metadata = $this->getEntityManager()->getClassMetadata(get_class($target));
+        $idFieldName = $metadata->getSingleIdentifierFieldName();
+
+        $qb->andWhere('a.targetType = :targetType')
+                ->setParameter('targetType', $metadata->getName())
+                ->andWhere('a.targetId = :targetId')
+                ->setParameter('targetId', $propertyAccessor->getValue($target, $idFieldName));
+
+        return $qb;
+    }
+
     /**
      * Returns activities for object and target
      *
@@ -29,30 +79,14 @@ class ActivityRepository extends EntityRepository
      */
     public function findByEntities($object = null, $target = null, User $user = null)
     {
-        $propertyAccessor = new PropertyAccessor();
-
         $qb = $this->createQueryBuilder('a')->addOrderBy('a.date', 'DESC');
 
         if (null !== $object) {
-            $objectMetadata = $this->getEntityManager()->getClassMetadata(get_class($object));
-            $objectIdentifierFieldName = $objectMetadata->getSingleIdentifierFieldName();
-
-            $qb->andWhere('a.objectType = :objectType')
-                    ->setParameter('objectType', $objectMetadata->getName())
-                    ->andWhere('a.objectId = :objectId')
-                    ->setParameter('objectId', $propertyAccessor->getValue($object, $objectIdentifierFieldName));
+            $qb = $this->findByObjectFromEntityQueryBuilder($object, $qb);
         }
-
         if (null !== $target) {
-            $targetMetadata = $this->getEntityManager()->getClassMetadata(get_class($target));
-            $targetIdentifierFieldName = $targetMetadata->getSingleIdentifierFieldName();
-
-            $qb->andWhere('a.targetType = :targetType')
-                    ->setParameter('targetType', $targetMetadata->getName())
-                    ->andWhere('a.targetId = :targetId')
-                    ->setParameter('targetId', $propertyAccessor->getValue($target, $targetIdentifierFieldName));
+            $qb = $this->findByTargetFromEntityQueryBuilder($target, $qb);
         }
-
         if (null !== $user) {
             $qb->andWhere('a.user = :user')->setParameter('user', $user);
         }
