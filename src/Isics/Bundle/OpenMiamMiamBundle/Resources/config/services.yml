@@ -18,6 +18,7 @@ parameters:
     open_miam_miam.admin_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
     open_miam_miam.acl_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
     open_miam_miam.product_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
+    open_miam_miam.producer_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager'
     open_miam_miam.producer_attendances_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
     open_miam_miam.sales_order_manager.class:          'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
     open_miam_miam.producer_sales_order_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
@@ -27,6 +28,7 @@ parameters:
 
     open_miam_miam.form.type.hidden_product.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
     open_miam_miam.form.type.product.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
+    open_miam_miam.form.type.producer.class:       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerType'
 
 services:
     # Validators
@@ -72,6 +74,12 @@ services:
         arguments: [%open_miam_miam.buying_units%]
         tags:
             - { name: form.type, alias: open_miam_miam_admin_product }
+            
+    open_miam_miam.form.type.producer:
+        class:     %open_miam_miam.form.type.producer.class%
+        arguments: [%open_miam_miam.entity_manager]
+        tags:
+            - { name: form.type, alias: open_miam_miam_admin_producer }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -79,6 +87,7 @@ services:
         arguments:
             - %open_miam_miam.currency%
             - @open_miam_miam.product_manager
+            - @open_miam_miam.producer_manager
             - @open_miam_miam.consumer_manager
         tags:
             - { name: twig.extension }
@@ -121,6 +130,10 @@ services:
     open_miam_miam.product_manager:
         class: %open_miam_miam.product_manager.class%
         arguments: [%open_miam_miam.product%, @doctrine.orm.entity_manager, @kernel]
+        
+    open_miam_miam.producer_manager:
+        class: %open_miam_miam.producer_manager.class%
+        arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel]
 
     open_miam_miam.acl_manager:
         class:     %open_miam_miam.acl_manager.class%

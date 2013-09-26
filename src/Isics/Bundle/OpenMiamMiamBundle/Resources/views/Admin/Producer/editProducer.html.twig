@@ -1,0 +1,49 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+ {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+ {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+ 
+ {% block content %}
+ <h3>Informations Producteur</h3>
+ 
+ {{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    {{ form_row(form.name) }}
+
+    <div>
+	{{ form_errors(form.address1) }}
+	{{ form_label(form.address1, 'Address'|trans) }}
+	{{ form_widget(form.address1) }}
+	{{ form_errors(form.address2) }}
+	{{ form_widget(form.address2) }}
+	{{ form_errors(form.zipcode) }}
+	{{ form_widget(form.zipcode) }}
+	{{ form_errors(form.city) }}
+	{{ form_widget(form.city) }}
+	</div>
+	<div>
+	{{ form_label(form.imageFile, 'Picture'|trans) }}
+   	{% if producer.image is not null %}
+    	<p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+   	 	{{ form_row(form.deleteImage, {'label': 'admin.producer.products.form.delete_image'|trans}) }}
+    {% endif %}	
+    {{ form_errors(form.imageFile) }}
+    {{ form_widget(form.imageFile) }}
+	</div>
+
+    {{ form_rest(form) }}
+    
+    <button type="submit" class="btn btn-primary btn-lg" />
+        <span class="glyphicon glyphicon-floppy-save"></span>
+        {{ 'admin.save'|trans }}
+    </button>
+ {{ form_end(form) }}
+
+{% endblock %}
+

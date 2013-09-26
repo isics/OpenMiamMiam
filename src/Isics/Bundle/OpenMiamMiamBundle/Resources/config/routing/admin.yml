@@ -46,3 +46,7 @@ open_miam_miam.admin.producer.list_sales_orders:
 open_miam_miam.admin.producer.edit_sales_order:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
+    
+open_miam_miam.admin.producer.edit_producer:
+    pattern:  /producers/{id}/edit
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:editProducer }

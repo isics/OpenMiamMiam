@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Isics\OpenMiamMiamBundle\Entity\Producer
@@ -31,7 +32,7 @@ class Producer
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
+    
     /**
      * @var string $name
      *
@@ -131,6 +132,22 @@ class Producer
      */
     private $branches;
 
+    /**
+     * @var string $image
+     *
+     * @ORM\Column(name="image", type="string", length=128, nullable=true)
+     */
+    private $image;
+    
+    /**
+     * @var UploadedFile string
+     */
+    private $imageFile;
+    
+    /**
+     * @var boolean $deleteImage
+     */
+    private $deleteImage;
 
 
     /**
@@ -142,6 +159,7 @@ class Producer
 
         $this->associations = new ArrayCollection();
         $this->branches     = new ArrayCollection();
+        $this->deleteImage          = false;
     }
 
     public function __toString()
@@ -467,6 +485,77 @@ class Producer
     {
         return $this->associations;
     }
+    
+    /**
+     * Set image
+     *
+     * @param string $image
+     * @return Product
+     */
+    public function setImage($image)
+    {
+    	$this->image = $image;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+    	return $this->image;
+    }
+    
+    /**
+     * Set image file
+     *
+     * @param UploadedFile $imageFile
+     *
+     * @return Producer
+     */
+    public function setImageFile(UploadedFile $imageFile = null)
+    {
+    	$this->imageFile = $imageFile;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get image file
+     *
+     * @return UploadedFile
+     */
+    public function getImageFile()
+    {
+    	return $this->imageFile;
+    }
+    
+    /**
+     * Set deleteImage flag
+     *
+     * @param boolean $deleteImage
+     * @return Producer
+     */
+    public function setDeleteImage($deleteImage)
+    {
+    	$this->deleteImage = (bool)$deleteImage;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get deleteImage flag
+     *
+     * @return boolean
+     */
+    public function getDeleteImage()
+    {
+    	return $this->deleteImage;
+    }
+    
 
     /**
      * Add branch
