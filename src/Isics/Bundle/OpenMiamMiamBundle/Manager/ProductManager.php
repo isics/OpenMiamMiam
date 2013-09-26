@@ -11,11 +11,12 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,9 +30,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProductManager
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var KernelInterface $kernel
@@ -39,23 +40,29 @@ class ProductManager
     protected $kernel;
 
     /**
+     * @var ActivityManager $activityManager
+     */
+    protected $activityManager;
+
+    /**
      * @var array $config
      */
     protected $config;
-
 
 
     /**
      * Constructs object
      *
      * @param array $config
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @param KernelInterface $kernel
+     * @param ActivityManager $activityManager
      */
-    public function __construct(array $config, ObjectManager $objectManager, KernelInterface $kernel)
+    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel, ActivityManager $activityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->kernel = $kernel;
+        $this->activityManager = $activityManager;
 
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
@@ -101,21 +108,40 @@ class ProductManager
      * Saves a product
      *
      * @param Product $product
+     * @param User $user
      */
-    public function save(Product $product)
+    public function save(Product $product, User $user = null)
     {
-        // Save object
-        $this->objectManager->persist($product);
-
-        // Increase producer product reference counter
         $producer = $product->getProducer();
-        $producer->setProductRefCounter($producer->getProductRefCounter()+1);
-        $this->objectManager->persist($producer);
 
-        $this->objectManager->flush();
+        if (null === $product->getId()) {
+            // Increase producer product reference counter
+            $producer->setProductRefCounter($producer->getProductRefCounter()+1);
+            $this->entityManager->persist($producer);
+
+            // Activity transKey
+            $activityTransKey = 'activity_stream.product.created';
+        } else {
+            $activityTransKey = 'activity_stream.product.updated';
+        }
+
+        // Save object
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
 
         // Process image file
         $this->processImageFile($product);
+
+        // Activity
+        $activity = $this->activityManager->createFromEntities(
+            $activityTransKey,
+            array('%name%' => $product->getName()),
+            $product,
+            $producer,
+            $user
+        );
+        $this->entityManager->persist($activity);
+        $this->entityManager->flush();
     }
 
     /**
@@ -125,8 +151,8 @@ class ProductManager
      */
     public function delete(Product $product)
     {
-        $this->objectManager->remove($product);
-        $this->objectManager->flush();
+        $this->entityManager->remove($product);
+        $this->entityManager->flush();
     }
 
     /**
@@ -195,8 +221,8 @@ class ProductManager
 
         $product->setImage(null);
 
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
     }
 
     /**
@@ -223,8 +249,8 @@ class ProductManager
         $product->setImage($filename);
         $product->setImageFile(null);
 
-        $this->objectManager->persist($product);
-        $this->objectManager->flush();
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
     }
 
     /**
@@ -238,9 +264,21 @@ class ProductManager
     public function getProductsToDisplay(Branch $branch, Category $category)
     {
         // TODO stock products to display in a new member of category : $productsToDisplay[branch][category]
-        return $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:Product')->findAllVisibleInBranchAndCategory(
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Product')->findAllVisibleInBranchAndCategory(
             $branch,
             $category
         );
+    }
+
+    /**
+     * Returns activities of a product
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getActivities(Product $product)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($product, $product->getProducer());
     }
 }

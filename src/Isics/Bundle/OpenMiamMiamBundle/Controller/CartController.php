@@ -48,7 +48,7 @@ class CartController extends Controller
     /**
      * Shows cart details (GET)
      *
-     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
      * @param Branch $branch Branch
      *
@@ -68,7 +68,7 @@ class CartController extends Controller
             new CartType(),
             $cart,
             array(
-                'action' => $this->generateUrl('open_miam_miam_cart_update', array('branch_slug' => $branch->getSlug())),
+                'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
                 'method' => 'PUT',
             )
         );
@@ -99,35 +99,33 @@ class CartController extends Controller
     {
         $cart = $this->getCart($branch);
 
-        if ($cart->isClosed()) {
-            return new Response();
-        }
-
-        $branchOccurrenceManager = $this->container->get('open_miam_miam.branch_occurrence_manager');
-
-        $productAvailability = $branchOccurrenceManager->getProductAvailability($branch, $product);
-
         $renderParameters = array(
-            'product'             => $product,
-            'productAvailability' => $productAvailability,
+            'cart'    => $cart,
+            'product' => $product,
         );
 
-        if ($productAvailability->isAvailable()) {
-            $cartItem = $cart->createItem();
-            $cartItem->setProduct($product);
-            $cartItem->setQuantity(1);
+        if (!$cart->isClosed()) {
+            $branchOccurrenceManager = $this->container->get('open_miam_miam.branch_occurrence_manager');
+            $productAvailability     = $branchOccurrenceManager->getProductAvailability($branch, $product);
+            $renderParameters['productAvailability'] = $productAvailability;
 
-            $form = $this->createForm(
-                new CartItemType(),
-                $cartItem,
-                array(
-                    'action'        => $this->generateUrl('open_miam_miam_cart_add', array('branch_slug' => $branch->getSlug())),
-                    'method'        => 'POST',
-                    'submit_button' => true,
-                )
-            );
+            if ($productAvailability->isAvailable()) {
+                $cartItem = $cart->createItem();
+                $cartItem->setProduct($product);
+                $cartItem->setQuantity(1);
 
-            $renderParameters['form'] = $form->createView();
+                $form = $this->createForm(
+                    new CartItemType(),
+                    $cartItem,
+                    array(
+                        'action'        => $this->generateUrl('open_miam_miam.cart.add', array('branchSlug' => $branch->getSlug())),
+                        'method'        => 'POST',
+                        'submit_button' => true,
+                    )
+                );
+
+                $renderParameters['form'] = $form->createView();
+            }
         }
 
         if (null === $view) {
@@ -140,7 +138,7 @@ class CartController extends Controller
     /**
      * Adds a product to cart (POST)
      *
-     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
      * @param Request $request Request
      * @param Branch  $branch  Branch
@@ -167,15 +165,15 @@ class CartController extends Controller
         }
 
         return $this->redirect($this->generateUrl(
-            'open_miam_miam_cart_show',
-            array('branch_slug' => $branch->getSlug())
+            'open_miam_miam.cart.show',
+            array('branchSlug' => $branch->getSlug())
         ));
     }
 
     /**
      * Updates cart (PUT)
      *
-     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branch_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
      * @param Request $request Request
      * @param Branch  $branch  Branch
@@ -188,7 +186,7 @@ class CartController extends Controller
         $updatedCart = clone $cart;
 
         $form = $this->createForm(new CartType(), $updatedCart, array(
-            'action' => $this->generateUrl('open_miam_miam_cart_update', array('branch_slug' => $branch->getSlug())),
+            'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
             'method' => 'PUT',
         ));
 
@@ -198,8 +196,8 @@ class CartController extends Controller
 
             if ($form->get('checkout')->isClicked()) {
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam_sales_order_confirm',
-                    array('branch_slug' => $branch->getSlug())
+                    'open_miam_miam.sales_order.confirm',
+                    array('branchSlug' => $branch->getSlug())
                 ));
             }
 
@@ -209,8 +207,8 @@ class CartController extends Controller
             );
 
             return $this->redirect($this->generateUrl(
-                'open_miam_miam_cart_show',
-                array('branch_slug' => $branch->getSlug())
+                'open_miam_miam.cart.show',
+                array('branchSlug' => $branch->getSlug())
             ));
         }
 

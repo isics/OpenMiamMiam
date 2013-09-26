@@ -1,7 +1,63 @@
-{% extends "IsicsOpenMiamMiamBundle::base.html.twig" %}
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
+
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
 {% block content %}
-    {% block fos_user_content %}
-        {% include "FOSUserBundle:Registration:register_content.html.twig" %}
-    {% endblock fos_user_content %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'register.title'|trans }}</h1>
+                </div>
+                <div class="panel-body">
+                    {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.firstname, {'label': 'register.firstname'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.lastname, {'label': 'register.lastname'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                            </div>
+                        </div>
+                        {{ form_row(form.username, {'label': 'register.username'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                        {{ form_row(form.email, {'label': 'register.email'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.plainPassword.first, {'label': 'register.password'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.plainPassword.second, {'label': 'register.password_confirmation'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                            </div>
+                        </div>
+                        {{ form_row(form.address1, {'label': 'register.address1'|trans, 'label_as_placeholder': true}) }}
+                        {{ form_row(form.address2, {'label': 'register.address2'|trans, 'label_as_placeholder': true}) }}
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form_row(form.zipcode, {'label': 'register.zipcode'|trans, 'label_as_placeholder': true}) }}
+                            </div>
+                            <div class="col-md-8">
+                                {{ form_row(form.city, {'label': 'register.city'|trans, 'label_as_placeholder': true}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="{{ path('open_miam_miam.homepage') }}" class="btn btn-default btn-lg">
+                            {{ 'register.cancel'|trans }}
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                            {{ 'register.submit'|trans }}
+                        </button>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock content %}

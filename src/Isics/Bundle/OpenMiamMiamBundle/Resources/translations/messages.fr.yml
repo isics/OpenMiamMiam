@@ -1,4 +1,5 @@
 # General
+system:               "Le système"
 add:                  "Ajouter"
 bio:                  "Bio"
 branch:               "Comptoir"
@@ -31,8 +32,10 @@ zone.location.title:               "S'y rendre"
 zone.products_of_the_moment.title: "Les produits du moment"
 
 # Cart
-cart.title: "Mon panier"
-cart.empty: "Votre panier est vide."
+cart.title:                 "Mon panier"
+cart.empty:                 "Votre panier est vide."
+cart.order_closed:          "Attendez encore un peu !"
+cart.add_form.order_closed: "Bientôt!"
 
 # Order process
 order.confirm.title:                 "Confirmez votre commande"
@@ -46,13 +49,35 @@ order.confirm.submit:                "Je confirme ma commande"
 order.confirm.consumer_comment:      "N'hésitez pas à nous laisser un commentaire :"
 order.confirm.terms_of_sale_checked: "J'ai lu et je suis en accord avec les conditions générales de vente."
 order.confirmed.title:               "Votre commande a été enregistrée !"
+order.confirmed.body_html:           |
+    <p>Féliciations %firstname% !</p>
+    <p>La commande <strong>%ref%</strong> a bien été enregistrée.</p>
+    <p>Un e-mail récapitulatif vous a été envoyé.</p>
 
 # Login
-login.title: "Identifiez-vous"
+login.title:          "Identifiez-vous"
 login.existing.title: "Déjà client ?"
-login.new.title: "Nouveau client ?"
-login.submit: "S'identifier"
-login.register: "Créer un compte"
+login.new.title:      "Nouveau client ?"
+login.submit:         "S'identifier"
+login.register:       "Créer un compte"
+
+# Register
+register.title:                 "Créez votre compte :"
+register.firstname:             "Prénom"
+register.lastname:              "Nom"
+register.email:                 "Adresse e-mail"
+register.password:              "Mot de passe"
+register.password_confirmation: "Vérification"
+register.address1:              "Adresse"
+register.address2:              "Complément"
+register.zipcode:               "Code postal"
+register.city:                  "Ville"
+register.cancel:                "Annuler"
+register.submit:                "S'inscrire"
+register.confirmed.title:       "Bienvenue %firstname% !"
+register.confirmed.body_html:   |
+    <p>Votre compte a bien été créé.<p>
+register.confirmed.next:        "Continuer"
 
 # Attendance
 attendance.yes:     "Oui"
@@ -69,8 +94,9 @@ availability.producer_absent: "Producteur absent"
 availability.available_at:    "Dispo le %date%"
 
 # Admin common
-admin.save:   "Enregistrer"
-admin.return: "Retourner à la liste"
+admin.save:                  "Enregistrer"
+admin.return:                "Retourner à la liste"
+admin.activity_stream.title: "Flux d'activité"
 
 # Admin login
 admin.login.title:                "Accès gestionnaire"
@@ -168,3 +194,24 @@ admin.producer.calendar.message.updated:    "Le calendrier de présence a été 
 # Messages
 message.cart.added:   "Le produit a été ajouté à votre panier."
 message.cart.updated: "Votre panier a été mis à jour."
+
+# Activités
+activity_stream.product.created: "a créé le produit %name%."
+activity_stream.product.updated: "a mis à jour le produit %name%."
+
+# Erreurs
+error.invalid:  "Cette valeur n'est pas valide"
+error.required: "Cette valeur est requise"
+
+error.sales_order.not_enough_stock: "Pas assez de stock"
+error.sales_order.ref_not_unique:   "La référence doit être unique"
+
+error.calendar.invalid_branch_occurrence:   "Comptoir invalide"
+error.calendar.invalid_producer_attendance: "Présence invalide"
+
+error.product.invalid_branches:    "Au moins un comptoir est invalide"
+error_product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
+
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
+error.cart.product_unavailable:           "Produit indisponible"
+error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"

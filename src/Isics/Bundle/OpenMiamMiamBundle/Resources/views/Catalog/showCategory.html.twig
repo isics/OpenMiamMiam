@@ -10,25 +10,40 @@
 
     {% block content %}
         <ol class="breadcrumb">
-            <li><a href="{{ path('open_miam_miam_branch_homepage', {'branch_slug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
+            <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
             <li class="active">{{ category.name }}</li>
         </ol>
 
-        <h1>{{ category.name }}</h1>
+        <h1 class="category category-{{ category.id }}">{{ category.name }}</h1>
+
+        {% set showNoPriceStatement = false %}
 
         {% set products = get_products_to_display(branch, category) %}
         {% if products|length > 0 %}
-            {% include 'IsicsOpenMiamMiamBundle:Catalog:showProducts.html.twig' with {'branch': branch, 'products': products} %}
+            {% include 'IsicsOpenMiamMiamBundle:Catalog:products.html.twig' %}
+        {% else %}
+            <div class="panel-group" id="categories-accordion">
+                {% for subCategory in category.children %}
+                    {% set products = get_products_to_display(branch, subCategory) %}
+                    {% if products|length > 0 %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#categories-accordion" href="#collapse{{ subCategory.id }}">
+                                        {{ subCategory.name }}
+                                    </a>
+                                </h2>
+                            </div>
+                            <div id="collapse{{ subCategory.id }}" class="panel-collapse collapse{% if firstPanel is not defined %} in{% set firstPanel = 1 %}{% endif %}">
+                                {% include 'IsicsOpenMiamMiamBundle:Catalog:products.html.twig' %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endif %}
 
-        {% for subCategory in category.children %}
-            {% set products = get_products_to_display(branch, subCategory) %}
-            {% if products|length > 0 %}
-                <h2>{{ subCategory.name }}</h2>
-
-                {% include 'IsicsOpenMiamMiamBundle:Catalog:showProducts.html.twig' with {'branch': branch, 'products': products} %}
-            {% endif %}
-        {% endfor %}
+        {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
 
     {% endblock %}
 {% endembed %}

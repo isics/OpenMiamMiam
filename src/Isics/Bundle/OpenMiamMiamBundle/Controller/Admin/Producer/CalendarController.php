@@ -26,7 +26,7 @@ class CalendarController extends BaseController
      *
      * @return Response
      */
-    public function indexAction(Request $request, Producer $producer)
+    public function editAction(Request $request, Producer $producer)
     {
         $this->secure($producer);
 
@@ -36,7 +36,7 @@ class CalendarController extends BaseController
             $attendancesManager->getNextAttendancesOf($producer),
             array(
                 'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.calendar',
+                    'open_miam_miam.admin.producer.calendar.edit',
                     array('id' => $producer->getId())
                 ),
                 'method' => 'POST'
@@ -50,7 +50,7 @@ class CalendarController extends BaseController
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.calendar.message.updated');
 
-                return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.calendar', array('id' => $producer->getId())));
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.calendar.edit', array('id' => $producer->getId())));
             }
         }
 

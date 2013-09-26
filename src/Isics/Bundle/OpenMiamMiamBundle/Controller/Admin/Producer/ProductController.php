@@ -58,12 +58,12 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager->save($product);
+                $productManager->save($product, $this->get('security.context')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.created');
 
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.producer.edit_product',
+                    'open_miam_miam.admin.producer.product.edit',
                     array('id' => $producer->getId(), 'productId' => $product->getId())
                 ));
             }
@@ -90,17 +90,18 @@ class ProductController extends BaseController
     {
         $this->secure($producer);
 
+        $productManager = $this->get('open_miam_miam.product_manager');
+
         $form = $this->getForm($product);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager = $this->get('open_miam_miam.product_manager');
-                $productManager->save($product);
+                $productManager->save($product, $this->get('security.context')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.updated');
 
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.producer.edit_product',
+                    'open_miam_miam.admin.producer.product.edit',
                     array('id' => $producer->getId(), 'productId' => $product->getId())
                 ));
             }
@@ -108,7 +109,8 @@ class ProductController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\Product:edit.html.twig', array(
             'producer' => $producer,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'activities' => $productManager->getActivities($product)
         ));
     }
 
@@ -123,12 +125,12 @@ class ProductController extends BaseController
     {
         if (null === $product->getId()) {
             $action = $this->generateUrl(
-                'open_miam_miam.admin.producer.create_product',
+                'open_miam_miam.admin.producer.product.create',
                 array('id' => $product->getProducer()->getId())
             );
         } else {
             $action = $this->generateUrl(
-                'open_miam_miam.admin.producer.edit_product',
+                'open_miam_miam.admin.producer.product.edit',
                 array('id' => $product->getProducer()->getId(), 'productId' => $product->getId())
             );
         }
@@ -160,7 +162,7 @@ class ProductController extends BaseController
         $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.deleted');
 
         return $this->redirect($this->generateUrl(
-            'open_miam_miam.admin.producer.list_products',
+            'open_miam_miam.admin.producer.product.list',
             array('id' => $producer->getId())
         ));
     }

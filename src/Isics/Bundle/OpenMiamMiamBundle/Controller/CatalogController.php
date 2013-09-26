@@ -41,8 +41,8 @@ class CatalogController extends Controller
     /**
      * Shows a category with its products
      *
-     * @ParamConverter("branch",   class="IsicsOpenMiamMiamBundle:Branch",   options={"mapping": {"branch_slug":   "slug"}})
-     * @ParamConverter("category", class="IsicsOpenMiamMiamBundle:Category", options={"mapping": {"category_slug": "slug"}})
+     * @ParamConverter("branch",   class="IsicsOpenMiamMiamBundle:Branch",   options={"mapping": {"branchSlug":   "slug"}})
+     * @ParamConverter("category", class="IsicsOpenMiamMiamBundle:Category", options={"mapping": {"categorySlug": "slug"}})
      *
      * @param Branch   $branch
      * @param Category $category
@@ -66,30 +66,39 @@ class CatalogController extends Controller
     /**
      * Shows product details
      *
-     * @ParamConverter("branch",   class="IsicsOpenMiamMiamBundle:Branch",   options={"mapping": {"branch_slug":   "slug"}})
-     * @ParamConverter("category", class="IsicsOpenMiamMiamBundle:Category", options={"mapping": {"category_slug": "slug"}})
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
-     * @param Branch   $branch
-     * @param Category $category
-     * @param string   $product_slug
+     * @param Branch  $branch      Branch
+     * @param string  $productSlug Product slug
+     * @param integer $productId   Product id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showProductAction(Branch $branch, Category $category, $product_slug)
+    public function showProductAction(Branch $branch, $productSlug, $productId)
     {
         $product = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Product')
-            ->findOneBySlugAndVisibleInBranch($product_slug, $branch);
+            ->findOneByIdAndVisibleInBranch($productId, $branch);
 
-        if (null === $product || $category !== $product->getCategory()) {
+        if (null === $product) {
             throw new NotFoundHttpException('Product not found');
         }
 
+        if ($product->getSlug() !== $productSlug) {
+            return $this->redirect($this->generateUrl(
+                'open_miam_miam.catalog.product',
+                array(
+                    'branchSlug'  => $branch->getSlug(),
+                    'productSlug' => $product->getSlug(),
+                    'productId'   => $productId,
+                )
+            ), 301);
+        }
+
         return $this->render('IsicsOpenMiamMiamBundle:Catalog:showProduct.html.twig', array(
-            'branch'   => $branch,
-            'category' => $category,
-            'product'  => $product,
+            'branch'  => $branch,
+            'product' => $product,
         ));
     }
 

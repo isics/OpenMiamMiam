@@ -15,14 +15,19 @@
                 {{ nextBranchOccurrence.end|format_time('HH:mm') }}
             </span>
         </div>
-
-        <div id="header-branch-occurrence-order-period">
-            {% if openingDateTime is not null %}
-                {{ 'zone.occurrence.order.from'|trans }} {{ openingDateTime|format_datetime }}
-            {% elseif closingDateTime is not null %}
-                {{ 'zone.occurrence.order.before'|trans }} {{ closingDateTime|format_datetime('dd/MM HH:mm') }}
-            {% endif %}
-        </div>
+        {% if openingDateTime is not null %}
+            <div id="header-branch-occurrence-order-from">
+                <span class="glyphicon glyphicon-time"></span>
+                {{ 'zone.occurrence.order.from'|trans }}
+                {{ openingDateTime|format_datetime('dd/MM') }}&nbsp;{{ openingDateTime|format_datetime('HH:mm') }}
+            </div>
+        {% elseif closingDateTime is not null %}
+            <div id="header-branch-occurrence-order-before">
+                <span class="glyphicon glyphicon-time"></span>
+                {{ 'zone.occurrence.order.before'|trans }}
+                {{ closingDateTime|format_datetime('dd/MM') }}&nbsp;{{ closingDateTime|format_datetime('HH:mm') }}
+            </div>
+        {% endif %}
     {% else %}
         {{ 'zone.occurrence.no.next.date'|trans }}
     {% endif %}
@@ -32,18 +37,22 @@
     {% if not cart.isClosed %}
         {% if cart.nbItems > 0 %}
             <strong>
-                <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}">
-                    {{ 'cart.title'|trans }}
+                {{ 'cart.title'|trans }}
+                <a href="{{ path('open_miam_miam.cart.show', {'branchSlug': branch.slug}) }}">
                     ({{ cart.nbItems }}</span>)
                     {{ cart.total|number_format_currency(open_miam_miam.currency) }}
                 </a>
             </strong>
-            <a href="{{ path('open_miam_miam_cart_show', {'branch_slug': branch.slug}) }}" class="btn btn-primary btn-block">
+            <a href="{{ path('open_miam_miam.cart.show', {'branchSlug': branch.slug}) }}" class="btn btn-primary btn-block">
                 <span class="glyphicon glyphicon-shopping-cart"></span>
                 {{ 'checkout'|trans }}
             </a>
         {% else %}
-            <strong>{{ 'cart.title'|trans }}</strong>
+            <strong>{{ 'cart.title'|trans }} (0)</strong>
+            {{ 'cart.empty'|trans }}
         {% endif %}
+    {% else %}
+        <strong>{{ 'cart.title'|trans }}</strong>
+        {{ 'cart.order_closed'|trans }}
     {% endif %}
 </div>

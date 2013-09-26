@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerAttendances;
@@ -29,19 +29,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProducerAttendancesManager
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * Constructs object
      *
      * @param array $config
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(array $config, ObjectManager $objectManager)
+    public function __construct(array $config, EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
 
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
@@ -71,7 +71,7 @@ class ProducerAttendancesManager
         }
 
         if ($flush) {
-            $this->objectManager->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -88,7 +88,7 @@ class ProducerAttendancesManager
         }
 
         if ($flush) {
-            $this->objectManager->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -104,7 +104,7 @@ class ProducerAttendancesManager
 
         if ($branchOccurrenceAttendance->getAttendance() == ProducerBranchOccurrenceAttendance::ATTENDANCE_UNKNOWN) {
             if (null !== $producerAttendance) {
-                $this->objectManager->remove($producerAttendance);
+                $this->entityManager->remove($producerAttendance);
             }
         } else {
             if (null === $producerAttendance) {
@@ -114,11 +114,11 @@ class ProducerAttendancesManager
             }
             $producerAttendance->setIsAttendee($branchOccurrenceAttendance->getAttendance() == ProducerBranchOccurrenceAttendance::ATTENDANCE_YES);
 
-            $this->objectManager->persist($producerAttendance);
+            $this->entityManager->persist($producerAttendance);
         }
 
         if ($flush) {
-            $this->objectManager->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -131,8 +131,8 @@ class ProducerAttendancesManager
      */
     public function getNextAttendancesOf(Producer $producer)
     {
-        $branchOccurrenceRepository = $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
-        $producerAttendanceRepository = $this->objectManager->getRepository('IsicsOpenMiamMiamBundle:ProducerAttendance');
+        $branchOccurrenceRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
+        $producerAttendanceRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:ProducerAttendance');
 
         $attendances = new ProducerAttendances($producer);
         foreach ($producer->getBranches() as $branch) {

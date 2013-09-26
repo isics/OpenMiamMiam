@@ -58,7 +58,7 @@ class SalesOrderController extends BaseController
             new ProducerSalesOrder($producer, $order),
             array(
                 'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.edit_sales_order',
+                    'open_miam_miam.admin.producer.sales_order.edit',
                     array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
                 ),
                 'method' => 'POST'
@@ -73,7 +73,7 @@ class SalesOrderController extends BaseController
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
 
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.producer.list_sales_orders',
+                    'open_miam_miam.admin.producer.sales_orders.list',
                     array('id' => $producer->getId())
                 ));
             }

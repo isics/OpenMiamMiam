@@ -45,25 +45,25 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Finds a product visible in a branch by its slug
+     * Finds a product visible in a branch by its id
      *
-     * @param string   $slug     Slug
-     * @param Branch   $branch   Branch
+     * @param integer $id     id
+     * @param Branch  $branch Branch
      *
      * @return Product|null
      */
-    public function findOneBySlugAndVisibleInBranch($slug, Branch $branch)
+    public function findOneByIdAndVisibleInBranch($id, Branch $branch)
     {
         try {
             return $this->createQueryBuilder('p')
                 ->addSelect('pr')
                 ->innerJoin('p.branches', 'b')
                 ->innerJoin('p.producer', 'pr')
-                ->where('p.slug = :slug')
+                ->where('p.id = :id')
                 ->andwhere('p.availability != :availability')
                 ->andWhere('b = :branch')
                 ->addOrderBy('p.name')
-                ->setParameter('slug', $slug)
+                ->setParameter('id', $id)
                 ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
                 ->setParameter('branch', $branch)
                 ->getQuery()

@@ -52,7 +52,7 @@ class CategoryRepository extends NestedTreeRepository
     public function hasProductAvailableInBranch(Branch $branch, Category $category)
     {
         $result = $this->createQueryBuilder('c')
-                ->addSelect('COUNT(c.id) AS counter')
+                ->select('COUNT(c.id) AS counter')
                 ->add('from', 'IsicsOpenMiamMiamBundle:Category c, IsicsOpenMiamMiamBundle:Product p')
                 ->innerJoin('p.category', 'pc')
                 ->innerJoin('p.branches', 'b')
@@ -61,7 +61,6 @@ class CategoryRepository extends NestedTreeRepository
                 ->andWhere('b = :branch')
                 ->andWhere('pc.lft >= c.lft')
                 ->andWhere('pc.rgt <= c.rgt')
-                ->groupBy('c.id')
                 ->setParameter('categoryId', $category->getId())
                 ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
                 ->setParameter('branch', $branch)

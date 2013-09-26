@@ -11,25 +11,25 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ProducerBranchOccurrenceAttendanceValidator extends ConstraintValidator
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * Constructs validator
      *
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -42,11 +42,11 @@ class ProducerBranchOccurrenceAttendanceValidator extends ConstraintValidator
     {
         // Validate branchOccurrence
         if (!in_array($attendance->getBranchOccurrence()->getBranch(), $attendance->getProducer()->getBranches()->toArray())) {
-            $this->context->addViolationAt('brancheOccurrence', $constraint->invalidBranchOccurrenceMessage, array(), null);
+            $this->context->addViolationAt('brancheOccurrence', 'error.calendar.invalid_branch_occurrence');
         }
 
         // Validate ProducerAttendance
-        $producerAttendance = $this->objectManager
+        $producerAttendance = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:ProducerAttendance')
                 ->findOneBy(array(
                     'producer' => $attendance->getProducer(),
@@ -54,7 +54,7 @@ class ProducerBranchOccurrenceAttendanceValidator extends ConstraintValidator
                 ));
 
         if ($producerAttendance != $attendance->getProducerAttendance()) {
-            $this->context->addViolationAt('brancheOccurrence', $constraint->invalidProducerAttendanceMessage, array(), null);
+            $this->context->addViolationAt('brancheOccurrence', 'error.calendar.invalid_producer_attendance');
         }
     }
 }

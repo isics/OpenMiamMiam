@@ -1,4 +1,4 @@
-{% extends "IsicsOpenMiamMiamBundle::base.html.twig" %}
+{% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
 {% block content %}
     <h1>{% trans %}login.title{% endtrans %}</h1>
@@ -14,9 +14,9 @@
             <form action="{{ path("fos_user_security_check") }}" method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-                <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control" placeholder="{% trans %}admin.login.email.placeholder{% endtrans %}" />
+                <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control input-lg" placeholder="{% trans %}admin.login.email.placeholder{% endtrans %}" />
 
-                <input type="password" id="password" name="_password" required="required" class="form-control" placeholder="{% trans %}admin.login.password.placeholder{% endtrans %}" />
+                <input type="password" id="password" name="_password" required="required" class="form-control input-lg" placeholder="{% trans %}admin.login.password.placeholder{% endtrans %}" />
 
                 <label for="remember_me">
                     <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
