@@ -11,13 +11,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -30,9 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProducerManager
 {
     /**
-     * @var ObjectManager $objectManager
+     * @var EntityManager $entityManager
      */
-    protected $objectManager;
+    protected $entityManager;
 
     /**
      * @var KernelInterface $kernel
@@ -50,12 +47,12 @@ class ProducerManager
      * Constructs object
      *
      * @param array $config
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @param KernelInterface $kernel
      */
-    public function __construct(array $config, ObjectManager $objectManager, KernelInterface $kernel)
+    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->kernel = $kernel;
 
         $resolver = new OptionsResolver();
@@ -70,25 +67,23 @@ class ProducerManager
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('nb_next_producer_attendances_to_define','upload_path'));
+        $resolver->setRequired(array('nb_next_producer_attendances_to_define', 'upload_path'));
     }
-    
+
     /**
-     * Saves a product
+     * Saves a producer
      *
      * @param Producer $producer
      */
     public function save(Producer $producer)
     {
-    	// Save object
-    	$this->objectManager->persist($producer);
-    	$this->objectManager->flush();
-    
-    	// Process image file
-    	$this->processImageFile($producer);
+        // Save object
+        $this->entityManager->persist($producer);
+        $this->entityManager->flush();
+
+        // Process image file
+        $this->processImageFile($producer);
     }
-
-
 
     /**
      * Returns image path
@@ -109,19 +104,11 @@ class ProducerManager
     /**
      * Returns upload directory
      *
-     * @param Producer $producer
-     *
-     * @throws \DomainException
-     *
      * @return string
      */
-    public function getUploadDir(Producer $producer)
+    public function getUploadDir()
     {
-        if (!$producer instanceof Producer) {
-            throw new \DomainException();
-        }
-
-        return $this->config['upload_path'].'/'.$producer->getId();
+        return $this->config['upload_path'];
     }
 
     /**
@@ -155,8 +142,8 @@ class ProducerManager
 
         $producer->setImage(null);
 
-        $this->objectManager->persist($producer);
-        $this->objectManager->flush();
+        $this->entityManager->persist($producer);
+        $this->entityManager->flush();
     }
 
     /**
@@ -183,9 +170,7 @@ class ProducerManager
         $producer->setImage($filename);
         $producer->setImageFile(null);
 
-        $this->objectManager->persist($producer);
-        $this->objectManager->flush();
+        $this->entityManager->persist($producer);
+        $this->entityManager->flush();
     }
-
-   
 }

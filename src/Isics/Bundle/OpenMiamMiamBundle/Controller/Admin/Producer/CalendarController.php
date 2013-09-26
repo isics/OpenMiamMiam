@@ -32,7 +32,7 @@ class CalendarController extends BaseController
 
         $attendancesManager = $this->get('open_miam_miam.producer_attendances_manager');
         $form = $this->createForm(
-            new ProducerAttendancesType(),
+            $this->get('open_miam_miam.form.type.producer_attendances'),
             $attendancesManager->getNextAttendancesOf($producer),
             array(
                 'action' => $this->generateUrl(

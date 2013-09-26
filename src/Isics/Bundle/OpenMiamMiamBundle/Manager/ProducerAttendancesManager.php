@@ -55,7 +55,7 @@ class ProducerAttendancesManager
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('nb_next_producer_attendances_to_define'));
+        $resolver->setRequired(array('nb_next_producer_attendances_to_define', 'upload_path'));
     }
 
     /**

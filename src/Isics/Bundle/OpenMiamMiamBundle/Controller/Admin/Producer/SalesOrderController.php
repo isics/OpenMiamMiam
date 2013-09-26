@@ -54,7 +54,7 @@ class SalesOrderController extends BaseController
         $this->secure($producer);
 
         $form = $this->createForm(
-            new ProducerSalesOrderType(),
+            $this->get('open_miam_miam.form.type.sales_order'),
             new ProducerSalesOrder($producer, $order),
             array(
                 'action' => $this->generateUrl(

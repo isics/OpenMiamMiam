@@ -149,7 +149,7 @@ class Builder
         ));
         $menu[$menuName]->addChild('Producer infos', array(
             'uri'             => '#',
-            'route'           => 'open_miam_miam.admin.producer.edit_producer',
+            'route'           => 'open_miam_miam.admin.producer.edit',
             'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.producer.menu.producer_infos')),
         ));

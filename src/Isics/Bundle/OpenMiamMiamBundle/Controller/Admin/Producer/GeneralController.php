@@ -15,7 +15,6 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\HttpFoundation\Request;
 use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class GeneralController extends BaseController
 {
@@ -42,57 +41,44 @@ class GeneralController extends BaseController
             'nbSalesOrderToPrepare' => $salesOrders->countSalesOrders()
         ));
     }
-    
+
     /**
-     * 
+     * Edits producer informations
+     *
      * @param Request $request
      * @param Producer $producer
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function editProducerAction(Request $request, Producer $producer)
-    {
-    	
-    	$this->secure($producer);
-    	
-    	$producerManager = $this->get('open_miam_miam.producer_manager');
-    	$form = $this->getForm($producer);
-
-    	if ($request->isMethod('POST')) {
-
-    		$form->handleRequest($request);
-    		if ($form->isValid()) {
-
-    			$producerManager->save($producer);
-
-    			return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.edit_producer', array(
-    					'id' => $producer->getId()
-    			)));
-    		}
-    	}
-    	
-    	return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:editProducer.html.twig',array( 'form' => $form->createView(), 'producer' => $producer)); 
-    	
-    }
-    
-    /**
-     * Return product form
      *
-     * @param Producer $producer
-     *
-     * @return \Symfony\Component\Form\Form
+     * @return Response
      */
-    protected function getForm(Producer $producer)
+    public function editAction(Request $request, Producer $producer)
     {
-    	$action = $this->generateUrl(
-    			'open_miam_miam.admin.producer.edit_producer',
-    			array('id' => $producer->getId())
-    	);
+        $this->secure($producer);
 
-    
-    	return $this->createForm(
-    			$this->get('open_miam_miam.form.type.producer'),
-    			$producer,
-    			array('action' => $action, 'method' => 'POST')
-    	);
+        // @todo Replace all new types by a call to service
+        $producerManager = $this->get('open_miam_miam.producer_manager');
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.producer'),
+            $producer,
+            array(
+                'action' => $this->generateUrl('open_miam_miam.admin.producer.edit', array('id' => $producer->getId())),
+                'method' => 'POST'
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $producerManager->save($producer);
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.infos.message.updated');
+
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.edit', array('id' => $producer->getId())));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:edit.html.twig', array(
+            'form' => $form->createView(),
+            'producer' => $producer
+        ));
     }
 }

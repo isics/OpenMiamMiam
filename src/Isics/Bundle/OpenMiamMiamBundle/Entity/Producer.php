@@ -32,7 +32,7 @@ class Producer
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-    
+
     /**
      * @var string $name
      *
@@ -138,12 +138,12 @@ class Producer
      * @ORM\Column(name="image", type="string", length=128, nullable=true)
      */
     private $image;
-    
+
     /**
      * @var UploadedFile string
      */
     private $imageFile;
-    
+
     /**
      * @var boolean $deleteImage
      */
@@ -159,7 +159,7 @@ class Producer
 
         $this->associations = new ArrayCollection();
         $this->branches     = new ArrayCollection();
-        $this->deleteImage          = false;
+        $this->deleteImage  = false;
     }
 
     public function __toString()
@@ -485,7 +485,7 @@ class Producer
     {
         return $this->associations;
     }
-    
+
     /**
      * Set image
      *
@@ -494,11 +494,11 @@ class Producer
      */
     public function setImage($image)
     {
-    	$this->image = $image;
-    
-    	return $this;
+        $this->image = $image;
+
+        return $this;
     }
-    
+
     /**
      * Get image
      *
@@ -506,9 +506,9 @@ class Producer
      */
     public function getImage()
     {
-    	return $this->image;
+        return $this->image;
     }
-    
+
     /**
      * Set image file
      *
@@ -518,11 +518,11 @@ class Producer
      */
     public function setImageFile(UploadedFile $imageFile = null)
     {
-    	$this->imageFile = $imageFile;
-    
-    	return $this;
+        $this->imageFile = $imageFile;
+
+        return $this;
     }
-    
+
     /**
      * Get image file
      *
@@ -530,9 +530,9 @@ class Producer
      */
     public function getImageFile()
     {
-    	return $this->imageFile;
+        return $this->imageFile;
     }
-    
+
     /**
      * Set deleteImage flag
      *
@@ -541,11 +541,11 @@ class Producer
      */
     public function setDeleteImage($deleteImage)
     {
-    	$this->deleteImage = (bool)$deleteImage;
-    
-    	return $this;
+        $this->deleteImage = (bool)$deleteImage;
+
+        return $this;
     }
-    
+
     /**
      * Get deleteImage flag
      *
@@ -553,9 +553,8 @@ class Producer
      */
     public function getDeleteImage()
     {
-    	return $this->deleteImage;
+        return $this->deleteImage;
     }
-    
 
     /**
      * Add branch

@@ -26,9 +26,11 @@ parameters:
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
-    open_miam_miam.form.type.hidden_product.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
-    open_miam_miam.form.type.product.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
-    open_miam_miam.form.type.producer.class:       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerType'
+    open_miam_miam.form.type.hidden_product.class:       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
+    open_miam_miam.form.type.product.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
+    open_miam_miam.form.type.producer.class:             'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerType'
+    open_miam_miam.form.type.producer_attendances.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerAttendancesType'
+    open_miam_miam.form.type.sales_order.class:          'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\SalesOrderType'
 
 services:
     # Validators
@@ -74,12 +76,22 @@ services:
         arguments: [%open_miam_miam.buying_units%]
         tags:
             - { name: form.type, alias: open_miam_miam_admin_product }
-            
+
     open_miam_miam.form.type.producer:
         class:     %open_miam_miam.form.type.producer.class%
         arguments: [%open_miam_miam.entity_manager]
         tags:
             - { name: form.type, alias: open_miam_miam_admin_producer }
+
+    open_miam_miam.form.type.producer_attendances:
+        class:     %open_miam_miam.form.type.producer_attendances.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_admin_producer_attendances }
+
+    open_miam_miam.form.type.sales_order:
+        class:     %open_miam_miam.form.type.sales_order.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_admin_sales }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -130,7 +142,7 @@ services:
     open_miam_miam.product_manager:
         class: %open_miam_miam.product_manager.class%
         arguments: [%open_miam_miam.product%, @doctrine.orm.entity_manager, @kernel]
-        
+
     open_miam_miam.producer_manager:
         class: %open_miam_miam.producer_manager.class%
         arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel]
