@@ -15,6 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,20 +97,22 @@ class SalesOrderController extends BaseController
     /**
      * Update a sales order
      *
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      * @ParamConverter("row", class="IsicsOpenMiamMiamBundle:SalesOrderRow", options={"mapping": {"salesOrderRowId": "id"}})
      *
      * @param Producer $producer
+     * @param SalesOrder $order
      * @param SalesOrderRow $row
      *
-     * @throws NotFoundHttpException
+     * @throws
      *
      * @return Response
      */
-    public function deleteSalesOrderRowAction(Producer $producer, SalesOrderRow $row)
+    public function deleteSalesOrderRowAction(Producer $producer, SalesOrder $order, SalesOrderRow $row)
     {
         $this->secure($producer);
 
-        if ($row->getProducer()->getId() !== $producer->getId()) {
+        if ($row->getProducer()->getId() !== $producer->getId() || $order->getId() !== $row->getSalesOrder()->getId()) {
             throw new $this->createNotFoundException();
         }
 
@@ -120,9 +123,73 @@ class SalesOrderController extends BaseController
             $this->get('security.context')->getToken()->getUser()
         );
 
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
+
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.producer.sales_order.edit',
             array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+        ));
+    }
+
+    /**
+     * Add rows for a sales order
+     *
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
+     *
+     * @param Request $request
+     * @param Producer $producer
+     * @param SalesOrder $order
+     *
+     * @return Response
+     */
+    public function addSalesOrderRowsAction(Request $request, Producer $producer, SalesOrder $order)
+    {
+        $this->secure($producer);
+
+        $artificialProduct = new ArtificialProduct();
+        $artificialProduct->setName($this->get('translator')->trans('artificial_product'));
+        $artificialProduct->setProducer($producer);
+
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.add_rows_sales_order'),
+            array('artificialProduct' => $artificialProduct),
+            array(
+                'salesOrder' => $order,
+                'producer' => $producer,
+                'action' => $this->generateUrl(
+                    'open_miam_miam.admin.producer.sales_order.add_rows',
+                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                ),
+                'method' => 'POST'
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
+
+                $data = $form->getData();
+                $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
+                $salesOrderManager->save(
+                    $order,
+                    $producer,
+                    $this->get('security.context')->getToken()->getUser()
+                );
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.producer.sales_order.edit',
+                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addSalesOrderRows.html.twig', array(
+            'producer' => $producer,
+            'salesOrder' => $order,
+            'form' => $form->createView()
         ));
     }
 }

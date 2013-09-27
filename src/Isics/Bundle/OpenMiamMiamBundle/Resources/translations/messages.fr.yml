@@ -19,6 +19,7 @@ withdrawing_products: "Retrait des produits"
 number:               "n°"
 no_price_statement:   "Le prix sera défini lors de la préparation de la commande."
 my_account:           "Mon compte"
+artificial_product:   "Produit divers"
 
 # Zones
 zone.header.branch.change:         "changer de comptoir"
@@ -146,14 +147,18 @@ admin.producer.sales_orders.form.edit_title:                 "Commande %ref%"
 admin.producer.sales_orders.form.consumer:                   "Consommateur"
 admin.producer.sales_orders.form.withdrawal_title:           "Retrait des produits"
 admin.producer.sales_orders.form.total:                      "Total"
+admin.producer.sales_orders.form.sales_order_rows.no:        "Il n'y a pas de ligne de commande pour cette commande"
 admin.producer.sales_orders.form.sales_order_row.ref:        "Réf"
 admin.producer.sales_orders.form.sales_order_row.product:    "Produit"
 admin.producer.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
 admin.producer.sales_orders.form.sales_order_row.quantity:   "Quantité"
 admin.producer.sales_orders.form.sales_order_row.total:      "Total"
 admin.producer.sales_orders.form.sales_order_row.delete:     "Supprimer la ligne de commande"
-admin.producer.sales_orders.form.no_sales_order_rows:        "Il n'y a pas de ligne de commande pour cette commande"
-
+admin.producer.sales_orders.form.sales_order_row.create:     "Ajouter des produits"
+admin.producer.sales_orders.form.add_rows.title:             "Ajouter des produits à la commande %ref%"
+admin.producer.sales_orders.form.add_rows.name:              "Nom"
+admin.producer.sales_orders.form.add_rows.price:             "Prix"
+admin.producer.sales_orders.form.add_rows.return:            "Retour à la commande"
 
 admin.producer.sales_orders.message.updated: "La commande a bien été mise à jour"
 
@@ -227,6 +232,9 @@ activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %
 activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)"
 activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)"
 activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%"
+activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à la commande %order_ref%"
+
+
 
 # Erreurs
 error.invalid:  "Cette valeur n'est pas valide"
@@ -244,6 +252,8 @@ error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas con
 error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
 error.cart.product_unavailable:           "Produit indisponible"
 error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"
+
+error.artificial_product.invalid: "Les deux champs doivent être renseignés"
 
 # Dialogue de suppression
 admin.delete_dialog.title:   "Attention !"

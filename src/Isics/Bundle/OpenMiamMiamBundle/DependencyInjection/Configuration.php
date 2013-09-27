@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('order')
                     ->addDefaultsIfNotSet()
                     ->children()
+                        ->scalarNode('artificial_product_ref')->defaultValue('MISC')->end()
                         ->scalarNode('ref_prefix')->defaultValue('OR')->end()
                         ->integerNode('ref_pad_length')->defaultValue(6)->end()
                     ->end()

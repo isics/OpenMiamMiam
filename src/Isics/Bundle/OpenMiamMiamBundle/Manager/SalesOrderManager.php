@@ -16,6 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation;
@@ -69,7 +70,7 @@ class SalesOrderManager
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('ref_prefix', 'ref_pad_length'));
+        $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'artificial_product_ref'));
     }
 
     /**
@@ -179,6 +180,18 @@ class SalesOrderManager
             $unitOfWork = $this->entityManager->getUnitOfWork();
             $unitOfWork->computeChangeSets();
             foreach ($order->getSalesOrderRows() as $row) {
+                if (null === $row->getId()) {
+                    $activitiesStack[] = array(
+                        'transKey' => 'activity_stream.sales_order.row.added',
+                        'transParams' => array(
+                            '%order_ref%' => $order->getRef(),
+                            '%ref%' => $row->getRef(),
+                            '%name%' => $row->getName()
+                        )
+                    );
+                    continue;
+                }
+
                 $changeSet = $unitOfWork->getEntityChangeSet($row);
                 if (!empty($changeSet)) {
                     $transKey = null;
@@ -282,5 +295,51 @@ class SalesOrderManager
         );
         $this->entityManager->persist($activity);
         $this->entityManager->flush();
+    }
+
+    /**
+     * Adds rows
+     *
+     * @param SalesOrder $order
+     * @param array $products
+     * @param ArtificialProduct $artificialProduct
+     */
+    public function addRows(SalesOrder $order, array $products, ArtificialProduct $artificialProduct)
+    {
+        if (null !== $artificialProduct->getName() && null !== $artificialProduct->getPrice()) {
+            $salesOrderRow = new SalesOrderRow();
+            $salesOrderRow->setProducer($artificialProduct->getProducer());
+            $salesOrderRow->setName($artificialProduct->getName());
+            $salesOrderRow->setRef($this->config['artificial_product_ref']);
+            $salesOrderRow->setIsBio(false);
+
+            $salesOrderRow->setUnitPrice($artificialProduct->getPrice());
+            $salesOrderRow->setQuantity(1);
+
+            $order->addSalesOrderRow($salesOrderRow);
+        }
+
+        foreach ($products as $product) {
+            $hasRow = false;
+            foreach ($order->getSalesOrderRows() as $row) {
+                if (null !== $row->getProduct() && $row->getProduct()->getId() == $product->getId()) {
+                    $row->setQuantity($row->getQuantity()+1);
+                    $hasRow = true;
+                }
+            }
+
+            if (!$hasRow) {
+                $salesOrderRow = new SalesOrderRow();
+                $salesOrderRow->setProduct($product);
+                $salesOrderRow->setProducer($product->getProducer());
+                $salesOrderRow->setName($product->getName());
+                $salesOrderRow->setRef($product->getRef());
+                $salesOrderRow->setIsBio($product->getIsBio());
+                $salesOrderRow->setUnitPrice($product->getPrice());
+                $salesOrderRow->setQuantity(1);
+
+                $order->addSalesOrderRow($salesOrderRow);
+            }
+        }
     }
 }

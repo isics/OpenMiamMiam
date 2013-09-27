@@ -43,7 +43,7 @@ open_miam_miam.admin.producer.calendar.edit:
     pattern:  /producers/{id}/calendar
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Calendar:edit }
 
-open_miam_miam.admin.producer.sales_orders.list:
+open_miam_miam.admin.producer.sales_order.list:
     pattern:  /producers/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list }
 
@@ -51,6 +51,11 @@ open_miam_miam.admin.producer.sales_order.edit:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
 
+open_miam_miam.admin.producer.sales_order.add_rows:
+    pattern:  /producers/{id}/sales_orders/{salesOrderId}/rows/add
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addSalesOrderRows }
+
 open_miam_miam.admin.producer.sales_order.delete_row:
-    pattern:  /producers/{id}/sales_orders/rows/{salesOrderRowId}/delete
+    pattern:  /producers/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:deleteSalesOrderRow }
+

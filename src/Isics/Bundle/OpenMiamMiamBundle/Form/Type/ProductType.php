@@ -11,7 +11,6 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

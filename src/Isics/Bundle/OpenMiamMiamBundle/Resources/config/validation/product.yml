@@ -1,3 +1,9 @@
+Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct:
+    properties:
+        price:
+            - Range:
+                min: 0.01
+
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [ref,producer]

@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
@@ -139,6 +140,50 @@ class ProductRepository extends EntityRepository
     }
 
     /**
+     * Returns query builder for producer available products
+     *
+     * @param Producer $producer
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getAvailableForProducerQueryBuilder(Producer $producer, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $this->getForProducerQueryBuilder($producer, $qb)
+                ->andWhere(
+                    $qb->expr()->orx(
+                        $qb->expr()->eq('p.availability', ':available'),
+                        $qb->expr()->andx(
+                            $qb->expr()->eq('p.availability', ':accordingToStock'),
+                            $qb->expr()->gt('p.stock', 0)
+                        )
+                    )
+                )
+                ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
+                ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK);
+    }
+
+    /**
+     * Returns query builder for producer products
+     *
+     * @param Producer $producer
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getForProducerQueryBuilder(Producer $producer, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->addSelect('b')
+                ->leftJoin('p.branches', 'b')
+                ->andWhere('p.producer = :producer')
+                ->setParameter('producer', $producer);
+    }
+
+    /**
      * Returns products of a producer
      *
      * @param Producer $producer
@@ -147,13 +192,7 @@ class ProductRepository extends EntityRepository
      */
     public function findForProducer(Producer $producer)
     {
-        return $this->createQueryBuilder('p')
-                ->addSelect('b')
-                ->leftJoin('p.branches', 'b')
-                ->where('p.producer = :producer')
-                ->setParameter('producer', $producer)
-                ->getQuery()
-                ->getResult();
+        return $this->getForProducerQueryBuilder($producer)->getQuery()->getResult();
     }
 
     /**
