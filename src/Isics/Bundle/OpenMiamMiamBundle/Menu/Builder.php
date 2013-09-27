@@ -140,11 +140,11 @@ class Builder
             'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'time', $this->translator->trans('admin.producer.menu.calendar')),
         ));
-        $menu[$menuName]->addChild('Managers', array(
-            // 'route'           => 'open_miam_miam.admin.producer.product.list',
-            // 'routeParameters' => array('id' => $producer->getId()),
-            'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.producer.menu.managers')),
-        ));
+        // $menu[$menuName]->addChild('Managers', array(
+        //     // 'route'           => 'open_miam_miam.admin.producer.product.list',
+        //     // 'routeParameters' => array('id' => $producer->getId()),
+        //     'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.producer.menu.managers')),
+        // ));
         $menu[$menuName]->addChild('Producer infos', array(
             'route'           => 'open_miam_miam.admin.producer.edit',
             'routeParameters' => array('id' => $producer->getId()),
