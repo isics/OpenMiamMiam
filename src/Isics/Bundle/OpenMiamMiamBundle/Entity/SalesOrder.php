@@ -48,7 +48,7 @@ class SalesOrder
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="salesOrder", cascade="all")
+     * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="salesOrder", cascade="all", orphanRemoval=true)
      */
     private $salesOrderRows;
 
@@ -358,6 +358,16 @@ class SalesOrder
     {
         $row->setSalesOrder($this);
         $this->salesOrderRows[] = $row;
+    }
+
+    /**
+     * Remove salesOrderRow
+     *
+     * @param SalesOrderRow $row
+     */
+    public function removeSalesOrderRow(SalesOrderRow $row)
+    {
+        $this->salesOrderRows->removeElement($row);
     }
 
     /**

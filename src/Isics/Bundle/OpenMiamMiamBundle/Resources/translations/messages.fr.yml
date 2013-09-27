@@ -221,9 +221,10 @@ activity_stream.product.updated: "a mis à jour le produit %name%."
 
 activity_stream.sales_order.created: "a passé la commande %ref%"
 activity_stream.sales_order.updated: "a modifié la commande %ref%"
-activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %ref% de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)"
-activity_stream.sales_order.row.quantity_updated: "a modifié le produit %ref% de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)"
-activity_stream.sales_order.row.total_updated: "a modifié le produit %ref% de la commande %order_ref% (total %old_total% -> %total%)"
+activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)"
+activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)"
+activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)"
+activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%"
 
 # Erreurs
 error.invalid:  "Cette valeur n'est pas valide"
