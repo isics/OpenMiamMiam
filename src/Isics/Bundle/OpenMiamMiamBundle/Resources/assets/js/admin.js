@@ -5,10 +5,7 @@ $(function() {
     });
 });
 
-
-
 var OpenMiamMiam = {};
-
 
 OpenMiamMiam.PanelForm = function() {
 
@@ -26,7 +23,6 @@ OpenMiamMiam.PanelForm = function() {
 
     return object;
 }();
-
 
 OpenMiamMiam.ProducerProductForm = function() {
 
@@ -164,13 +160,10 @@ OpenMiamMiam.ProducerProductForm = function() {
     return object;
 }();
 
-
-OpenMiamMiam.ProducerProductDeleteDialog = function() {
-
+OpenMiamMiam.deleteDialog = function() {
     var object = function() {
         this.handleConfirmation();
     };
-
     object.prototype = {
         handleConfirmation: function() {
             $('[href=#delete-dialog]').on('click', function(e) {

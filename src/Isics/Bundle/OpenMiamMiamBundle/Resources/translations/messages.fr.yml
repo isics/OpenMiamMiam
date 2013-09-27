@@ -138,7 +138,11 @@ admin.producer.sales_orders.form.sales_order_row.product:    "Produit"
 admin.producer.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
 admin.producer.sales_orders.form.sales_order_row.quantity:   "Quantité"
 admin.producer.sales_orders.form.sales_order_row.total:      "Total"
-admin.producer.sales_orders.message.updated:                 "La commande a bien été mise à jour"
+admin.producer.sales_orders.form.sales_order_row.delete:     "Supprimer la ligne de commande"
+
+admin.producer.sales_orders.message.updated: "La commande a bien été mise à jour"
+
+admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 
 # Admin / Producer / Products
 admin.producer.products.list.title:                    "{0} Aucun produit|{1} 1 produit|]1,Inf] %nb% produits"
@@ -180,10 +184,7 @@ admin.producer.products.form.is_of_the_moment:         "Produit du moment !"
 admin.producer.products.message.created:               "Le produit a bien été créé."
 admin.producer.products.message.updated:               "Le produit a bien été mis à jour."
 admin.producer.products.message.deleted:               "Le produit a bien été supprimé."
-admin.producer.products.delete_dialog.title:           "Attention !"
-admin.producer.products.delete_dialog.message:         "Êtes-vous vraiment certain de vouloir supprimer ce produit ?"
-admin.producer.products.delete_dialog.cancel:          "NON"
-admin.producer.products.delete_dialog.confirm:         "OUI, supprimer"
+admin.producer.products.delete_dialog.content:         "Êtes-vous vraiment certain de vouloir supprimer ce produit ?"
 
 # Admin / Producer / Calendar
 admin.producer.calendar.title:              "Calendrier de présence"
@@ -227,3 +228,9 @@ error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas con
 error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
 error.cart.product_unavailable:           "Produit indisponible"
 error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"
+
+# Dialogue de suppression
+admin.delete_dialog.title:   "Attention !"
+admin.delete_dialog.content: "Êtes-vous sûr de vouloir supprimer cet élément ?"
+admin.delete_dialog.cancel:  "NON"
+admin.delete_dialog.confirm: "OUI, supprimer"

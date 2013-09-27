@@ -46,3 +46,7 @@ open_miam_miam.admin.producer.sales_orders.list:
 open_miam_miam.admin.producer.sales_order.edit:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
+
+open_miam_miam.admin.producer.sales_order.delete_row:
+    pattern:  /producers/{id}/sales_orders/rows/{salesOrderRowId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:deleteSalesOrderRow }
