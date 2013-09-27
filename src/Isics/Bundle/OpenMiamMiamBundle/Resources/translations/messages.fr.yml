@@ -23,8 +23,9 @@ artificial_product:   "Produit divers"
 
 # Zones
 zone.header.branch.change:         "changer de comptoir"
+zone.occurrence.title:             "Prochain comptoir"
 zone.occurrence.order.before:      "Commandez avant le"
-zone.occurrence.order.from:        "Commandez à partir du"
+zone.occurrence.order.from:        "Commandez pour le prochain comptoir à partir du %date% à %time%."
 zone.occurrence.no.next.date:      "Aucun comptoir planifié"
 zone.producers.title:              "Les producteurs"
 zone.producers.link:               "Tous les producteurs"
@@ -35,8 +36,9 @@ zone.products_of_the_moment.title: "Les produits du moment"
 # Cart
 cart.title:                 "Mon panier"
 cart.empty:                 "Votre panier est vide."
-cart.order_closed:          "Attendez encore un peu !"
-cart.add_form.order_closed: "Bientôt!"
+cart.order_closed:          "Patientez un peu !"
+cart.add_form.order_closed: "Patientez"
+cart.unable_to_add_item:    "Impossible d'ajouter ce produit !"
 
 # Order process
 order.confirm.title:                 "Confirmez votre commande"
@@ -95,6 +97,7 @@ availability.producer_absent: "Producteur absent"
 availability.available_at:    "Dispo le %date%"
 
 # Admin common
+admin.title:                 "Accès gestionnaire"
 admin.save:                  "Enregistrer"
 admin.return:                "Retourner à la liste"
 admin.activity_stream.title: "Flux d'activité"

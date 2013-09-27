@@ -24,11 +24,12 @@ class CartController extends Controller
     /**
      * Shows cart summary
      *
-     * @param Branch $branch Branch
+     * @param Branch  $branch   Branch
+     * @param boolean $homepage Are we on homepage?
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function summarizeAction(Branch $branch)
+    public function summarizeAction(Branch $branch, $homepage = false)
     {
         $cart = $this->getCart($branch);
 
@@ -40,6 +41,7 @@ class CartController extends Controller
             'nextBranchOccurrence' => $branchOccurrenceManager->getNext($branch),
             'closingDateTime'      => $branchOccurrenceManager->getClosingDateTime($branch),
             'openingDateTime'      => $branchOccurrenceManager->getOpeningDateTime($branch),
+            'homepage'             => $homepage,
         ));
     }
 
@@ -134,7 +136,9 @@ class CartController extends Controller
     }
 
     /**
-     * Adds a product to cart (POST)
+     * Adds a product to cart (POST) AJAX or not
+     *
+     * @todo Validate global quantity of items
      *
      * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
@@ -156,10 +160,21 @@ class CartController extends Controller
         if ($form->isValid()) {
             $cart->addItem($form->getData());
 
-            $this->get('session')->getFlashBag()->add(
-                'notice',
-                'message.cart.added'
-            );
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('IsicsOpenMiamMiamBundle:Cart:headerCart.html.twig', array(
+                    'branch' => $branch,
+                    'cart'   => $cart,
+                ));
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                    'notice',
+                    'message.cart.added'
+                );
+            }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response($this->container->get('translator')->trans('cart.unable_to_add_item'), 400);
         }
 
         return $this->redirect($this->generateUrl(
