@@ -61,7 +61,7 @@ class OpenMiamMiamExtension extends \Twig_Extension
         $this->title           = $title;
         $this->currency        = $currency;
         $this->productManager  = $productManager;
-        $this->producerManager  = $producerManager;
+        $this->producerManager = $producerManager;
         $this->consumerManager = $consumerManager;
     }
 
