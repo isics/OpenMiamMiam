@@ -5,54 +5,49 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-<div id="header-branch-occurrence">
-    {% if nextBranchOccurrence is not null %}
-        <div id="header-branch-occurrence-date">
-            <strong>{{ nextBranchOccurrence.begin|format_date('eeee dd MMMM') }}</strong>
-            <span id="header-branch-occurrence-hours">
-                {{ nextBranchOccurrence.begin|format_time('HH:mm') }}
-                -
-                {{ nextBranchOccurrence.end|format_time('HH:mm') }}
-            </span>
-        </div>
-        {% if openingDateTime is not null %}
-            <div id="header-branch-occurrence-order-from">
-                <span class="glyphicon glyphicon-time"></span>
-                {{ 'zone.occurrence.order.from'|trans }}
-                {{ openingDateTime|format_datetime('dd/MM') }}&nbsp;{{ openingDateTime|format_datetime('HH:mm') }}
-            </div>
-        {% elseif closingDateTime is not null %}
-            <div id="header-branch-occurrence-order-before">
-                <span class="glyphicon glyphicon-time"></span>
-                {{ 'zone.occurrence.order.before'|trans }}
-                {{ closingDateTime|format_datetime('dd/MM') }}&nbsp;{{ closingDateTime|format_datetime('HH:mm') }}
-            </div>
-        {% endif %}
-    {% else %}
-        {{ 'zone.occurrence.no.next.date'|trans }}
-    {% endif %}
-</div>
+<div id="header-main">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div id="header-main-body">
+                <div id="header-branch-name">
+                    {% if homepage %}
+                        <h1>{{ branch.name }}</h1>
+                    {% else %}
+                        <strong>{{ branch.name }}</strong>
+                    {% endif %}
+                    <a href="{{ path('open_miam_miam.homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
+                </div>
 
-<div id="header-cart">
-    {% if not cart.isClosed %}
-        {% if cart.nbItems > 0 %}
-            <strong>
-                {{ 'cart.title'|trans }}
-                <a href="{{ path('open_miam_miam.cart.show', {'branchSlug': branch.slug}) }}">
-                    ({{ cart.nbItems }}</span>)
-                    {{ cart.total|number_format_currency(open_miam_miam.currency) }}
-                </a>
-            </strong>
-            <a href="{{ path('open_miam_miam.cart.show', {'branchSlug': branch.slug}) }}" class="btn btn-primary btn-block">
-                <span class="glyphicon glyphicon-shopping-cart"></span>
-                {{ 'checkout'|trans }}
-            </a>
-        {% else %}
-            <strong>{{ 'cart.title'|trans }} (0)</strong>
-            {{ 'cart.empty'|trans }}
-        {% endif %}
-    {% else %}
-        <strong>{{ 'cart.title'|trans }}</strong>
-        {{ 'cart.order_closed'|trans }}
+                <div id="header-branch-occurrence">
+                    {% if nextBranchOccurrence is not null %}
+                        <strong>{{ 'zone.occurrence.title'|trans }}</strong>
+                        <span id="header-branch-occurrence-date">
+                            {{ nextBranchOccurrence.begin|format_date('eee dd MMMM')|capitalize }}
+                            {{ nextBranchOccurrence.begin|format_time('HH:mm') }}&nbsp;-&nbsp;{{ nextBranchOccurrence.end|format_time('HH:mm') }}
+                        </span>
+                        {% if openingDateTime is null and closingDateTime is not null %}
+                            <div id="header-branch-occurrence-order-before">
+                                <span class="glyphicon glyphicon-time"></span>
+                                {{ 'zone.occurrence.order.before'|trans }}
+                                {{ closingDateTime|format_datetime('dd/MM') }}&nbsp;{{ closingDateTime|format_datetime('HH:mm') }}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {{ 'zone.occurrence.no.next.date'|trans }}
+                    {% endif %}
+                </div>
+
+                <div id="header-cart">
+                    {% include 'IsicsOpenMiamMiamBundle:Cart:headerCart.html.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if nextBranchOccurrence is not null and openingDateTime is not null %}
+        <div id="header-branch-occurrence-order-from">
+            <span class="glyphicon glyphicon-time"></span>
+            {{ 'zone.occurrence.order.from'|trans({'%date%': openingDateTime|format_datetime('dd MMMM'), '%time%': openingDateTime|format_datetime('HH:mm')}) }}
+        </div>
     {% endif %}
 </div>

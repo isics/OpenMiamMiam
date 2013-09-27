@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OpenMiamMiam - Admin</title>
+        <title>{{ open_miam_miam.title }} - {{ 'admin.title'|trans }}</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block stylesheet %}
@@ -32,7 +32,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">OpenMiamMiam - Admin</a>
+                    <a class="navbar-brand" href="#">{{ open_miam_miam.title }} - {{ 'admin.title'|trans }}</a>
                 </div>
                 {% if app.user %}
                     <div id="header-links" class="collapse navbar-collapse">
