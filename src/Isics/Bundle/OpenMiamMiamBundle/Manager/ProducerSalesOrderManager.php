@@ -66,4 +66,37 @@ class ProducerSalesOrderManager
 
         return $producerSalesOrders;
     }
+
+    /**
+     * Return activities for producer
+     *
+     * @param ProducerSalesOrder $order
+     */
+    public function getActivities(ProducerSalesOrder $order)
+    {
+        $association = $order->getSalesOrder()->getBranchOccurrence()->getBranch()->getAssociation();
+
+        $qb = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')
+                ->findByObjectFromEntityQueryBuilder($order->getSalesOrder());
+
+        return $qb->andWhere(
+                    $qb->expr()->orx(
+                        $qb->expr()->andx(
+                            $qb->expr()->eq('a.targetType', ':targetType'),
+                            $qb->expr()->eq('a.targetId', ':targetId')
+                        ),
+                        $qb->expr()->andx(
+                            $qb->expr()->eq('a.targetType', ':targetType2'),
+                            $qb->expr()->eq('a.targetId', ':targetId2')
+                        )
+                    )
+                )
+                ->setParameter('targetType', 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association')
+                ->setParameter('targetId', $association->getId())
+                ->setParameter('targetType2', 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer')
+                ->setParameter('targetId2', $order->getProducer())
+                ->addOrderBy('a.id', 'DESC')
+                ->getQuery()
+                ->getResult();
+    }
 }

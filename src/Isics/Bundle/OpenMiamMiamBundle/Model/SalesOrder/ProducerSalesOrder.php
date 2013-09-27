@@ -15,7 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 
-class ProducerSalesOrder implements \IteratorAggregate, \Countable
+class ProducerSalesOrder
 {
     /**
      * @var Producer
@@ -32,8 +32,6 @@ class ProducerSalesOrder implements \IteratorAggregate, \Countable
      */
     protected $salesOrderRows;
 
-
-
     /**
      * Constructs ProducerSalesOrder
      *
@@ -44,7 +42,12 @@ class ProducerSalesOrder implements \IteratorAggregate, \Countable
     {
         $this->producer = $producer;
         $this->salesOrder = $salesOrder;
-        $this->salesOrderRows = array();
+
+        foreach ($this->salesOrder->getSalesOrderRows() as $row) {
+            if ($row->getProducer()->getId() == $this->producer->getId()) {
+                $this->salesOrderRows[] = $row;
+            }
+        }
     }
 
     /**
@@ -68,13 +71,6 @@ class ProducerSalesOrder implements \IteratorAggregate, \Countable
      */
     public function getSalesOrderRows()
     {
-        $this->salesOrderRows = array();
-        foreach ($this->salesOrder->getSalesOrderRows() as $row) {
-            if ($row->getProducer()->getId() == $this->producer->getId()) {
-                $this->salesOrderRows[] = $row;
-            }
-        }
-
         return $this->salesOrderRows;
     }
 
@@ -108,27 +104,11 @@ class ProducerSalesOrder implements \IteratorAggregate, \Countable
     {
         $total = 0;
         foreach ($this->salesOrder->getSalesOrderRows() as $row) {
-            $total += $row->getTotal();
+            if ($row->getProducer()->getId() == $this->producer->getId()) {
+                $total += $row->getTotal();
+            }
         }
 
         return $total;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return \ArrayIterator|\Traversable
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->salesOrderRows);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count()
-    {
-        return count($this->salesOrderRows);
     }
 }
