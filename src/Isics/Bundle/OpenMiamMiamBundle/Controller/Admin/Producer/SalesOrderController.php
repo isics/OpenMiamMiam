@@ -14,7 +14,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerSalesOrderType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +55,7 @@ class SalesOrderController extends BaseController
         $producerSalesOrder = new ProducerSalesOrder($producer, $order);
 
         $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.sales_order'),
+            $this->get('open_miam_miam.form.type.producer_sales_order'),
             new ProducerSalesOrder($producer, $order),
             array(
                 'action' => $this->generateUrl(

@@ -9,7 +9,7 @@
 * with this source code in the file LICENSE.
 */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
@@ -95,6 +95,6 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
      */
     public function getName()
     {
-        return 'open_miam_miam_admin_producer';
+        return 'open_miam_miam_producer';
     }
 }

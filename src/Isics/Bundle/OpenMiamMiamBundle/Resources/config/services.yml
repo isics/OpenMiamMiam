@@ -27,11 +27,19 @@ parameters:
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
-    open_miam_miam.form.type.hidden_product.class:       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
-    open_miam_miam.form.type.product.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType'
-    open_miam_miam.form.type.producer.class:             'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerType'
-    open_miam_miam.form.type.producer_attendances.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerAttendancesType'
-    open_miam_miam.form.type.sales_order.class:          'Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\SalesOrderType'
+    open_miam_miam.form.type.hidden_product.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
+    open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
+    open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
+    open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
+    open_miam_miam.form.type.producer_branch_attendances.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchAttendancesType'
+    open_miam_miam.form.type.producer_branch_occurrence_attendance.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchOccurrenceAttendanceType'
+    open_miam_miam.form.type.sales_order.class:                           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderType'
+    open_miam_miam.form.type.sales_order_row.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderRowType'
+    open_miam_miam.form.type.producer_sales_order.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerSalesOrderType'
+    open_miam_miam.form.type.cart_item.class:                             'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartItemType'
+    open_miam_miam.form.type.cart.class:                                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartType'
+
+
 
 services:
     # Validators
@@ -65,7 +73,19 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam.producer_branch_occurrence_attendance_validator}
 
+
+
     # Form types
+    open_miam_miam.form.type.cart:
+        class: %open_miam_miam.form.type.cart.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_cart }
+
+    open_miam_miam.form.type.cart_item:
+        class: %open_miam_miam.form.type.cart_item.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_cart_item }
+
     open_miam_miam.form.type.hidden_product:
         class:     %open_miam_miam.form.type.hidden_product.class%
         arguments: [@doctrine.orm.entity_manager]
@@ -76,23 +96,45 @@ services:
         class:     %open_miam_miam.form.type.product.class%
         arguments: [%open_miam_miam.buying_units%]
         tags:
-            - { name: form.type, alias: open_miam_miam_admin_product }
+            - { name: form.type, alias: open_miam_miam_product }
 
     open_miam_miam.form.type.producer:
         class:     %open_miam_miam.form.type.producer.class%
         arguments: [%open_miam_miam.entity_manager]
         tags:
-            - { name: form.type, alias: open_miam_miam_admin_producer }
+            - { name: form.type, alias: open_miam_miam_producer }
 
     open_miam_miam.form.type.producer_attendances:
-        class:     %open_miam_miam.form.type.producer_attendances.class%
+        class: %open_miam_miam.form.type.producer_attendances.class%
         tags:
-            - { name: form.type, alias: open_miam_miam_admin_producer_attendances }
+            - { name: form.type, alias: open_miam_miam_producer_attendances }
+
+    open_miam_miam.form.type.producer_branch_attendances:
+        class: %open_miam_miam.form.type.producer_branch_attendances.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_producer_branch_attendances }
+
+    open_miam_miam.form.type.producer_branch_occurrence_attendance:
+        class: %open_miam_miam.form.type.producer_branch_occurrence_attendance.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_producer_branch_occurrence_attendance }
 
     open_miam_miam.form.type.sales_order:
-        class:     %open_miam_miam.form.type.sales_order.class%
+        class: %open_miam_miam.form.type.sales_order.class%
         tags:
-            - { name: form.type, alias: open_miam_miam_admin_sales }
+            - { name: form.type, alias: open_miam_miam_sales_order }
+
+    open_miam_miam.form.type.sales_order_row:
+        class: %open_miam_miam.form.type.sales_order_row.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_sales_order_row }
+
+    open_miam_miam.form.type.producer_sales_order:
+        class: %open_miam_miam.form.type.producer_sales_order.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_producer_sales_order }
+
+
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -121,6 +163,8 @@ services:
         class: %open_miam_miam.menu_voter.class%
         tags:
             - { name: knp_menu.voter, request: true }
+
+
 
     # Managers
     open_miam_miam.activity_manager:
