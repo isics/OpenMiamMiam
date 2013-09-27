@@ -152,6 +152,8 @@ admin.producer.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
 admin.producer.sales_orders.form.sales_order_row.quantity:   "Quantité"
 admin.producer.sales_orders.form.sales_order_row.total:      "Total"
 admin.producer.sales_orders.form.sales_order_row.delete:     "Supprimer la ligne de commande"
+admin.producer.sales_orders.form.no_sales_order_rows:        "Il n'y a pas de ligne de commande pour cette commande"
+
 
 admin.producer.sales_orders.message.updated: "La commande a bien été mise à jour"
 

@@ -52,18 +52,19 @@
     {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_sales_order_form', 'novalidate': '', 'class': 'form form-inline'}}) }}
         {{ form_errors(form) }}
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-calendar">
-                <thead>
-                <tr>
-                    <th>{{ 'admin.producer.sales_orders.form.sales_order_row.ref'|trans }}</th>
-                    <th>{{ 'admin.producer.sales_orders.form.sales_order_row.product'|trans }}</th>
-                    <th>{{ 'admin.producer.sales_orders.form.sales_order_row.unit_price'|trans }}</th>
-                    <th>{{ 'admin.producer.sales_orders.form.sales_order_row.quantity'|trans }}</th>
-                    <th>{{ 'admin.producer.sales_orders.form.sales_order_row.total'|trans }}</th>
-                </tr>
-                </thead>
-                <tbody>
+        {% if form.children.salesOrderRows|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-calendar">
+                    <thead>
+                    <tr>
+                        <th>{{ 'admin.producer.sales_orders.form.sales_order_row.ref'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.form.sales_order_row.product'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.form.sales_order_row.unit_price'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.form.sales_order_row.quantity'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.form.sales_order_row.total'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for child in form.children.salesOrderRows %}
                         {% set salesOrderRow = child.vars.data %}
                         <tr>
@@ -85,25 +86,31 @@
                             </td>
                         </tr>
                     {% endfor %}
-                </tbody>
-                <tfoot>
+                    </tbody>
+                    <tfoot>
                     <tr>
                         <th colspan="4">{{ 'admin.producer.sales_orders.form.total'|trans }}</th>
                         <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                     </tr>
-                </tfoot>
-            </table>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg" />
+                    </tfoot>
+                </table>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" />
             <span class="glyphicon glyphicon-floppy-save"></span>
             {{ 'admin.save'|trans }}
-        </button>
+            </button>
+        {% else %}
+            {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.form.no_sales_order_rows'|trans} %}
+        {% endif %}
 
+
+        {% do form.salesOrderRows.setRendered %}
         {% do form.save.setRendered %}
     {{ form_end(form) }}
 
-    {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}
+    <a href="{{ path('open_miam_miam.admin.producer.sales_orders.list', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 
+    {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}
     {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\SalesOrder\\deleteRowDialog.html.twig' %}
 {% endblock %}
 
