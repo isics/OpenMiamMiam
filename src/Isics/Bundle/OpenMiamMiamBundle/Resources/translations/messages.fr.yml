@@ -124,6 +124,15 @@ admin.producer.dashboard.attendances_to_confirm: "[0,1]date à confirmer|]1,Inf]
 # Admin / Producer / Infos
 admin.producer.infos.title: "Informations producteur"
 admin.producer.infos.message.updated: "Informations producteur a bien été mis à jour"
+admin.producer.infos.name: "Nom"
+admin.producer.infos.address1: "Adresse"
+admin.producer.infos.phone1: "Téléphone 1"
+admin.producer.infos.phone2: "Téléphone 2"
+admin.producer.infos.website: "Site web"
+admin.producer.infos.facebook: "Page Facebook"
+admin.producer.infos.image: "Image"
+admin.producer.infos.delete_image: "Supprimer l'image"
+admin.producer.infos.cancel: "Annuler"
 
 # Admin / Producer / Sales orders
 admin.producer.sales_orders.list.title:          "Commandes à préparer"

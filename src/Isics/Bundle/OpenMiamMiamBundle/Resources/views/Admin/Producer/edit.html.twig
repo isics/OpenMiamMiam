@@ -8,17 +8,57 @@
  {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
  {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
- {% block content %}
-    <h1>{{ 'admin.producer.infos.title'|trans }}</h1>
-
-     {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_producer_form', 'novalidate': ''}}) }}
-
-        {{ form_errors(form) }}
-
-        <button type="submit" class="btn btn-primary btn-lg" />
-            <span class="glyphicon glyphicon-floppy-save"></span>
-            {{ 'admin.save'|trans }}
-        </button>
+{% block content %}
+    <div class="producer_form">
+        <h1>{{ 'admin.producer.infos.title'|trans }}</h1> 
+        {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_producer_form', 'novalidate': ''}}) }} 
+		{{ form_row(form.name, {'label': 'admin.producer.infos.name'|trans}) }}
+        {{ form_row(form.address1, {'label': 'admin.producer.infos.address1'|trans}) }}       
+	    <div class="row">    
+	        <div class="col-md-12">
+	            {{ form_errors(form.address2) }}
+	            {{ form_widget(form.address2) }}
+	        </div>   
+	    </div>    
+	    <div class="row">    
+	        <div class="col-md-3">
+	            {{ form_errors(form.zipcode) }}
+	            {{ form_widget(form.zipcode) }} 
+	        </div>
+	        <div class="col-md-9">
+	            {{ form_errors(form.city) }}
+	            {{ form_widget(form.city) }} 
+	        </div>
+	    </div>	    
+	    {{ form_row(form.phone1, {'label': 'admin.producer.infos.phone1'|trans}) }}	    
+	    {{ form_row(form.phone2, {'label': 'admin.producer.infos.phone2'|trans}) }}	    
+	    {{ form_row(form.website, {'label': 'admin.producer.infos.website'|trans}) }}	    
+	    {{ form_row(form.facebook, {'label': 'admin.producer.infos.facebook'|trans}) }}	    
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_label(form.imageFile, 'admin.producer.infos.image'|trans) }}
+			    {% if producer.image is not null %}
+                    <p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+                    {{ form_row(form.deleteImage, {'label': 'admin.producer.infos.delete_image'|trans}) }}
+                {% endif %}
+                {{ form_errors(form.imageFile) }}
+                {{ form_widget(form.imageFile) }}
+            </div>
+       </div>
+       <div class="row">
+           <div class="col-md-2 col-md-offset-3">
+               <button type="submit" class="btn btn-primary btn-lg" />
+	               <span class="glyphicon glyphicon-floppy-save"></span>
+                   {{ 'admin.save'|trans }}
+               </button>
+           </div>
+           <div class="col-md-1	 col-md-offset-2">
+               <button type="submit" class="btn btn-default btn-lg" />
+                   <span class="glyphicon glyphicon-remove"></span>
+                   {{ 'admin.producer.infos.cancel'|trans }}
+               </button>
+           </div>
+       </div>
+    </div>
     {{ form_end(form) }}
 {% endblock %}
-
