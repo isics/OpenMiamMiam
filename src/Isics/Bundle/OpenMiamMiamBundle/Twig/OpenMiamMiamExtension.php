@@ -21,6 +21,11 @@ use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 class OpenMiamMiamExtension extends \Twig_Extension
 {
     /**
+     * @var string $title
+     */
+    private $title;
+
+    /**
      * @var string $currency
      */
     private $currency;
@@ -37,9 +42,15 @@ class OpenMiamMiamExtension extends \Twig_Extension
 
     /**
      * Constructor
+     *
+     * @param string          $title           Title
+     * @param string          $currency        Currency
+     * @param ProductManager  $productManager  Product manager
+     * @param ConsumerManager $consumerManager Consumer manager
      */
-    public function __construct($currency, ProductManager $productManager, ConsumerManager $consumerManager)
+    public function __construct($title, $currency, ProductManager $productManager, ConsumerManager $consumerManager)
     {
+        $this->title           = $title;
         $this->currency        = $currency;
         $this->productManager  = $productManager;
         $this->consumerManager = $consumerManager;
@@ -116,7 +127,8 @@ class OpenMiamMiamExtension extends \Twig_Extension
     {
         return array(
             'open_miam_miam' => array(
-                'currency' => $this->currency
+                'title'    => $this->title,
+                'currency' => $this->currency,
         ));
     }
 

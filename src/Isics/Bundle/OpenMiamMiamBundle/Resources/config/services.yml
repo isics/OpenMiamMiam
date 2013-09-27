@@ -78,6 +78,7 @@ services:
     open_miam_miam.twig.open_miam_miam_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
         arguments:
+            - %open_miam_miam.title%
             - %open_miam_miam.currency%
             - @open_miam_miam.product_manager
             - @open_miam_miam.consumer_manager
