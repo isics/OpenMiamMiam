@@ -55,7 +55,7 @@ class ProducerAttendancesManager
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('nb_next_producer_attendances_to_define'));
+        $resolver->setRequired(array('nb_next_producer_attendances_to_define', 'upload_path'));
     }
 
     /**
@@ -66,7 +66,7 @@ class ProducerAttendancesManager
      */
     public function updateAttendances(ProducerAttendances $attendances, $flush = true)
     {
-        foreach ($attendances as $branchAttendances) {
+        foreach ($attendances->getBranchAttendances() as $branchAttendances) {
             $this->updateBranchAttendances($branchAttendances, false);
         }
 
@@ -83,7 +83,7 @@ class ProducerAttendancesManager
      */
     public function updateBranchAttendances(ProducerBranchAttendances $branchAttendances, $flush = true)
     {
-        foreach ($branchAttendances as $branchOccurrenceAttendance) {
+        foreach ($branchAttendances->getBranchOccurrenceAttendances() as $branchOccurrenceAttendance) {
             $this->updateBranchOccurrenceAttendance($branchOccurrenceAttendance, false);
         }
 

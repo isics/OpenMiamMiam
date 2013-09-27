@@ -1,0 +1,33 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:
+    properties:
+        name:
+            - NotNull: ~
+            - Length:
+                max: 128
+        address1:
+            - Length:
+                max: 64
+        address2:
+            - Length:
+                max: 64
+        zipcode:
+            - Length:
+                max: 8
+        city:
+            - Length:
+                max:  64
+        phone1:
+            - Length:
+                max: 16
+        phone2:
+            - Length:
+                max: 16
+        website:
+            - Url: ~
+        facebook:
+            - Url: ~
+        imageFile:
+            - Image:
+                maxSize: 5120k
+        deleteImage:
+            - Type: bool

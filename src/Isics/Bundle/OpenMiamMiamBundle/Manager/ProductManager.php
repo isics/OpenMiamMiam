@@ -18,7 +18,6 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -115,6 +114,7 @@ class ProductManager
     {
         $producer = $product->getProducer();
 
+        $activityTransKey = null;
         if (null === $product->getId()) {
             // Increase producer product reference counter
             $producer->setProductRefCounter($producer->getProductRefCounter()+1);
@@ -123,9 +123,20 @@ class ProductManager
             // Activity transKey
             $activityTransKey = 'activity_stream.product.created';
         } else {
-            $activityTransKey = 'activity_stream.product.updated';
-        }
+            if ($product->getDeleteImage() || null !== $product->getImageFile()) {
+                $activityTransKey = 'activity_stream.product.updated';
+            }
 
+            if (null === $activityTransKey) {
+                $unitOfWork = $this->entityManager->getUnitOfWork();
+                $unitOfWork->computeChangeSets();
+
+                $changeSet = $unitOfWork->getEntityChangeSet($product);
+                if (!empty($changeSet)) {
+                    $activityTransKey = 'activity_stream.product.updated';
+                }
+            }
+        }
         // Save object
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -134,15 +145,17 @@ class ProductManager
         $this->processImageFile($product);
 
         // Activity
-        $activity = $this->activityManager->createFromEntities(
-            $activityTransKey,
-            array('%name%' => $product->getName()),
-            $product,
-            $producer,
-            $user
-        );
-        $this->entityManager->persist($activity);
-        $this->entityManager->flush();
+        if (null !== $activityTransKey) {
+            $activity = $this->activityManager->createFromEntities(
+                $activityTransKey,
+                array('%name%' => $product->getName()),
+                $product,
+                $producer,
+                $user
+            );
+            $this->entityManager->persist($activity);
+            $this->entityManager->flush();
+        }
     }
 
     /**
@@ -200,7 +213,7 @@ class ProductManager
     {
         // Delete image if flag is true
         if (null !== $product->getImage() && $product->getDeleteImage()) {
-            return $this->removeImage($product);
+            $this->removeImage($product);
         }
         // Move new image
         elseif (null !== $product->getImageFile()) {

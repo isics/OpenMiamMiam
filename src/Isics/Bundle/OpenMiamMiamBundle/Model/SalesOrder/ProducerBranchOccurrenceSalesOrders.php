@@ -15,7 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 
-class ProducerBranchOccurrenceSalesOrders implements \IteratorAggregate, \Countable
+class ProducerBranchOccurrenceSalesOrders
 {
     /**
      * @var Producer
@@ -64,6 +64,14 @@ class ProducerBranchOccurrenceSalesOrders implements \IteratorAggregate, \Counta
     }
 
     /**
+     * @return array
+     */
+    public function getSalesOrders()
+    {
+        return $this->salesOrders;
+    }
+
+    /**
      * @param array $orders
      */
     public function setSalesOrders(array $orders)
@@ -87,23 +95,5 @@ class ProducerBranchOccurrenceSalesOrders implements \IteratorAggregate, \Counta
         }
 
         $this->salesOrders[$order->getSalesOrder()->getId()] = $order;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return \ArrayIterator|\Traversable
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->salesOrders);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count()
-    {
-        return count($this->salesOrders);
     }
 }

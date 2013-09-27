@@ -21,7 +21,6 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Class SalesOrderManager
@@ -35,14 +34,15 @@ class SalesOrderManager
     protected $entityManager;
 
     /**
-     * @var ValidatorInterface $validator
-     */
-    protected $validator;
-
-    /**
      * @var array $config
      */
     protected $config;
+
+    /**
+     * @var ActivityManager $activityManager
+     */
+    protected $activityManager;
+
 
 
     /**
@@ -50,12 +50,12 @@ class SalesOrderManager
      *
      * @param array $config
      * @param EntityManager $entityManager
-     * @param ValidatorInterface $validator
+     * @param ActivityManager $activityManager
      */
-    public function __construct(array $config, EntityManager $entityManager, ValidatorInterface $validator)
+    public function __construct(array $config, EntityManager $entityManager, ActivityManager $activityManager)
     {
         $this->entityManager = $entityManager;
-        $this->validator = $validator;
+        $this->activityManager = $activityManager;
 
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
@@ -93,7 +93,7 @@ class SalesOrderManager
             $order->setConsumerComment($confirmation->getConsumerComment());
         }
 
-        $this->save($order);
+        $this->save($order, $order->getBranchOccurrence()->getBranch()->getAssociation(), $user);
 
         $cart->clearItems();
 
@@ -147,9 +147,16 @@ class SalesOrderManager
      * Saves sales order
      *
      * @param SalesOrder $order
+     * @param mixed $context
+     * @param User $user
      */
-    public function save(SalesOrder $order)
+    public function save(SalesOrder $order, $context, User $user = null)
     {
+        // Compute order's data (total...)
+        $order->compute();
+
+        $activitiesStack = array();
+
         if (null === $order->getId()) {
             // Increase reference for order
             $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
@@ -162,6 +169,56 @@ class SalesOrderManager
                 $this->config['ref_prefix'],
                 str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
             ));
+
+            $activitiesStack[] = array(
+                'transKey' => 'activity_stream.sales_order.created',
+                'transParams' => array('%ref%' => $order->getRef())
+            );
+
+        } else {
+            $unitOfWork = $this->entityManager->getUnitOfWork();
+            $unitOfWork->computeChangeSets();
+            foreach ($order->getSalesOrderRows() as $row) {
+                $changeSet = $unitOfWork->getEntityChangeSet($row);
+                if (!empty($changeSet)) {
+                    $transKey = null;
+                    if (isset($changeSet['quantity']) && $changeSet['quantity'][0] != $changeSet['quantity'][1]
+                            && isset($changeSet['total']) && $changeSet['total'][0] != $changeSet['total'][1]) {
+                        $transKey = 'activity_stream.sales_order.row.quantity_total_updated';
+                        $transParams = array(
+                            '%order_ref%' => $order->getRef(),
+                            '%ref%' => $row->getRef(),
+                            '%name%' => $row->getName(),
+                            '%old_quantity%' => $this->activityManager->formatFloatNumber($changeSet['quantity'][0]),
+                            '%quantity%' => $this->activityManager->formatFloatNumber($row->getQuantity()),
+                            '%old_total%' => $this->activityManager->formatFloatNumber($changeSet['total'][0]),
+                            '%total%' => $this->activityManager->formatFloatNumber($row->getTotal())
+                        );
+                    } elseif (isset($changeSet['quantity']) && $changeSet['quantity'][0] != $changeSet['quantity'][1]) {
+                        $transKey = 'activity_stream.sales_order.row.quantity_updated';
+                        $transParams = array(
+                            '%order_ref%' => $order->getRef(),
+                            '%ref%' => $row->getRef(),
+                            '%name%' => $row->getName(),
+                            '%old_quantity%' => $this->activityManager->formatFloatNumber($changeSet['quantity'][0]),
+                            '%quantity%' => $this->activityManager->formatFloatNumber($row->getQuantity())
+                        );
+                    } elseif (isset($changeSet['total']) && $changeSet['total'][0] != $changeSet['total'][1]) {
+                        $transKey = 'activity_stream.sales_order.row.total_updated';
+                        $transParams = array(
+                            '%order_ref%' => $order->getRef(),
+                            '%ref%' => $row->getRef(),
+                            '%name%' => $row->getName(),
+                            '%old_total%' => $this->activityManager->formatFloatNumber($changeSet['total'][0]),
+                            '%total%' => $this->activityManager->formatFloatNumber($row->getTotal())
+                        );
+                    }
+
+                    if (null !== $transKey) {
+                        $activitiesStack[] = array('transKey' => $transKey, 'transParams' => $transParams);
+                    }
+                }
+            }
         }
 
         // Update product stocks
@@ -173,12 +230,57 @@ class SalesOrderManager
             }
         }
 
-        // Compute order's data (total...)
-        $order->compute();
-
         // Save
         $this->entityManager->persist($order);
+        $this->entityManager->flush();
 
+        // Activity
+        foreach ($activitiesStack as $activityParams) {
+            $activity = $this->activityManager->createFromEntities(
+                $activityParams['transKey'],
+                $activityParams['transParams'],
+                $order,
+                $context,
+                $user
+            );
+            $this->entityManager->persist($activity);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Deletes a row of a sales order
+     *
+     * @param SalesOrderRow $row
+     * @param mixed $context
+     * @param User $user
+     */
+    public function deleteSalesOrderRow(SalesOrderRow $row, $context, User $user = null)
+    {
+        $order = $row->getSalesOrder();
+        $order->removeSalesOrderRow($row);
+
+        $order->compute();
+
+        // Update product stocks
+        $product = $row->getProduct();
+        if (null !== $product && $product->getAvailability() == Product::AVAILABILITY_ACCORDING_TO_STOCK) {
+            $product->setStock($product->getStock()+$row->getQuantity());
+            $this->entityManager->persist($product);
+        }
+
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+
+        $activity = $this->activityManager->createFromEntities(
+            'activity_stream.sales_order.row.deleted',
+            array('%order_ref%' => $order->getRef(), '%name%' => $row->getName(), '%ref%' => $row->getRef()),
+            $order,
+            $context,
+            $user
+        );
+        $this->entityManager->persist($activity);
         $this->entityManager->flush();
     }
 }

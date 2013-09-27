@@ -14,7 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances;
 
-class ProducerAttendances implements \IteratorAggregate
+class ProducerAttendances
 {
     /**
      * @var Producer $producer
@@ -71,15 +71,5 @@ class ProducerAttendances implements \IteratorAggregate
         }
 
         $this->branchAttendances[$branchAttendances->getBranch()->getId()] = $branchAttendances;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return \ArrayIterator|\Traversable
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->branchAttendances);
     }
 }

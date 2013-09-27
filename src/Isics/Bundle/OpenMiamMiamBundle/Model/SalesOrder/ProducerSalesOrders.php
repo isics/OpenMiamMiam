@@ -13,7 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
-class ProducerSalesOrders implements \IteratorAggregate
+class ProducerSalesOrders
 {
     /**
      * @var Producer $producer
@@ -51,6 +51,14 @@ class ProducerSalesOrders implements \IteratorAggregate
     }
 
     /**
+     * Returns branchOccurrencesSalesOrders
+     */
+    public function getBranchOccurrencesSalesOrders()
+    {
+        return $this->branchOccurrencesSalesOrders;
+    }
+
+    /**
      * Returns count sales order
      */
     public function countSalesOrders()
@@ -61,15 +69,5 @@ class ProducerSalesOrders implements \IteratorAggregate
         }
 
         return $count;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return \ArrayIterator|\Traversable
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->branchOccurrencesSalesOrders);
     }
 }

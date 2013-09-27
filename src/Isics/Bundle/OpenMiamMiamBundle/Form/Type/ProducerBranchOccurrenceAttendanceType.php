@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenceAttendance;
 use Symfony\Component\Form\AbstractType;
@@ -48,6 +48,6 @@ class ProducerBranchOccurrenceAttendanceType extends AbstractType
      */
     public function getName()
     {
-        return 'open_miam_miam_admin_producer_branch_occurrence_attendance';
+        return 'open_miam_miam_producer_branch_occurrence_attendance';
     }
 }

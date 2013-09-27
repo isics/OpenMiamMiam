@@ -14,13 +14,13 @@
         </div>
     </div>
 
-    {% for branchOccurrenceSalesOrders in salesOrders %}
+    {% for branchOccurrenceSalesOrders in salesOrders.branchOccurrencesSalesOrders %}
         <h2>
             {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
             - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
         </h2>
 
-        {% if branchOccurrenceSalesOrders|length > 0 %}
+        {% if branchOccurrenceSalesOrders.salesOrders|length > 0 %}
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-sales-orders">
                     <thead>
@@ -34,7 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for producerSalesOrder in branchOccurrenceSalesOrders %}
+                        {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
                             <tr>
                                 <td>{{ producerSalesOrder.salesOrder.ref }}</td>
                                 <td>{{ producerSalesOrder.salesOrder.date|format_date }}</td>

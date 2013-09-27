@@ -19,6 +19,10 @@ open_miam_miam.admin.producer.show_dashboard:
     pattern:  /producers/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:showDashboard }
 
+open_miam_miam.admin.producer.edit:
+    pattern:  /producers/{id}/edit
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:edit }
+
 open_miam_miam.admin.producer.product.list:
     pattern:  /producers/{id}/products
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:list }
@@ -46,3 +50,7 @@ open_miam_miam.admin.producer.sales_orders.list:
 open_miam_miam.admin.producer.sales_order.edit:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
+
+open_miam_miam.admin.producer.sales_order.delete_row:
+    pattern:  /producers/{id}/sales_orders/rows/{salesOrderRowId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:deleteSalesOrderRow }

@@ -17,6 +17,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager;
 
 class OpenMiamMiamExtension extends \Twig_Extension
 {
@@ -36,6 +38,11 @@ class OpenMiamMiamExtension extends \Twig_Extension
     private $productManager;
 
     /**
+     * @var ProducerManager $producerManager
+     */
+    private $producerManager;
+
+    /**
      * @var ConsumerManager $consumerManager
      */
     private $consumerManager;
@@ -46,13 +53,15 @@ class OpenMiamMiamExtension extends \Twig_Extension
      * @param string          $title           Title
      * @param string          $currency        Currency
      * @param ProductManager  $productManager  Product manager
+     * @param ProducerManager $produerManager  Producer manager
      * @param ConsumerManager $consumerManager Consumer manager
      */
-    public function __construct($title, $currency, ProductManager $productManager, ConsumerManager $consumerManager)
+    public function __construct($title, $currency, ProductManager $productManager, ProducerManager $producerManager, ConsumerManager $consumerManager)
     {
         $this->title           = $title;
         $this->currency        = $currency;
         $this->productManager  = $productManager;
+        $this->producerManager  = $producerManager;
         $this->consumerManager = $consumerManager;
     }
 
@@ -77,6 +86,7 @@ class OpenMiamMiamExtension extends \Twig_Extension
     {
         return array(
             'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath'),
+            'get_image_producer_path' => new \Twig_Function_Method($this, 'getImageProducerPath'),
             'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay')
         );
     }
@@ -103,6 +113,18 @@ class OpenMiamMiamExtension extends \Twig_Extension
     public function getImageProductPath(Product $product)
     {
         return $this->productManager->getImagePath($product);
+    }
+
+    /**
+     * Returns image producer path
+     *
+     * @param Producer $producer
+     *
+     * @return string
+     */
+    public function getImageProducerPath(Producer $producer)
+    {
+        return $this->producerManager->getImagePath($producer);
     }
 
     /**

@@ -13,7 +13,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerAttendancesType;
 use Symfony\Component\HttpFoundation\Request;
 
 class CalendarController extends BaseController
@@ -32,7 +31,7 @@ class CalendarController extends BaseController
 
         $attendancesManager = $this->get('open_miam_miam.producer_attendances_manager');
         $form = $this->createForm(
-            new ProducerAttendancesType(),
+            $this->get('open_miam_miam.form.type.producer_attendances'),
             $attendancesManager->getNextAttendancesOf($producer),
             array(
                 'action' => $this->generateUrl(

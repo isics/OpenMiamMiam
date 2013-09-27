@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->integerNode('nb_next_producer_attendances_to_define')->defaultValue(5)->end()
+                        ->scalarNode('upload_path')->defaultValue('/uploads/producers')->end()
                     ->end()
                 ->end()
                 ->arrayNode('product')

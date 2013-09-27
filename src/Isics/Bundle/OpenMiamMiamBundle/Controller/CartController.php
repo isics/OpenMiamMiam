@@ -13,8 +13,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartItemType;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
@@ -67,7 +65,7 @@ class CartController extends Controller
         }
 
         $form = $this->createForm(
-            new CartType(),
+            $this->get('open_miam_miam.form.type.cart'),
             $cart,
             array(
                 'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
@@ -117,7 +115,7 @@ class CartController extends Controller
                 $cartItem->setQuantity(1);
 
                 $form = $this->createForm(
-                    new CartItemType(),
+                    $this->get('open_miam_miam.form.type.cart_item'),
                     $cartItem,
                     array(
                         'action'        => $this->generateUrl('open_miam_miam.cart.add', array('branchSlug' => $branch->getSlug())),
@@ -156,7 +154,7 @@ class CartController extends Controller
         $cart     = $this->getCart($branch);
         $cartItem = $cart->createItem();
 
-        $form = $this->createForm(new CartItemType(), $cartItem, array('submit_button' => true));
+        $form = $this->createForm($this->get('open_miam_miam.form.type.cart_item'), $cartItem, array('submit_button' => true));
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -200,7 +198,7 @@ class CartController extends Controller
         $cart        = $this->getCart($branch);
         $updatedCart = clone $cart;
 
-        $form = $this->createForm(new CartType(), $updatedCart, array(
+        $form = $this->createForm($this->get('open_miam_miam.form.type.cart'), $updatedCart, array(
             'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
             'method' => 'PUT',
         ));

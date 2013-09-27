@@ -53,6 +53,11 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
             - Length:
                 max: 255
 
+Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder:
+    properties:
+        salesOrderRows:
+            - Valid: ~
+
 Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
     constraints:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderRow: ~
@@ -75,13 +80,13 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
             - Type:
                 type: boolean
         unitPrice:
-            - Range:
-                min: 0
+            - GreaterThan:
+                value: 0
         quantity:
             - NotNull: ~
-            - Range:
-                min: 0
+            - GreaterThan:
+                value: 0
         total:
             - NotNull: ~
-            - Range:
-                min: 0
+            - GreaterThan:
+                value: 0

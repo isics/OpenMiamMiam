@@ -14,7 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerSalesOrderType;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,8 +53,10 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
 
+        $producerSalesOrder = new ProducerSalesOrder($producer, $order);
+
         $form = $this->createForm(
-            new ProducerSalesOrderType(),
+            $this->get('open_miam_miam.form.type.producer_sales_order'),
             new ProducerSalesOrder($producer, $order),
             array(
                 'action' => $this->generateUrl(
@@ -68,20 +70,59 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->get('open_miam_miam.sales_order_manager')->save($order);
+                $this->get('open_miam_miam.sales_order_manager')->save(
+                    $order,
+                    $producer,
+                    $this->get('security.context')->getToken()->getUser()
+                );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
 
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.producer.sales_orders.list',
-                    array('id' => $producer->getId())
+                    'open_miam_miam.admin.producer.sales_order.edit',
+                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
                 ));
             }
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit.html.twig', array(
             'producer' => $producer,
-            'form' => $form->createView()
+            'producerSalesOrder' => $producerSalesOrder,
+            'form' => $form->createView(),
+            'activities' => $this->get('open_miam_miam.producer_sales_order_manager')->getActivities($producerSalesOrder)
+        ));
+    }
+
+    /**
+     * Update a sales order
+     *
+     * @ParamConverter("row", class="IsicsOpenMiamMiamBundle:SalesOrderRow", options={"mapping": {"salesOrderRowId": "id"}})
+     *
+     * @param Producer $producer
+     * @param SalesOrderRow $row
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function deleteSalesOrderRowAction(Producer $producer, SalesOrderRow $row)
+    {
+        $this->secure($producer);
+
+        if ($row->getProducer()->getId() !== $producer->getId()) {
+            throw new $this->createNotFoundException();
+        }
+
+        $order = $row->getSalesOrder();
+        $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
+            $row,
+            $producer,
+            $this->get('security.context')->getToken()->getUser()
+        );
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.producer.sales_order.edit',
+            array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
         ));
     }
 }
