@@ -50,6 +50,36 @@ class ProducerRepository extends EntityRepository
 
         return $producers;
     }
+    
+    /**
+     * 
+     * @param Branch $branch
+     * @return array
+     */
+    public function findAllProducer(Branch $branch)
+    {
+    	// Retrieve all producers ids
+    	$ids = $this->findAllIds();
+    	if (empty($ids)) {
+    		return array();
+    	}
+    
+    	// Randomize ids
+    	shuffle($ids);
+
+    	// Retrieve producers
+    	$producers = $this->createQueryBuilder('p')
+    	->where('p.id IN (:ids)')
+    	->setParameter('ids', $ids)
+    	->getQuery()
+    	->getResult();
+    
+    	// Randomize producers
+    	shuffle($producers);
+    
+    	return $producers;
+    }
+    
 
     /**
      * Finds all ids
@@ -70,4 +100,5 @@ class ProducerRepository extends EntityRepository
 
         return $flattenIds;
     }
+    
 }
