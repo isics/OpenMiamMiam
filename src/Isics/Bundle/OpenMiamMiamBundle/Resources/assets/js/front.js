@@ -1,66 +1,72 @@
-$(function() {
-    var pending = 0;
-
-    var hiddenDiv = $('<div style="display: none"></div>');
-    var loader    = $('<span></span> <img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
-
-    $('.form-cart-add').submit(function(event) {
-        event.preventDefault();
-
-        var form = $(this);
-        var formData = form.serialize();
-
-        form.find(':input,:submit').prop('disabled', true);
-
-        if (0 === pending) {
-            $('#header-cart > strong').append(loader);
-            $('#header-cart > strong').addClass('loading');
-            $('#header-cart .btn').attr('disabled', 'disabled');
-        }
-
-        pending++;
-
-        form.effect('transfer', {to: $('#header-cart')}, 1000, function() {
-            $.ajax({
-                type: 'POST',
-                url: form.attr('action'),
-                data: formData,
-                dataType: 'html',
-                success: function(data) {
-                    if (0 === --pending) {
-                        $('#header-cart').html(data);
-                    }
-                },
-                error: function(jqXHR) {
-                    pending--;
-                    alert(jqXHR.responseText);
-                },
-                complete: function() {
-                    form.find(':input,:submit').prop('disabled', false);
-
-                    if (0 === pending) {
-                        hiddenDiv.append(loader);
-                        $('#header-cart > strong').removeClass('loading');
-                        $('#header-cart .btn').removeAttr('disabled');
-                    }
-                }
-            });
-        });
-    });
-});
-
 var OpenMiamMiam = {};
 
-OpenMiamMiam.CartUpdateForm = function() {
 
+OpenMiamMiam.CartAddForm = function() {
     var object = function() {
-        this.form = $('#form-cart-update');
-        this.quantities = this.form.find('.input-quantity');
-
-        this.addQuantityButtons();
-        this.addRemoveButtons();
-        this.submitOnQuantityChange();
         this.handleAjax();
+    };
+
+    object.prototype = {
+        handleAjax: function() {
+            var pending = 0;
+
+            var hiddenDiv = $('<div style="display: none"></div>');
+            var loader    = $('<span></span> <img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
+
+            $('.form-cart-add').submit(function(event) {
+                event.preventDefault();
+
+                var form = $(this);
+                var formData = form.serialize();
+
+                form.find(':input,:submit').prop('disabled', true);
+
+                if (0 === pending) {
+                    $('#header-cart > strong').append(loader);
+                    $('#header-cart > strong').addClass('loading');
+                    $('#header-cart .btn').attr('disabled', 'disabled');
+                }
+
+                pending++;
+
+                form.effect('transfer', {to: $('#header-cart')}, 1000, function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: form.attr('action'),
+                        data: formData,
+                        dataType: 'html',
+                        success: function(data) {
+                            if (0 === --pending) {
+                                $('#header-cart').html(data);
+                            }
+                        },
+                        error: function(jqXHR) {
+                            pending--;
+                            alert(jqXHR.responseText);
+                        },
+                        complete: function() {
+                            form.find(':input,:submit').prop('disabled', false);
+
+                            if (0 === pending) {
+                                hiddenDiv.append(loader);
+                                $('#header-cart > strong').removeClass('loading');
+                                $('#header-cart .btn').removeAttr('disabled');
+                            }
+                        }
+                    });
+                });
+            });
+        }
+    };
+
+    return object;
+}();
+
+
+OpenMiamMiam.QuantityButtons = function() {
+    var object = function() {
+        this.quantities = $('.input-quantity');
+        this.addQuantityButtons();
     };
 
     object.prototype = {
@@ -96,8 +102,25 @@ OpenMiamMiam.CartUpdateForm = function() {
                         .trigger('change');
                 });
             });
-        },
+        }
+    };
 
+    return object;
+}();
+
+
+OpenMiamMiam.CartUpdateForm = function() {
+
+    var object = function() {
+        this.form = $('#form-cart-update');
+        this.quantities = this.form.find('.input-quantity');
+
+        this.addRemoveButtons();
+        this.submitOnQuantityChange();
+        this.handleAjax();
+    };
+
+    object.prototype = {
         addRemoveButtons: function() {
             var removeButton = $('<button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>');
 
@@ -141,13 +164,11 @@ OpenMiamMiam.CartUpdateForm = function() {
                     success: function(data) {
                         $('#header-cart').html(data.headerCart);
                         $('#cart').html(data.cart);
+                        new OpenMiamMiam.QuantityButtons;
                         new OpenMiamMiam.CartUpdateForm;
-                        // self.addRemoveButtons();
-                        // self.submitOnQuantityChange();
-                        // self.handleAjax();
                     },
                     error: function(jqXHR) {
-                        // alert(jqXHR.responseText);
+                        alert(jqXHR.responseText);
                     },
                     complete: function() {
                     }

@@ -21,10 +21,10 @@
                 <div id="header-branch-occurrence">
                     {% if nextBranchOccurrence is not null %}
                         <strong>{{ 'zone.occurrence.title'|trans }}</strong>
-                        <span id="header-branch-occurrence-date">
+                        <a href="#" id="header-branch-occurrence-date">
                             {{ nextBranchOccurrence.begin|format_date('eee dd MMMM')|capitalize }}
                             {{ nextBranchOccurrence.begin|format_time('HH:mm') }}&nbsp;-&nbsp;{{ nextBranchOccurrence.end|format_time('HH:mm') }}
-                        </span>
+                        </a>
                         {% if openingDateTime is null and closingDateTime is not null %}
                             <div id="header-branch-occurrence-order-before">
                                 <span class="glyphicon glyphicon-time"></span>

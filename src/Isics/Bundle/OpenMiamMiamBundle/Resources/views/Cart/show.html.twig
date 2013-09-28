@@ -24,7 +24,10 @@
     {% block javascript %}
         {{ parent() }}
         <script type="text/javascript">
-            new OpenMiamMiam.CartUpdateForm;
+            $(function() {
+                new OpenMiamMiam.QuantityButtons;
+                new OpenMiamMiam.CartUpdateForm;
+            });
         </script>
     {% endblock %}
 {% endembed %}
