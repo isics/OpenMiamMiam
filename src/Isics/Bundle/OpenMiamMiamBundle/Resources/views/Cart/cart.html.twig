@@ -1,0 +1,81 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% if form.items|length > 0 %}
+    {% set showNoPriceStatement = false %}
+    {{ form_start(form, {'attr': {'id': 'form-cart-update', 'class': 'form-inline'}}) }}
+        {{ form_errors(form) }}
+        <table class="table table-bordered table-striped table-cart-products">
+            <thead>
+                <tr>
+                    <th>{{ 'product'|trans }}</th>
+                    <th>{{ 'price'|trans }}</th>
+                    <th>{{ 'quantity'|trans }}</th>
+                    <th>{{ 'total'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in form.items %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': item.vars.data.product.slug, 'productId': item.vars.data.product.id}) }}">
+                                {{ item.vars.data.product.name }}</a>
+                            {% if item.vars.data.product.isBio %}<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
+                        </td>
+                        <td{% if item.vars.data.product.hasNoPrice %} class="td-no-price"{% endif %}>
+                            {% if not item.vars.data.product.hasNoPrice %}
+                                {{ item.vars.data.product.price|number_format_currency(open_miam_miam.currency) }}
+                            {% else %}
+                                {% set showNoPriceStatement = true %}
+                                <span class="glyphicon glyphicon-time"></span>*
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ form_widget(item.product) }}
+                            {{ form_errors(item.quantity) }}
+                            {{ form_widget(item.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
+                        </td>
+                        <td{% if item.vars.data.product.hasNoPrice %} class="td-no-price"{% endif %}>
+                            {% if not item.vars.data.product.hasNoPrice %}
+                                {{ item.vars.data.total|number_format_currency(open_miam_miam.currency) }}
+                            {% else %}
+                                <span class="glyphicon glyphicon-time"></span>*
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">{{ 'total'|trans }}</th>
+                    <td>{{ cart.total|number_format_currency(open_miam_miam.currency) }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        {% if showNoPriceStatement %}
+            {% include 'IsicsOpenMiamMiamBundle:Branch:noPriceStatement.html.twig' %}
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary btn-lg pull-right" name="open_miam_miam_cart[checkout]">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            {{ 'checkout'|trans }}
+        </button>
+        {% do form.checkout.setRendered %}
+
+        <button type="submit" class="btn btn-default btn-lg" name="open_miam_miam_cart[update]" value="update">
+            <span class="glyphicon glyphicon-refresh"></span>
+            {{ 'update'|trans }}
+        </button>
+        {% do form.update.setRendered %}
+
+    {{ form_end(form) }}
+{% else %}
+    <p class="text-muted">
+        <span class="glyphicon glyphicon-ban-circle"></span> <em>{{ 'cart.empty'|trans }}</em>
+    </p>
+{% endif %}

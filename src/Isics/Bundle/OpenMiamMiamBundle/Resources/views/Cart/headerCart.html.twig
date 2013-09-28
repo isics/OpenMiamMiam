@@ -3,7 +3,7 @@
         <strong>
             {{ 'cart.title'|trans }}
             <a href="{{ path('open_miam_miam.cart.show', {'branchSlug': branch.slug}) }}">
-                ({{ cart.nbItems }}</span>)
+                ({{ cart.nbItems }})
                 {{ cart.total|number_format_currency(open_miam_miam.currency) }}
             </a>
         </strong>

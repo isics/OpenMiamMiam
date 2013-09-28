@@ -23,7 +23,7 @@ class CartItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('product', 'open_miam_miam_hidden_product');
-        $builder->add('quantity', 'integer');
+        $builder->add('quantity', 'text');
         if ($options['submit_button']) {
             $builder->add('add', 'submit');
         }

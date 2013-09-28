@@ -39,6 +39,7 @@ cart.empty:                 "Votre panier est vide."
 cart.order_closed:          "Patientez un peu !"
 cart.add_form.order_closed: "Patientez"
 cart.unable_to_add_item:    "Impossible d'ajouter ce produit !"
+cart.unable_to_update:      "Impossible de mettre à jour le panier !"
 
 # Order process
 order.confirm.title:                 "Confirmez votre commande"

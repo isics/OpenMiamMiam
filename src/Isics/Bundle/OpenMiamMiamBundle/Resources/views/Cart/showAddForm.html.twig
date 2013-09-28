@@ -31,7 +31,7 @@
     {% if cart.closed %}
         <span class="label label-order-closed"><span class="glyphicon glyphicon-time"></span> {{ 'cart.add_form.order_closed'|trans }}</span>
     {% elseif form is defined %}
-        {{ form_start(form, {'attr': {'class': 'form form-inline form-add-to-cart'}}) }}
+        {{ form_start(form, {'attr': {'class': 'form form-inline form-cart-add'}}) }}
             {{ form_errors(form) }}
 
             {{ form_errors(form.quantity) }}

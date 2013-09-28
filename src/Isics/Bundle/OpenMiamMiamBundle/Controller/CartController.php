@@ -82,6 +82,7 @@ class CartController extends Controller
 
         return $this->render('IsicsOpenMiamMiamBundle:Cart:show.html.twig', array(
             'branch' => $branch,
+            'cart'   => $cart,
             'form'   => $form->createView(),
         ));
     }
@@ -184,7 +185,7 @@ class CartController extends Controller
     }
 
     /**
-     * Updates cart (PUT)
+     * Updates cart (PUT) AJAX or not
      *
      * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
      *
@@ -207,22 +208,40 @@ class CartController extends Controller
         if ($form->isValid()) {
             $cart->setItems($updatedCart->getItems());
 
-            if ($form->get('checkout')->isClicked()) {
+            if ($request->isXmlHttpRequest()) {
+                return new Response(json_encode(array(
+                    'headerCart' => $this->renderView('IsicsOpenMiamMiamBundle:Cart:headerCart.html.twig', array(
+                        'branch' => $branch,
+                        'cart'   => $cart,
+                    )),
+                    'cart'       => $this->renderView('IsicsOpenMiamMiamBundle:Cart:cart.html.twig', array(
+                        'branch' => $branch,
+                        'cart'   => $cart,
+                        'form'   => $form->createView(),
+                    )),
+                )));
+            } else {
+                if ($form->get('checkout')->isClicked()) {
+                    return $this->redirect($this->generateUrl(
+                        'open_miam_miam.sales_order.confirm',
+                        array('branchSlug' => $branch->getSlug())
+                    ));
+                }
+
+                $this->get('session')->getFlashBag()->add(
+                    'notice',
+                    'message.cart.updated'
+                );
+
                 return $this->redirect($this->generateUrl(
-                    'open_miam_miam.sales_order.confirm',
+                    'open_miam_miam.cart.show',
                     array('branchSlug' => $branch->getSlug())
                 ));
             }
+        }
 
-            $this->get('session')->getFlashBag()->add(
-                'notice',
-                'message.cart.updated'
-            );
-
-            return $this->redirect($this->generateUrl(
-                'open_miam_miam.cart.show',
-                array('branchSlug' => $branch->getSlug())
-            ));
+        if ($request->isXmlHttpRequest()) {
+            return new Response($this->container->get('translator')->trans('cart.unable_to_update'), 400);
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Cart:show.html.twig', array(
