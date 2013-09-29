@@ -120,22 +120,22 @@ Feature: Branch cart
   Scenario: Product available with stock management
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "10"
     Given I am on "/branch-1/basket-of-vegetables-1"
-    Then I should see "Add"
+    Then I should see add to cart form
     And I should see "10 in stock"
 
   Scenario: Producer absent
     Given I am on "/branch-2/basket-of-vegetables-1"
-    Then I should not see "Add"
+    Then I should not see add to cart form
     And I should see "Producer absent"
 
   Scenario: Product not yet available
     Given Product "Basket of vegetables" of producer "Beth Rave" will be available at "+ 3 weeks"
     And I am on "/branch-1/basket-of-vegetables-1"
-    Then I should not see "Add"
+    Then I should not see add to cart form
     And I should see "Available at"
 
   Scenario: Product is out of stock
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "0"
     And I am on "/branch-1/basket-of-vegetables-1"
-    Then I should not see "Add"
+    Then I should not see add to cart form
     And I should see "Too late!"
