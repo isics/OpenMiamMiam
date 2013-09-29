@@ -7,6 +7,7 @@ $(function() {
 
 var OpenMiamMiam = {};
 
+
 OpenMiamMiam.PanelForm = function() {
 
     var object = function() {
@@ -23,6 +24,7 @@ OpenMiamMiam.PanelForm = function() {
 
     return object;
 }();
+
 
 OpenMiamMiam.ProducerProductForm = function() {
 
@@ -48,16 +50,16 @@ OpenMiamMiam.ProducerProductForm = function() {
             //
 
             // stock input (to be moved)
-            var stockInput  = $('#open_miam_miam_admin_product_stock');
+            var stockInput  = $('#open_miam_miam_product_stock');
             var stockErrors = stockInput.siblings('ul.list-errors');
 
             // radio (target) and parent label
-            var availabilityInStockId    = 'open_miam_miam_admin_product_availability_1';
+            var availabilityInStockId    = 'open_miam_miam_product_availability_1';
             var availabilityInStockRadio = $('#'+availabilityInStockId);
             var availabilityInStockLabel = availabilityInStockRadio.parent();
 
             // Moves input next to radio
-            var stockPlaceholderId = 'open_miam_miam_admin_product_stock_placeholder';
+            var stockPlaceholderId = 'open_miam_miam_product_stock_placeholder';
             availabilityInStockLabel.html(function(index, oldhtml) {
                 return oldhtml.replace(/%stock%/i, '<div id="'+stockPlaceholderId+'"></div>');
             });
@@ -93,16 +95,16 @@ OpenMiamMiam.ProducerProductForm = function() {
             //
 
             // availableAt selects (to be moved)
-            var availableAtSelects = $('select[name*="open_miam_miam_admin_product[availableAt]"]');
+            var availableAtSelects = $('select[name*="open_miam_miam_product[availableAt]"]');
             var availableAtErrors  = availableAtSelects.first().parent().siblings('ul.list-errors');
 
             // radio (target) and parent label
-            var availabilityAvailableAtId    = 'open_miam_miam_admin_product_availability_2';
+            var availabilityAvailableAtId    = 'open_miam_miam_product_availability_2';
             var availabilityAvailableAtRadio = $('#'+availabilityAvailableAtId);
             var availabilityAvailableAtLabel = availabilityAvailableAtRadio.parent();
 
             // Moves selects next to radio
-            var datePlaceholderId = 'open_miam_miam_admin_product_stock_placeholder';
+            var datePlaceholderId = 'open_miam_miam_product_stock_placeholder';
             availabilityAvailableAtLabel.html(function(index, oldhtml) {
                 return oldhtml.replace(/%date%/i, '<div id="'+datePlaceholderId+'"></div>');
             });
@@ -138,7 +140,7 @@ OpenMiamMiam.ProducerProductForm = function() {
             //
 
             // Moves focus to input/select and enable/disable (CSS class only)
-            $(':radio[name="open_miam_miam_admin_product[availability]"]').change(function() {
+            $(':radio[name="open_miam_miam_product[availability]"]').change(function() {
                 if (availabilityInStockRadio.is(':checked')) {
                     stockInput
                         .removeClass('disabled')
@@ -147,7 +149,7 @@ OpenMiamMiam.ProducerProductForm = function() {
                     stockInput.addClass('disabled');
                 }
 
-                if ($('#open_miam_miam_admin_product_availability_2').is(':checked')) {
+                if ($('#open_miam_miam_product_availability_2').is(':checked')) {
                     availableAtSelects.removeClass('disabled')
                     availableAtSelects.first().trigger('focus');
                 } else {
@@ -160,9 +162,12 @@ OpenMiamMiam.ProducerProductForm = function() {
     return object;
 }();
 
+
 OpenMiamMiam.deleteDialog = function() {
+
     var object = function() {
         this.handleConfirmation();
+
     };
     object.prototype = {
         handleConfirmation: function() {
