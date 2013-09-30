@@ -14,23 +14,7 @@
         <div id="header-logo">
             <a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}</a>
         </div>
-        <div id="header-main">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div id="header-main-body">
-                        <div id="header-branch-name">
-                            {% block header_branch_name %}
-                                <strong>{{ branch.name }}</strong>
-                            {% endblock %}
-                            <a href="{{ path('open_miam_miam.homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
-                        </div>
-
-                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:Summarize', {'branch': branch})) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        
         {% if homepage is not defined %}
             {% set homepage=false %}
         {% endif %}

@@ -7,7 +7,6 @@
  #}
 {% javascripts
     'js/jquery-2.0.3.min.js'
-    'js/maps.js'
     'js/jquery-ui-1.10.3.custom.min.js'
     'bootstrap/js/button.js'
     'bootstrap/js/collapse.js'
@@ -18,3 +17,17 @@
 %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script type="text/javascript">
+$(function() {
+	new OpenMiamMiam.LocationMap(
+		'{{ branch.name }}',
+		'{{ branch.address1 }}',
+		'{{ branch.address2 }}',
+		'{{ branch.zipcode }}',
+		'{{ branch.city }}',
+		'FRANCE' {#todo add openmiammiam.country param#}
+	);
+});
+</script>

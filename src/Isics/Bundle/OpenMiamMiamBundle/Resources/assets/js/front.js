@@ -1,54 +1,44 @@
-window.onload = function() {
-				
-				var address1 = 
-				var address2 =
-				var zipcode = 
-				var city = 
-				
-				var myMarker = null;
-			 
-				var myLatlng = new google.maps.LatLng(-58.397, 15.644);
-			 
-				var myOptions = {
-					zoom: 15,
-					center: myLatlng,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-			 
-				var myMap = new google.maps.Map(
-					document.getElementById('map'),
-					myOptions
-				);
-			 
-				var GeocoderOptions = {
-				    'address' : address1,
-				    'region' : 'FR'
-				}
-			
-				function GeocodingResult( results , status )
-				{
-			
-				  if( status == google.maps.GeocoderStatus.OK ) {
-			 
-				    if(myMarker != null) {
-				      myMarker.setMap(null);
-				    }
-			 
-				    myMarker = new google.maps.Marker({
-				      position: results[0].geometry.location,
-				      map: myMap,
-				      title: "{{ branch.name }}"
-				    });
-			 
-				    myMap.setCenter(results[0].geometry.location);
-				  } 
-				} 
-				var myGeocoder = new google.maps.Geocoder();
-				myGeocoder.geocode( GeocoderOptions, GeocodingResult );
-			}
-
 var OpenMiamMiam = {};
 
+OpenMiamMiam.LocationMap = function() {
+	
+	var object = function(markerTitle, address1, address2, zipcode, city, country) {
+		this.markerTitle = markerTitle;
+		this.address = $.trim(address1+' '+address2)+' '+zipcode+' '+city;
+		this.addMap();
+	}
+	
+	object.prototype = {
+		addMap: function() {
+			var self = this;
+			var geocoder = new google.maps.Geocoder();
+			
+			geocoder.geocode({address: self.address}, function(results, status) {
+				if (status === google.maps.GeocoderStatus.OK) {
+					var location = results[0].geometry.location;
+					
+					var map = new google.maps.Map(
+						document.getElementById('location-map'),
+						{
+							zoom: 10,
+							center: location,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						}
+					);
+					
+					var marker = new google.maps.Marker({
+		                position: location,
+						map: map,
+						title: self.markerTitle
+					});
+				}
+			});
+		}
+	};
+	
+	return object;
+}();
+			
 
 OpenMiamMiam.CartAddForm = function() {
     var object = function() {
