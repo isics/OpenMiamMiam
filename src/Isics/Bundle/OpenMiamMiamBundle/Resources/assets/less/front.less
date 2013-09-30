@@ -116,6 +116,13 @@ header {
     border: 1px solid @btn-primary-border;
     .border-right-radius(@border-radius-base);
     vertical-align: middle;
+
+    &.disabled {
+        cursor: not-allowed;
+        pointer-events: none; // Future-proof disabling of clicks
+        .opacity(.65);
+        .box-shadow(none);
+    }
 }
 
 .quantity-button {
