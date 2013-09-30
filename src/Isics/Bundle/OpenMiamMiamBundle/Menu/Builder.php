@@ -48,6 +48,7 @@ class Builder
      *
      * @param FactoryInterface    $factory    Factory
      * @param TranslatorInterface $translator Translator
+     * @param AdminManager $adminManager
      */
     public function __construct(FactoryInterface $factory, TranslatorInterface $translator, AdminManager $adminManager)
     {
@@ -59,8 +60,7 @@ class Builder
     /**
      * Admin menu
      *
-     * @param FactoryInteface $factory
-     * @param array           $options
+     * @return \Knp\Menu\ItemInterface
      */
     public function createAdminMenu()
     {
