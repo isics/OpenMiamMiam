@@ -12,8 +12,9 @@
 {% block header %}
     <header>
         <div id="header-logo">
-            {% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}
+            <a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}</a>
         </div>
+
         <div id="header-main">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -30,6 +31,11 @@
                 </div>
             </div>
         </div>
+
+        {% if homepage is not defined %}
+            {% set homepage=false %}
+        {% endif %}
+        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:Summarize', {'branch': branch, 'homepage': homepage})) }}
     </header>
 {% endblock %}
 
@@ -38,7 +44,7 @@
         <div class="col-md-3" role="navigation">
             {{ render(controller('IsicsOpenMiamMiamBundle:Catalog:ShowCategories', {'branch': branch})) }}
             {{ render(controller('IsicsOpenMiamMiamBundle:Branch:ShowRandomProducers', {'branch': branch, limit: 5})) }}
-            {{ render(controller('IsicsOpenMiamMiamBundle:Branch:ShowNextOccurrences', {'branch': branch, limit: 5})) }}
+            {{ render(controller('IsicsOpenMiamMiamBundle:Branch:ShowNextOccurrences', {'branch': branch, limit: 3})) }}
             {% include 'IsicsOpenMiamMiamBundle:Branch:location.html.twig' with {'branch': branch} %}
         </div>
         <div class="col-md-9" role="main">

@@ -514,6 +514,22 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Then /^I should see add to cart form$/
+     */
+    public function iShouldSeeAddToCartForm()
+    {
+        $this->assertElementOnPage('.form-cart-add');
+    }
+
+    /**
+     * @Then /^I should not see add to cart form$/
+     */
+    public function iShouldNotSeeAddToCartForm()
+    {
+        $this->assertElementNotOnPage('.form-cart-add');
+    }
+
+    /**
      * Get entity manager.
      *
      * @return EntityManager

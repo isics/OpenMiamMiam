@@ -9,9 +9,8 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -160,6 +159,6 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
      */
     public function getName()
     {
-        return 'open_miam_miam_admin_product';
+        return 'open_miam_miam_product';
     }
 }

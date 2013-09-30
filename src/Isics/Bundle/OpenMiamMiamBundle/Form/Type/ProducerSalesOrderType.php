@@ -15,18 +15,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CartItemType extends AbstractType
+class ProducerSalesOrderType extends AbstractType
 {
     /**
      * @see AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('product', 'open_miam_miam_hidden_product');
-        $builder->add('quantity', 'text');
-        if ($options['submit_button']) {
-            $builder->add('add', 'submit');
-        }
+        $builder->add('salesOrderRows','collection', array('type' => 'open_miam_miam_sales_order_row'))
+                ->add('save', 'submit');
+
     }
 
     /**
@@ -34,10 +32,7 @@ class CartItemType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class'    => 'Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem',
-            'submit_button' => false,
-        ));
+        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder'));
     }
 
     /**
@@ -45,6 +40,6 @@ class CartItemType extends AbstractType
      */
     public function getName()
     {
-        return 'open_miam_miam_cart_item';
+        return 'open_miam_miam_producer_sales_order';
     }
 }

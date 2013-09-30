@@ -48,7 +48,7 @@ Feature: Branch cart
   Scenario Outline: See empty branch cart summary
     Given I am on "<url>"
     Then I should see "My cart"
-    And I should see the next date "<date>" formated "l d F"
+    And I should see the next date "<date>" formated "d F"
 
   Examples:
     | url       | date      |
@@ -60,16 +60,14 @@ Feature: Branch cart
       | date     | from    | to     |
       | tomorrow | 12 a.m. | 2 a.m. |
     And I am on "/branch-1"
-    Then I should not see "My cart"
-    And I should see the next date "+ 1 week" formated "l d F"
+    Then I should see the next date "+ 1 week" formated "d F"
 
   Scenario: Orders closed 2/2
     Given branch "Branch 1" has following calendar:
       | date      | from    | to         |
       | yesterday | 10 p.m. | 11:59 p.m. |
     And I am on "/branch-1"
-    Then I should not see "My cart"
-    And I should see the next date "+ 1 week" formated "l d F"
+    Then I should see the next date "+ 1 week" formated "d F"
 
   Scenario: Add a product via category page
     Given I am on "/branch-1/fruits-and-vegetables"
@@ -122,22 +120,22 @@ Feature: Branch cart
   Scenario: Product available with stock management
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "10"
     Given I am on "/branch-1/basket-of-vegetables-1"
-    Then I should see "Add"
+    Then I should see add to cart form
     And I should see "10 in stock"
 
   Scenario: Producer absent
     Given I am on "/branch-2/basket-of-vegetables-1"
-    Then I should not see "Add"
+    Then I should not see add to cart form
     And I should see "Producer absent"
 
   Scenario: Product not yet available
     Given Product "Basket of vegetables" of producer "Beth Rave" will be available at "+ 3 weeks"
     And I am on "/branch-1/basket-of-vegetables-1"
-    Then I should not see "Add"
+    Then I should not see add to cart form
     And I should see "Available at"
 
   Scenario: Product is out of stock
     Given Product "Basket of vegetables" of producer "Beth Rave" has stock level "0"
     And I am on "/branch-1/basket-of-vegetables-1"
-    Then I should not see "Add"
+    Then I should not see add to cart form
     And I should see "Too late!"

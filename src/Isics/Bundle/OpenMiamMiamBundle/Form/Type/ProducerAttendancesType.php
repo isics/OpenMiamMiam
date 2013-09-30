@@ -9,23 +9,21 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\SalesOrderRowType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SalesOrderType extends AbstractType
+class ProducerAttendancesType extends AbstractType
 {
     /**
      * @see AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('salesOrderRows','collection', array('type' => new SalesOrderRowType()))
+        $builder->add('branchAttendances', 'collection', array('type' => 'open_miam_miam_producer_branch_attendances'))
                 ->add('save', 'submit');
-
     }
 
     /**
@@ -33,7 +31,9 @@ class SalesOrderType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder'));
+        $resolver->setDefaults(array(
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerAttendances',
+        ));
     }
 
     /**
@@ -41,6 +41,6 @@ class SalesOrderType extends AbstractType
      */
     public function getName()
     {
-        return 'open_miam_miam_admin_sales_order';
+        return 'open_miam_miam_producer_attendances';
     }
 }

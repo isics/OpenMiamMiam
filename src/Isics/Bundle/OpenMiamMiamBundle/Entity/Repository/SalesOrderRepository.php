@@ -57,9 +57,8 @@ class SalesOrderRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('so')
                 ->addSelect('bo, sor')
-                ->innerJoin('so.salesOrderRows', 'sor')
                 ->innerJoin('so.branchOccurrence', 'bo')
-                ->where('sor.producer = :producer')
+                ->leftJoin('so.salesOrderRows', 'sor', 'WITH', 'sor.producer = :producer')
                 ->setParameter('producer', $producer)
                 ->addOrderBy('so.id');
 
