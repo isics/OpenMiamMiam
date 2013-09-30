@@ -20,6 +20,7 @@
                     <tr>
                         <th>&nbsp;</th>
                         <th>{{ 'admin.association.sales_orders.form.add_rows.name'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.form.add_rows.producer'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.form.add_rows.price'|trans }}</th>
                     </tr>
                     </thead>
@@ -29,6 +30,10 @@
                         <td>
                             {{ form_errors(form.artificialProduct.name) }}
                             {{ form_widget(form.artificialProduct.name) }}
+                        </td>
+                        <td>
+                            {{ form_errors(form.artificialProduct.producer) }}
+                            {{ form_widget(form.artificialProduct.producer) }}
                         </td>
                         <td>
                             {{ form_errors(form.artificialProduct.price) }}
@@ -43,6 +48,7 @@
                                 {{ form_widget(child) }}
                             </td>
                             <td>{{ products[child.vars.value].data.name }}</td>
+                            <td>{{ products[child.vars.value].data.producer.name }}</td>
                             <td>{{ products[child.vars.value].data.price|number_format_currency(open_miam_miam.currency) }}</td>
                         </tr>
                     {% endfor %}

@@ -1,5 +1,8 @@
 Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct:
     properties:
+        producer:
+            - NotNull: ~
+            - Valid: ~
         price:
             - Range:
                 min: 0.01

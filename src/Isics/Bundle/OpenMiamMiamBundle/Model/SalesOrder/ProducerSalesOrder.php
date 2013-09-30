@@ -103,10 +103,8 @@ class ProducerSalesOrder
     public function getTotal()
     {
         $total = 0;
-        foreach ($this->salesOrder->getSalesOrderRows() as $row) {
-            if ($row->getProducer()->getId() == $this->producer->getId()) {
-                $total += $row->getTotal();
-            }
+        foreach ($this->salesOrderRows as $row) {
+            $total += $row->getTotal();
         }
 
         return $total;

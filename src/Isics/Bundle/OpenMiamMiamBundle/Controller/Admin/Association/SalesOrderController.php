@@ -187,7 +187,6 @@ class SalesOrderController extends BaseController
 
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
             $row,
-            $association,
             $this->get('security.context')->getToken()->getUser()
         );
 
@@ -223,6 +222,7 @@ class SalesOrderController extends BaseController
             array('artificialProduct' => $artificialProduct),
             array(
                 'salesOrder' => $order,
+                'association' => $association,
                 'action' => $this->generateUrl(
                     'open_miam_miam.admin.association.sales_order.add_rows',
                     array('id' => $association->getId(), 'salesOrderId' => $order->getId())

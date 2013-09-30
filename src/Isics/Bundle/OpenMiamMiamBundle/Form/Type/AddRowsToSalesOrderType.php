@@ -23,23 +23,24 @@ class AddRowsToSalesOrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $artificialProductTypeOptions = array();
+
         if (isset($options['producer'])) {
             $producer = $options['producer'];
             $qb = function(EntityRepository $er) use ($producer) {
                 return $er->getAvailableForProducerQueryBuilder($producer);
             };
-        } else {
+        } elseif (isset($options['association'])) {
             $salesOrder = $options['salesOrder'];
             $association = $salesOrder->getBranchOccurrence()->getBranch()->getAssociation();
             $qb = function(EntityRepository $er) use ($association) {
                 return $er->getAvailableForAssociationQueryBuilder($association);
             };
+
+            $artificialProductTypeOptions['association'] = $association;
         }
 
-        $builder->add(
-                    'artificialProduct',
-                    'open_miam_miam_artificial_product'
-                )
+        $builder->add('artificialProduct', 'open_miam_miam_artificial_product', $artificialProductTypeOptions)
                 ->add('products', 'entity', array(
                     'class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Product',
                     'property' => 'name',
@@ -56,10 +57,11 @@ class AddRowsToSalesOrderType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('salesOrder'));
-        $resolver->setOptional(array('producer'));
+        $resolver->setOptional(array('producer', 'association'));
         $resolver->setAllowedTypes(array(
             'salesOrder' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder',
             'producer' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer',
+            'association' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association',
         ));
     }
 

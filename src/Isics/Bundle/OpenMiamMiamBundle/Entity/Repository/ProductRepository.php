@@ -170,7 +170,8 @@ class ProductRepository extends EntityRepository
         return $qb->addSelect('b')
                 ->leftJoin('p.branches', 'b')
                 ->andWhere('p.producer = :producer')
-                ->setParameter('producer', $producer);
+                ->setParameter('producer', $producer)
+                ->addOrderBy('p.name');
     }
 
     /**
@@ -239,10 +240,12 @@ class ProductRepository extends EntityRepository
 
         return $qb->addSelect('b')
                 ->innerJoin('p.producer', 'pr')
-                ->innerJoin('p.branches', 'br')
+                ->innerJoin('pr.associations', 'a')
                 ->leftJoin('p.branches', 'b')
-                ->andWhere('br.association = :association')
-                ->setParameter('association', $association);
+                ->andWhere('a.id = :associationId')
+                ->setParameter('associationId', $association->getId())
+                ->addOrderBy('p.name')
+                ->addGroupBy('p.id');
     }
 
     /**

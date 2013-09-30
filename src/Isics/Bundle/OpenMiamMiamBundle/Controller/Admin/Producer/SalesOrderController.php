@@ -146,7 +146,6 @@ class SalesOrderController extends BaseController
         $order = $row->getSalesOrder();
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
             $row,
-            $producer,
             $this->get('security.context')->getToken()->getUser()
         );
 

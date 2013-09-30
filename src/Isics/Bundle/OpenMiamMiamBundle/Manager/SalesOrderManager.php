@@ -173,7 +173,8 @@ class SalesOrderManager
 
             $activitiesStack[] = array(
                 'transKey' => 'activity_stream.sales_order.created',
-                'transParams' => array('%ref%' => $order->getRef())
+                'transParams' => array('%ref%' => $order->getRef()),
+                'context' => $context
             );
 
         } else {
@@ -187,7 +188,8 @@ class SalesOrderManager
                             '%order_ref%' => $order->getRef(),
                             '%ref%' => $row->getRef(),
                             '%name%' => $row->getName()
-                        )
+                        ),
+                        'context' => $row->getProducer()
                     );
                     continue;
                 }
@@ -228,7 +230,11 @@ class SalesOrderManager
                     }
 
                     if (null !== $transKey) {
-                        $activitiesStack[] = array('transKey' => $transKey, 'transParams' => $transParams);
+                        $activitiesStack[] = array(
+                            'transKey' => $transKey,
+                            'transParams' => $transParams,
+                            'context' => $row->getProducer()
+                        );
                     }
                 }
             }
@@ -253,7 +259,7 @@ class SalesOrderManager
                 $activityParams['transKey'],
                 $activityParams['transParams'],
                 $order,
-                $context,
+                $activityParams['context'],
                 $user
             );
             $this->entityManager->persist($activity);
@@ -266,10 +272,9 @@ class SalesOrderManager
      * Deletes a row of a sales order
      *
      * @param SalesOrderRow $row
-     * @param mixed $context
      * @param User $user
      */
-    public function deleteSalesOrderRow(SalesOrderRow $row, $context, User $user = null)
+    public function deleteSalesOrderRow(SalesOrderRow $row, User $user = null)
     {
         $order = $row->getSalesOrder();
         $order->removeSalesOrderRow($row);
@@ -290,7 +295,7 @@ class SalesOrderManager
             'activity_stream.sales_order.row.deleted',
             array('%order_ref%' => $order->getRef(), '%name%' => $row->getName(), '%ref%' => $row->getRef()),
             $order,
-            $context,
+            $row->getProducer(),
             $user
         );
         $this->entityManager->persist($activity);

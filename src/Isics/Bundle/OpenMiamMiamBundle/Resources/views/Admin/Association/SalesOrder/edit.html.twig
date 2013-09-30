@@ -66,6 +66,7 @@
                     <tr>
                         <th>{{ 'admin.association.sales_orders.form.sales_order_row.ref'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.form.sales_order_row.product'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.form.sales_order_row.producer'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.form.sales_order_row.unit_price'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.form.sales_order_row.quantity'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.form.sales_order_row.total'|trans }}</th>
@@ -77,6 +78,7 @@
                         <tr>
                             <td>{{ salesOrderRow.ref }}</td>
                             <td>{{ salesOrderRow.name }}</td>
+                            <td>{{ salesOrderRow.producer.name }}</td>
                             <td>{{ salesOrderRow.unitPrice|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>
                                 {{ form_errors(child.quantity) }}
