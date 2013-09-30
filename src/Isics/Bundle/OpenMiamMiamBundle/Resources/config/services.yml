@@ -12,17 +12,18 @@ parameters:
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
 
-    open_miam_miam.activity_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
-    open_miam_miam.branch_occurrence_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
-    open_miam_miam.cart_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
-    open_miam_miam.consumer_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
-    open_miam_miam.admin_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
-    open_miam_miam.acl_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
-    open_miam_miam.product_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
-    open_miam_miam.producer_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager'
-    open_miam_miam.producer_attendances_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
-    open_miam_miam.sales_order_manager.class:          'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
-    open_miam_miam.producer_sales_order_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
+    open_miam_miam.activity_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
+    open_miam_miam.branch_occurrence_manager.class:       'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
+    open_miam_miam.cart_manager.class:                    'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
+    open_miam_miam.consumer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
+    open_miam_miam.admin_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
+    open_miam_miam.acl_manager.class:                     'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
+    open_miam_miam.product_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
+    open_miam_miam.producer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager'
+    open_miam_miam.producer_attendances_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
+    open_miam_miam.sales_order_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
+    open_miam_miam.producer_sales_order_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
+    open_miam_miam.association_sales_order_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\AssociationSalesOrderManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -227,4 +228,8 @@ services:
 
     open_miam_miam.producer_sales_order_manager:
         class: %open_miam_miam.producer_sales_order_manager.class%
+        arguments: [@doctrine.orm.entity_manager]
+
+    open_miam_miam_association_sales_order_manager:
+        class: %open_miam_miam.association_sales_order_manager.class%
         arguments: [@doctrine.orm.entity_manager]

@@ -14,12 +14,26 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends BaseController
 {
+    /**
+     * Secures product for producer
+     *
+     * @param Producer $producer
+     * @param Product $product
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function secureProduct(Producer $producer, Product $product)
+    {
+        if ($producer->getId() !== $product->getProducer()->getId()) {
+            throw $this->createNotFoundException('Invalid product for producer');
+        }
+    }
+
     /**
      * List products
      *
@@ -89,6 +103,7 @@ class ProductController extends BaseController
     public function editAction(Request $request, Producer $producer, Product $product)
     {
         $this->secure($producer);
+        $this->secureProduct($producer, $product);
 
         $productManager = $this->get('open_miam_miam.product_manager');
 
@@ -155,6 +170,7 @@ class ProductController extends BaseController
     public function deleteAction(Producer $producer, Product $product)
     {
         $this->secure($producer);
+        $this->secureProduct($producer, $product);
 
         $productManager = $this->get('open_miam_miam.product_manager');
         $productManager->delete($product);

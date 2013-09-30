@@ -12,12 +12,24 @@ open_miam_miam.admin:
     pattern:  /
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:index }
 
+
+
 #
 # Admin Association
 #
 open_miam_miam.admin.association.show_dashboard:
     pattern:  /associations/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:showDashboard }
+
+open_miam_miam.admin.association.sales_order.list:
+    pattern:  /associations/{id}/sales_orders
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:list }
+
+open_miam_miam.admin.association.sales_order.list_for_branch_occurrence:
+    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:listForBranchOccurrence }
+
+
 
 #
 # Admin Producer

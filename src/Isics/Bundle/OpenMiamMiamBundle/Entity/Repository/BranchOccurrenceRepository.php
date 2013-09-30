@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 
 class BranchOccurrenceRepository extends EntityRepository
@@ -105,5 +106,30 @@ class BranchOccurrenceRepository extends EntityRepository
             ->setParameter('date2', $date2)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Finds all latest occurrences for an association
+     *
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function findAllLatestForAssociation(Association $association)
+    {
+        $stop = new \DateTime();
+        $stop->add(new \DateInterval(sprintf('PT%sS', $association->getOpeningDelay())));
+
+        return $this->createQueryBuilder('bo')
+                ->addSelect('b')
+                ->innerJoin('bo.branch', 'b')
+                ->where('b.association = :association')
+                ->andWhere('bo.end <= :stop')
+                ->addOrderBy('bo.begin', 'DESC')
+                ->addOrderBy('b.name', 'ASC')
+                ->setParameter('association', $association)
+                ->setParameter('stop', $stop)
+                ->getQuery()
+                ->getResult();
     }
 }

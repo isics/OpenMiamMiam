@@ -69,4 +69,23 @@ class SalesOrderRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Returns sales orders for a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function findForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        $qb = $this->createQueryBuilder('so')
+                ->addSelect('sor')
+                ->leftJoin('so.salesOrderRows', 'sor')
+                ->andWhere('so.branchOccurrence = :branchOccurrence')
+                ->setParameter('branchOccurrence', $branchOccurrence)
+                ->addOrderBy('so.id');
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -570,6 +570,24 @@ class Producer
     }
 
     /**
+     * Returns true if producer has branch
+     *
+     * @param Branch $branch
+     *
+     * @return bool
+     */
+    public function hasBranch(Branch $branch)
+    {
+        foreach ($this->getBranches() as $_branch) {
+            if ($branch->getId() == $_branch->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Remove branch
      *
      * @param Branch $branch

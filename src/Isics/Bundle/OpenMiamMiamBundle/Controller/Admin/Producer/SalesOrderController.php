@@ -22,6 +22,36 @@ use Symfony\Component\HttpFoundation\Request;
 class SalesOrderController extends BaseController
 {
     /**
+     * @param Producer $producer
+     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function secureSalesOrder(Producer $producer, SalesOrder $order)
+    {
+        if (!$producer->hasBranch($order->getBranchOccurrence()->getBranch())) {
+            throw $this->createNotFoundException('Invalid branch for producer');
+        }
+    }
+
+    /**
+     * @param Producer $producer
+     * @param SalesOrder $order
+     * @param SalesOrderRow $row
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function secureSalesOrderRow(Producer $producer, SalesOrder $order, SalesOrderRow $row)
+    {
+        if (!$producer->hasBranch($order->getBranchOccurrence()->getBranch())
+            || $row->getProducer()->getId() !== $producer->getId()
+            || $order->getId() !== $row->getSalesOrder()->getId()) {
+
+            throw new $this->createNotFoundException();
+        }
+    }
+
+    /**
      * List sales order
      *
      * @param Producer $producer
@@ -52,6 +82,7 @@ class SalesOrderController extends BaseController
     public function editAction(Request $request, Producer $producer, SalesOrder $order)
     {
         $this->secure($producer);
+        $this->secureSalesOrder($producer, $order);
 
         $producerSalesOrder = new ProducerSalesOrder($producer, $order);
 
@@ -110,10 +141,7 @@ class SalesOrderController extends BaseController
     public function deleteSalesOrderRowAction(Producer $producer, SalesOrder $order, SalesOrderRow $row)
     {
         $this->secure($producer);
-
-        if ($row->getProducer()->getId() !== $producer->getId() || $order->getId() !== $row->getSalesOrder()->getId()) {
-            throw new $this->createNotFoundException();
-        }
+        $this->secureSalesOrderRow($producer, $order, $row);
 
         $order = $row->getSalesOrder();
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
@@ -144,6 +172,7 @@ class SalesOrderController extends BaseController
     public function addSalesOrderRowsAction(Request $request, Producer $producer, SalesOrder $order)
     {
         $this->secure($producer);
+        $this->secureSalesOrder($producer, $order);
 
         $productManager = $this->get('open_miam_miam.product_manager');
         $artificialProduct = $productManager->createArtificialProduct($producer);
