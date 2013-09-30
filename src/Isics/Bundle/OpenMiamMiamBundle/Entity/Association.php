@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Isics\OpenMiamMiamBundle\Entity\Association
  *
  * @ORM\Table(name="association")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\AssociationRepository")
  */
 class Association
 {
