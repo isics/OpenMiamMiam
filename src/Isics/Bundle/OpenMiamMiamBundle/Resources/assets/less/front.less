@@ -171,7 +171,9 @@ header {
             display: block;
             padding: 10px 15px;
 
-            &:hover {
+            &:hover,
+            &:focus,
+            &:active {
                 background-color: darken(@panel-default-heading-bg, 8%);
                 border-color: darken(@panel-default-border, 12%);
                 text-decoration: none;

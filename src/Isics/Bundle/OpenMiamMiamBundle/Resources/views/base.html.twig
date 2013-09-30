@@ -56,10 +56,12 @@
                 {% block content %}{% endblock %}
             {% endblock %}
 
-            <footer>
-                <hr />
-                {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
-            </footer>
+            {% block footer %}
+                <footer>
+                    <hr />
+                    {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
+                </footer>
+            {% endblock %}
         </div>
 
         {% block javascript %}
