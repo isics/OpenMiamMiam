@@ -36,7 +36,7 @@ class ArtificialProductType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct',
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct',
         ));
     }
 

@@ -1,4 +1,4 @@
-Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct:
+Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct:
     properties:
         price:
             - Range:

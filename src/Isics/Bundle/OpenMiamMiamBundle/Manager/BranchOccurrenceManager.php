@@ -14,7 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProductAvailability;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ProductAvailability;
 
 class BranchOccurrenceManager
 {

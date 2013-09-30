@@ -1,6 +1,6 @@
 <?php
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Product;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
