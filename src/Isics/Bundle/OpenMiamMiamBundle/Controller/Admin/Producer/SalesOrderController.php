@@ -15,7 +15,6 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
-use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,9 +145,8 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
 
-        $artificialProduct = new ArtificialProduct();
-        $artificialProduct->setName($this->get('translator')->trans('artificial_product'));
-        $artificialProduct->setProducer($producer);
+        $productManager = $this->get('open_miam_miam.product_manager');
+        $artificialProduct = $productManager->createArtificialProduct($producer);
 
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.add_rows_sales_order'),
@@ -167,9 +165,9 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
-
                 $data = $form->getData();
+
+                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
                 $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
                 $salesOrderManager->save(
                     $order,

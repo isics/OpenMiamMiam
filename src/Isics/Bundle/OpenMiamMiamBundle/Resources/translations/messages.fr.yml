@@ -19,7 +19,6 @@ withdrawing_products: "Retrait des produits"
 number:               "n°"
 no_price_statement:   "Le prix sera défini lors de la préparation de la commande."
 my_account:           "Mon compte"
-artificial_product:   "Produit divers"
 
 # Zones
 zone.header.branch.change:         "changer de comptoir"

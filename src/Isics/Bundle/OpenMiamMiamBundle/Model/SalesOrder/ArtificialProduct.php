@@ -12,7 +12,12 @@ class ArtificialProduct
     protected $name;
 
     /**
-     * @var float
+     * @var string
+     */
+    protected $ref;
+
+    /**
+     * @var decimal
      */
     protected $price;
 
@@ -20,6 +25,7 @@ class ArtificialProduct
      * @var Producer
      */
     protected $producer;
+
 
 
     public function setProducer(Producer $producer)
@@ -49,7 +55,7 @@ class ArtificialProduct
     }
 
     /**
-     * @param float $price
+     * @param decimal $price
      */
     public function setPrice($price)
     {
@@ -57,10 +63,26 @@ class ArtificialProduct
     }
 
     /**
-     * @return float
+     * @return decimal
      */
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * @param string $ref
+     */
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRef()
+    {
+        return $this->ref;
     }
 }

@@ -70,7 +70,7 @@ class SalesOrderManager
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'artificial_product_ref'));
+        $resolver->setRequired(array('ref_prefix', 'ref_pad_length'));
     }
 
     /**
@@ -310,7 +310,7 @@ class SalesOrderManager
             $salesOrderRow = new SalesOrderRow();
             $salesOrderRow->setProducer($artificialProduct->getProducer());
             $salesOrderRow->setName($artificialProduct->getName());
-            $salesOrderRow->setRef($this->config['artificial_product_ref']);
+            $salesOrderRow->setRef($artificialProduct->getRef());
             $salesOrderRow->setIsBio(false);
 
             $salesOrderRow->setUnitPrice($artificialProduct->getPrice());

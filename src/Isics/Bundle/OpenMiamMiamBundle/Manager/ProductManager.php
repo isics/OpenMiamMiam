@@ -16,6 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -76,7 +77,7 @@ class ProductManager
      */
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'upload_path'));
+        $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'upload_path', 'artificial_product_ref', 'artificial_product_name'));
     }
 
     /**
@@ -294,5 +295,25 @@ class ProductManager
     public function getActivities(Product $product)
     {
         return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($product, $product->getProducer());
+    }
+
+    /**
+     * Create a new artificial product
+     *
+     * @param Producer $producer
+     *
+     * @return ArtificialProduct
+     */
+    public function createArtificialProduct(Producer $producer = null)
+    {
+        $product = new ArtificialProduct();
+        $product->setName($this->config['artificial_product_name']);
+        $product->setRef($this->config['artificial_product_ref']);
+
+        if (null !== $producer) {
+            $product->setProducer($producer);
+        }
+
+        return $product;
     }
 }
