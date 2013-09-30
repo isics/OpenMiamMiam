@@ -252,13 +252,15 @@ class ProductRepository extends EntityRepository
      * Returns queryBuilder to find out of stock products of a producer
      *
      * @param Producer $producer
+     * @param QueryBuilder $qb
      *
      * @return QueryBuilder
      */
-    public function getOutOfStockForProducerQueryBuilder(Producer $producer)
+    public function getOutOfStockForProducerQueryBuilder(Producer $producer, QueryBuilder $qb = null)
     {
-        return $this->createQueryBuilder('p')
-                ->where('p.producer = :producer')
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->where('p.producer = :producer')
                 ->setParameter('producer', $producer)
                 ->andWhere('p.availability = :availability')
                 ->setParameter('availability', Product::AVAILABILITY_ACCORDING_TO_STOCK)

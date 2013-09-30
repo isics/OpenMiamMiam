@@ -116,6 +116,8 @@
         {% do form.save.setRendered %}
     {{ form_end(form) }}
 
+    <a href="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': order.branchOccurrence.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+
     {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}
     {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\SalesOrder\\deleteRowDialog.html.twig' %}
 {% endblock %}
