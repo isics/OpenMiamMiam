@@ -53,6 +53,11 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $objectIdentity3 = ObjectIdentity::fromDomainObject($this->getReference('Romeo Frigo'));
         $acl3 = $aclProvider->findAcl($objectIdentity3);
 
+        $objectIdentity4 = ObjectIdentity::fromDomainObject($this->getReference('association'));
+        $acl4 = $aclProvider->findAcl($objectIdentity4);
+
+
+
         # ACEs
         $securityIdentity1 = new UserSecurityIdentity('john@doe.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
         $acl1->insertObjectAce($securityIdentity1, MaskBuilder::MASK_OWNER);
@@ -60,6 +65,9 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $acl3->insertObjectAce($securityIdentity1, MaskBuilder::MASK_OWNER);
         $aclProvider->updateAcl($acl3);
+
+        $acl4->insertObjectAce($securityIdentity1, MaskBuilder::MASK_OWNER);
+        $aclProvider->updateAcl($acl4);
 
         $securityIdentity2 = new UserSecurityIdentity('john@smith.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
         $acl1->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OWNER);
