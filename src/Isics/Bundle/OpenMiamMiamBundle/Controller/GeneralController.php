@@ -42,12 +42,8 @@ class GeneralController extends Controller {
 		if (null === $nextAttendancesOf) {
 			throw new NotFoundHttpException('Attendances not found');
 		}
-
 		
 		return $this->render('IsicsOpenMiamMiamBundle::showProducer.html.twig', array('producer'  => $producer,'nextAttendancesOf'   => $nextAttendancesOf));
 		
 	}
-	
-	
-	
 }

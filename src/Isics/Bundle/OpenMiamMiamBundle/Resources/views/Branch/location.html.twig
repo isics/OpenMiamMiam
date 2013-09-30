@@ -11,10 +11,15 @@
     </div>
     <div class="panel-body">
         <address>
+       
             {{ branch.address1 }}<br />
             {% if branch.address2 is not null %}{{ branch.address2 }}<br />{% endif %}
             {{ branch.zipcode }}
             {{ branch.city }}
         </address>
+        <div id="map" class="mapBranch"></div>
     </div>
 </div>
+{% block javascript %}
+   {% include 'IsicsOpenMiamMiamBundle::baseJavascripts.html.twig' %}
+{% endblock %}
