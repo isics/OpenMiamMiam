@@ -42,6 +42,7 @@
                         <td>{{ salesOrder.salesOrderRows|length }}</td>
                         <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>
+                            <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                         </td>
                     </tr>
                 {% endfor %}

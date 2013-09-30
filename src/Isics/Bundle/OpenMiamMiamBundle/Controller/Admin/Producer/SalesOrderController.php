@@ -30,7 +30,7 @@ class SalesOrderController extends BaseController
     protected function secureSalesOrder(Producer $producer, SalesOrder $order)
     {
         if (!$producer->hasBranch($order->getBranchOccurrence()->getBranch())) {
-            throw $this->createNotFoundException('Invalid branch for producer');
+            throw $this->createNotFoundException('Invalid order for producer');
         }
     }
 
@@ -47,7 +47,7 @@ class SalesOrderController extends BaseController
             || $row->getProducer()->getId() !== $producer->getId()
             || $order->getId() !== $row->getSalesOrder()->getId()) {
 
-            throw new $this->createNotFoundException();
+            throw new $this->createNotFoundException('Invalid sales order row for producer');
         }
     }
 
@@ -125,7 +125,7 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * Update a sales order
+     * Deletes a sales order
      *
      * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      * @ParamConverter("row", class="IsicsOpenMiamMiamBundle:SalesOrderRow", options={"mapping": {"salesOrderRowId": "id"}})

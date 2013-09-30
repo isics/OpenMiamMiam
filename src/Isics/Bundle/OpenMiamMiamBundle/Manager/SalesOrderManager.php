@@ -342,4 +342,14 @@ class SalesOrderManager
             }
         }
     }
+
+    /**
+     * Return activities for order
+     *
+     * @param SalesOrder $order
+     */
+    public function getActivities(SalesOrder $order)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($order);
+    }
 }

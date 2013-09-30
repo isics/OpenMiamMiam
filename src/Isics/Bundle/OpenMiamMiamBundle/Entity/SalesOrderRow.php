@@ -60,7 +60,7 @@ class SalesOrderRow
      *
      * @ORM\ManyToOne(targetEntity="Producer")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="producer_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="producer_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $producer;
@@ -150,7 +150,7 @@ class SalesOrderRow
     /**
      * @param Producer $producer
      */
-    public function setProducer(Producer $producer)
+    public function setProducer(Producer $producer = null)
     {
         $this->producer = $producer;
     }

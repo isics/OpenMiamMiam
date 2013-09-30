@@ -28,6 +28,12 @@ class AddRowsToSalesOrderType extends AbstractType
             $qb = function(EntityRepository $er) use ($producer) {
                 return $er->getAvailableForProducerQueryBuilder($producer);
             };
+        } else {
+            $salesOrder = $options['salesOrder'];
+            $association = $salesOrder->getBranchOccurrence()->getBranch()->getAssociation();
+            $qb = function(EntityRepository $er) use ($association) {
+                return $er->getAvailableForAssociationQueryBuilder($association);
+            };
         }
 
         $builder->add(

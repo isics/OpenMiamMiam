@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
@@ -151,18 +152,7 @@ class ProductRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
-        return $this->getForProducerQueryBuilder($producer, $qb)
-                ->andWhere(
-                    $qb->expr()->orx(
-                        $qb->expr()->eq('p.availability', ':available'),
-                        $qb->expr()->andx(
-                            $qb->expr()->eq('p.availability', ':accordingToStock'),
-                            $qb->expr()->gt('p.stock', 0)
-                        )
-                    )
-                )
-                ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
-                ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK);
+        return $this->filterAvailableProducts($this->getForProducerQueryBuilder($producer, $qb));
     }
 
     /**
@@ -193,6 +183,66 @@ class ProductRepository extends EntityRepository
     public function findForProducer(Producer $producer)
     {
         return $this->getForProducerQueryBuilder($producer)->getQuery()->getResult();
+    }
+
+    /**
+     * Returns query builder for association available products
+     *
+     * @param Association $association
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getAvailableForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $this->filterAvailableProducts($this->getForAssociationQueryBuilder($association, $qb));
+
+    }
+
+    /**
+     * Returns query builder for available products
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterAvailableProducts(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->andWhere(
+                    $qb->expr()->orx(
+                        $qb->expr()->eq('p.availability', ':available'),
+                        $qb->expr()->andx(
+                            $qb->expr()->eq('p.availability', ':accordingToStock'),
+                            $qb->expr()->gt('p.stock', 0)
+                        )
+                    )
+                )
+                ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
+                ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK);
+    }
+
+    /**
+     * Returns query builder for association products
+     *
+     * @param Association $association
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->addSelect('b')
+                ->innerJoin('p.producer', 'pr')
+                ->innerJoin('p.branches', 'br')
+                ->leftJoin('p.branches', 'b')
+                ->andWhere('br.association = :association')
+                ->setParameter('association', $association);
     }
 
     /**
