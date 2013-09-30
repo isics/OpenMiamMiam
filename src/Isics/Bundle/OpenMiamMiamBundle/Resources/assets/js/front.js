@@ -20,6 +20,7 @@ OpenMiamMiam.CartAddForm = function() {
                 var formData = form.serialize();
 
                 form.find(':input,:submit').prop('disabled', true);
+                form.find('.quantity-buttons').addClass('disabled');
 
                 if (0 === pending) {
                     $('#header-cart > strong').append(loader);
@@ -46,6 +47,7 @@ OpenMiamMiam.CartAddForm = function() {
                         },
                         complete: function() {
                             form.find(':input,:submit').prop('disabled', false);
+                            form.find('.quantity-buttons').removeClass('disabled');
 
                             if (0 === pending) {
                                 hiddenDiv.append(loader);
@@ -98,7 +100,7 @@ OpenMiamMiam.QuantityButtons = function() {
 
                 minusButton.click(function() {
                     quantity
-                        .val(Math.max(parseInt(quantity.val()) - 1, 0))
+                        .val(Math.max(parseInt(quantity.val()) - 1, 1))
                         .trigger('change');
                 });
             });
