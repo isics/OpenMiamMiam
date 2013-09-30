@@ -13,6 +13,13 @@ open_miam_miam.admin:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:index }
 
 #
+# Admin Association
+#
+open_miam_miam.admin.association.show_dashboard:
+    pattern:  /associations/{id}/dashboard
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:showDashboard }
+
+#
 # Admin Producer
 #
 open_miam_miam.admin.producer.show_dashboard:

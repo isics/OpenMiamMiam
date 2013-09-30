@@ -98,9 +98,22 @@ class Builder
      * @param ItemInterface          $menu     Root menu
      * @param AdminResourceInterface $resource Admin resource
      */
-    protected function addAssocationAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    protected function addAssociationAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
-        // @todo
+        $association = $resource->getEntity();
+
+        $menuName = sprintf('association%s', $association->getId());
+
+        $menu->addChild($menuName, array(
+            'route'           => 'open_miam_miam.admin.association.show_dashboard',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf('%s (%s)', $association->getName(), $this->translator->trans($resource->getType())),
+        ));
+        $menu[$menuName]->addChild('Dashboard', array(
+            'route'           => 'open_miam_miam.admin.association.show_dashboard',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.association.menu.dashboard')),
+        ));
     }
 
     /**

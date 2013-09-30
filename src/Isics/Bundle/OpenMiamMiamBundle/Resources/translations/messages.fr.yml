@@ -111,6 +111,12 @@ admin.login.submit:               "Connexion"
 # Admin index
 admin.index.title: "Choisissez un rôle :"
 
+# Admin / Association / Dashboard
+admin.association.dashboard.title: "Tableau de bord"
+
+# Admin / Association / Menu
+admin.association.menu.dashboard: "Tableau de bord"
+
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"
 admin.producer.menu.orders:         "Commandes"
