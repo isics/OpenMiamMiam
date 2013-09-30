@@ -1,0 +1,38 @@
+
+{#
+# This file is part of the OpenMiamMiam project.
+# (c) Isics <contact@isics.fr>
+#
+# This source file is subject to the AGPL v3 license that is bundled
+# with this source code in the file LICENSE.
+#}
+ 
+{% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
+
+{% block content %}
+
+    {% if producer.image is not null %}
+        <p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+    {% endif %}
+	 {{ producer.name }}
+	 {{ producer.slug }}
+	 {{ producer.presentation }}
+	 {{ producer.address1 }}
+	 {{ producer.address2 }}
+	 {{ producer.zipcode }}
+	 {{ producer.city }}
+	 {{ producer.phone1 }}
+	 {{ producer.phone2 }}
+	 {{ producer.website }}
+	 {{ producer.facebook }}
+	 
+
+	 {% for nextAttendance in nextAttendancesOf %}
+         {{ nextAttendance.name }}
+         {{ nextAttendance.slug }}
+         {{ nextAttendance.presentation }}
+         {{ nextAttendance.address1 }}
+         {{ nextAttendance.address2 }}
+    {% endfor %}
+	 
+ {% endblock %}
