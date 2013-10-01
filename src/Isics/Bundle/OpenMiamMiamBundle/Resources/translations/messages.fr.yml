@@ -22,6 +22,12 @@ my_account:           "Mon compte"
 
 
 
+# Payment
+payment.cash: "espèce"
+payment.cheque: "Chèque"
+
+
+
 # Zones
 zone.header.branch.change:         "changer de comptoir"
 zone.occurrence.title:             "Prochain comptoir"
@@ -117,6 +123,7 @@ admin.title:                 "Accès gestionnaire"
 admin.save:                  "Enregistrer"
 admin.return:                "Retourner à la liste"
 admin.activity_stream.title: "Flux d'activité"
+admin.add:                   "Ajouter"
 
 
 
@@ -148,10 +155,12 @@ admin.association.sales_orders.list.date:                       "Date"
 admin.association.sales_orders.list.consumer:                   "Consommateur"
 admin.association.sales_orders.list.nb_articles:                "Nb articles"
 admin.association.sales_orders.list.producer_total:             "Montant producteur"
+admin.association.sales_orders.list.left_to_pay:                "Reste à payer"
 admin.association.sales_orders.form.edit_title:                 "Commande %ref%"
 admin.association.sales_orders.form.sales_order_rows.no:        "Il n'y a pas de ligne de commande pour cette commande"
 admin.association.sales_orders.form.consumer:                   "Consommateur"
 admin.association.sales_orders.form.withdrawal_title:           "Retrait des produits"
+admin.association.sales_orders.list.pay:                        "Régler"
 admin.association.sales_orders.form.sales_order_row.ref:        "Réf"
 admin.association.sales_orders.form.sales_order_row.product:    "Produit"
 admin.association.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
@@ -167,6 +176,24 @@ admin.association.sales_orders.form.add_rows.name:              "Nom"
 admin.association.sales_orders.form.add_rows.price:             "Prix"
 admin.association.sales_orders.form.add_rows.return:            "Retour à la commande"
 admin.association.sales_orders.form.add_rows.producer:          "Producteur"
+admin.association.sales_orders.payment.title:                   "Régler la commande %ref%"
+admin.association.sales_orders.payment.new_payment:             "Nouveau règlement"
+admin.association.sales_orders.payment.left_to_pay:             "Reste à régler"
+admin.association.sales_orders.payment.settled:                 "Soldée"
+admin.association.sales_orders.payment.payment_allocations:     "Règlements déjà affectués"
+admin.association.sales_orders.payment.date:                    "Date"
+admin.association.sales_orders.payment.type:                    "Mode de paiement"
+admin.association.sales_orders.payment.amount:                  "Montant"
+admin.association.sales_orders.payment.allocated:               "Affecté"
+admin.association.sales_orders.payment.delete_allocation:       "Désaffecter"
+admin.association.sales_orders.payment.type_1:                  "espèce"
+admin.association.sales_orders.payment.type_2:                  "chèque"
+admin.association.sales_orders.payment.payments_to_allocate:    "Règlements à affecter"
+admin.association.sales_orders.payment.rest:                    "Reste à affecter"
+admin.association.sales_orders.payment.allocate_payment:        "Affecter"
+
+admin.producer.sales_orders.message.payment_added:              "Le règlement a bien été affecté à la commande"
+admin.producer.sales_orders.message.payment_allocation_deleted: "Paiement désaffecté"
 
 admin.association.sales_orders.message.updated: "La commande a bien été mise à jour"
 
@@ -303,6 +330,9 @@ activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% 
 activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)"
 activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%"
 activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à la commande %order_ref%"
+activity_stream.sales_order.payment.added: "a ajouté un nouveau règlement à la commande %order_ref% (montant : %amount%)"
+activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règlement à la commande %order_ref% (montant : %amount%)"
+activity_stream.sales_order.payment.allocated: "a affecté un règlement à la commande %order_ref% (montant : %amount%)"
 
 
 
@@ -324,6 +354,8 @@ error.cart.product_unavailable:           "Produit indisponible"
 error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"
 
 error.artificial_product.invalid: "Les deux champs doivent être renseignés"
+
+error.payment_allocation.amount_invalid: "Montant invalide. (max: %max%)"
 
 # Dialogue de suppression
 admin.delete_dialog.title:   "Attention !"

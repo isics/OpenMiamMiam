@@ -88,32 +88,41 @@ class SalesOrderRow
     private $isBio;
 
     /**
-     * @var decimal
+     * @var float
      *
      * @ORM\Column(name="unit_price", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $unitPrice;
 
     /**
-     * @var decimal
+     * @var float
      *
      * @ORM\Column(name="quantity", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $quantity;
 
     /**
-     * @var decimal
+     * @var float
      */
     private $oldQuantity;
 
     /**
-     * @var integer $total
+     * @var float $total
      *
      * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $total;
 
 
+
+    /**
+     * Constructs object
+     */
+    public function __construct()
+    {
+        $this->total = 0;
+        $this->quantity = 0;
+    }
 
     /**
      * @param int $id
@@ -164,7 +173,7 @@ class SalesOrderRow
     }
 
     /**
-     * @param decimal
+     * @param float
      */
     public function setQuantity($quantity)
     {
@@ -172,7 +181,7 @@ class SalesOrderRow
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getQuantity()
     {
@@ -180,7 +189,7 @@ class SalesOrderRow
     }
 
     /**
-     * @return decimal
+     * @return float
      */
     public function getOldQuantity()
     {
@@ -204,7 +213,7 @@ class SalesOrderRow
     }
 
     /**
-     * @param int $total
+     * @param float $total
      */
     public function setTotal($total)
     {
@@ -212,7 +221,7 @@ class SalesOrderRow
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getTotal()
     {
@@ -220,7 +229,7 @@ class SalesOrderRow
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\decimal $unitPrice
+     * @param float $unitPrice
      */
     public function setUnitPrice($unitPrice)
     {
@@ -228,7 +237,7 @@ class SalesOrderRow
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\decimal
+     * @return float
      */
     public function getUnitPrice()
     {
@@ -281,18 +290,6 @@ class SalesOrderRow
     public function getRef()
     {
         return $this->ref;
-    }
-
-    /**
-     * Computes row
-     */
-    public function compute()
-    {
-        if (null !== $this->unitPrice) {
-            $this->total = $this->quantity*$this->unitPrice;
-        } elseif (null === $this->total) {
-            $this->total = 0;
-        }
     }
 
     /**

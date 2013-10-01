@@ -67,11 +67,18 @@ class SalesOrder
     private $date;
 
     /**
-     * @var integer $total
+     * @var float $total
      *
      * @ORM\Column(name="total", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $total;
+
+    /**
+     * @var float $credit
+     *
+     * @ORM\Column(name="credit", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    private $credit;
 
     /**
      * @var User
@@ -132,11 +139,20 @@ class SalesOrder
      */
     private $consumerComment;
 
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="PaymentAllocation", mappedBy="salesOrder", cascade="all", orphanRemoval=true)
+     * @ORM\OrderBy({"date" = "ASC"})
+     */
+    private $paymentAllocations;
+
 
 
     public function __construct()
     {
         $this->salesOrderRows = new ArrayCollection();
+        $this->paymentAllocations = new ArrayCollection();
     }
 
     /**
@@ -387,50 +403,57 @@ class SalesOrder
     }
 
     /**
-     * Returns sales order rows of a producer
-     *
-     * @param Producer $producer
-     *
-     * @return array
+     * @param float $credit
      */
-    public function getSalesOrderRowsForProducer(Producer $producer)
+    public function setCredit($credit)
     {
-        $rows = array();
-        foreach ($this->getSalesOrderRows() as $row) {
-            if ($row->getProducer()->getId() == $producer->getId()) {
-                $rows[] = $row;
-            }
-        }
-
-        return $rows;
+        $this->credit = $credit;
     }
 
     /**
-     * Returns subtotal of sales order rows of a producer
-     *
-     * @param Producer $producer
+     * @return float
+     */
+    public function getCredit()
+    {
+        return $this->credit;
+    }
+
+    /**
+     * Returns left to pay
      *
      * @return float
      */
-    public function getSubTotalByProducer(Producer $producer)
+    public function getLeftToPay()
     {
-        $total = 0;
-        foreach ($this->getSalesOrderRowsForProducer($producer) as $row) {
-            $total += $row->getTotal();
-        }
-
-        return $total;
+        return -1*$this->credit;
     }
 
     /**
-     * Computes order
+     * @param $paymentAllocations
      */
-    public function compute()
+    public function setPaymentAllocations($paymentAllocations)
     {
-        $this->total = 0;
-        foreach ($this->getSalesOrderRows() as $row) {
-            $row->compute();
-            $this->total += $row->getTotal();
+        $this->paymentAllocations = new ArrayCollection();
+
+        foreach ($paymentAllocations as $allocation) {
+            $this->addPaymentAllocation($allocation);
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getPaymentAllocations()
+    {
+        return $this->paymentAllocations;
+    }
+
+    /**
+     * @param PaymentAllocation $paymentAllocation
+     */
+    public function addPaymentAllocation(PaymentAllocation $paymentAllocation)
+    {
+        $paymentAllocation->setSalesOrder($this);
+        $this->paymentAllocations[] = $paymentAllocation;
     }
 }

@@ -52,7 +52,6 @@ class ArtificialProductType extends AbstractType
         $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct'));
         $resolver->setOptional(array('association'));
         $resolver->setAllowedTypes(array('association' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association'));
-
     }
 
     /**

@@ -41,6 +41,17 @@ open_miam_miam.admin.association.sales_order.add_rows:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/add
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRows }
 
+open_miam_miam.admin.association.sales_order.pay:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/pay
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:Pay }
+
+open_miam_miam.admin.association.sales_order.delete_payment_allocation:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payment_allocations/{paymentAllocationId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:deletePaymentAllocation }
+
+open_miam_miam.admin.association.sales_order.allocate_payment:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/{paymentId}/allocate
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:allocatePayment }
 
 
 
