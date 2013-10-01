@@ -35,9 +35,15 @@
                             {% endif %}
                         </td>
                         <td>
-                            {{ form_widget(item.product) }}
-                            {{ form_errors(item.quantity) }}
-                            {{ form_widget(item.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
+                            <span class="quantity">
+                                {{ form_widget(item.product) }}
+                                {{ form_errors(item.quantity) }}
+                                {{ form_widget(item.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
+
+                                {% if item.vars.data.product.buyingUnit is not null %}
+                                    <span class="buying-unit">{{ item.vars.data.product.buyingUnit }}</span>
+                                {% endif %}
+                            </span>
                         </td>
                         <td{% if item.vars.data.product.hasNoPrice %} class="td-no-price"{% endif %}>
                             {% if not item.vars.data.product.hasNoPrice %}

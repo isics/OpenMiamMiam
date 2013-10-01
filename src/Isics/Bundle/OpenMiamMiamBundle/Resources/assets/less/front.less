@@ -97,6 +97,10 @@ header {
 //
 // Quantity
 //
+.quantity {
+    position: relative;
+}
+
 .input-quantity {
     display: inline-block;
     padding-left: 6px;
@@ -108,6 +112,16 @@ header {
 .input-quantity-with-buttons {
     border-right: none;
     .border-right-radius(0);
+}
+
+.buying-unit {
+    display: block;
+    position: absolute;
+    padding-right: 6px;
+    color: @gray-light;
+    font-size: @font-size-small;
+    line-height: 1em;
+    text-align: right;
 }
 
 .quantity-buttons {

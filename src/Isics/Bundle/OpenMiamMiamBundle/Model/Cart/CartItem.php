@@ -32,7 +32,7 @@ class CartItem implements \Serializable
     protected $product;
 
     /**
-     * @var integer $quantity
+     * @var decimal $quantity
      */
     protected $quantity;
 
@@ -105,7 +105,7 @@ class CartItem implements \Serializable
     /**
      * Returns quantity
      *
-     * @return integer
+     * @return decimal
      */
     public function getQuantity()
     {
@@ -115,7 +115,7 @@ class CartItem implements \Serializable
     /**
      * Sets quantity
      *
-     * @param integer $quantity Quantity
+     * @param decimal $quantity Quantity
      */
     public function setQuantity($quantity)
     {
