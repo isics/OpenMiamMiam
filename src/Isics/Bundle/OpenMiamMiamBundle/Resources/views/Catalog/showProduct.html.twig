@@ -29,9 +29,9 @@
         <div class="row">
             <div class="col-md-4">
                 {% if product.image is not null %}
-                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('l') }}" alt="{{ product.name }}" class="img-thumbnail" />
                 {% else %}
-                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('l') }}" alt="{{ product.name }}" class="img-thumbnail" />
                 {% endif %}
             </div>
             <div class="col-md-8">
