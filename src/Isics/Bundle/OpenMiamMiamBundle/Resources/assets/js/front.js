@@ -7,7 +7,7 @@ OpenMiamMiam.LocationMap = function() {
 		this.address = $.trim(address1+' '+address2)+' '+zipcode+' '+city;
 		this.addMap();
 	}
-	
+
 	object.prototype = {
 		addMap: function() {
 			var self = this;
@@ -17,28 +17,48 @@ OpenMiamMiam.LocationMap = function() {
 				if (status === google.maps.GeocoderStatus.OK) {
 					var location = results[0].geometry.location;
 					
-					var map = new google.maps.Map(
-						document.getElementById('location-map'),
-						{
-							zoom: 10,
-							center: location,
-							mapTypeId: google.maps.MapTypeId.ROADMAP
-						}
+					map = new google.maps.Map(
+					    document.getElementById('location-map'),
+					    {
+					        zoom: 10,
+						    center: location,
+						    mapTypeId: google.maps.MapTypeId.ROADMAP
+					    }
 					);
-					
 					var marker = new google.maps.Marker({
-		                position: location,
+			            position: location,
 						map: map,
-						title: self.markerTitle
+					    title: self.markerTitle
 					});
+					
+					if(navigator.geolocation) {
+					    navigator.geolocation.getCurrentPosition(function(position) {
+					    	
+					        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+					        map.setCenter(pos);
+					        var directionsService = new google.maps.DirectionsService();
+						    var directionsDisplay = new google.maps.DirectionsRenderer();
+						    
+						    var request = {
+							        origin: pos,
+							    	destination: location,
+							    	travelMode: google.maps.DirectionsTravelMode.DRIVING
+							};
+						    
+						    directionsService.route(request, function(response, status) {
+						    	if (status == google.maps.DirectionsStatus.OK) {
+						    	    directionsDisplay.setDirections(response);
+						    	}
+						    });
+							directionsDisplay.setMap(map);
+					    });     
+					}
 				}
-			});
-		}
-	};
-	
+            });
+        }
+    };
 	return object;
 }();
-			
 
 OpenMiamMiam.CartAddForm = function() {
     var object = function() {
