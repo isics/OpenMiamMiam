@@ -15,6 +15,15 @@ open_miam_miam.admin:
 
 
 #
+# Super admin
+#
+open_miam_miam.admin.super.show_dashboard:
+    pattern:  /super/dashboard
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\General:showDashboard }
+
+
+
+#
 # Admin Association
 #
 open_miam_miam.admin.association.show_dashboard:
@@ -40,7 +49,6 @@ open_miam_miam.admin.association.sales_order.delete_row:
 open_miam_miam.admin.association.sales_order.add_rows:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/add
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRows }
-
 
 
 
@@ -90,4 +98,3 @@ open_miam_miam.admin.producer.sales_order.add_rows:
 open_miam_miam.admin.producer.sales_order.delete_row:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:deleteSalesOrderRow }
-

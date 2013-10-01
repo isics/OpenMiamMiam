@@ -89,7 +89,16 @@ class Builder
      */
     protected function addSuperAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
-        // @todo
+        $menuName = 'super';
+
+        $menu->addChild($menuName, array(
+            'route' => 'open_miam_miam.admin.super.show_dashboard',
+            'label' => sprintf($this->translator->trans($resource->getType())),
+        ));
+        $menu[$menuName]->addChild('Dashboard', array(
+            'route' => 'open_miam_miam.admin.super.show_dashboard',
+            'label' => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.super.menu.dashboard')),
+        ));
     }
 
     /**

@@ -21,6 +21,6 @@ class SuperAdminResource implements AdminResourceInterface
      */
     public function getType()
     {
-        return 'super admin';
+        return 'super_admin';
     }
 }
