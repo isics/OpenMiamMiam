@@ -69,7 +69,6 @@ OpenMiamMiam.Quantity = function() {
     var object = function() {
         this.quantities = $('.input-quantity');
         this.addQuantityButtons();
-        this.positionBuyingUnit();
     };
 
     object.prototype = {
@@ -106,28 +105,6 @@ OpenMiamMiam.Quantity = function() {
                 });
             });
         },
-
-        positionBuyingUnit: function() {
-            this.quantities.each(function() {
-                var quantity = $(this);
-                var buyingUnit = quantity.siblings('.buying-unit');
-
-                if (0 < buyingUnit.length) {
-                    var quantityPosition = quantity.position();
-
-                    buyingUnit.css({
-                        left: quantityPosition.left+'px',
-                        top: (quantityPosition.top+quantity.outerHeight()-buyingUnit.outerHeight()-2)+'px',
-                        width: quantity.outerWidth()+'px'
-                    });
-
-                    console.log(quantityPosition);
-                    console.log(buyingUnit.position());
-
-                    quantity.css({'padding-bottom': (buyingUnit.outerHeight()+2)+'px'});
-                }
-            });
-        }
     };
 
     return object;

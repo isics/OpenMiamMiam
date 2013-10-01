@@ -34,7 +34,7 @@
         {{ form_start(form, {'attr': {'class': 'form form-inline form-cart-add'}}) }}
             {{ form_errors(form) }}
 
-            <span class="quantity">
+            <span class="quantity{% if product.buyingUnit is not null %} quantity-with-buying-unit{% endif %}">
                 {{ form_errors(form.quantity) }}
                 {{ form_widget(form.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
 

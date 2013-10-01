@@ -98,7 +98,12 @@ header {
 // Quantity
 //
 .quantity {
+    display: inline-block;
     position: relative;
+}
+
+.quantity-with-buying-unit .input-quantity {
+    padding-bottom: @font-size-small;
 }
 
 .input-quantity {
@@ -117,7 +122,8 @@ header {
 .buying-unit {
     display: block;
     position: absolute;
-    padding-right: 6px;
+    bottom: 2px;
+    right: 28px;
     color: @gray-light;
     font-size: @font-size-small;
     line-height: 1em;

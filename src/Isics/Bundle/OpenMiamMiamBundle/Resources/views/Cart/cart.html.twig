@@ -35,7 +35,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <span class="quantity">
+                            <span class="quantity{% if item.vars.data.product.buyingUnit is not null %} quantity-with-buying-unit{% endif %}">
                                 {{ form_widget(item.product) }}
                                 {{ form_errors(item.quantity) }}
                                 {{ form_widget(item.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
