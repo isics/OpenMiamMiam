@@ -110,7 +110,7 @@ class SalesOrderController extends BaseController
             'association' => $association,
             'branchOccurrence' => $branchOccurrence,
             'branchOccurrences' => $this->get('open_miam_miam.branch_occurrence_manager')->getToProcessForAssociation($association),
-            'salesOrders' => $this->get('open_miam_miam_association_sales_order_manager')->getForBranchOccurrence($branchOccurrence)
+            'salesOrders' => $this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence)
         ));
     }
 

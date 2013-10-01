@@ -53,6 +53,10 @@ open_miam_miam.admin.association.sales_order.allocate_payment:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/{paymentId}/allocate
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:allocatePayment }
 
+open_miam_miam.admin.association.consumer.list:
+    pattern:  /associations/{id}/consumers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }
+
 
 
 #

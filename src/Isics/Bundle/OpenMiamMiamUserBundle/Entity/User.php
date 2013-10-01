@@ -6,7 +6,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
@@ -59,6 +59,15 @@ class User extends BaseUser
      * @ORM\Column(name="city", type="string", length=64, nullable=false)
      */
     private $city;
+
+    /**
+     * @var Doctrine\Common\Collections\Collection $salesOrders
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder", mappedBy="user")
+     */
+    private $salesOrders;
+
+
 
     /**
      * Sets address line 1

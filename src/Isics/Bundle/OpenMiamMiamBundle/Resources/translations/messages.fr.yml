@@ -144,9 +144,17 @@ admin.index.title: "Choisissez un rôle :"
 # Admin / Association / Menu
 admin.association.menu.dashboard: "Tableau de bord"
 admin.association.menu.orders:    "Caisse"
+admin.association.menu.consumers: "Consommateurs"
 
 # Admin / Association / Dashboard
 admin.association.dashboard.title: "Tableau de bord"
+
+# Admin / Association / Consumer
+admin.association.consumers.list.title:       "Consommateurs"
+admin.association.consumers.list.no_consumer: "Il n'y a pas encore de consommateur"
+admin.association.consumers.list.ref:         "Réf"
+admin.association.consumers.list.name:        "Nom"
+admin.association.consumers.list.credit:      "Solde"
 
 # Admin / Association / Sales orders
 admin.association.sales_orders.list.title:                      "Caisse du comptoir"

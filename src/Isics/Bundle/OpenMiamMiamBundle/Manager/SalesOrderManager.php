@@ -76,6 +76,18 @@ class SalesOrderManager
     }
 
     /**
+     * Returns sales orders for branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function getForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findForBranchOccurrence($branchOccurrence);
+    }
+
+    /**
      * Creates sales order from a cart
      *
      * @param Cart $cart
