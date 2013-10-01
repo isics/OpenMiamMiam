@@ -46,7 +46,7 @@
                             <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
                         </a>
                     </p>
-                    <p>
+                    <p class="price">
                         {% if not product.hasNoPrice %}
                             {{ product.price|number_format_currency(open_miam_miam.currency) }}
                         {% else %}

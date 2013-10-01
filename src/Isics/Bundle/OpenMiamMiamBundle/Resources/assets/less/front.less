@@ -97,6 +97,15 @@ header {
 //
 // Quantity
 //
+.quantity {
+    display: inline-block;
+    position: relative;
+}
+
+.quantity-with-buying-unit .input-quantity {
+    padding-bottom: @font-size-small;
+}
+
 .input-quantity {
     display: inline-block;
     padding-left: 6px;
@@ -108,6 +117,17 @@ header {
 .input-quantity-with-buttons {
     border-right: none;
     .border-right-radius(0);
+}
+
+.buying-unit {
+    display: block;
+    position: absolute;
+    bottom: 2px;
+    right: 28px;
+    color: @gray-light;
+    font-size: @font-size-small;
+    line-height: 1em;
+    text-align: right;
 }
 
 .quantity-buttons {
@@ -140,6 +160,7 @@ header {
 
     &:hover {
         background-color: darken(@btn-primary-bg, 8%);
+        border-color: darken(@btn-primary-border, 12%);
     }
 }
 
@@ -156,10 +177,28 @@ header {
     .panel-heading {
         border-style: solid;
         border-width: 1px;
+        padding: 0;
     }
 
     .panel-title {
         font-size: ceil(@font-size-base * 1.70);
+
+        a {
+            .glyphicon {
+                float: right;
+            }
+
+            display: block;
+            padding: 10px 15px;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: darken(@panel-default-heading-bg, 8%);
+                border-color: darken(@panel-default-border, 12%);
+                text-decoration: none;
+            }
+        }
     }
 
     table {

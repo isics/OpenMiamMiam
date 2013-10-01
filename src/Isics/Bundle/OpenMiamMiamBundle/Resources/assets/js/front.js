@@ -65,7 +65,7 @@ OpenMiamMiam.CartAddForm = function() {
 }();
 
 
-OpenMiamMiam.QuantityButtons = function() {
+OpenMiamMiam.Quantity = function() {
     var object = function() {
         this.quantities = $('.input-quantity');
         this.addQuantityButtons();
@@ -104,7 +104,7 @@ OpenMiamMiam.QuantityButtons = function() {
                         .trigger('change');
                 });
             });
-        }
+        },
     };
 
     return object;
@@ -155,7 +155,7 @@ OpenMiamMiam.CartUpdateForm = function() {
                     success: function(data) {
                         $('#header-cart').html(data.headerCart);
                         $('#cart').html(data.cart);
-                        new OpenMiamMiam.QuantityButtons;
+                        new OpenMiamMiam.Quantity;
                         new OpenMiamMiam.CartUpdateForm;
                     },
                     error: function(jqXHR) {

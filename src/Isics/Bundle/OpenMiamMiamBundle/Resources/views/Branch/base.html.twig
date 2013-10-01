@@ -36,3 +36,11 @@
         </div>
     </div>
 {% endblock %}
+
+{% block footer %}
+    <footer>
+        <hr />
+        {% include 'IsicsOpenMiamMiamBundle:Branch:footerNav.html.twig' %}
+        {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
+    </footer>
+{% endblock %}
