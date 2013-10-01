@@ -55,6 +55,9 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
                 ->add('facebook', 'url', array(
                     'required' => false
                 ))
+                ->add('presentation', 'textarea', array(
+                		'required' => false
+                ))
                 ->addEventSubscriber($this);
     }
 

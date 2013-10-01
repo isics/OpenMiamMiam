@@ -39,6 +39,12 @@ OpenMiamMiam.LocationMap = function() {
 					        var directionsService = new google.maps.DirectionsService();
 						    var directionsDisplay = new google.maps.DirectionsRenderer();
 						    
+						    var infowindow = new google.maps.InfoWindow({
+						        map: map,
+						        position: pos,
+						        content: 'Location found using HTML5.'
+						      });
+						    
 						    var request = {
 							        origin: pos,
 							    	destination: location,
