@@ -11,6 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
+use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -23,15 +25,23 @@ class ConsumerManager
     protected $config;
 
     /**
+     * @var EntityManager $entityManager
+     */
+    protected $entityManager;
+
+    /**
      * Constructor
      *
      * @param array $config
+     * @param EntityManager $entityManager
      */
-    public function __construct($config)
+    public function __construct($config, EntityManager $entityManager)
     {
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
+
         $this->config = $resolver->resolve($config);
+        $this->entityManager = $entityManager;
     }
 
     /**

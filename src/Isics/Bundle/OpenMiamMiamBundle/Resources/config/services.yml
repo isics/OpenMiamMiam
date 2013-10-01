@@ -11,6 +11,7 @@ parameters:
     open_miam_miam.product_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProductValidator'
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
+    open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
 
     open_miam_miam.activity_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
     open_miam_miam.branch_occurrence_manager.class:       'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
@@ -23,7 +24,6 @@ parameters:
     open_miam_miam.producer_attendances_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
     open_miam_miam.sales_order_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
     open_miam_miam.producer_sales_order_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
-    open_miam_miam.association_sales_order_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\AssociationSalesOrderManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -41,6 +41,8 @@ parameters:
     open_miam_miam.form.type.cart.class:                                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartType'
     open_miam_miam.form.type.add_rows_sales_order.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AddRowsToSalesOrderType'
     open_miam_miam.form.type.artificial_product.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ArtificialProductType'
+    open_miam_miam.form.type.payment.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentType'
+    open_miam_miam.form.type.payment_allocation.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentAllocationType'
 
 
 
@@ -75,6 +77,11 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam.producer_branch_occurrence_attendance_validator}
+
+    open_miam_miam.payment_allocation_validator:
+        class: %open_miam_miam.payment_allocation_validator.class%
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam_payment_allocation_validator }
 
 
 
@@ -146,6 +153,16 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_artificial_product }
 
+    open_miam_miam.form.type.payment_allocation:
+        class: %open_miam_miam.form.type.payment_allocation.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_payment_allocation }
+
+    open_miam_miam.form.type.payment:
+        class: %open_miam_miam.form.type.payment.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_payment }
+
 
 
     # Twig extensions
@@ -201,7 +218,7 @@ services:
 
     open_miam_miam.consumer_manager:
         class: %open_miam_miam.consumer_manager.class%
-        arguments: [%open_miam_miam.consumer%]
+        arguments: [%open_miam_miam.consumer%, @doctrine.orm.entity_manager]
 
     open_miam_miam.product_manager:
         class: %open_miam_miam.product_manager.class%
@@ -228,8 +245,4 @@ services:
 
     open_miam_miam.producer_sales_order_manager:
         class: %open_miam_miam.producer_sales_order_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
-
-    open_miam_miam_association_sales_order_manager:
-        class: %open_miam_miam.association_sales_order_manager.class%
         arguments: [@doctrine.orm.entity_manager]

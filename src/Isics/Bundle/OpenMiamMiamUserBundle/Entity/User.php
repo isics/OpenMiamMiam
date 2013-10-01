@@ -2,11 +2,12 @@
 
 namespace Isics\Bundle\OpenMiamMiamUserBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
@@ -59,6 +60,22 @@ class User extends BaseUser
      * @ORM\Column(name="city", type="string", length=64, nullable=false)
      */
     private $city;
+
+    /**
+     * @var Doctrine\Common\Collections\Collection $salesOrders
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder", mappedBy="user")
+     */
+    private $salesOrders;
+
+    /**
+     * @var Doctrine\Common\Collections\Collection $subscriptions
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription", mappedBy="user")
+     */
+    private $subscriptions;
+
+
 
     /**
      * Sets address line 1
@@ -178,5 +195,31 @@ class User extends BaseUser
     public function getZipcode()
     {
         return $this->zipcode;
+    }
+
+    /**
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * Return subscription for association
+     *
+     * @param Association $association
+     *
+     * @return Subscription
+     */
+    public function getSubscriptionForAssociation(Association $association)
+    {
+        foreach ($this->subscriptions as $subcription) {
+            if ($subcription->getAssociation()->getId() == $association->getId()) {
+                return $subcription;
+            }
+        }
+
+        return null;
     }
 }
