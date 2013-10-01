@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
@@ -75,7 +76,7 @@ class Payment
     private $paymentAllocations;
 
     /**
-     * @var User
+     * @var User $user
      *
      * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="salesOrders")
      * @ORM\JoinColumns({
@@ -83,6 +84,16 @@ class Payment
      * })
      */
     private $user;
+
+    /**
+     * @var Association $association
+     *
+     * @ORM\ManyToOne(targetEntity="Association", inversedBy="payments")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false)
+     * })
+     */
+    private $association;
 
 
 
@@ -108,6 +119,22 @@ class Payment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @param Association $association
+     */
+    public function setAssociation(Association $association)
+    {
+        $this->association = $association;
+    }
+
+    /**
+     * @return Association
+     */
+    public function getAssociation()
+    {
+        return $this->association;
     }
 
     /**

@@ -13,6 +13,9 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Payment:
             - Choice: { callback: getTypes }
         user:
             - Valid: ~
+        association:
+            - NotNull: ~
+            - Valid: ~
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation:
     constraints:

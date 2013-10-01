@@ -18,6 +18,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
@@ -185,6 +186,7 @@ class SalesOrderManager
                 str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
             ));
 
+            // Activity
             $activitiesStack[] = array(
                 'transKey' => 'activity_stream.sales_order.created',
                 'transParams' => array('%ref%' => $order->getRef()),
@@ -267,6 +269,9 @@ class SalesOrderManager
         $this->entityManager->persist($order);
         $this->entityManager->flush();
 
+        // Subscription
+        $this->computeUserCredit($order);
+
         // Activity
         foreach ($activitiesStack as $activityParams) {
             $activity = $this->activityManager->createFromEntities(
@@ -280,6 +285,36 @@ class SalesOrderManager
         }
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * Compute user credit
+     *
+     * @param SalesOrder $order
+     */
+    public function computeUserCredit(SalesOrder $order)
+    {
+        $user = $order->getUser();
+        if (null !== $user) {
+            $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
+            $subscription = $user->getSubscriptionForAssociation($association);
+            if (null === $subscription) {
+                $subscription = new Subscription();
+                $subscription->setAssociation($association);
+                $subscription->setUser($user);
+
+                $this->entityManager->persist($subscription);
+            }
+            $salesOrderCredit = $this->entityManager
+                    ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
+                    ->getTotalForUserAndAssociation($user, $association);
+            $paymentsAmount = $this->entityManager
+                    ->getRepository('IsicsOpenMiamMiamBundle:Payment')
+                    ->getAmountForUserAndAssociation($user, $association);
+
+            $subscription->setCredit($salesOrderCredit-$paymentsAmount);
+            $this->entityManager->flush();
+        }
     }
 
     /**
@@ -305,6 +340,10 @@ class SalesOrderManager
         $this->entityManager->persist($order);
         $this->entityManager->flush();
 
+        // Subscription
+        $this->computeUserCredit($order);
+
+        // Activity
         $activity = $this->activityManager->createFromEntities(
             'activity_stream.sales_order.row.deleted',
             array('%order_ref%' => $order->getRef(), '%name%' => $row->getName(), '%ref%' => $row->getRef()),
@@ -410,6 +449,7 @@ class SalesOrderManager
         $payment->setAmount($order->getLeftToPay());
         $payment->setRest($order->getLeftToPay());
         $payment->setUser($order->getUser());
+        $payment->setAssociation($order->getBranchOccurrence()->getBranch()->getAssociation());
 
         $paymentAllocation = new PaymentAllocation();
         $paymentAllocation->setSalesOrder($order);
@@ -438,6 +478,10 @@ class SalesOrderManager
 
         $this->entityManager->persist($payment);
 
+        // Subscription
+        $this->computeUserCredit($order);
+
+        // Activity
         $activity = $this->activityManager->createFromEntities(
             'activity_stream.sales_order.payment.added',
             array('%order_ref%' => $order->getRef(), '%amount%' => $this->activityManager->formatFloatNumber($paymentAllocation->getAmount())),

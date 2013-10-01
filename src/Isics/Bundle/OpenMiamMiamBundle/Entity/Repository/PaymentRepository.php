@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -34,5 +35,27 @@ class PaymentRepository extends EntityRepository
                 ->addOrderBy('p.date', 'ASC')
                 ->getQuery()
                 ->getResult();
+    }
+
+    /**
+     * Returns amount of payments for a user and association
+     *
+     * @param User $user
+     * @param Association $association
+     *
+     * @return float
+     */
+    public function getAmountForUserAndAssociation(User $user, Association $association)
+    {
+        $result = $this->createQueryBuilder('p')
+                ->select('SUM(p.amount) AS amountSum')
+                ->andWhere('p.association = :association')
+                ->setParameter('association', $association)
+                ->andWhere('p.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getSingleResult();
+
+        return $result['amountSum'];
     }
 }

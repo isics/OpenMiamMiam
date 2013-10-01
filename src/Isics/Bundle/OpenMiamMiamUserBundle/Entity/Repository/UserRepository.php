@@ -29,10 +29,8 @@ class UserRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
 
-        return $qb->innerJoin('u.salesOrders', 'so')
-                ->innerJoin('so.branchOccurrence', 'bo')
-                ->innerJoin('bo.branch', 'b')
-                ->andWhere('b.association = :association')
+        return $qb->innerJoin('u.subscriptions', 's')
+                ->andWhere('s.association = :association')
                 ->setParameter('association', $association)
                 ->addOrderBy('u.id')
                 ->addGroupBy('u.id');
