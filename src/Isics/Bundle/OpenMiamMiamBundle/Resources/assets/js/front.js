@@ -12,6 +12,7 @@ OpenMiamMiam.LocationMap = function() {
 		addMap: function() {
 			var self = this;
 			var geocoder = new google.maps.Geocoder();
+			var end = self.address;
 			
 			geocoder.geocode({address: self.address}, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {
@@ -19,7 +20,7 @@ OpenMiamMiam.LocationMap = function() {
 					
 					map = new google.maps.Map(
 					    document.getElementById('location-map'),
-					    {
+					    {	
 					        zoom: 10,
 						    center: location,
 						    mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -35,29 +36,19 @@ OpenMiamMiam.LocationMap = function() {
 					    navigator.geolocation.getCurrentPosition(function(position) {
 					    	
 					        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-					        map.setCenter(pos);
-					        var directionsService = new google.maps.DirectionsService();
-						    var directionsDisplay = new google.maps.DirectionsRenderer();
-						    
-						    var infowindow = new google.maps.InfoWindow({
-						        map: map,
-						        position: pos,
-						        content: 'Location found using HTML5.'
-						      });
-						    
-						    var request = {
-							        origin: pos,
-							    	destination: location,
-							    	travelMode: google.maps.DirectionsTravelMode.DRIVING
-							};
-						    
-						    directionsService.route(request, function(response, status) {
-						    	if (status == google.maps.DirectionsStatus.OK) {
-						    	    directionsDisplay.setDirections(response);
-						    	}
-						    });
-							directionsDisplay.setMap(map);
-					    });     
+					        
+					        google.maps.event.addListener(marker, 'click', function() {
+						        window.open('https://maps.google.fr/maps?saddr='+pos+'&daddr='+end);
+							});
+					        
+					        var infowindow = new google.maps.InfoWindow({
+					            content: "Cliquez sur le marqueur pour afficher l'itinéraire"
+					        });
+					        
+					        google.maps.event.addListener(map, 'mouseover', function() {
+					            infowindow.open(map,marker);
+					        });
+					    }); 
 					}
 				}
             });
