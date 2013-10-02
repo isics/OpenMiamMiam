@@ -13,54 +13,56 @@
     {% set colClass = 'col-md-4' %}
 {% endif %}
 
-<h2><span class="glyphicon glyphicon-tags"></span> {{ 'zone.products_of_the_moment.title'|trans }}</h2>
+<div id="products-of-the-moment">
+    <h2>{{ 'zone.products_of_the_moment.title'|trans }}</h2>
 
-<div id="products-of-the-moment" class="row">
-    {% set showNoPriceStatement = false %}
-    {% for product in products %}
-        <div class="{{ colClass }}">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3>
-                        <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
-                            {{ product.name }}</a>{% if product.isBio %}&nbsp;<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
-                    </h3>
-                    <p>
-                        <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
-                            {% if product.image is not null %}
-                                <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+    <div class="row">
+        {% set showNoPriceStatement = false %}
+        {% for product in products %}
+            <div class="{{ colClass }}">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3>
+                            <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
+                                {{ product.name }}</a>{% if product.isBio %}&nbsp;<strong class="bio"><span>{{ 'bio'|trans }}</span></strong>{% endif %}
+                        </h3>
+                        <p>
+                            <a href="{{ path('open_miam_miam.catalog.product', {'branchSlug': branch.slug, 'productSlug': product.slug, 'productId': product.id}) }}">
+                                {% if product.image is not null %}
+                                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                                {% else %}
+                                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                                {% endif %}
+                            </a>
+                        </p>
+                        <p>
+                            {% if product.priceInfo %}
+                                {{ product.priceInfo }}
                             {% else %}
-                                <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                                &nbsp;
                             {% endif %}
-                        </a>
-                    </p>
-                    <p>
-                        {% if product.priceInfo %}
-                            {{ product.priceInfo }}
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </p>
-                    <p>
-                        <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
-                            <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
-                        </a>
-                    </p>
-                    <p class="price">
-                        {% if not product.hasNoPrice %}
-                            {{ product.price|number_format_currency(open_miam_miam.currency) }}
-                        {% else %}
-                            {% set showNoPriceStatement = true %}
-                            <span class="glyphicon glyphicon-time"></span>*
-                        {% endif %}
-                    </p>
-                    <p>
-                        {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product})) }}
-                    </p>
+                        </p>
+                        <p>
+                            <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
+                                <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
+                            </a>
+                        </p>
+                        <p class="price">
+                            {% if not product.hasNoPrice %}
+                                {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                            {% else %}
+                                {% set showNoPriceStatement = true %}
+                                <span class="glyphicon glyphicon-time"></span>*
+                            {% endif %}
+                        </p>
+                        <p>
+                            {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product})) }}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 
 {% if showNoPriceStatement %}

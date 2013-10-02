@@ -12,6 +12,7 @@ price:                "Prix"
 producer:             "Producteur"
 product:              "Produit"
 quantity:             "Quantité"
+super_admin:          "Super administrateur"
 total:                "Total"
 update:               "Mettre à jour"
 consumer:             "Consommateur"
@@ -38,6 +39,8 @@ zone.producers.title:              "Les producteurs"
 zone.producers.link:               "Tous les producteurs"
 zone.next_occurrences.title:       "Prochains comptoirs"
 zone.location.title:               "S'y rendre"
+zone.news.title:                   "Actualités"
+zone.news.link:                    "Toutes les actualités"
 zone.products_of_the_moment.title: "Les produits du moment"
 zone.footer.admin_link:            "Accès gestionnaire"
 
@@ -138,6 +141,14 @@ admin.login.submit:               "Connexion"
 
 # Admin index
 admin.index.title: "Choisissez un rôle :"
+
+
+
+# Admin / Super / Menu
+admin.super.menu.dashboard: "Tableau de bord"
+
+# Admin / Super / Dashboard
+admin.super.dashboard.title: "Tableau de bord"
 
 
 
