@@ -13,6 +13,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\NotValidCurrentPageException;
 use Symfony\Component\HttpFoundation\Request;
 
 class ConsumerController extends BaseController
@@ -20,19 +23,33 @@ class ConsumerController extends BaseController
     /**
      * List consumers
      *
+     * @param Request $request
      * @param Association $association
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
-    public function listAction(Association $association)
+    public function listAction(Request $request, Association $association)
     {
         $this->secure($association);
 
-        $consumers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User')->findForAssociation($association);
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
+            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User')
+                    ->getForAssociationQueryBuilder($association)
+                    ->getQuery()
+        ));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.consumers_pagination'));
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch(NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list.html.twig', array(
             'association'=> $association,
-            'consumers' => $consumers
+            'consumers' => $pagerfanta
         ));
     }
 }

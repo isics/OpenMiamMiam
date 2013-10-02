@@ -38,6 +38,7 @@
                     </tbody>
                 </table>
             </div>
+            {{ pagerfanta(consumers, 'default', pagerfanta_opts) }}
         {% else %}
             {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.list.no_consumer'|trans} %}
         {% endif %}

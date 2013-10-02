@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('title')->defaultValue('OpenMiamMiam Demo')->end()
                 ->scalarNode('currency')->defaultValue('EUR')->end()
+                ->scalarNode('consumers_pagination')->defaultValue(1)->end()
                 ->arrayNode('producer')
                     ->addDefaultsIfNotSet()
                     ->children()

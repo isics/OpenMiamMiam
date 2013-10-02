@@ -21,6 +21,7 @@
         "liip/imagine-bundle": "dev-master",
         "knplabs/knp-menu": "2.0.*@dev",
         "knplabs/knp-menu-bundle": "2.0.*@dev",
+        "white-october/pagerfanta-bundle": "dev-master",
         "sensio/distribution-bundle": "2.3.*",
         "sensio/framework-extra-bundle": "2.3.*",
         "sensio/generator-bundle": "2.3.*",

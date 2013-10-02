@@ -25,6 +25,11 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        pagerfanta_opts:
+            previous_message: '&laquo;'
+            next_message:     '&raquo;'
+            dots_message:     ' … '
 
 # Assetic Configuration
 assetic:
