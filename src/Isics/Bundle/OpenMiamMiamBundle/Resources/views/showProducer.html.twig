@@ -21,7 +21,7 @@
 	    					{% endif %}
 	    				</td>
 					</tr>
-						<tr>
+					<tr>
 						<th>{{ 'producer.presentation'|trans }}</th>
 						<td>{{ producer.presentation }}</td>
 					</tr>
@@ -48,6 +48,45 @@
 				</tbody>
             </table>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-3" >
+				
+			</div>
+			<div class="col-md-9">
+				<div class="row">
+					<div class="col-md-2">
+						{% if producer.image is not null %}
+				       		<p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+				    	{% endif %}
+				    </div>
+				    <div class="col-md-10">
+				    	<strong>{{ producer.name }}</strong></br>
+				    	<address>
+							{{ producer.name }} 
+						</address>
+				    </div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						
+				    </div>
+				    <div class="col-md-9">
+
+				    </div>
+				</div>	 	 
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		{% for nextAttendance in nextAttendancesOf %}
 	         {{ nextAttendance }}

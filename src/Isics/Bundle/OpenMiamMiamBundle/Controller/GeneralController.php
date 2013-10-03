@@ -20,6 +20,11 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
 
 class GeneralController extends Controller {
 	
+	/**
+	 * @param producer $producerSlug
+	 * 
+	 * @return producer, nextAttendancesOf
+	 */
 	public function showProducerAction($producerSlug)
 	{
 		$producer = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findOneBySlug($producerSlug);
@@ -35,7 +40,7 @@ class GeneralController extends Controller {
 					)
 			), 301);
 		}
-		$nextAttendancesOf = $this->container->get('open_miam_miam.producer_attendances_manager')->getNextAttendancesOf($producer);
+		$nextAttendancesOf = $this->get('open_miam_miam.producer_attendances_manager')->getNextAttendancesOf($producer);
 
 		if (null === $nextAttendancesOf) {
 			throw new NotFoundHttpException('Attendances not found');

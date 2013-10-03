@@ -40,14 +40,6 @@ OpenMiamMiam.LocationMap = function() {
 					        google.maps.event.addListener(marker, 'click', function() {
 						        window.open('https://maps.google.fr/maps?saddr='+pos+'&daddr='+end);
 							});
-					        
-					        var infowindow = new google.maps.InfoWindow({
-					            content: "Cliquez sur le marqueur pour afficher l'itinéraire"
-					        });
-					        
-					        google.maps.event.addListener(map, 'mouseover', function() {
-					            infowindow.open(map, marker);
-					        });
 					    }); 
 					}
 				}

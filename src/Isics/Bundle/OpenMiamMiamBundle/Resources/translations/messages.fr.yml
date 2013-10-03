@@ -33,7 +33,8 @@ zone.next_occurrences.title:       "Prochains comptoirs"
 zone.location.title:               "S'y rendre"
 zone.products_of_the_moment.title: "Les produits du moment"
 
-# Branch / Producers 
+# Branch 
+branch.maps:                    "Itinéraire"
 branch.producers.name:          "Nom"
 branch.producers.image:         "Image"
 branch.producers.presentation:  "Présentation"
