@@ -55,14 +55,16 @@
                 {% include 'IsicsOpenMiamMiamBundle::messages.html.twig' %}
                 {% block content %}{% endblock %}
             {% endblock %}
-
-            {% block footer %}
-                <footer>
-                    <hr />
-                    {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
-                </footer>
-            {% endblock %}
         </div>
+
+        {% block footer %}
+            <footer>
+                <hr />
+                <div class="container">
+                    {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
+                </div>
+            </footer>
+        {% endblock %}
 
         {% block javascript %}
             {% include 'IsicsOpenMiamMiamBundle::baseJavascripts.html.twig' %}
