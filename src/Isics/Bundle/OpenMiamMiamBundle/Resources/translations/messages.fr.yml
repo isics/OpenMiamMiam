@@ -75,32 +75,45 @@ order.confirmed.body_html:           |
 
 
 
-# Login
-login.title:          "Identifiez-vous"
-login.existing.title: "Déjà client ?"
-login.new.title:      "Nouveau client ?"
-login.submit:         "S'identifier"
-login.register:       "Créer un compte"
+# User / login
+user.login.title:          "Identifiez-vous"
+user.login.existing.title: "Déjà client ?"
+user.login.new.title:      "Nouveau client ?"
+user.login.submit:         "S'identifier"
+user.login.register:       "Créer un compte"
 
-
-
-# Register
-register.title:                 "Créez votre compte :"
-register.firstname:             "Prénom"
-register.lastname:              "Nom"
-register.email:                 "Adresse e-mail"
-register.password:              "Mot de passe"
-register.password_confirmation: "Vérification"
-register.address1:              "Adresse"
-register.address2:              "Complément"
-register.zipcode:               "Code postal"
-register.city:                  "Ville"
-register.cancel:                "Annuler"
-register.submit:                "S'inscrire"
-register.confirmed.title:       "Bienvenue %firstname% !"
-register.confirmed.body_html:   |
+# User / register
+user.register.title:                 "Créez votre compte :"
+user.register.firstname:             "Prénom"
+user.register.lastname:              "Nom"
+user.register.email:                 "Adresse e-mail"
+user.register.password:              "Mot de passe"
+user.register.password_confirmation: "Vérification"
+user.register.address1:              "Adresse"
+user.register.address2:              "Complément"
+user.register.zipcode:               "Code postal"
+user.register.city:                  "Ville"
+user.register.cancel:                "Annuler"
+user.register.submit:                "S'inscrire"
+user.register.confirmed.title:       "Bienvenue %firstname% !"
+user.register.confirmed.body_html:   |
     <p>Votre compte a bien été créé.<p>
-register.confirmed.next:        "Continuer"
+user.register.confirmed.next:        "Continuer"
+
+# User / edit
+user.edit.title:                 "Mettre à jour mes infos :"
+user.edit.firstname:             "Prénom"
+user.edit.lastname:              "Nom"
+user.edit.email:                 "Adresse e-mail"
+user.edit.address1:              "Adresse"
+user.edit.address2:              "Complément"
+user.edit.zipcode:               "Code postal"
+user.edit.city:                  "Ville"
+user.edit.cancel:                "Annuler"
+user.edit.submit:                "Mettre à jour"
+user.edit.confirmed.title:       "Bienvenue %firstname% !"
+user.edit.confirmed.body_html:   |
+    <p>Votre compte a bien été créé.<p>
 
 
 
