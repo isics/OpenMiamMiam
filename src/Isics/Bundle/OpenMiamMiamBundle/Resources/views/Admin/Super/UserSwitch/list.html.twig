@@ -1,0 +1,43 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'admin.super.user_switch.title'|trans }}</h1>
+
+    {% if users|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.super.user_switch.list.lastname'|trans }}</th>
+                        <th>{{ 'admin.super.user_switch.list.firstname'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        {% if app.user != user %}
+                            <tr>
+                                <td>{{ user.lastname }}</td>
+                                <td>{{ user.firstname }}</td>
+                                <td>
+                                    <a href="{{ path('open_miam_miam.admin', {'_switch_user': user.username }) }}" class="btn btn-danger btn-block" title="{{ 'admin.super.user_switch.list.switch'|trans }}">
+                                        <span class="glyphicon glyphicon-transfer"></span> {{ 'admin.super.user_switch.list.switch'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname}) }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.super.user_switch.list.no_user'|trans} %}
+    {% endif %}
+{% endblock %}

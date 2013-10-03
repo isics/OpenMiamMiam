@@ -99,6 +99,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.show_dashboard',
             'label' => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.super.menu.dashboard')),
         ));
+        $menu[$menuName]->addChild('UserSwitch', array(
+            'route' => 'open_miam_miam.admin.super.user_switch.list',
+            'label' => sprintf($this->labelFormat, 'transfer', $this->translator->trans('admin.super.menu.user_switch')),
+        ));
     }
 
     /**

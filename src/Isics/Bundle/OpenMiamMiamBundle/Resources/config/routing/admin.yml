@@ -21,6 +21,10 @@ open_miam_miam.admin.super.show_dashboard:
     pattern:  /super/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\General:showDashboard }
 
+open_miam_miam.admin.super.user_switch.list:
+    pattern:  /super/user-switch
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\UserSwitch:list }
+
 
 
 #

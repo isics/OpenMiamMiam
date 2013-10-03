@@ -38,7 +38,9 @@
                     <div id="header-links" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{{ path('fos_user_profile_edit') }}">{{ app.user.firstName }} {{ app.user.lastName }}</a></li>
-                            <li><a href="{{ path('open_miam_miam_user.admin.security.logout') }}">{% trans %}logout{% endtrans %} <span class="glyphicon glyphicon-off"></span></a></li>
+                            {% if not is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <li><a href="{{ path('open_miam_miam_user.admin.security.logout') }}">{% trans %}logout{% endtrans %} <span class="glyphicon glyphicon-off"></span></a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 {% endif %}
@@ -46,6 +48,15 @@
         </header>
 
         <div class="container">
+            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                <div class="alert alert-danger text-center">
+                    {{ 'admin.super.user_switch.alert.message'|trans({'%firstname%': app.user.firstname, '%lastname%': app.user.lastname}) }}
+                    <a href="{{ path('open_miam_miam.admin.super.user_switch.list', {'_switch_user':'_exit'}) }}" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-transfer"></span> {{ 'admin.super.user_switch.alert.exit'|trans }}
+                    </a>
+                </div>
+            {% endif %}
+
             {% block global_content %}
                 {% block content %}{% endblock %}
             {% endblock %}

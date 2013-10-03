@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 
 class UserRepository extends EntityRepository
@@ -48,5 +49,33 @@ class UserRepository extends EntityRepository
         return $this->getForAssociationQueryBuilder($association)
                 ->getQuery()
                 ->getResult();
+    }
+
+    /**
+     * returns users with ACEs
+     *
+     * @return array
+     */
+    public function findWithACE()
+    {
+        $query = <<<QUERY
+            SELECT DISTINCT u.*
+            FROM %s u INNER JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
+            INNER JOIN %s e ON (e.security_identity_id = si.id)
+            ORDER BY u.lastname
+QUERY;
+
+        $query = sprintf(
+            $query,
+            'fos_user',
+            'acl_security_identities',
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            'acl_entries'
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
     }
 }

@@ -29,6 +29,7 @@ security:
                 path:        /admin/logout
                 target:      /admin
             anonymous: true
+            switch_user: { role: ROLE_ADMIN }
 
         front:
            pattern: ^/
