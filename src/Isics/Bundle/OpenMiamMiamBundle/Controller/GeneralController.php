@@ -24,7 +24,6 @@ class GeneralController extends Controller {
 	{
 		$producer = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findOneBySlug($producerSlug);
 		
-		
 		if (null === $producer) {
 			throw new NotFoundHttpException('Producer not found');
 		}
@@ -38,7 +37,6 @@ class GeneralController extends Controller {
 		}
 		$nextAttendancesOf = $this->container->get('open_miam_miam.producer_attendances_manager')->getNextAttendancesOf($producer);
 
-		
 		if (null === $nextAttendancesOf) {
 			throw new NotFoundHttpException('Attendances not found');
 		}

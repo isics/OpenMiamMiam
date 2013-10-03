@@ -66,6 +66,7 @@ class BranchController extends Controller
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showRandomProducers.html.twig', array(
             'producers' => $producers,
+        	'branch' => $branch
         ));
     }
     
@@ -83,6 +84,6 @@ class BranchController extends Controller
     		throw new NotFoundHttpException('Producers not found');
     	}
     	
-    	return $this->render('IsicsOpenMiamMiamBundle::showProducers.html.twig', array('producers'  => $producers));
+    	return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducers.html.twig', array('producers'  => $producers, 'branch' => $branch));
     }
 }

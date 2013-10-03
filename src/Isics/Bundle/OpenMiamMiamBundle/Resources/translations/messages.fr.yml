@@ -33,6 +33,26 @@ zone.next_occurrences.title:       "Prochains comptoirs"
 zone.location.title:               "S'y rendre"
 zone.products_of_the_moment.title: "Les produits du moment"
 
+# Branch / Producers 
+branch.producers.name:          "Nom"
+branch.producers.image:         "Image"
+branch.producers.presentation:  "Présentation"
+branch.producers.address:       "Adresse"
+branch.producers.phone1:        "Téléphone 1"
+branch.producers.phone2:        "Téléphone 2"
+branch.producers.website:       "Site web"
+branch.producers.facebook:      "Page Facebook"
+
+# Producer 
+producer.name:         "Nom"
+producer.image:        "Image"
+producer.presentation: "Présentation"
+producer.address:      "Adresse"
+producer.phone1:       "Téléphone 1"
+producer.phone2:       "Téléphone 2"
+producer.website:      "Site web"
+producer.facebook:     "Page Facebook"
+
 # Cart
 cart.title:                 "Mon panier"
 cart.empty:                 "Votre panier est vide."

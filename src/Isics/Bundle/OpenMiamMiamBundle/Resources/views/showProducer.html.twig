@@ -6,33 +6,52 @@
 # This source file is subject to the AGPL v3 license that is bundled
 # with this source code in the file LICENSE.
 #}
- 
-{% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
+{% embed 'IsicsOpenMiamMiamBundle::base.html.twig'	%}
 
-{% block content %}
+	{% block content %}
+		<div class="table-responsive">
+            <table class="table table-bordered table-striped table-condensed ">
+            	<caption>{{ producer.name }}</caption>
+                <tbody>
+					<tr>
+						<th>{{ 'producer.image'|trans }}</th>
+					    <td>
+					    	{% if producer.image is not null %}
+	       						 <p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+	    					{% endif %}
+	    				</td>
+					</tr>
+						<tr>
+						<th>{{ 'producer.presentation'|trans }}</th>
+						<td>{{ producer.presentation }}</td>
+					</tr>
+					<tr>
+						<th>{{ 'producer.address'|trans }}</th>
+						<td>{{ producer.address1}} {{ producer.address2}} {{ producer.zipcode}} {{ producer.city}}</td>
+					</tr>
+					<tr>
+						<th>{{ 'producer.phone1'|trans }}</th>
+						<td>{{ producer.phone1 }}</td>
+					</tr>
+					<tr>
+						<th>{{ 'producer.phone2'|trans }}</th>
+						<td>{{ producer.phone2 }}</td>
+					</tr>
+					<tr>
+						<th>{{ 'producer.website'|trans }}</th>
+						<td>{{ producer.website }}</td>
+					</tr>
+					<tr>
+						<th>{{ 'producer.facebook'|trans }}</th>
+						<td>{{ producer.facebook }}</td>
+					</tr>
+				</tbody>
+            </table>
+		</div>
 
-    {% if producer.image is not null %}
-        <p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
-    {% endif %}
-	 {{ producer.name }}
-	 {{ producer.slug }}
-	 {{ producer.presentation }}
-	 {{ producer.address1 }}
-	 {{ producer.address2 }}
-	 {{ producer.zipcode }}
-	 {{ producer.city }}
-	 {{ producer.phone1 }}
-	 {{ producer.phone2 }}
-	 {{ producer.website }}
-	 {{ producer.facebook }}
-	 
-
-	 {% for nextAttendance in nextAttendancesOf %}
-         {{ nextAttendance.name }}
-         {{ nextAttendance.slug }}
-         {{ nextAttendance.presentation }}
-         {{ nextAttendance.address1 }}
-         {{ nextAttendance.address2 }}
-    {% endfor %}
-	 
- {% endblock %}
+		{% for nextAttendance in nextAttendancesOf %}
+	         {{ nextAttendance }}
+	    {% endfor %} 
+	    
+	{% endblock %}
+{% endembed %}

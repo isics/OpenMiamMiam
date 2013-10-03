@@ -19,6 +19,6 @@
     {% endfor %}
     </ul>
     <div class="panel-footer">
-        <a href="#">{{ 'zone.producers.link'|trans }}</a>
+        <a href="{{ path('open_miam_miam.branch.producers', {'branchSlug': branch.slug}) }}">{{ 'zone.producers.link'|trans }}</a>
     </div>
 </div>

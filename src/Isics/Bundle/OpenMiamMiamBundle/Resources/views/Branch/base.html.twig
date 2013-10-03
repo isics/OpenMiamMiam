@@ -36,3 +36,20 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascript %}
+	{{ parent() }}   
+	<script type="text/javascript">
+	$(function() {
+		new OpenMiamMiam.LocationMap(
+			'{{ branch.name }}',
+			'{{ branch.address1 }}',
+			'{{ branch.address2 }}',
+			'{{ branch.zipcode }}',
+			'{{ branch.city }}',
+			'FRANCE' {#todo add openmiammiam.country param#}
+		);
+	}); 
+	</script>
+{% endblock %}
+

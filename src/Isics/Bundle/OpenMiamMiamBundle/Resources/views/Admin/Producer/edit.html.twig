@@ -44,6 +44,11 @@
 				{{ form_row(form.facebook, {'label': 'admin.producer.infos.facebook'|trans}) }}	
 	        </div>
 	    </div>
+	    <div class="row">
+       		<div class="col-md-12">
+       		{{ form_row(form.presentation, {'label': 'admin.producer.infos.presentation'|trans, 'attr': {'class': 'tinymce'}}) }}
+			</div>
+		</div>
         <div class="row">
             <div class="col-md-3">
                 {{ form_label(form.imageFile, 'admin.producer.infos.image'|trans) }}
@@ -55,30 +60,16 @@
                 {{ form_widget(form.imageFile) }}
             </div>
        	</div>
-       	
-       {{ form_row(form.presentation, {'label': 'admin.producer.infos.presentation'|trans, 'attr': {'class': 'tinymce'}}) }}
-
-		<button type="submit" class="btn btn-primary btn-lg" />
-			<span class="glyphicon glyphicon-floppy-save"></span>
-			{{ 'admin.save'|trans }}
-		</button>
-		
-		<button type="reset" class="btn btn-default btn-lg" />
-			<span class="glyphicon glyphicon-remove"></span>
-			{{ 'register.cancel'|trans }}
-		</button>
-
+		<div class="edit-producer-button">
+			<button type="submit" class="btn btn-primary btn-lg" />
+				<span class="glyphicon glyphicon-floppy-save"></span>
+				{{ 'admin.save'|trans }}
+			</button>
+			<a href="dashboard" class="btn btn-default btn-lg" <span class="glyphicon glyphicon-remove"></span> {{ 'register.cancel'|trans }} </a>
+		</div>
     </div>
     {{ form_end(form) }}
 {% endblock %}
 {% block javascript %}
-    {{ parent() }}
-    <script type="text/javascript">
-        $(function() {
-            new OpenMiamMiam.PanelForm;
-            new OpenMiamMiam.ProducerProductForm;
-            new OpenMiamMiam.deleteDialog;
-        });
-    </script>
     {{ tinymce_init() }}
 {% endblock %}

@@ -46,7 +46,7 @@ OpenMiamMiam.LocationMap = function() {
 					        });
 					        
 					        google.maps.event.addListener(map, 'mouseover', function() {
-					            infowindow.open(map,marker);
+					            infowindow.open(map, marker);
 					        });
 					    }); 
 					}
