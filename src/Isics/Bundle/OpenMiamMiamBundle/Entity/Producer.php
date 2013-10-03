@@ -133,6 +133,13 @@ class Producer
     private $branches;
 
     /**
+     * @var Doctrine\Common\Collections\Collection $producerAttendances
+     *
+     * @ORM\OneToMany(targetEntity="ProducerAttendance", mappedBy="producer")
+     */
+    private $producerAttendances;
+
+    /**
      * @var string $image
      *
      * @ORM\Column(name="image", type="string", length=128, nullable=true)
@@ -605,5 +612,38 @@ class Producer
     public function getBranches()
     {
         return $this->branches;
+    }
+
+    /**
+     * Add producer attendance
+     *
+     * @param ProducerAttendance $producerAttendance
+     * @return BranchOccurrence
+     */
+    public function addProducerAttendance(ProducerAttendance $producerAttendance)
+    {
+        $this->producerAttendances[] = $producerAttendance;
+
+        return $this;
+    }
+
+    /**
+     * Remove producera ttendance
+     *
+     * @param ProducerAttendance $producerAttendance
+     */
+    public function removeProducerAttendance(ProducerAttendance $producerAttendance)
+    {
+        $this->producerAttendances->removeElement($producerAttendance);
+    }
+
+    /**
+     * Get producer attendances
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProducerAttendances()
+    {
+        return $this->producerAttendances;
     }
 }

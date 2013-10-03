@@ -112,8 +112,13 @@ class CatalogController extends Controller
      */
     public function showProductsOfTheMomentAction(Branch $branch, $limit = 3)
     {
+        $branchOccurrenceManager = $this->container->get('open_miam_miam.branch_occurrence_manager');
+        if (!$branchOccurrenceManager->hasNext($branch)) {
+            return new Response();
+        }
+
         $products = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Product')
-            ->findOfTheMomentForBranch($branch, $limit);
+            ->findOfTheMomentForBranchOccurrence($branchOccurrenceManager->getNext($branch), $limit);
 
         $nbProducts = count($products);
 
