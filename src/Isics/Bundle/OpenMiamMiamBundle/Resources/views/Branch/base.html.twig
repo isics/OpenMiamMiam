@@ -14,7 +14,7 @@
         <div id="header-logo">
             <a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}</a>
         </div>
-        
+
         {% if homepage is not defined %}
             {% set homepage=false %}
         {% endif %}
@@ -38,18 +38,19 @@
 {% endblock %}
 
 {% block javascript %}
-	{{ parent() }}   
+	{{ parent() }}
 	<script type="text/javascript">
 	$(function() {
 		new OpenMiamMiam.LocationMap(
 			'{{ branch.name }}',
+            '{{ 'zone.location.route_link'|trans }}',
 			'{{ branch.address1 }}',
 			'{{ branch.address2 }}',
 			'{{ branch.zipcode }}',
 			'{{ branch.city }}',
 			'FRANCE' {#todo add openmiammiam.country param#}
 		);
-	}); 
+	});
 	</script>
 {% endblock %}
 

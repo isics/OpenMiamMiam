@@ -31,10 +31,10 @@ zone.producers.title:              "Les producteurs"
 zone.producers.link:               "Tous les producteurs"
 zone.next_occurrences.title:       "Prochains comptoirs"
 zone.location.title:               "S'y rendre"
+zone.location.route_link:          "Calculer l'itinéraire"
 zone.products_of_the_moment.title: "Les produits du moment"
 
-# Branch 
-branch.maps:                    "Itinéraire"
+# Branch
 branch.producers.name:          "Nom"
 branch.producers.image:         "Image"
 branch.producers.presentation:  "Présentation"
@@ -44,7 +44,7 @@ branch.producers.phone2:        "Téléphone 2"
 branch.producers.website:       "Site web"
 branch.producers.facebook:      "Page Facebook"
 
-# Producer 
+# Producer
 producer.name:         "Nom"
 producer.image:        "Image"
 producer.presentation: "Présentation"
