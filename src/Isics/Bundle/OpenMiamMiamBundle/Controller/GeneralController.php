@@ -19,34 +19,34 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
 
 class GeneralController extends Controller {
-	
-	/**
-	 * @param producer $producerSlug
-	 * 
-	 * @return producer, nextAttendancesOf
-	 */
-	public function showProducerAction($producerSlug)
-	{
-		$producer = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findOneBySlug($producerSlug);
-		
-		if (null === $producer) {
-			throw new NotFoundHttpException('Producer not found');
-		}
-		
-		if ($producer->getSlug() !== $producerSlug) {
-			return $this->redirect($this->generateUrl('open_miam_miam.producer',
-					array(
-							'producerSlug'  => $producer->getSlug(),
-					)
-			), 301);
-		}
-		$nextAttendancesOf = $this->get('open_miam_miam.producer_attendances_manager')->getNextAttendancesOf($producer);
+    
+    /**
+     * @param producer $producerSlug
+     * 
+     * @return producer, nextAttendancesOf
+     */
+    public function showProducerAction($producerSlug)
+    {
+        $producer = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findOneBySlug($producerSlug);
+        
+        if (null === $producer) {
+            throw new NotFoundHttpException('Producer not found');
+        }
+        
+        if ($producer->getSlug() !== $producerSlug) {
+            return $this->redirect($this->generateUrl('open_miam_miam.producer',
+                    array(
+                            'producerSlug'  => $producer->getSlug(),
+                    )
+            ), 301);
+        }
+        $nextAttendancesOf = $this->get('open_miam_miam.producer_attendances_manager')->getNextAttendancesOf($producer);
 
-		if (null === $nextAttendancesOf) {
-			throw new NotFoundHttpException('Attendances not found');
-		}
-		
-		return $this->render('IsicsOpenMiamMiamBundle::showProducer.html.twig', array('producer'  => $producer,'nextAttendancesOf'   => $nextAttendancesOf));
-		
-	}
+        if (null === $nextAttendancesOf) {
+            throw new NotFoundHttpException('Attendances not found');
+        }
+        
+        return $this->render('IsicsOpenMiamMiamBundle::showProducer.html.twig', array('producer'  => $producer,'nextAttendancesOf'   => $nextAttendancesOf));
+        
+    }
 }

@@ -66,24 +66,24 @@ class BranchController extends Controller
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showRandomProducers.html.twig', array(
             'producers' => $producers,
-        	'branch' => $branch
+            'branch' => $branch
         ));
     }
     
     public function listProducersAction($branchSlug)
     {
-    	$branch = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Branch')->findOneBySlug($branchSlug);
-    	
-    	if (null === $branch) {
-    		throw new NotFoundHttpException('Branch not found');
-    	}
-    	
-    	$producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch);
-    	
-    	if (null === $producers) {
-    		throw new NotFoundHttpException('Producers not found');
-    	}
-    	
-    	return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducers.html.twig', array('producers'  => $producers, 'branch' => $branch));
+        $branch = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Branch')->findOneBySlug($branchSlug);
+        
+        if (null === $branch) {
+            throw new NotFoundHttpException('Branch not found');
+        }
+        
+        $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch);
+        
+        if (null === $producers) {
+            throw new NotFoundHttpException('Producers not found');
+        }
+        
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducers.html.twig', array('producers'  => $producers, 'branch' => $branch));
     }
 }
