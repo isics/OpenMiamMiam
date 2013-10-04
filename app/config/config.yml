@@ -92,11 +92,19 @@ fos_user:
     firewall_name: main
     user_class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User
     registration:
+        confirmation:
+            enabled: true
         form:
             type: open_miam_miam_user_registration
     profile:
         form:
             type: open_miam_miam_user_profile
+    from_email:
+        address:     %mailer_sender_address%
+        sender_name: %mailer_sender_name%
+    service:
+        mailer: fos_user.mailer.twig_swift
+
 
 # LiipImagineBundle Configuration
 liip_imagine:
