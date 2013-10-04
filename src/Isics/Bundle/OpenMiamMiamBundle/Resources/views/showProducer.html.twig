@@ -10,11 +10,6 @@
 
     {% block content %}
         
-        <div class="row">
-            <div class="col-md-3" >
-                
-            </div>
-            <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-2 producer-image">
                         {% if producer.image is not null %}
@@ -26,7 +21,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class=" col-md-5 well">
+                    <div class=" col-md-5 well contact">
                         <p><strong>{{ 'producer.contact'|trans }}</strong></p>
                         <adddress>
                             <strong>
@@ -72,7 +67,5 @@
                         {{ producer.presentation |raw }}
                     </div>
                 </div>
-                {% endif %}
-            </div>
-        </div>
+                {% endif %} 
     {% endblock %}
