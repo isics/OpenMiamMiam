@@ -69,7 +69,6 @@ class ImportUsersCommand extends ContainerAwareCommand
 
                         // required values
                         $user = $userManager->createUser();
-                        $user->setUsername($email);
                         $user->setEmail($email);
                         $user->setPlainPassword($password);
                         $user->setEnabled(true);
