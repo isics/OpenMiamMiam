@@ -222,4 +222,11 @@ class User extends BaseUser
 
         return null;
     }
+
+    public function setEmail($email)
+    {
+        parent::setEmail($email);
+        $this->username = $email;
+        $this->usernameCanonical = $email;
+    }
 }
