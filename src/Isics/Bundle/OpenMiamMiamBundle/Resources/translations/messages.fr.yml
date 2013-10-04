@@ -77,11 +77,13 @@ order.confirmed.body_html:           |
 
 
 # User / login
-user.login.title:          "Identifiez-vous"
-user.login.existing.title: "Déjà client ?"
-user.login.new.title:      "Nouveau client ?"
-user.login.submit:         "S'identifier"
-user.login.register:       "Créer un compte"
+user.login.title:                "Identifiez-vous"
+user.login.existing.title:       "Déjà client ?"
+user.login.email.placeholder:    "Adresse e-mail"
+user.login.password.placeholder: "Mot de passe"
+user.login.new.title:            "Nouveau client ?"
+user.login.submit:               "S'identifier"
+user.login.register:             "Créer un compte"
 
 # User / register
 user.register.title:                 "Créez votre compte :"
