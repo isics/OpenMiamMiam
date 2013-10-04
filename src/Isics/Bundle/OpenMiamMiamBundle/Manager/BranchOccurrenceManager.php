@@ -98,6 +98,21 @@ class BranchOccurrenceManager
     }
 
     /**
+     * Returns next branch occurrence for an association
+     *
+     * @param Association $association Association
+     */
+    public function getNextForAssociation(Association $association) {
+        foreach ($association->getBranches() as $branch) {
+            if ($this->hasNext($branch)) {
+                return $this->getNext($branch);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns true if a branch occurrence is in progress
      *
      * @param Branch $branch

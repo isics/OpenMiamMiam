@@ -78,14 +78,15 @@ class SalesOrderController extends BaseController
     {
         $this->secure($association);
 
-        $branches = $association->getBranches();
-        if (count($branches) === 0) {
+        $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
+        $nextBranchOccurrence = $branchOccurrenceManager->getNextForAssociation($association);
+        if (null === $nextBranchOccurrence) {
             throw $this->createNotFoundException('No branch for association '.$association->getName());
         }
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.association.sales_order.list_for_branch_occurrence',
-            array('id' => $association->getId(), 'branchOccurrenceId' => $branches->first()->getId())
+            array('id' => $association->getId(), 'branchOccurrenceId' => $nextBranchOccurrence->getId())
         ));
     }
 
