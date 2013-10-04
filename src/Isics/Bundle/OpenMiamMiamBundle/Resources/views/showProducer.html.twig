@@ -9,63 +9,62 @@
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
     {% block content %}
-        
+
+        <div class="row">
+            <div class="col-md-6">
+            
                 <div class="row">
-                    <div class="col-md-2 producer-image">
-                        {% if producer.image is not null %}
-                               <p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" class="img-polaroid" alt="{{ producer.name }}" /></p>
+                    <div class="col-md-2 producer_image">
+                        {% if producer.profilImage is not null %}
+                            <img src="{{ asset(get_profil_image_producer_path(producer))|imagine_filter('a') }}" class="img-circle" alt="{{ producer.name }}" />
                         {% endif %}
                     </div>
-                    <div class="col-md-10 text-left">
-                        <strong><h1>{{ producer.name }}</h1></strong></br>
+                    <div class="col-md-10 producer_name">
+                       <strong><h1>{{ producer.name }}</h1></strong>
                     </div>
                 </div>
+                
+                <div class="well contact">
+                    <p><strong>{{ 'producer.contact'|trans }}</strong></p>
+                    <adddress>
+                        <strong>
+                            {{ producer.address1 }} {{ producer.address2 }}</br> 
+                            {{ producer.zipcode }} {{ producer.city }}</br>
+                        </strong>
+                    </address>
+                    {% if producer.phone1 is not null %}
+                        {{ 'producer.phone1'|trans }}
+                        {{ producer.phone1 }}</br>
+                    {% endif %}
+
+                    {% if producer.phone2 is not null %}
+                        {{ 'producer.phone2'|trans }}
+                        {{ producer.phone2 }}</br>
+                    {% endif %}
+
+                    {% if producer.facebook is not null %}
+                        {{ 'producer.website'|trans }}
+                        <a href="{{ producer.website }}">{{ producer.website }}</a></br>
+                    {% endif %}
+
+                    {% if producer.facebook is not null %}
+                        {{ 'producer.facebook'|trans }}
+                        <a href="{{ producer.facebook }}">{{ producer.facebook }}</a>
+                    {% endif %}
+                </div> 
+            </div>
+            <div class="col-md-6 presentation_image">
+                {% if producer.presentationImage is not null %}
+                    <img src="{{ asset(get_presentation_image_producer_path(producer))|imagine_filter('b') }}" class="img-polaroid" alt="{{ producer.name }}" />
+                {% endif %}
+            </div>
+            
+            </div>
+            {% if producer.presentation is not null %}
                 <div class="row">
-                    <div class=" col-md-5 well contact">
-                        <p><strong>{{ 'producer.contact'|trans }}</strong></p>
-                        <adddress>
-                            <strong>
-                                {{ producer.address1 }}{{ producer.address2 }}</br> 
-                                {{ producer.zipcode }} {{ producer.city }}</br>
-                            </strong>
-                        </address>
-                        {% if producer.phone1 is not null %}
-                            {{ 'producer.phone1'|trans }}
-                            {{ producer.phone1 }}</br>
-                        {% endif %}
-                        
-                        {% if producer.phone2 is not null %}
-                            {{ 'producer.phone2'|trans }}
-                            {{ producer.phone2 }}</br>
-                        {% endif %}
-                        
-                        {% if producer.facebook is not null %}
-                            {{ 'producer.website'|trans }}
-                            <a href="{{ producer.website }}">{{ producer.website }}</a></br>
-                        {% endif %}
-                        
-                        {% if producer.facebook is not null %}
-                            {{ 'producer.facebook'|trans }}
-                            <a href="{{ producer.facebook }}">{{ producer.facebook }}</a>
-                        {% endif %}
-                        
-                    </div>
-                    <div class="col-md-6 well attendances">
-                        <p><strong><span class="glyphicon glyphicon-time"></span> {{ 'producer.comptoir'|trans }}</strong></p></br>
-                        {% if nextAttendancesOf is not null %}
-                            {% for nextAttendance in nextAttendancesOf %}
-                                {{ nextAttendance }}
-                            {% endfor %}
-                        {% else %}
-                            {{ 'producer.website'|trans }}
-                        {% endif %}
-                    </div>
-                </div>
-                {% if producer.presentation is not null %}
-                <div class="row">
-                    <div class="col-md-12 well well-large">
+                    <div class="col-md-12 well">
                         {{ producer.presentation |raw }}
                     </div>
                 </div>
-                {% endif %} 
+            {% endif %} 
     {% endblock %}

@@ -133,21 +133,38 @@ class Producer
     private $branches;
 
     /**
-     * @var string $image
+     * @var string $profilImage
      *
-     * @ORM\Column(name="image", type="string", length=128, nullable=true)
+     * @ORM\Column(name="profilImage", type="string", length=128, nullable=true)
      */
-    private $image;
+    private $profilImage;
 
     /**
      * @var UploadedFile string
      */
-    private $imageFile;
+    private $profilImageFile;
 
     /**
-     * @var boolean $deleteImage
+     * @var boolean $deleteProfilImage
      */
-    private $deleteImage;
+    private $deleteProfilImage;
+    
+    /**
+     * @var string $presentationImage
+     *
+     * @ORM\Column(name="presentationImage", type="string", length=128, nullable=true)
+     */
+    private $presentationImage;
+    
+    /**
+     * @var UploadedFile string
+     */
+    private $presentationImageFile;
+    
+    /**
+     * @var boolean $deletePresentationImage
+     */
+    private $deletePresentationImage;
 
 
     /**
@@ -159,7 +176,8 @@ class Producer
 
         $this->associations = new ArrayCollection();
         $this->branches     = new ArrayCollection();
-        $this->deleteImage  = false;
+        $this->deleteProfilImage = false;
+        $this->deleteProducerImage = false;
     }
 
     public function __toString()
@@ -487,75 +505,144 @@ class Producer
     }
 
     /**
-     * Set image
+     * Set ProfilImage
      *
-     * @param string $image
+     * @param string $profilImage
      * @return Product
      */
-    public function setImage($image)
+    public function setProfilImage($profilImage)
     {
-        $this->image = $image;
+        $this->profilImage = $profilImage;
 
         return $this;
     }
 
     /**
-     * Get image
+     * Get profilImage
      *
      * @return string
      */
-    public function getImage()
+    public function getProfilImage()
     {
-        return $this->image;
+        return $this->profilImage;
     }
 
     /**
-     * Set image file
+     * Set ProfilImage file
      *
-     * @param UploadedFile $imageFile
+     * @param UploadedFile $profilImageFile
      *
      * @return Producer
      */
-    public function setImageFile(UploadedFile $imageFile = null)
+    public function setProfilImageFile(UploadedFile $profilImageFile = null)
     {
-        $this->imageFile = $imageFile;
+        $this->profilImageFile = $profilImageFile;
 
         return $this;
     }
 
     /**
-     * Get image file
+     * Get profilImage file
      *
      * @return UploadedFile
      */
-    public function getImageFile()
+    public function getProfilImageFile()
     {
-        return $this->imageFile;
+        return $this->profilImageFile;
     }
 
     /**
-     * Set deleteImage flag
+     * Set deleteProfilImage flag
      *
      * @param boolean $deleteImage
      * @return Producer
      */
-    public function setDeleteImage($deleteImage)
+    public function setDeleteProfilImage($deleteProfilImage)
     {
-        $this->deleteImage = (bool)$deleteImage;
+        $this->deleteProfilImage = (bool)$deleteProfilImage;
 
         return $this;
     }
 
     /**
-     * Get deleteImage flag
+     * Get deleteProfilImage flag
      *
      * @return boolean
      */
-    public function getDeleteImage()
+    public function getDeleteProfilImage()
     {
-        return $this->deleteImage;
+        return $this->deleteProfilImage;
     }
 
+    /**
+     * Set presentationImage
+     *
+     * @param string $presentationImage
+     * @return Product
+     */
+    public function setPresentationImage($presentationImage)
+    {
+        $this->presentationImage = $presentationImage;
+    
+        return $this;
+    }
+    
+    /**
+     * Get presentationImage
+     *
+     * @return string
+     */
+    public function getPresentationImage()
+    {
+        return $this->presentationImage;
+    }
+    
+    /**
+     * Set prensentationImage file
+     *
+     * @param UploadedFile $presentationImageFile
+     *
+     * @return Producer
+     */
+    public function setPresentationImageFile(UploadedFile $presentationImageFile = null)
+    {
+        $this->presentationImageFile = $presentationImageFile;
+    
+        return $this;
+    }
+    
+    /**
+     * Get presentationImage file
+     *
+     * @return UploadedFile
+     */
+    public function getPresentationImageFile()
+    {
+        return $this->presentationImageFile;
+    }
+    
+    /**
+     * Set deletePresentationImage flag
+     *
+     * @param boolean $deletePresentationImage
+     * @return Producer
+     */
+    public function setDeletePresentationImage($deletePresentationImage)
+    {
+        $this->deletePresentationImage = (bool)$deletePresentationImage;
+    
+        return $this;
+    }
+    
+    /**
+     * Get deletePresentationImage flag
+     *
+     * @return boolean
+     */
+    public function getDeletePresentationImage()
+    {
+        return $this->deletePresentationImage;
+    }
     /**
      * Add branch
      *

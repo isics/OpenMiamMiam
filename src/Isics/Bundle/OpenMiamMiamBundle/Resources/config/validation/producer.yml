@@ -26,8 +26,13 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:
             - Url: ~
         facebook:
             - Url: ~
-        imageFile:
+        profilImageFile:
             - Image:
                 maxSize: 5120k
-        deleteImage:
+        deleteProfilImage:
+            - Type: bool
+        presentationImageFile:
+            - Image:
+                maxSize: 5120k
+        deletePresentationImage:
             - Type: bool

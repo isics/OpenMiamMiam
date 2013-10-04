@@ -82,23 +82,24 @@ class ProducerManager
         $this->entityManager->flush();
 
         // Process image file
-        $this->processImageFile($producer);
+        $this->processProfilImageFile($producer);
+        $this->processPresentationImageFile($producer);
     }
 
     /**
-     * Returns image path
+     * Returns ProfilImage path
      *
      * @param Producer $producer
      *
      * @return string
      */
-    public function getImagePath(Producer $producer)
+    public function getProfilImagePath(Producer $producer)
     {
-        if (null === $producer->getImage()) {
+        if (null === $producer->getProfilImage()) {
             return null;
         }
 
-        return $this->getUploadDir($producer).'/'.$producer->getImage();
+        return $this->getUploadDir($producer).'/'.$producer->getProfilImage();
     }
 
     /**
@@ -112,64 +113,143 @@ class ProducerManager
     }
 
     /**
-     * Processes image file
+     * Processes profilImage file
      *
      * @param Producer $producer
      */
-    public function processImageFile(Producer $producer)
+    public function processProfilImageFile(Producer $producer)
     {
         // Delete image if flag is true
-        if (null !== $producer->getImage() && $producer->getDeleteImage()) {
-            return $this->removeImage($producer);
+        if (null !== $producer->getProfilImage() && $producer->getDeleteProfilImage()) {
+            return $this->removeProfilImage($producer);
         }
         // Move new image
-        elseif (null !== $producer->getImageFile()) {
-            $this->uploadImage($producer);
+        elseif (null !== $producer->getProfilImageFile()) {
+            $this->uploadProfilImage($producer);
         }
     }
 
     /**
-     * Removes image file
+     * Removes profilImage file
      *
      * @param Producer $producer
      */
-    public function removeImage(Producer $producer)
+    public function removeProfilImage(Producer $producer)
     {
         $fileSystem = new Filesystem();
         $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($producer);
 
-        $fileSystem->remove($uploadDir.'/'.$producer->getImage());
+        $fileSystem->remove($uploadDir.'/'.$producer->getProfilImage());
 
-        $producer->setImage(null);
+        $producer->setProfilImage(null);
 
         $this->entityManager->persist($producer);
         $this->entityManager->flush();
     }
 
     /**
-     * Uploads image file
+     * Uploads profilImage file
      *
      * @param Producer $producer
      */
-    public function uploadImage(Producer $producer)
+    public function uploadProfilImage(Producer $producer)
     {
         $fileSystem = new Filesystem();
         $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($producer);
 
         // Remove old image
-        if (null !== $producer->getImage()) {
-            $fileSystem->remove($uploadDir.'/'.$producer->getImage());
+        if (null !== $producer->getProfilImage()) {
+            $fileSystem->remove($uploadDir.'/'.$producer->getProfilImage());
         }
 
         // Move image
-        $file = $producer->getImageFile();
+        $file = $producer->getProfilImageFile();
         $filename = uniqid($producer->getSlug()).'.'.$file->guessExtension();
         $file->move($uploadDir, $filename);
 
         // Set new image filename and reset image file
-        $producer->setImage($filename);
-        $producer->setImageFile(null);
+        $producer->setProfilImage($filename);
+        $producer->setProfilImageFile(null);
 
+        $this->entityManager->persist($producer);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Returns PresentationImage path
+     *
+     * @param Producer $producer
+     *
+     * @return string
+     */
+    public function getPresentationImagePath(Producer $producer)
+    {
+        if (null === $producer->getPresentationImage()) {
+            return null;
+        }
+    
+        return $this->getUploadDir($producer).'/'.$producer->getPresentationImage();
+    }
+    
+    /**
+     * Processes presentationImage file
+     *
+     * @param Producer $producer
+     */
+    public function processPresentationImageFile(Producer $producer)
+    {
+        // Delete image if flag is true
+        if (null !== $producer->getPresentationImage() && $producer->getDeletePresentationImage()) {
+            return $this->removePresentationImage($producer);
+        }
+        // Move new image
+        elseif (null !== $producer->getPresentationImageFile()) {
+            $this->uploadPresentationImage($producer);
+        }
+    }
+    
+    /**
+     * Removes presentationImage file
+     *
+     * @param Producer $producer
+     */
+    public function removePresentationImage(Producer $producer)
+    {
+        $fileSystem = new Filesystem();
+        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($producer);
+    
+        $fileSystem->remove($uploadDir.'/'.$producer->getPresentationImage());
+    
+        $producer->setPresentationImage(null);
+    
+        $this->entityManager->persist($producer);
+        $this->entityManager->flush();
+    }
+    
+    /**
+     * Uploads presentationImage file
+     *
+     * @param Producer $producer
+     */
+    public function uploadPresentationImage(Producer $producer)
+    {
+        $fileSystem = new Filesystem();
+        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($producer);
+    
+        // Remove old image
+        if (null !== $producer->getPresentationImage()) {
+            $fileSystem->remove($uploadDir.'/'.$producer->getPresentationImage());
+        }
+    
+        // Move image
+        $file = $producer->getPresentationImageFile();
+        $filename = uniqid($producer->getSlug()).'.'.$file->guessExtension();
+        $file->move($uploadDir, $filename);
+    
+        // Set new image filename and reset image file
+        $producer->setPresentationImage($filename);
+        $producer->setPresentationImageFile(null);
+    
         $this->entityManager->persist($producer);
         $this->entityManager->flush();
     }

@@ -86,7 +86,8 @@ class OpenMiamMiamExtension extends \Twig_Extension
     {
         return array(
             'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath'),
-            'get_image_producer_path' => new \Twig_Function_Method($this, 'getImageProducerPath'),
+            'get_profil_image_producer_path' => new \Twig_Function_Method($this, 'getProfilImageProducerPath'),
+            'get_presentation_image_producer_path' => new \Twig_Function_Method($this, 'getPresentationImageProducerPath'),
             'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay')
         );
     }
@@ -116,15 +117,27 @@ class OpenMiamMiamExtension extends \Twig_Extension
     }
 
     /**
-     * Returns image producer path
+     * Returns profil image producer path
      *
      * @param Producer $producer
      *
      * @return string
      */
-    public function getImageProducerPath(Producer $producer)
+    public function getProfilImageProducerPath(Producer $producer)
     {
-        return $this->producerManager->getImagePath($producer);
+        return $this->producerManager->getProfilImagePath($producer);
+    }
+    
+    /**
+     * Returns presentation image producer path
+     *
+     * @param Producer $producer
+     *
+     * @return string
+     */
+    public function getPresentationImageProducerPath(Producer $producer)
+    {
+        return $this->producerManager->getPresentationImagePath($producer);
     }
 
     /**
