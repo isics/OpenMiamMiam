@@ -85,7 +85,6 @@ user.login.register:             "Créer un compte"
 user.login.email.placeholder:    "Adresse e-mail"
 user.login.password.placeholder: "Mot de passe"
 
-
 # User / register
 user.register.title:                 "Créez votre compte :"
 user.register.firstname:             "Prénom"
@@ -172,7 +171,8 @@ admin.super.dashboard.title: "Tableau de bord"
 admin.super.user_switch.title:          "Usurpateur d'identité"
 admin.super.user_switch.list.lastname:  "Nom"
 admin.super.user_switch.list.firstname: "Prénom"
-admin.super.user_switch.list.switch:    "Usurper l'identité de %firstname% %lastname%"
+admin.super.user_switch.list.roles:     "Rôle(s)"
+admin.super.user_switch.list.switch:    "Usurper l'identité"
 admin.super.user_switch.alert.message:  "Vous avez usurpé l'identité de %firstname% %lastname%."
 admin.super.user_switch.alert.exit:     "Retour au rôle Super administrateur"
 

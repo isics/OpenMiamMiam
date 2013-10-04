@@ -12,11 +12,12 @@
 
     {% if users|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
                         <th>{{ 'admin.super.user_switch.list.lastname'|trans }}</th>
                         <th>{{ 'admin.super.user_switch.list.firstname'|trans }}</th>
+                        <th>{{ 'admin.super.user_switch.list.roles'|trans }}</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -26,9 +27,10 @@
                             <tr>
                                 <td>{{ user.lastname }}</td>
                                 <td>{{ user.firstname }}</td>
+                                <td>?</td>
                                 <td>
-                                    <a href="{{ path('open_miam_miam.admin', {'_switch_user': user.username }) }}" class="btn btn-danger btn-block" title="{{ 'admin.super.user_switch.list.switch'|trans }}">
-                                        <span class="glyphicon glyphicon-transfer"></span> {{ 'admin.super.user_switch.list.switch'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname}) }}
+                                    <a href="{{ path('open_miam_miam.admin', {'_switch_user': user.username }) }}" class="btn btn-danger" title="{{ 'admin.super.user_switch.list.switch'|trans }}">
+                                        <span class="glyphicon glyphicon-transfer"></span> {{ 'admin.super.user_switch.list.switch'|trans }}
                                     </a>
                                 </td>
                             </tr>

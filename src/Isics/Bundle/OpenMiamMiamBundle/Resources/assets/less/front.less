@@ -275,6 +275,7 @@ header {
     td:nth-child(5) {
         font-weight: bold;
         text-align: right;
+        white-space: nowrap;
     }
 
     .label {
@@ -304,13 +305,28 @@ header {
         vertical-align: middle !important;
     }
 
-    td:nth-child(3) {
-        text-align: right;
+    td:nth-child(2),
+    td:nth-child(4) {
         white-space: nowrap;
     }
 
-    td:nth-child(even) {
+    td:nth-child(3),
+    td:nth-child(5) {
         font-weight: bold;
         text-align: right;
+    }
+
+    td:nth-child(4) {
+        text-align: center;
+    }
+
+    tfoot {
+        font-size: @font-size-large;
+        font-weight: bold;
+
+        th {
+            font-style: normal;
+            text-align: right;
+        }
     }
 }

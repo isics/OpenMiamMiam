@@ -50,13 +50,15 @@
                     </dd>
                     <dt>{{ 'price'|trans }}</dt>
                     <dd>
-                        {% if not product.hasNoPrice %}
-                            {% set showNoPriceStatement = false %}
-                            {{ product.price|number_format_currency(open_miam_miam.currency) }}
-                        {% else %}
-                            {% set showNoPriceStatement = true %}
-                            <span class="glyphicon glyphicon-time"></span>*
-                        {% endif %}
+                        <span class="price">
+                            {% if not product.hasNoPrice %}
+                                {% set showNoPriceStatement = false %}
+                                {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                            {% else %}
+                                {% set showNoPriceStatement = true %}
+                                <span class="glyphicon glyphicon-time"></span>*
+                            {% endif %}
+                        </span>
                     </dd>
 
                     {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Catalog:showProductAddForm.html.twig'})) }}
