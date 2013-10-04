@@ -46,11 +46,13 @@
                 </a>
             </td>
             <td{% if product.hasNoPrice %} class="td-no-price"{% endif %}>
-                {% if not product.hasNoPrice %}
-                    {{ product.price|number_format_currency(open_miam_miam.currency) }}
-                {% else %}
-                    <span class="glyphicon glyphicon-time"></span>*
-                {% endif %}
+                <span class="price">
+                    {% if not product.hasNoPrice %}
+                        {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                    {% else %}
+                        <span class="glyphicon glyphicon-time"></span>*
+                    {% endif %}
+                </span>
             </td>
             {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Catalog:showCategoryAddForm.html.twig'})) }}
         </tr>
