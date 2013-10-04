@@ -90,7 +90,7 @@ class ProductRepository extends EntityRepository
     public function findOfTheMomentForBranchOccurrence(BranchOccurrence $branchOccurrence, $limit = 3)
     {
         // Retrieves all products of the moment ids and producer ids
-        $qb = $this->filterAvailableForBranchOccurrence(null, $branchOccurrence);
+        $qb = $this->filterAvailableForBranchOccurrence($branchOccurrence);
         $productsIds = $qb
             ->select('p.id as product_id, pr.id as producer_id')
             ->innerJoin('p.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
@@ -226,11 +226,12 @@ class ProductRepository extends EntityRepository
     /**
      * Returns query builder for available products
      *
-     * @param QueryBuilder $qb
+     * @param BranchOccurrence $branchOccurrence Branch occurrence
+     * @param QueryBuilder     $qb
      *
      * @return QueryBuilder
      */
-    public function filterAvailableForBranchOccurrence(QueryBuilder $qb = null, BranchOccurrence $branchOccurrence)
+    public function filterAvailableForBranchOccurrence(BranchOccurrence $branchOccurrence, QueryBuilder $qb = null)
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
