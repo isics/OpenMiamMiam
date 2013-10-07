@@ -69,6 +69,11 @@ class SalesOrderController extends Controller
                     $form->getData()
                 );
 
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $order->getBranchOccurrence()->getBranch()->getAssociation()
+                );
+
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.sales_order.confirm_creation',
                     array('branchSlug' => $branch->getSlug(), 'id' => $order->getId())

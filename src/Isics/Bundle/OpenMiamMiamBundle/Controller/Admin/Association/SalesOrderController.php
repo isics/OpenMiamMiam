@@ -146,10 +146,17 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $user = $this->get('security.context')->getToken()->getUser();
+
                 $this->get('open_miam_miam.sales_order_manager')->save(
                     $order,
                     $association,
-                    $this->get('security.context')->getToken()->getUser()
+                    $user
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $association
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
@@ -188,9 +195,15 @@ class SalesOrderController extends BaseController
         $this->secure($association);
         $this->secureSalesOrderRow($association, $order, $row);
 
+        $user = $this->get('security.context')->getToken()->getUser();
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
             $row,
-            $this->get('security.context')->getToken()->getUser()
+            $user
+        );
+
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+            $user,
+            $association
         );
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
@@ -238,13 +251,19 @@ class SalesOrderController extends BaseController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+                $user = $this->get('security.context')->getToken()->getUser();
 
                 $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
                 $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
                 $salesOrderManager->save(
                     $order,
                     $association,
-                    $this->get('security.context')->getToken()->getUser()
+                    $user
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $association
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -279,11 +298,11 @@ class SalesOrderController extends BaseController
         $this->secure($association);
         $this->secureSalesOrder($association, $order);
 
-        $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
+        $paymentManager = $this->get('open_miam_miam.payment_manager');
 
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.payment_allocation'),
-            $salesOrderManager->createPaymentAllocation($order),
+            $paymentManager->createPaymentAllocation($order),
             array(
                 'action' => $this->generateUrl(
                     'open_miam_miam.admin.association.sales_order.pay',
@@ -296,7 +315,7 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $salesOrderManager->addPaymentAllocation(
+                $paymentManager->addPaymentAllocation(
                     $order,
                     $form->getData(),
                     $this->get('security.context')->getToken()->getUser()
@@ -342,7 +361,7 @@ class SalesOrderController extends BaseController
             throw $this->createNotFoundException('Invalid payment allocation for sales order');
         }
 
-        $this->get('open_miam_miam.sales_order_manager')->deletePaymentAllocation(
+        $this->get('open_miam_miam.payment_manager')->deletePaymentAllocation(
             $paymentAllocation,
             $this->get('security.context')->getToken()->getUser()
         );
@@ -381,7 +400,7 @@ class SalesOrderController extends BaseController
             throw $this->createNotFoundException('Order is settled');
         }
 
-        $this->get('open_miam_miam.sales_order_manager')->allocatePayment(
+        $this->get('open_miam_miam.payment_manager')->allocatePayment(
             $payment,
             $order,
             $this->get('security.context')->getToken()->getUser()

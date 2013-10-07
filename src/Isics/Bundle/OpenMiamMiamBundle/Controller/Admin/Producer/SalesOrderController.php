@@ -101,10 +101,17 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $user = $this->get('security.context')->getToken()->getUser();
+
                 $this->get('open_miam_miam.sales_order_manager')->save(
                     $order,
                     $producer,
-                    $this->get('security.context')->getToken()->getUser()
+                    $user
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -144,9 +151,16 @@ class SalesOrderController extends BaseController
         $this->secureSalesOrderRow($producer, $order, $row);
 
         $order = $row->getSalesOrder();
+        $user = $this->get('security.context')->getToken()->getUser();
+
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
             $row,
-            $this->get('security.context')->getToken()->getUser()
+            $user
+        );
+
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+            $user,
+            $order->getBranchOccurrence()->getBranch()->getAssociation()
         );
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -194,13 +208,19 @@ class SalesOrderController extends BaseController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+                $user = $this->get('security.context')->getToken()->getUser();
 
                 $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
                 $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
                 $salesOrderManager->save(
                     $order,
                     $producer,
-                    $this->get('security.context')->getToken()->getUser()
+                    $user
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
