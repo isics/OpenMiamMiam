@@ -31,7 +31,7 @@
                             <td>{{ consumer.firstname }} {{ consumer.lastname }}</td>
                             <td>{{ consumer.getSubscriptionForAssociation(association).credit|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>
-                                {#<a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>#}
+                                <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
                             </td>
                         </tr>
                     {% endfor %}

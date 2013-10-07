@@ -58,4 +58,24 @@ class PaymentRepository extends EntityRepository
 
         return $result['amountSum'];
     }
+
+    /**
+     * Returns query builder to find payments for a user and association
+     *
+     * @param User $user
+     * @param Association $association
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getForConsumerAndAssociationQueryBuilder(User $user, Association $association, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->andWhere('p.user = :user')
+                ->andWhere('p.association = :association')
+                ->setParameter('user', $user)
+                ->setParameter('association', $association)
+               ->addOrderBy('p.date', 'DESC');
+    }
 }

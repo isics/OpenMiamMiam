@@ -70,6 +70,11 @@ open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }
 
+open_miam_miam.admin.association.consumer.list_payments:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments }
+
+
 
 #
 # Admin Producer

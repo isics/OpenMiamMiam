@@ -69,4 +69,18 @@ class ConsumerManager
             str_pad($user->getId(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
         );
     }
+
+    /**
+     * Returns a subscription for an association
+     *
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @return Association
+     */
+    public function getSubscription(Association $association, User $consumer)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Subscription')
+                ->findOneBy(array('association' => $association, 'user' => $consumer));
+    }
 }

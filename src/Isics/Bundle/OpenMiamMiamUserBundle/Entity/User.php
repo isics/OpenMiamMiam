@@ -223,10 +223,25 @@ class User extends BaseUser
         return null;
     }
 
+    /**
+     * Set email
+     *
+     * @param string $email
+     */
     public function setEmail($email)
     {
         parent::setEmail($email);
         $this->username = $email;
         $this->usernameCanonical = $email;
+    }
+
+    /**
+     * Returns full name
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->firstname.' '.$this->lastname;
     }
 }
