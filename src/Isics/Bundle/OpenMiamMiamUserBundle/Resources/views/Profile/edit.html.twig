@@ -37,6 +37,8 @@
                                 {{ form_row(form.city, {'label': 'user.edit.city'|trans, 'label_as_placeholder': true}) }}
                             </div>
                         </div>
+
+                    <a href="{{ path('fos_user_change_password') }}">{{ 'user.change_password'|trans }}</a>
                     </div>
                     <div class="panel-footer text-right">
                         <a href="{{ path('open_miam_miam.homepage') }}" class="btn btn-default btn-lg">
