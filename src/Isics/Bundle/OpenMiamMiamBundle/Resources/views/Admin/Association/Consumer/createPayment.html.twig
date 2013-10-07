@@ -1,0 +1,42 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ 'admin.association.consumers.payments.new.title'|trans({'%consumer%': consumer.fullName}) }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="panel-title">{{ 'admin.association.consumers.payments.new'|trans }}</h2>
+                </div>
+                <div class="panel-body">
+                    {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_payment_form', 'novalidate': '', 'class': 'form form-horizontal'}}) }}
+                        {{ form_errors(form) }}
+
+                        {{ form_row(form.amount) }}
+                        {{ form_row(form.type) }}
+
+                        {% do form.save.setRendered %}
+
+                        <button type="submit" class="btn btn-primary btn-lg" />
+                            <span class="glyphicon glyphicon-floppy-save"></span>
+                            {{ 'admin.add'|trans }}
+                        </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {'id': association.id, 'consumerId': consumer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+{% endblock %}

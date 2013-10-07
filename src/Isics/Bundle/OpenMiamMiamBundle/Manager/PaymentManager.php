@@ -50,6 +50,25 @@ class PaymentManager
     }
 
     /**
+     * Returns a new payment
+     *
+     * @param User $user
+     * @param Association $association
+     *
+     * @return Payment
+     */
+    public function createPayment(User $user, Association $association)
+    {
+        $payment = new Payment();
+        $payment->setType(Payment::TYPE_CASH);
+        $payment->setDate(new \DateTime());
+        $payment->setUser($user);
+        $payment->setAssociation($association);
+
+        return $payment;
+    }
+
+    /**
      * Returns a new payment allocation for an order
      *
      * @param SalesOrder $order
@@ -93,14 +112,14 @@ class PaymentManager
             $this->entityManager->persist($subscription);
         }
 
-        $salesOrderCredit = $this->entityManager
+        $salesOrderTotal = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
                 ->getTotalForUserAndAssociation($user, $association);
         $paymentsAmount = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:Payment')
                 ->getAmountForUserAndAssociation($user, $association);
 
-        $subscription->setCredit($salesOrderCredit-$paymentsAmount);
+        $subscription->setCredit($paymentsAmount-$salesOrderTotal);
 
         $this->entityManager->flush();
     }
@@ -124,7 +143,7 @@ class PaymentManager
         $this->entityManager->flush();
 
         // Subscription
-        $this->computeConsumerCredit($user, $order->getBranchOccurrence()->getBranch()->getAssociation());
+        $this->computeConsumerCredit($user, $payment->getAssociation());
 
         // Activity
         $activity = $this->activityManager->createFromEntities(
@@ -212,5 +231,35 @@ class PaymentManager
         $this->entityManager->persist($activity);
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * Saves payment
+     *
+     * @param Payment $payment
+     */
+    public function save(Payment $payment)
+    {
+        $payment->computeRest();
+
+        $this->entityManager->persist($payment);
+        $this->entityManager->flush();
+
+        // Subscription
+        $this->computeConsumerCredit($payment->getUser(), $payment->getAssociation());
+    }
+
+    /**
+     * Deletes payment
+     *
+     * @param Payment $payment
+     */
+    public function delete(Payment $payment)
+    {
+        $this->entityManager->remove($payment);
+        $this->entityManager->flush();
+
+        // Subscription
+        $this->computeConsumerCredit($payment->getUser(), $payment->getAssociation());
     }
 }

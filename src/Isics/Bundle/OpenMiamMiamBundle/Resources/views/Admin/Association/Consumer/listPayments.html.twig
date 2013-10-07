@@ -8,9 +8,17 @@
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
-<div class="row">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ 'admin.association.consumers.payments.list.title'|trans({'%consumer%': consumer.fullName}) }}</h1>
+        </div>
+    </div>
+
     <div class="col-md-12">
-        <h1>{{ 'admin.association.consumers.payments.list.title'|trans({'%consumer%': consumer.fullName}) }}</h1>
+        <a href="{{ path('open_miam_miam.admin.association.consumer.create_payment', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-lg pull-right">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+            {{ 'admin.association.consumers.payments.create'|trans }}
+        </a>
     </div>
 
     {% if payments|length > 0 %}
@@ -19,6 +27,7 @@
                 <thead>
                 <tr>
                     <th>{{ 'admin.association.consumers.payments.list.date'|trans }}</th>
+                    <th>{{ 'admin.association.consumers.payments.list.type'|trans }}</th>
                     <th>{{ 'admin.association.consumers.payments.list.amount'|trans }}</th>
                     <th>{{ 'admin.association.consumers.payments.list.rest'|trans }}</th>
                     <th>&nbsp;</th>
@@ -28,10 +37,13 @@
                 {% for payment in payments %}
                     <tr>
                         <td>{{ payment.date|format_date }}</td>
+                        <td>{{ ('admin.association.sales_orders.payment.type_'~payment.type)|trans }}</td>
                         <td>{{ payment.amount|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>{{ payment.rest|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>
-                            {#<a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>#}
+                            {% if payment.rest == payment.amount %}
+                                <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.consumers.payments.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                            {% endif  %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -39,8 +51,20 @@
             </table>
         </div>
         {{ pagerfanta(payments, 'default', pagerfanta_opts) }}
+
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\Consumer\\deleteDialog.html.twig' %}
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.payments.list.no_payment'|trans} %}
     {% endif %}
-</div>
+
+    <a href="{{ path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.deleteDialog;
+        });
+    </script>
 {% endblock %}

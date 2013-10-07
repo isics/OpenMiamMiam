@@ -153,8 +153,16 @@ admin.association.consumers.payments.list.title:      "Liste des paiements de %c
 admin.association.consumers.payments.list.no_payment: "Il n'y a pas encore de paiement pour ce consommateur"
 admin.association.consumers.payments.list.date:       "Date"
 admin.association.consumers.payments.list.amount:     "Montant"
+admin.association.consumers.payments.list.type:       "Mode"
 admin.association.consumers.payments.list.rest:       "Reste à affecter"
+admin.association.consumers.payments.create:          "Ajouter un règlement"
+admin.association.consumers.payments.new.title:       "Nouveau règlement de %consumer%"
+admin.association.consumers.payments.new:             "Nouveau règlement"
 
+admin.producer.consumers.message.payment_created: "Le paiement a bien été ajouté"
+admin.producer.consumers.message.payment_deleted: "Le paiement a bien été supprimé"
+
+admin.association.consumers.payments.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer ce règlement ?"
 
 # Admin / Association / Sales orders
 admin.association.sales_orders.list.title:                      "Caisse du comptoir"
