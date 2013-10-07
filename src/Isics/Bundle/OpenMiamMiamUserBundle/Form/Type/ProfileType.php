@@ -30,7 +30,8 @@ class ProfileType extends BaseType
                 ->add('zipcode', 'text')
                 ->add('city', 'text')
                 ->remove('current_password')
-                ->remove('username');;
+                ->remove('username')
+                ->remove('email');
     }
 
     /**
