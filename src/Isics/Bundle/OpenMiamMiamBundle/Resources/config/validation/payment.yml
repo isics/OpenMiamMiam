@@ -1,11 +1,13 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Payment:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Payment: ~
     properties:
         amount:
-            - NotNull: { groups: [without_allocation] }
-        rest:
-            - NotNull: { groups: [without_allocation] }
-            - GreaterThanOrEqual:
+            - NotNull: ~
+            - GreaterThan:
                 value: 0
+        rest:
+            - NotNull: ~
         date:
             - NotNull: ~
             - Date: ~

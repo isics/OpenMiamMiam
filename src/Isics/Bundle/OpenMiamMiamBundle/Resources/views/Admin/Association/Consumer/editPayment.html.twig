@@ -10,7 +10,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ 'admin.association.consumers.payments.form.new_title'|trans({'%consumer%': consumer.fullName}) }}</h1>
+            <h1>{{ 'admin.association.consumers.payments.form.edit_title'|trans({'%consumer%': consumer.fullName}) }}</h1>
         </div>
     </div>
 
@@ -22,17 +22,17 @@
                 </div>
                 <div class="panel-body">
                     {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_payment_form', 'novalidate': '', 'class': 'form form-horizontal'}}) }}
-                        {{ form_errors(form) }}
+                    {{ form_errors(form) }}
 
-                        {{ form_row(form.amount) }}
-                        {{ form_row(form.type) }}
+                    {{ form_row(form.amount) }}
+                    {{ form_row(form.type) }}
 
-                        {% do form.save.setRendered %}
+                    {% do form.save.setRendered %}
 
-                        <button type="submit" class="btn btn-primary btn-lg" />
-                            <span class="glyphicon glyphicon-floppy-save"></span>
-                            {{ 'admin.add'|trans }}
-                        </button>
+                    <button type="submit" class="btn btn-primary btn-lg" />
+                    <span class="glyphicon glyphicon-floppy-save"></span>
+                    {{ 'admin.add'|trans }}
+                    </button>
                     {{ form_end(form) }}
                 </div>
             </div>

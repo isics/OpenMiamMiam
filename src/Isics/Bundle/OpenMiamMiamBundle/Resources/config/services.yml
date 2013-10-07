@@ -12,6 +12,7 @@ parameters:
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
+    open_miam_miam.payment_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentValidator'
 
     open_miam_miam.activity_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
     open_miam_miam.branch_occurrence_manager.class:       'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
@@ -83,6 +84,11 @@ services:
         class: %open_miam_miam.payment_allocation_validator.class%
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_payment_allocation_validator }
+
+    open_miam_miam.payment_validator:
+        class: %open_miam_miam.payment_validator.class%
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam_payment_validator }
 
 
 

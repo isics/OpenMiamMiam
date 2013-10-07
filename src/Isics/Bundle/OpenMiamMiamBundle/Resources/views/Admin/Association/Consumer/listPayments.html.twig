@@ -17,7 +17,7 @@
     <div class="col-md-12">
         <a href="{{ path('open_miam_miam.admin.association.consumer.create_payment', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-lg pull-right">
             <span class="glyphicon glyphicon-plus-sign"></span>
-            {{ 'admin.association.consumers.payments.create'|trans }}
+            {{ 'admin.association.consumers.payments.list.create'|trans }}
         </a>
     </div>
 
@@ -41,6 +41,7 @@
                         <td>{{ payment.amount|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>{{ payment.rest|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>
+                            <a href="{{ path('open_miam_miam.admin.association.consumer.edit_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.consumers.payments.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                             {% if payment.rest == payment.amount %}
                                 <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.consumers.payments.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
                             {% endif  %}

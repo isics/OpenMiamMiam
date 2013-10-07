@@ -208,4 +208,58 @@ class ConsumerController extends BaseController
             array('id' => $association->getId(), 'consumerId' => $consumer->getId())
         ));
     }
+
+    /**
+     * Edits consumer payment
+     *
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("payment", class="IsicsOpenMiamMiamBundle:Payment", options={"mapping": {"paymentId": "id"}})
+     *
+     * @param Request $request
+     * @param Association $association
+     * @param User $consumer
+     * @param Payment $payment
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function editPaymentAction(Request $request, Association $association, User $consumer, Payment $payment)
+    {
+        $this->secure($association);
+        $this->securePayment($association, $consumer, $payment);
+
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.payment'),
+            $payment,
+            array(
+                'without_amount' => false,
+                'action' => $this->generateUrl(
+                    'open_miam_miam.admin.association.consumer.edit_payment',
+                    array('id' => $association->getId(), 'consumerId' => $consumer->getId(), 'paymentId' => $payment->getId())
+                ),
+                'method' => 'POST'
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $this->get('open_miam_miam.payment_manager')->save($form->getData());
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.consumers.message.payment_updated');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.consumer.list_payments',
+                    array('id' => $association->getId(), 'consumerId' => $consumer->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:editPayment.html.twig', array(
+            'association'=> $association,
+            'consumer' => $consumer,
+            'form' => $form->createView()
+        ));
+    }
 }
