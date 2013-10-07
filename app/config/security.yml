@@ -30,6 +30,8 @@ security:
                 target:      /admin
             anonymous: true
             switch_user: { role: ROLE_ADMIN }
+            remember_me:
+                key: %secret%
 
         front:
            pattern: ^/
@@ -38,6 +40,8 @@ security:
                csrf_provider: form.csrf_provider
            logout:    true
            anonymous: true
+           remember_me:
+               key: %secret%
 
     access_control:
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
