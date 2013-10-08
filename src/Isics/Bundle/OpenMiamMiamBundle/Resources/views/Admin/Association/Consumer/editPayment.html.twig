@@ -13,7 +13,6 @@
             <h1>{{ 'admin.association.consumers.payments.form.edit_title'|trans({'%consumer%': consumer.fullName}) }}</h1>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-5">
             <div class="panel panel-primary">
@@ -34,6 +33,16 @@
                     {{ 'admin.add'|trans }}
                     </button>
                     {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <div class="panel {% if payment.rest > 0 %}panel-danger{% else %}panel-success{% endif %}">
+                <div class="panel-heading">
+                    <h2 class="panel-title">{{ 'admin.association.consumers.payments.form.rest'|trans }}</h2>
+                </div>
+                <div class="panel-body text-center">
+                    <strong>{{ payment.rest|number_format_currency(open_miam_miam.currency) }}</strong>
                 </div>
             </div>
         </div>
