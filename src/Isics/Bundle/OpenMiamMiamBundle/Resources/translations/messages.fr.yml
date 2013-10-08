@@ -98,7 +98,7 @@ availability.available_at:    "Dispo le %date%"
 admin.title:                 "Accès gestionnaire"
 admin.save:                  "Enregistrer"
 admin.return:                "Retourner à la liste"
-admin.activity_stream.title: "Flux d'activité"
+admin.activity_stream.title: "Historique"
 admin.add:                   "Ajouter"
 
 
@@ -332,17 +332,16 @@ message.cart.updated: "Votre panier a été mis à jour."
 # Activités
 activity_stream.product.created: "a créé le produit %name%."
 activity_stream.product.updated: "a mis à jour le produit %name%."
-
-activity_stream.sales_order.created: "a passé la commande %ref%"
-activity_stream.sales_order.updated: "a modifié la commande %ref%"
-activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)"
-activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)"
-activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)"
-activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%"
-activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à la commande %order_ref%"
-activity_stream.sales_order.payment.added: "a ajouté un nouveau règlement à la commande %order_ref% (montant : %amount%)"
-activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règlement à la commande %order_ref% (montant : %amount%)"
-activity_stream.sales_order.payment.allocated: "a affecté un règlement à la commande %order_ref% (montant : %amount%)"
+activity_stream.sales_order.created: "a passé la commande %ref%."
+activity_stream.sales_order.updated: "a modifié la commande %ref%."
+activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)."
+activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)."
+activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)."
+activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%."
+activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à la commande %order_ref%."
+activity_stream.sales_order.payment.added: "a ajouté un nouveau règlement à la commande %order_ref% (montant : %amount%)."
+activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règlement à la commande %order_ref% (montant : %amount%)/"
+activity_stream.sales_order.payment.allocated: "a affecté un règlement à la commande %order_ref% (montant : %amount%)."
 
 
 
