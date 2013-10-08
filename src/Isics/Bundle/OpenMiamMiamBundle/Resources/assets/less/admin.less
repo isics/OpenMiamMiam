@@ -23,6 +23,52 @@ h1 {
 }
 
 //
+// Association / Orders
+//
+.table-association-sales-orders {
+    th:nth-child(n+4),
+    td:nth-child(4),
+    td:nth-child(7) {
+        text-align: center;
+    }
+
+    td:nth-child(5),
+    td:nth-child(6) {
+        text-align: right;
+    }
+}
+
+//
+// Association / Orders / Payments
+//
+.table-association-sales-orders-payments {
+    th:nth-child(n+2),
+    td:nth-child(2) {
+        text-align: center;
+    }
+
+    td:nth-child(3) {
+        text-align: right;
+    }
+}
+
+//
+// Association / Orders / Totals
+//
+.table-association-sales-orders-totals {
+    th,
+    td {
+        font-weight: normal;
+        text-align: right;
+    }
+
+    tr:nth-child(3) th,
+    tr:nth-child(3) td {
+        font-weight: bold;
+    }
+}
+
+//
 // Producer dashboard
 //
 #producer-dashboard {
@@ -73,7 +119,7 @@ h1 {
 //
 // Producer / Orders
 //
-.table-sales-orders {
+.table-producer-sales-orders {
     th:nth-child(4),
     td:nth-child(4),
     th:nth-child(5),

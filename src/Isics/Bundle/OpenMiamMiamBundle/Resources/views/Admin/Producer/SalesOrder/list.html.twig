@@ -22,7 +22,7 @@
 
         {% if branchOccurrenceSalesOrders.salesOrders|length > 0 %}
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-sales-orders">
+                <table class="table table-bordered table-striped table-producer-sales-orders">
                     <thead>
                         <tr>
                             <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
@@ -36,9 +36,13 @@
                     <tbody>
                         {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
                             <tr>
-                                <td>{{ producerSalesOrder.salesOrder.ref }}</td>
-                                <td>{{ producerSalesOrder.salesOrder.date|format_date }}</td>
-                                <td>{{ producerSalesOrder.salesOrder.firstname }} {{ producerSalesOrder.salesOrder.lastname }}</td>
+                                <td>
+                                    <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}">
+                                        {{ producerSalesOrder.salesOrder.ref }}
+                                        </a>
+                                    </td>
+                                <td>{{ producerSalesOrder.salesOrder.date|format_datetime }}</td>
+                                <td>{{ producerSalesOrder.salesOrder.firstname }} {{ producerSalesOrder.salesOrder.lastname }} ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})</td>
                                 <td>{{ producerSalesOrder.salesOrderRows|length }}</td>
                                 <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
