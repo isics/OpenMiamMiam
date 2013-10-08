@@ -186,6 +186,8 @@ admin.association.consumers.payments.delete_dialog.content: "Êtes-vous vraiment
 # Admin / Association / Sales orders
 admin.association.sales_orders.list.title:                      "Caisse"
 admin.association.sales_orders.list.no_order:                   "Il n'y a pas encore de commande pour ce comptoir."
+admin.association.sales_orders.list.export.sales_orders:        "Bons de commande"
+admin.association.sales_orders.list.export:                     "Exporter"
 admin.association.sales_orders.list.ref:                        "Réf"
 admin.association.sales_orders.list.date:                       "Date"
 admin.association.sales_orders.list.consumer:                   "Consommateur"
@@ -408,3 +410,15 @@ admin.delete_dialog.title:   "Attention !"
 admin.delete_dialog.content: "Êtes-vous sûr de vouloir supprimer cet élément ?"
 admin.delete_dialog.cancel:  "NON"
 admin.delete_dialog.confirm: "OUI, supprimer"
+
+
+# PDFs
+pdf.sales_order.title:      "Commande %ref%"
+pdf.sales_order.consumer:   "Consommateur :"
+pdf.sales_order.withdrawal: "Mode de retrait :"
+pdf.sales_order.product:    "Produit"
+pdf.sales_order.producer:   "Producteur"
+pdf.sales_order.price:      "Prix"
+pdf.sales_order.quantity:   "Quantité"
+pdf.sales_order.row_total:  "Total"
+pdf.sales_order.total:      "TOTAL"

@@ -10,7 +10,7 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <select id="admin-switcher" class="form-control">
+            <select class="form-control" data-type="url-switcher">
                 {% for child in item.children %}
                     <option value="{{ child.uri }}"{% if matcher.isAncestor(child) %} selected="selected"{% set currentItem = child %}{% endif %}>{{ child.label }}</option>
                 {% endfor %}

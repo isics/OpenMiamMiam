@@ -72,6 +72,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(array('piece', 'g', 'kg', 'm'))
                     ->prototype('scalar')->end()
                 ->end()
+                ->scalarNode('sales_orders_pdf_view')->defaultValue('IsicsOpenMiamMiamBundle:Pdf:salesOrder.html.twig')->end()
             ->end();
 
         return $treeBuilder;

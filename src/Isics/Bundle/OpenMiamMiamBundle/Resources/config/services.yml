@@ -48,7 +48,8 @@ parameters:
 
     # Models
     open_miam_miam.sales_order_statistics.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
-
+    open_miam_miam.tcpdf.class:                  TCPDF
+    open_miam_miam.sales_orders_pdf.class:       'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
 
 services:
     # Validators
@@ -264,5 +265,15 @@ services:
 
     # Models
     open_miam_miam.sales_order_statistics:
-        class: %open_miam_miam.sales_order_statistics.class%
+        class:     %open_miam_miam.sales_order_statistics.class%
         arguments: [@doctrine.orm.entity_manager]
+
+    open_miam_miam.tcpdf:
+        class: %open_miam_miam.tcpdf.class%
+        scope: prototype
+        public: false
+
+    open_miam_miam.sales_orders_pdf:
+        class:     %open_miam_miam.sales_orders_pdf.class%
+        arguments: [%open_miam_miam.sales_orders_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        scope:     prototype
