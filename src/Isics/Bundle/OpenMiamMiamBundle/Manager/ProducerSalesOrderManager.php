@@ -54,13 +54,15 @@ class ProducerSalesOrderManager
 
         foreach ($producer->getBranches() as $branch) {
             $branchOccurrence = $branchOccurrenceRepository->findOneNextForBranch($branch, true);
-            $orders = $salesOrderRepository->findForProducer($producer, $branchOccurrence);
-            $branchOccurrenceSaleOrders = new ProducerBranchOccurrenceSalesOrders($producer, $branchOccurrence);
-            foreach ($orders as $order) {
-                $branchOccurrenceSaleOrders->addSalesOrder(new ProducerSalesOrder($producer, $order));
-            }
+            if (null !== $branchOccurrence) {
+                $branchOccurrenceSaleOrders = new ProducerBranchOccurrenceSalesOrders($producer, $branchOccurrence);
+                $orders = $salesOrderRepository->findForProducer($producer, $branchOccurrence);
+                foreach ($orders as $order) {
+                    $branchOccurrenceSaleOrders->addSalesOrder(new ProducerSalesOrder($producer, $order));
+                }
 
-            $producerSalesOrders->addProducerBranchOccurrenceSalesOrders($branchOccurrenceSaleOrders);
+                $producerSalesOrders->addProducerBranchOccurrenceSalesOrders($branchOccurrenceSaleOrders);
+            }
         }
 
         return $producerSalesOrders;
