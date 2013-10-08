@@ -24,7 +24,7 @@ my_account:           "Mon compte"
 
 
 # Payment
-payment.cash: "espèce"
+payment.cash:   "Espèces"
 payment.cheque: "Chèque"
 
 

@@ -8,39 +8,35 @@
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-6">
-            <h1>{{ 'admin.association.consumers.list.title'|trans }}</h1>
-        </div>
+    <h1>{{ 'admin.association.consumers.list.title'|trans }}</h1>
 
-        {% if consumers|length > 0 %}
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-sales-orders">
-                    <thead>
+    {% if consumers|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sales-orders">
+                <thead>
+                <tr>
+                    <th>{{ 'admin.association.consumers.list.ref'|trans }}</th>
+                    <th>{{ 'admin.association.consumers.list.name'|trans }}</th>
+                    <th>{{ 'admin.association.consumers.list.credit'|trans }}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for consumer in consumers %}
                     <tr>
-                        <th>{{ 'admin.association.consumers.list.ref'|trans }}</th>
-                        <th>{{ 'admin.association.consumers.list.name'|trans }}</th>
-                        <th>{{ 'admin.association.consumers.list.credit'|trans }}</th>
-                        <th>&nbsp;</th>
+                        <td>{{ consumer|format_consumer_ref }}</td>
+                        <td>{{ consumer.firstname }} {{ consumer.lastname }}</td>
+                        <td>{{ consumer.getSubscriptionForAssociation(association).credit|number_format_currency(open_miam_miam.currency) }}</td>
+                        <td>
+                            <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for consumer in consumers %}
-                        <tr>
-                            <td>{{ consumer|format_consumer_ref }}</td>
-                            <td>{{ consumer.firstname }} {{ consumer.lastname }}</td>
-                            <td>{{ consumer.getSubscriptionForAssociation(association).credit|number_format_currency(open_miam_miam.currency) }}</td>
-                            <td>
-                                <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {{ pagerfanta(consumers, 'default', pagerfanta_opts) }}
-        {% else %}
-            {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.list.no_consumer'|trans} %}
-        {% endif %}
-    </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ pagerfanta(consumers, 'default', pagerfanta_opts) }}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.list.no_consumer'|trans} %}
+    {% endif %}
 {% endblock %}
