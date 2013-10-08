@@ -51,7 +51,7 @@ class PaymentAllocation
      *
      * @ORM\ManyToOne(targetEntity="Payment")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=false, onDelete="RESTRICT")
      * })
      */
     private $payment;

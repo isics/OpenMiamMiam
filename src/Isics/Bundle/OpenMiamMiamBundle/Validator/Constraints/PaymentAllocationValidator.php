@@ -28,6 +28,5 @@ class PaymentAllocationValidator extends ConstraintValidator
         } elseif (null !== $payment && $payment->getRest() < $paymentAllocation->getAmount()) {
             $this->context->addViolationAt('amount', 'error.payment_allocation.amount_invalid', array('%max%' => $payment->getRest()));
         }
-
     }
 }

@@ -1,4 +1,6 @@
-var OpenMiamMiam = {};
+if (undefined === OpenMiamMiam) {
+    var OpenMiamMiam = {};
+}
 
 
 OpenMiamMiam.LocationMap = function() {
@@ -112,6 +114,7 @@ OpenMiamMiam.CartAddForm = function() {
 
     return object;
 }();
+
 
 OpenMiamMiam.Quantity = function() {
     var object = function() {

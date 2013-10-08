@@ -15,7 +15,7 @@
 
         <div class="col-md-6">
             <p>
-                <select id="branch-occurrence-switcher" class="form-control input-lg">
+                <select class="form-control input-lg" data-type="url-switcher">
                     {% for _branchOccurrence in branchOccurrences %}
                         <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
                     {% endfor %}
@@ -23,6 +23,20 @@
             </p>
         </div>
     </div>
+
+    <p>
+        <form class="form-inline" role="form" data-type="action-in-select">
+            <div class="form-group">
+                <select class="form-control input-md">
+                    <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.sales_orders'|trans }}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-md">
+                <span class="glyphicon glyphicon-open"></span>
+                {{ 'admin.association.sales_orders.list.export'|trans }}
+            </button>
+        </form>
+    </p>
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
@@ -40,7 +54,7 @@
                 </thead>
                 <tbody>
                     {% for salesOrder in salesOrders %}
-                        <tr>
+                        <tr{% if salesOrder.leftToPay %} class="danger"{% endif %}>
                             <td>
                                 <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
                                     {{ salesOrder.ref }}
@@ -54,7 +68,7 @@
                                 {% if salesOrder.leftToPay %}
                                     {{ salesOrder.leftToPay|number_format_currency(open_miam_miam.currency) }}
                                 {% else %}
-                                    -
+                                    {{ 0|number_format_currency(open_miam_miam.currency) }}
                                 {% endif %}
                             </td>
                             <td>
@@ -79,16 +93,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{{ ('admin.association.sales_orders.payment.type_'~'1')|trans }}</td>
-                                <td>2</td>
-                                <td>{{ 290.5|number_format_currency(open_miam_miam.currency) }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ ('admin.association.sales_orders.payment.type_'~'2')|trans }}</td>
-                                <td>12</td>
-                                <td>{{ 83.62|number_format_currency(open_miam_miam.currency) }}</td>
-                            </tr>
+                            {% for stat in salesOrdersStats.paymentStatistics %}
+                                <tr>
+                                    <td>{{ ('admin.association.sales_orders.payment.type_'~stat.type)|trans|capitalize }}</td>
+                                    <td>{{ stat.counter }}</td>
+                                    <td>{{ stat.amount|number_format_currency(open_miam_miam.currency) }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -99,15 +110,15 @@
                         <tbody>
                             <tr>
                                 <th>{{ 'admin.association.sales_orders.list.totals.total'|trans }}</th>
-                                <td>{{ 2127.78|number_format_currency(open_miam_miam.currency) }}</td>
+                                <td>{{ salesOrdersStats.total|number_format_currency(open_miam_miam.currency) }}</td>
                             </tr>
                             <tr>
                                 <th>{{ 'admin.association.sales_orders.list.totals.payed'|trans }}</th>
-                                <td>{{ 1202.70|number_format_currency(open_miam_miam.currency) }}</td>
+                                <td>{{ salesOrdersStats.paidAmount|number_format_currency(open_miam_miam.currency) }}</td>
                             </tr>
                             <tr>
                                 <th>{{ 'admin.association.sales_orders.list.totals.left_to_pay'|trans }}</th>
-                                <td>{{ 925.08|number_format_currency(open_miam_miam.currency) }}</td>
+                                <td>{{ salesOrdersStats.leftToPay|number_format_currency(open_miam_miam.currency) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -123,7 +134,7 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function() {
-            new OpenMiamMiam.AssociationBranchOccurrenceSwitcher;
+            new OpenMiamMiam.ActionInSelectForm();
         });
     </script>
 {% endblock %}

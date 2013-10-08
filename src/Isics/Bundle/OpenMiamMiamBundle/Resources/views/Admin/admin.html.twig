@@ -18,3 +18,12 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.UrlSwitcherSelect();
+        });
+    </script>
+{% endblock %}

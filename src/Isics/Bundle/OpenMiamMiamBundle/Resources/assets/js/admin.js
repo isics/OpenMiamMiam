@@ -1,11 +1,42 @@
-$(function() {
-    // Handles admin switcher
-    $('#admin-switcher').change(function() {
-        window.location = $(this).val();
-    });
-});
+if (undefined === OpenMiamMiam) {
+    var OpenMiamMiam = {};
+}
 
-var OpenMiamMiam = {};
+
+OpenMiamMiam.ActionInSelectForm = function() {
+
+    var object = function() {
+        this.handleSubmit();
+    };
+
+    object.prototype = {
+        handleSubmit: function() {
+            $('form[data-type=action-in-select]').submit(function(e) {
+                var form = $(this);
+                form.attr('action', form.find('select').val());
+            });
+        }
+    };
+
+    return object;
+}();
+
+OpenMiamMiam.UrlSwitcherSelect = function() {
+
+    var object = function() {
+        this.handleSwitcher();
+    };
+
+    object.prototype = {
+        handleSwitcher: function() {
+            $('select[data-type=url-switcher]').change(function() {
+                window.location = $(this).val();
+            });
+        }
+    };
+
+    return object;
+}();
 
 
 OpenMiamMiam.PanelForm = function() {
@@ -19,23 +50,6 @@ OpenMiamMiam.PanelForm = function() {
             var panelsInError = $('.panel:has(.has-error)')
                 .removeClass('panel-primary')
                 .addClass('panel-danger');
-        }
-    };
-
-    return object;
-}();
-
-OpenMiamMiam.AssociationBranchOccurrenceSwitcher = function() {
-
-    var object = function() {
-        this.handleSwitcher();
-    };
-
-    object.prototype = {
-        handleSwitcher: function() {
-            $('#branch-occurrence-switcher').change(function() {
-                window.location = $(this).val();
-            });
         }
     };
 

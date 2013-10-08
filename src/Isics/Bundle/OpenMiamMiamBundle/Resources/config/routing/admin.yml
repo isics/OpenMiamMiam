@@ -42,6 +42,10 @@ open_miam_miam.admin.association.sales_order.list_for_branch_occurrence:
     pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:listForBranchOccurrence }
 
+open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
+    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/salesOrders
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
+
 open_miam_miam.admin.association.sales_order.edit:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:edit }
@@ -59,7 +63,7 @@ open_miam_miam.admin.association.sales_order.pay:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:Pay }
 
 open_miam_miam.admin.association.sales_order.delete_payment_allocation:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payment_allocations/{paymentAllocationId}/delete
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/allocations/{paymentAllocationId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:deletePaymentAllocation }
 
 open_miam_miam.admin.association.sales_order.allocate_payment:
@@ -69,6 +73,31 @@ open_miam_miam.admin.association.sales_order.allocate_payment:
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }
+
+open_miam_miam.admin.association.consumer.list_payments:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments }
+
+open_miam_miam.admin.association.consumer.create_payment:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:createPayment }
+
+open_miam_miam.admin.association.consumer.edit_payment:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:editPayment }
+
+open_miam_miam.admin.association.consumer.delete_payment:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePayment }
+
+open_miam_miam.admin.association.consumer.delete_payment_allocation:
+    pattern: /associations/{id}/consumers/{consumerId}/payments/allocations/{paymentAllocationId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePaymentAllocation }
+
+open_miam_miam.admin.association.consumer.allocate_sales_order:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/allocate_sales_order/{salesOrderId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:allocateSalesOrder }
+
 
 
 #

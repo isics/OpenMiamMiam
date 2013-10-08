@@ -18,8 +18,10 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SalesOrderController extends BaseController
 {
@@ -107,11 +109,17 @@ class SalesOrderController extends BaseController
         $this->secure($association);
         $this->secureBranchOccurrence($association, $branchOccurrence);
 
+        $salesOrders = $this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence);
+
+        $statistics = $this->get('open_miam_miam.sales_order_statistics');
+        $statistics->setSalesOrders($salesOrders);
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:list.html.twig', array(
             'association' => $association,
             'branchOccurrence' => $branchOccurrence,
             'branchOccurrences' => $this->get('open_miam_miam.branch_occurrence_manager')->getToProcessForAssociation($association),
-            'salesOrders' => $this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence)
+            'salesOrders' => $salesOrders,
+            'salesOrdersStats' => $statistics
         ));
     }
 
@@ -412,5 +420,30 @@ class SalesOrderController extends BaseController
             'open_miam_miam.admin.association.sales_order.pay',
             array('id' => $association->getId(), 'salesOrderId' => $order->getId())
         ));
+    }
+
+    /**
+     * Get sales orders PDF for branch occurrence
+     *
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Association $association
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function getSalesOrdersPdfForBranchOccurrenceAction(Association $association, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($association);
+        $this->secureBranchOccurrence($association, $branchOccurrence);
+
+        $salesOrdersPdf = $this->get('open_miam_miam.sales_orders_pdf');
+        $salesOrdersPdf->setSalesOrders($this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence));
+
+        return new StreamedResponse(function() use ($salesOrdersPdf){
+            $salesOrdersPdf->render();
+        });
     }
 }

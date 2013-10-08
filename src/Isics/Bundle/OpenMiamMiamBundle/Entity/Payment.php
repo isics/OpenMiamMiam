@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
@@ -71,7 +72,7 @@ class Payment
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="PaymentAllocation", mappedBy="salesOrder", cascade="all", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="PaymentAllocation", mappedBy="payment", cascade="all", orphanRemoval=true)
      */
     private $paymentAllocations;
 
@@ -103,6 +104,7 @@ class Payment
     public function __construct()
     {
         $this->rest = 0;
+        $this->paymentAllocations = new ArrayCollection();
     }
 
     /**
@@ -254,5 +256,18 @@ class Payment
     {
         $paymentAllocation->setPayment($this);
         $this->paymentAllocations[] = $paymentAllocation;
+    }
+
+    /**
+     * Computes rest
+     */
+    public function computeRest()
+    {
+        $rest = $this->amount;
+        foreach ($this->getPaymentAllocations() as $allocation) {
+            $rest -= $allocation->getAmount();
+        }
+
+        $this->rest = $rest;
     }
 }

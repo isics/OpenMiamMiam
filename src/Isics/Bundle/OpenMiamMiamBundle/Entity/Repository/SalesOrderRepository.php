@@ -115,4 +115,27 @@ class SalesOrderRepository extends EntityRepository
 
         return $result['totalSum'];
     }
+
+    /**
+     * Returns all sales order not settled for user and association
+     *
+     * @param User $user
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function findNotSettledForUserAndAssociation(User $user, Association $association)
+    {
+        return $this->createQueryBuilder('so')
+                ->innerJoin('so.branchOccurrence', 'bo')
+                ->innerJoin('bo.branch', 'b')
+                ->andWhere('so.credit < 0')
+                ->andWhere('so.user = :user')
+                ->andWhere('b.association = :association')
+                ->addOrderBy('so.id', 'ASC')
+                ->setParameter('user', $user)
+                ->setParameter('association', $association)
+                ->getQuery()
+                ->getResult();
+    }
 }

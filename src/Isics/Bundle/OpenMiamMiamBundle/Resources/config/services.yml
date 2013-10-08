@@ -12,6 +12,7 @@ parameters:
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
+    open_miam_miam.payment_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentValidator'
 
     open_miam_miam.activity_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
     open_miam_miam.branch_occurrence_manager.class:       'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
@@ -45,7 +46,10 @@ parameters:
     open_miam_miam.form.type.payment.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentType'
     open_miam_miam.form.type.payment_allocation.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentAllocationType'
 
-
+    # Models
+    open_miam_miam.sales_order_statistics.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
+    open_miam_miam.tcpdf.class:                  TCPDF
+    open_miam_miam.sales_orders_pdf.class:       'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
 
 services:
     # Validators
@@ -83,6 +87,11 @@ services:
         class: %open_miam_miam.payment_allocation_validator.class%
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_payment_allocation_validator }
+
+    open_miam_miam.payment_validator:
+        class: %open_miam_miam.payment_validator.class%
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam_payment_validator }
 
 
 
@@ -251,3 +260,20 @@ services:
     open_miam_miam.payment_manager:
         class: %open_miam_miam.payment_manager.class%
         arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
+
+
+
+    # Models
+    open_miam_miam.sales_order_statistics:
+        class:     %open_miam_miam.sales_order_statistics.class%
+        arguments: [@doctrine.orm.entity_manager]
+
+    open_miam_miam.tcpdf:
+        class: %open_miam_miam.tcpdf.class%
+        scope: prototype
+        public: false
+
+    open_miam_miam.sales_orders_pdf:
+        class:     %open_miam_miam.sales_orders_pdf.class%
+        arguments: [%open_miam_miam.sales_orders_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        scope:     prototype
