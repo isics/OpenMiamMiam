@@ -84,7 +84,7 @@
                                     {{ form_widget(child.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
                                 </td>
                                 <td>
-                                    {% if child.total is defined %}
+                                    {% if child.unitPrice is defined %}
                                         {{ form_errors(child.total) }}
                                         {{ form_widget(child.total) }}
                                     {% else %}

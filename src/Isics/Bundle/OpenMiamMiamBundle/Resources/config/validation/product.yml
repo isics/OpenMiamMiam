@@ -4,8 +4,8 @@ Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct:
             - NotNull: ~
             - Valid: ~
         price:
-            - Range:
-                min: 0.01
+            - GreaterThan:
+                value: 0
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
@@ -31,8 +31,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
         isOfTheMoment:
             - Type: bool
         price:
-            - Range:
-                min: 0.01
+            - GreaterThan:
+                value: 0
         priceInfo:
             - Length:
                 max: 128

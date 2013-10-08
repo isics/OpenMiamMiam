@@ -231,7 +231,7 @@ class SalesOrderRow
     /**
      * @param float $unitPrice
      */
-    public function setUnitPrice($unitPrice)
+    public function setUnitPrice($unitPrice = null)
     {
         $this->unitPrice = $unitPrice;
     }

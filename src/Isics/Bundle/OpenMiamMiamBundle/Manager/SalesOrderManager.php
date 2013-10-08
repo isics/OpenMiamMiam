@@ -363,6 +363,8 @@ class SalesOrderManager
                 $order->addSalesOrderRow($salesOrderRow);
             }
         }
+
+
     }
 
     /**
