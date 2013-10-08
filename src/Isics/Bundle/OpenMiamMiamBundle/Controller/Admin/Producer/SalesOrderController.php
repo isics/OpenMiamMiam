@@ -15,13 +15,42 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
-use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 class SalesOrderController extends BaseController
 {
+    /**
+     * @param Producer $producer
+     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function secureSalesOrder(Producer $producer, SalesOrder $order)
+    {
+        if (!$producer->hasBranch($order->getBranchOccurrence()->getBranch())) {
+            throw $this->createNotFoundException('Invalid order for producer');
+        }
+    }
+
+    /**
+     * @param Producer $producer
+     * @param SalesOrder $order
+     * @param SalesOrderRow $row
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function secureSalesOrderRow(Producer $producer, SalesOrder $order, SalesOrderRow $row)
+    {
+        if (!$producer->hasBranch($order->getBranchOccurrence()->getBranch())
+            || $row->getProducer()->getId() !== $producer->getId()
+            || $order->getId() !== $row->getSalesOrder()->getId()) {
+
+            throw new $this->createNotFoundException('Invalid sales order row for producer');
+        }
+    }
+
     /**
      * List sales order
      *
@@ -53,6 +82,7 @@ class SalesOrderController extends BaseController
     public function editAction(Request $request, Producer $producer, SalesOrder $order)
     {
         $this->secure($producer);
+        $this->secureSalesOrder($producer, $order);
 
         $producerSalesOrder = new ProducerSalesOrder($producer, $order);
 
@@ -71,10 +101,17 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $user = $this->get('security.context')->getToken()->getUser();
+
                 $this->get('open_miam_miam.sales_order_manager')->save(
                     $order,
                     $producer,
-                    $this->get('security.context')->getToken()->getUser()
+                    $user
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -95,7 +132,7 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * Update a sales order
+     * Deletes a sales order
      *
      * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      * @ParamConverter("row", class="IsicsOpenMiamMiamBundle:SalesOrderRow", options={"mapping": {"salesOrderRowId": "id"}})
@@ -111,16 +148,19 @@ class SalesOrderController extends BaseController
     public function deleteSalesOrderRowAction(Producer $producer, SalesOrder $order, SalesOrderRow $row)
     {
         $this->secure($producer);
-
-        if ($row->getProducer()->getId() !== $producer->getId() || $order->getId() !== $row->getSalesOrder()->getId()) {
-            throw new $this->createNotFoundException();
-        }
+        $this->secureSalesOrderRow($producer, $order, $row);
 
         $order = $row->getSalesOrder();
+        $user = $this->get('security.context')->getToken()->getUser();
+
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
             $row,
-            $producer,
-            $this->get('security.context')->getToken()->getUser()
+            $user
+        );
+
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+            $user,
+            $order->getBranchOccurrence()->getBranch()->getAssociation()
         );
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -145,10 +185,10 @@ class SalesOrderController extends BaseController
     public function addSalesOrderRowsAction(Request $request, Producer $producer, SalesOrder $order)
     {
         $this->secure($producer);
+        $this->secureSalesOrder($producer, $order);
 
-        $artificialProduct = new ArtificialProduct();
-        $artificialProduct->setName($this->get('translator')->trans('artificial_product'));
-        $artificialProduct->setProducer($producer);
+        $productManager = $this->get('open_miam_miam.product_manager');
+        $artificialProduct = $productManager->createArtificialProduct($producer);
 
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.add_rows_sales_order'),
@@ -167,14 +207,20 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
-
                 $data = $form->getData();
+                $user = $this->get('security.context')->getToken()->getUser();
+
+                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
                 $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
                 $salesOrderManager->save(
                     $order,
                     $producer,
-                    $this->get('security.context')->getToken()->getUser()
+                    $user
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+                    $user,
+                    $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');

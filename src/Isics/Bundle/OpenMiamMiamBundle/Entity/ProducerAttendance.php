@@ -34,7 +34,7 @@ class ProducerAttendance
    /**
      * @var Producer
      *
-     * @ORM\ManyToOne(targetEntity="Producer")
+     * @ORM\ManyToOne(targetEntity="Producer", inversedBy="producerAttendances")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="producer_id", referencedColumnName="id", nullable=false)
      * })

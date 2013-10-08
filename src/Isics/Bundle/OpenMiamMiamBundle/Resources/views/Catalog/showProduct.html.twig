@@ -29,9 +29,9 @@
         <div class="row">
             <div class="col-md-4">
                 {% if product.image is not null %}
-                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                    <img src="{{ asset(get_image_product_path(product))|imagine_filter('l') }}" alt="{{ product.name }}" class="img-thumbnail" />
                 {% else %}
-                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('m') }}" alt="{{ product.name }}" class="img-thumbnail" />
+                    <img src="{{ asset('bundles/isicsopenmiammiam/img/picture_placeholder.png')|imagine_filter('l') }}" alt="{{ product.name }}" class="img-thumbnail" />
                 {% endif %}
             </div>
             <div class="col-md-8">
@@ -50,13 +50,15 @@
                     </dd>
                     <dt>{{ 'price'|trans }}</dt>
                     <dd>
-                        {% if not product.hasNoPrice %}
-                            {% set showNoPriceStatement = false %}
-                            {{ product.price|number_format_currency(open_miam_miam.currency) }}
-                        {% else %}
-                            {% set showNoPriceStatement = true %}
-                            <span class="glyphicon glyphicon-time"></span>*
-                        {% endif %}
+                        <span class="price">
+                            {% if not product.hasNoPrice %}
+                                {% set showNoPriceStatement = false %}
+                                {{ product.price|number_format_currency(open_miam_miam.currency) }}
+                            {% else %}
+                                {% set showNoPriceStatement = true %}
+                                <span class="glyphicon glyphicon-time"></span>*
+                            {% endif %}
+                        </span>
                     </dd>
 
                     {{ render(controller('IsicsOpenMiamMiamBundle:Cart:ShowAddForm', {'branch': branch, 'product': product, 'view': 'IsicsOpenMiamMiamBundle:Catalog:showProductAddForm.html.twig'})) }}
@@ -81,7 +83,7 @@
         {{ parent() }}
         <script type="text/javascript">
             $(function() { 
-                new OpenMiamMiam.QuantityButtons;
+                new OpenMiamMiam.Quantity;
                 new OpenMiamMiam.CartAddForm;
             });
         </script>

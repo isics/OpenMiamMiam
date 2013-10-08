@@ -16,7 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
-use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation;
@@ -71,6 +71,18 @@ class SalesOrderManager
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'artificial_product_ref'));
+    }
+
+    /**
+     * Returns sales orders for branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function getForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findForBranchOccurrence($branchOccurrence);
     }
 
     /**
@@ -154,7 +166,7 @@ class SalesOrderManager
     public function save(SalesOrder $order, $context, User $user = null)
     {
         // Compute order's data (total...)
-        $order->compute();
+        $this->compute($order);
 
         $activitiesStack = array();
 
@@ -171,9 +183,11 @@ class SalesOrderManager
                 str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
             ));
 
+            // Activity
             $activitiesStack[] = array(
                 'transKey' => 'activity_stream.sales_order.created',
-                'transParams' => array('%ref%' => $order->getRef())
+                'transParams' => array('%ref%' => $order->getRef()),
+                'context' => $context
             );
 
         } else {
@@ -187,7 +201,8 @@ class SalesOrderManager
                             '%order_ref%' => $order->getRef(),
                             '%ref%' => $row->getRef(),
                             '%name%' => $row->getName()
-                        )
+                        ),
+                        'context' => $row->getProducer()
                     );
                     continue;
                 }
@@ -228,7 +243,11 @@ class SalesOrderManager
                     }
 
                     if (null !== $transKey) {
-                        $activitiesStack[] = array('transKey' => $transKey, 'transParams' => $transParams);
+                        $activitiesStack[] = array(
+                            'transKey' => $transKey,
+                            'transParams' => $transParams,
+                            'context' => $row->getProducer()
+                        );
                     }
                 }
             }
@@ -253,7 +272,7 @@ class SalesOrderManager
                 $activityParams['transKey'],
                 $activityParams['transParams'],
                 $order,
-                $context,
+                $activityParams['context'],
                 $user
             );
             $this->entityManager->persist($activity);
@@ -266,15 +285,14 @@ class SalesOrderManager
      * Deletes a row of a sales order
      *
      * @param SalesOrderRow $row
-     * @param mixed $context
      * @param User $user
      */
-    public function deleteSalesOrderRow(SalesOrderRow $row, $context, User $user = null)
+    public function deleteSalesOrderRow(SalesOrderRow $row, User $user = null)
     {
         $order = $row->getSalesOrder();
         $order->removeSalesOrderRow($row);
 
-        $order->compute();
+        $this->compute($order);
 
         // Update product stocks
         $product = $row->getProduct();
@@ -286,11 +304,12 @@ class SalesOrderManager
         $this->entityManager->persist($order);
         $this->entityManager->flush();
 
+        // Activity
         $activity = $this->activityManager->createFromEntities(
             'activity_stream.sales_order.row.deleted',
             array('%order_ref%' => $order->getRef(), '%name%' => $row->getName(), '%ref%' => $row->getRef()),
             $order,
-            $context,
+            $row->getProducer(),
             $user
         );
         $this->entityManager->persist($activity);
@@ -310,7 +329,7 @@ class SalesOrderManager
             $salesOrderRow = new SalesOrderRow();
             $salesOrderRow->setProducer($artificialProduct->getProducer());
             $salesOrderRow->setName($artificialProduct->getName());
-            $salesOrderRow->setRef($this->config['artificial_product_ref']);
+            $salesOrderRow->setRef($artificialProduct->getRef());
             $salesOrderRow->setIsBio(false);
 
             $salesOrderRow->setUnitPrice($artificialProduct->getPrice());
@@ -341,5 +360,48 @@ class SalesOrderManager
                 $order->addSalesOrderRow($salesOrderRow);
             }
         }
+    }
+
+    /**
+     * Computes data of sales order
+     *
+     * @param SalesOrder $order
+     */
+    public function compute(SalesOrder $order)
+    {
+        // Total
+        $total = 0;
+        foreach ($order->getSalesOrderRows() as $row) {
+            $this->computeSalesOrderRow($row);
+            $total += $row->getTotal();
+        }
+        $order->setTotal($total);
+
+        // Credit
+        $credit = -1*$order->getTotal();
+        foreach ($order->getPaymentAllocations() as $allocation) {
+            $credit += $allocation->getAmount();
+        }
+        $order->setCredit($credit);
+    }
+
+    /**
+     * @param SalesOrderRow $row
+     */
+    public function computeSalesOrderRow(SalesOrderRow $row)
+    {
+        if (null !== $row->getUnitPrice()) {
+            $row->setTotal($row->getQuantity()*$row->getUnitPrice());
+        }
+    }
+
+    /**
+     * Return activities for order
+     *
+     * @param SalesOrder $order
+     */
+    public function getActivities(SalesOrder $order)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($order);
     }
 }

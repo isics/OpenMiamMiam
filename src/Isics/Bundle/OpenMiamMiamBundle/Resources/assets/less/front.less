@@ -8,7 +8,6 @@
     text-align: center !important;
 }
 
-
 .label-order-closed {
     .label-variant(@label-danger-bg);
     font-size: @font-size-base;
@@ -16,7 +15,6 @@
 
 .ui-effects-transfer {
     border: 2px dotted black;
-
 }
 
 //
@@ -99,6 +97,15 @@ header {
 //
 // Quantity
 //
+.quantity {
+    display: inline-block;
+    position: relative;
+}
+
+.quantity-with-buying-unit .input-quantity {
+    padding-bottom: @font-size-small;
+}
+
 .input-quantity {
     display: inline-block;
     padding-left: 6px;
@@ -112,12 +119,30 @@ header {
     .border-right-radius(0);
 }
 
+.buying-unit {
+    display: block;
+    position: absolute;
+    bottom: 2px;
+    right: 28px;
+    color: @gray-light;
+    font-size: @font-size-small;
+    line-height: 1em;
+    text-align: right;
+}
+
 .quantity-buttons {
     display: inline-block;
     margin: 0;
     border: 1px solid @btn-primary-border;
     .border-right-radius(@border-radius-base);
     vertical-align: middle;
+
+    &.disabled {
+        cursor: not-allowed;
+        pointer-events: none; // Future-proof disabling of clicks
+        .opacity(.65);
+        .box-shadow(none);
+    }
 }
 
 .quantity-button {
@@ -135,6 +160,7 @@ header {
 
     &:hover {
         background-color: darken(@btn-primary-bg, 8%);
+        border-color: darken(@btn-primary-border, 12%);
     }
 }
 
@@ -163,10 +189,28 @@ header {
     .panel-heading {
         border-style: solid;
         border-width: 1px;
+        padding: 0;
     }
 
     .panel-title {
         font-size: ceil(@font-size-base * 1.70);
+
+        a {
+            .glyphicon {
+                float: right;
+            }
+
+            display: block;
+            padding: 10px 15px;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: darken(@panel-default-heading-bg, 8%);
+                border-color: darken(@panel-default-border, 12%);
+                text-decoration: none;
+            }
+        }
     }
 
     table {
@@ -177,9 +221,8 @@ header {
 //
 // Producer
 //
-
 .producer_name_image {
-    margin-top : 10px;  
+    margin-top : 10px;
     margin-bottom : 10px;
     fond-weight: bold;
     fond-siez: 150em;
@@ -189,6 +232,22 @@ header {
     top: 17px;
 }
 
+//
+// Products of the moment
+//
+#products-of-the-moment {
+    .panel-body {
+        h3 {
+            font-size: @font-size-large;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
 
 //
 // Products table (category)
@@ -230,6 +289,7 @@ header {
     td:nth-child(5) {
         font-weight: bold;
         text-align: right;
+        white-space: nowrap;
     }
 
     .label {
@@ -259,13 +319,28 @@ header {
         vertical-align: middle !important;
     }
 
-    td:nth-child(3) {
-        text-align: right;
+    td:nth-child(2),
+    td:nth-child(4) {
         white-space: nowrap;
     }
 
-    td:nth-child(even) {
+    td:nth-child(3),
+    td:nth-child(5) {
         font-weight: bold;
         text-align: right;
+    }
+
+    td:nth-child(4) {
+        text-align: center;
+    }
+
+    tfoot {
+        font-size: @font-size-large;
+        font-weight: bold;
+
+        th {
+            font-style: normal;
+            text-align: right;
+        }
     }
 }

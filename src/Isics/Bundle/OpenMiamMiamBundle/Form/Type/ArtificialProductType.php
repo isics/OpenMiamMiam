@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -28,6 +29,19 @@ class ArtificialProductType extends AbstractType
         $builder->add('price', 'text', array(
             'required' => false
         ));
+
+        if (isset($options['association'])) {
+            $association = $options['association'];
+            $builder->add('producer', 'entity', array(
+                'class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer',
+                'property' => 'name',
+                'expanded' => false,
+                'multiple' => false,
+                'query_builder' => function(EntityRepository $er) use ($association) {
+                    return $er->getForAssociationQueryBuilder($association);
+                }
+            ));
+        }
     }
 
     /**
@@ -35,9 +49,9 @@ class ArtificialProductType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ArtificialProduct',
-        ));
+        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct'));
+        $resolver->setOptional(array('association'));
+        $resolver->setAllowedTypes(array('association' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association'));
     }
 
     /**

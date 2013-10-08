@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Symfony\Component\Security\Acl\Dbal\AclProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -47,7 +48,7 @@ class AclManager
     {
         $aclProvider = $this->container->get('security.acl.provider');
         $entity = $args->getEntity();
-        if ($entity instanceof Producer) {
+        if ($entity instanceof Producer || $entity instanceof Association) {
             $objectIdentity = ObjectIdentity::fromDomainObject($entity);
             $aclProvider->createAcl($objectIdentity);
         }
@@ -62,7 +63,7 @@ class AclManager
     {
         $aclProvider = $this->container->get('security.acl.provider');
         $entity = $args->getEntity();
-        if ($entity instanceof Producer) {
+        if ($entity instanceof Producer || $entity instanceof Association) {
             $objectIdentity = ObjectIdentity::fromDomainObject($entity);
             $aclProvider->deleteAcl($objectIdentity);
         }

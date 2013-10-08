@@ -30,6 +30,7 @@
                             <div class="panel-heading">
                                 <h2 class="panel-title">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#categories-accordion" href="#collapse{{ subCategory.id }}">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
                                         {{ subCategory.name }}
                                     </a>
                                 </h2>
@@ -51,7 +52,7 @@
         {{ parent() }}
         <script type="text/javascript">
             $(function() {
-                new OpenMiamMiam.QuantityButtons;
+                new OpenMiamMiam.Quantity;
                 new OpenMiamMiam.CartAddForm;
             });
         </script>

@@ -65,7 +65,8 @@ class ProducerSalesOrders
     {
         $count = 0;
         foreach ($this->branchOccurrencesSalesOrders as $branchOccurrenceSalesOrder) {
-            $count += count($branchOccurrenceSalesOrder);
+            foreach ($branchOccurrenceSalesOrder->getSalesOrders() as $salesOrders)
+            $count += count($salesOrders);
         }
 
         return $count;

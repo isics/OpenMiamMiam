@@ -1,0 +1,35 @@
+"User account is disabled.":      "Votre compte n'est pas encore confirmé. Un e-mail de confirmation vient de vous être ré-envoyé."
+"User credentials have expired.": "Permissions expirées"
+"User account is locked.":        "Compte bloqué"
+"User account has expired.":      "Compte expiré"
+
+registration_check_email_html: Un e-mail a été envoyé à l'adresse <strong>%email%</strong>. Il contient un lien d'activation sur lequel il vous faudra cliquer afin d'activer votre compte.
+
+registration.email.subject: "Confirmez votre compte OpenMiamMiam"
+registration.email.message_html: |
+                                    Bonjour %username%,<br />
+
+                                    <p>
+                                        Pour confirmer votre compte, cliquez sur le lien suivant:<br />
+                                        <strong><a href="%confirmationUrl%">%confirmationUrl%</a></strong><br />
+                                    </p>
+
+                                    <br />
+                                    --<br />
+                                    L'équipe OpenMiamMiam
+
+resetting.request.username: "Adresse e-mail"
+
+
+# Password resetting
+resetting.email.message: |
+                            Bonjour %username%,<br />
+
+                            <p>
+                                Pour réinitialiser votre mot de passe, cliquez sur le lien suivant:<br />
+                                <strong><a href="%confirmationUrl%">%confirmationUrl%</a></strong><br />
+                            </p>
+
+                            <br />
+                            --<br />
+                            L'équipe OpenMiamMiam

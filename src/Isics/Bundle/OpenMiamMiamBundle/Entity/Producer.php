@@ -133,7 +133,14 @@ class Producer
     private $branches;
 
     /**
-     * @var string $profilImage
+     * @var Doctrine\Common\Collections\Collection $producerAttendances
+     *
+     * @ORM\OneToMany(targetEntity="ProducerAttendance", mappedBy="producer")
+     */
+    private $producerAttendances;
+
+    /**
+     * @var string $image
      *
      * @ORM\Column(name="profilImage", type="string", length=128, nullable=true)
      */
@@ -148,19 +155,19 @@ class Producer
      * @var boolean $deleteProfilImage
      */
     private $deleteProfilImage;
-    
+
     /**
      * @var string $presentationImage
      *
      * @ORM\Column(name="presentationImage", type="string", length=128, nullable=true)
      */
     private $presentationImage;
-    
+
     /**
      * @var UploadedFile string
      */
     private $presentationImageFile;
-    
+
     /**
      * @var boolean $deletePresentationImage
      */
@@ -554,7 +561,8 @@ class Producer
     /**
      * Set deleteProfilImage flag
      *
-     * @param boolean $deleteImage
+     * @param boolean $deleteProfilImage
+     *
      * @return Producer
      */
     public function setDeleteProfilImage($deleteProfilImage)
@@ -583,10 +591,10 @@ class Producer
     public function setPresentationImage($presentationImage)
     {
         $this->presentationImage = $presentationImage;
-    
+
         return $this;
     }
-    
+
     /**
      * Get presentationImage
      *
@@ -596,7 +604,7 @@ class Producer
     {
         return $this->presentationImage;
     }
-    
+
     /**
      * Set prensentationImage file
      *
@@ -607,10 +615,10 @@ class Producer
     public function setPresentationImageFile(UploadedFile $presentationImageFile = null)
     {
         $this->presentationImageFile = $presentationImageFile;
-    
+
         return $this;
     }
-    
+
     /**
      * Get presentationImage file
      *
@@ -620,7 +628,7 @@ class Producer
     {
         return $this->presentationImageFile;
     }
-    
+
     /**
      * Set deletePresentationImage flag
      *
@@ -630,10 +638,10 @@ class Producer
     public function setDeletePresentationImage($deletePresentationImage)
     {
         $this->deletePresentationImage = (bool)$deletePresentationImage;
-    
+
         return $this;
     }
-    
+
     /**
      * Get deletePresentationImage flag
      *
@@ -657,6 +665,24 @@ class Producer
     }
 
     /**
+     * Returns true if producer has branch
+     *
+     * @param Branch $branch
+     *
+     * @return bool
+     */
+    public function hasBranch(Branch $branch)
+    {
+        foreach ($this->getBranches() as $_branch) {
+            if ($branch->getId() == $_branch->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Remove branch
      *
      * @param Branch $branch
@@ -674,5 +700,38 @@ class Producer
     public function getBranches()
     {
         return $this->branches;
+    }
+
+    /**
+     * Add producer attendance
+     *
+     * @param ProducerAttendance $producerAttendance
+     * @return BranchOccurrence
+     */
+    public function addProducerAttendance(ProducerAttendance $producerAttendance)
+    {
+        $this->producerAttendances[] = $producerAttendance;
+
+        return $this;
+    }
+
+    /**
+     * Remove producera ttendance
+     *
+     * @param ProducerAttendance $producerAttendance
+     */
+    public function removeProducerAttendance(ProducerAttendance $producerAttendance)
+    {
+        $this->producerAttendances->removeElement($producerAttendance);
+    }
+
+    /**
+     * Get producer attendances
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getProducerAttendances()
+    {
+        return $this->producerAttendances;
     }
 }

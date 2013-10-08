@@ -69,6 +69,7 @@ OpenMiamMiam.CartAddForm = function() {
                 var formData = form.serialize();
 
                 form.find(':input,:submit').prop('disabled', true);
+                form.find('.quantity-buttons').addClass('disabled');
 
                 if (0 === pending) {
                     $('#header-cart > strong').append(loader);
@@ -95,6 +96,7 @@ OpenMiamMiam.CartAddForm = function() {
                         },
                         complete: function() {
                             form.find(':input,:submit').prop('disabled', false);
+                            form.find('.quantity-buttons').removeClass('disabled');
 
                             if (0 === pending) {
                                 hiddenDiv.append(loader);
@@ -111,8 +113,7 @@ OpenMiamMiam.CartAddForm = function() {
     return object;
 }();
 
-
-OpenMiamMiam.QuantityButtons = function() {
+OpenMiamMiam.Quantity = function() {
     var object = function() {
         this.quantities = $('.input-quantity');
         this.addQuantityButtons();
@@ -147,11 +148,11 @@ OpenMiamMiam.QuantityButtons = function() {
 
                 minusButton.click(function() {
                     quantity
-                        .val(Math.max(parseInt(quantity.val()) - 1, 0))
+                        .val(Math.max(parseInt(quantity.val()) - 1, 1))
                         .trigger('change');
                 });
             });
-        }
+        },
     };
 
     return object;
@@ -165,7 +166,6 @@ OpenMiamMiam.CartUpdateForm = function() {
         this.quantities = this.form.find('.input-quantity');
 
         this.addRemoveButtons();
-        this.submitOnQuantityChange();
         this.handleAjax();
     };
 
@@ -188,23 +188,13 @@ OpenMiamMiam.CartUpdateForm = function() {
             });
         },
 
-        submitOnQuantityChange: function() {
-            var form = this.form;
-            this.quantities.change(function() {
-                form.submit();
-            });
-        },
-
         handleAjax: function() {
             var self = this;
+            var form = this.form;
 
             $(':submit[name="open_miam_miam_cart[update]"]').hide();
 
-            this.form.submit(function(event) {
-                event.preventDefault();
-
-                var form = $(this);
-
+            this.quantities.change(function() {
                 $.ajax({
                     type: 'PUT',
                     url: form.attr('action'),
@@ -213,13 +203,12 @@ OpenMiamMiam.CartUpdateForm = function() {
                     success: function(data) {
                         $('#header-cart').html(data.headerCart);
                         $('#cart').html(data.cart);
-                        new OpenMiamMiam.QuantityButtons;
+
+                        new OpenMiamMiam.Quantity;
                         new OpenMiamMiam.CartUpdateForm;
                     },
                     error: function(jqXHR) {
                         alert(jqXHR.responseText);
-                    },
-                    complete: function() {
                     }
                 });
             });

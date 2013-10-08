@@ -12,9 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class SalesOrderRepository extends EntityRepository
 {
@@ -58,7 +60,8 @@ class SalesOrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('so')
                 ->addSelect('bo, sor')
                 ->innerJoin('so.branchOccurrence', 'bo')
-                ->leftJoin('so.salesOrderRows', 'sor', 'WITH', 'sor.producer = :producer')
+                ->innerJoin('so.salesOrderRows', 'sor')
+                ->andWhere('sor.producer = :producer')
                 ->setParameter('producer', $producer)
                 ->addOrderBy('so.id');
 
@@ -68,5 +71,48 @@ class SalesOrderRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Returns sales orders for a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function findForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        $qb = $this->createQueryBuilder('so')
+                ->addSelect('sor')
+                ->leftJoin('so.salesOrderRows', 'sor')
+                ->andWhere('so.branchOccurrence = :branchOccurrence')
+                ->setParameter('branchOccurrence', $branchOccurrence)
+                ->addOrderBy('so.id');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Returns credit for user and association
+     *
+     * @param User $user
+     * @param Association $association
+     *
+     * @return float
+     */
+    public function getTotalForUserAndAssociation(User $user, Association $association)
+    {
+        $result = $this->createQueryBuilder('so')
+                ->select('SUM(so.total) AS totalSum')
+                ->innerJoin('so.branchOccurrence', 'bo')
+                ->innerJoin('bo.branch', 'b')
+                ->andWhere('b.association = :association')
+                ->setParameter('association', $association)
+                ->andWhere('so.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->getSingleResult();
+
+        return $result['totalSum'];
     }
 }

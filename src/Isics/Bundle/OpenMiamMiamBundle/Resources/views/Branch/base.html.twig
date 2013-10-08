@@ -37,8 +37,19 @@
     </div>
 {% endblock %}
 
+{% block footer %}
+    <footer>
+        <hr />
+        <div class="container">
+            {% include 'IsicsOpenMiamMiamBundle:Branch:footerNav.html.twig' %}
+            {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
+        </div>
+    </footer>
+{% endblock %}
+
 {% block javascript %}
     {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script type="text/javascript">
     $(function() {
         new OpenMiamMiam.LocationMap(
@@ -53,4 +64,3 @@
     });
     </script>
 {% endblock %}
-

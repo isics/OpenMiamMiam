@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Isics\OpenMiamMiamBundle\Entity\Association
  *
  * @ORM\Table(name="association")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\AssociationRepository")
  */
 class Association
 {
@@ -139,6 +139,13 @@ class Association
     private $defaultCommission;
 
     /**
+     * @var Doctrine\Common\Collections\Collection $branches
+     *
+     * @ORM\OneToMany(targetEntity="Branch", mappedBy="association")
+     */
+    private $branches;
+
+    /**
      * @var Doctrine\Common\Collections\Collection $producers
      *
      * @ORM\ManyToMany(targetEntity="Producer", inversedBy="associations")
@@ -163,6 +170,7 @@ class Association
         $this->orderRefCounter = 0;
 
         $this->producers = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
 
     /**
@@ -551,5 +559,56 @@ class Association
     public function getProducers()
     {
         return $this->producers;
+    }
+
+    /**
+     * Add branch
+     *
+     * @param Branch $branch
+     * @return Association
+     */
+    public function addBranch(Branch $branch)
+    {
+        $branch->setAssociation($this);
+        $this->branches[] = $branch;
+
+        return $this;
+    }
+
+    /**
+     * Remove branch
+     *
+     * @param Branch $branch
+     */
+    public function removeBranch(Branch $branch)
+    {
+        $this->branches->removeElement($branch);
+    }
+
+    /**
+     * Get branches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBranches()
+    {
+        return $this->branches;
+    }
+
+    /**
+     * Set branches
+     *
+     * @param mixed $branches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function setBranches($branches)
+    {
+        $this->branches = new ArrayCollection();
+        foreach ($branches as $branch) {
+            $this->addBranch($branch);
+        }
+
+        return $this;
     }
 }

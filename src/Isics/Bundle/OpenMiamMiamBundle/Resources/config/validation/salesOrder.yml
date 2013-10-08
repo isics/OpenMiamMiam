@@ -24,29 +24,23 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
             - Type:
                 type: numeric
         user:
-            - NotNull: { groups: [FromCart] }
             - Valid: ~
         firstname:
-            - NotNull: { groups: [FromCart] }
             - Length:
                 max: 128
         lastname:
-            - NotNull: { groups: [FromCart] }
             - Length:
                 max: 128
         address1:
-            - NotNull: { groups: [FromCart] }
             - Length:
                 max: 64
         address2:
             - Length:
                 max: 64
         zipcode:
-            - NotNull: { groups: [FromCart] }
             - Length:
                 max: 8
         city:
-            - NotNull: { groups: [FromCart] }
             - Length:
                 max: 64
         consumerComment:
@@ -63,10 +57,8 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderRow: ~
     properties:
         product:
-            - NotNull: { groups: [FromCart] }
             - Valid: ~
         producer:
-            - NotNull: ~
             - Valid: ~
         name:
             - NotNull: ~

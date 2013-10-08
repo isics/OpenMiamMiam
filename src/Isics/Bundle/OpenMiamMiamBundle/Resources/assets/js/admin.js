@@ -25,6 +25,22 @@ OpenMiamMiam.PanelForm = function() {
     return object;
 }();
 
+OpenMiamMiam.AssociationBranchOccurrenceSwitcher = function() {
+
+    var object = function() {
+        this.handleSwitcher();
+    };
+
+    object.prototype = {
+        handleSwitcher: function() {
+            $('#branch-occurrence-switcher').change(function() {
+                window.location = $(this).val();
+            });
+        }
+    };
+
+    return object;
+}();
 
 OpenMiamMiam.ProducerProductForm = function() {
 
@@ -163,7 +179,7 @@ OpenMiamMiam.ProducerProductForm = function() {
 }();
 
 
-OpenMiamMiam.deleteDialog = function() {
+OpenMiamMiam.DeleteDialog = function() {
 
     var object = function() {
         this.handleConfirmation();

@@ -32,11 +32,12 @@ class ProfileEditingListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FOSUserEvents::PROFILE_EDIT_SUCCESS => 'onProfileEditingSuccess',
+            FOSUserEvents::PROFILE_EDIT_SUCCESS => 'onSuccess',
+            FOSUserEvents::RESETTING_RESET_SUCCESS => 'onSuccess'
         );
     }
 
-    public function onProfileEditingSuccess(FormEvent $event)
+    public function onSuccess(FormEvent $event)
     {
         $event->setResponse(new RedirectResponse($this->router->generate('fos_user_profile_edit')));
     }

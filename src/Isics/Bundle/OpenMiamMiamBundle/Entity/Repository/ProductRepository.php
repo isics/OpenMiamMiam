@@ -12,8 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
@@ -77,27 +80,22 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Finds products of the moment visible in a branch
+     * Finds products of the moment of a branch
      *
-     * @param Branch  $branch Branch
-     * @param integer $limit  Limit
-     *
-     * @todo Retrieve only products available for order
+     * @param BranchOccurrence $branchOccurrence Branch occurrence
+     * @param integer          $limit            Limit
      *
      * @return array
      */
-    public function findOfTheMomentForBranch(Branch $branch, $limit = 3)
+    public function findOfTheMomentForBranchOccurrence(BranchOccurrence $branchOccurrence, $limit = 3)
     {
         // Retrieves all products of the moment ids and producer ids
-        $productsIds = $this->createQueryBuilder('p')
+        $qb = $this->filterAvailableForBranchOccurrence($branchOccurrence);
+        $productsIds = $qb
             ->select('p.id as product_id, pr.id as producer_id')
-            ->innerJoin('p.branches', 'b')
-            ->innerJoin('p.producer', 'pr')
-            ->where('p.availability != :availability')
-            ->andWhere('b = :branch')
+            ->innerJoin('p.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
             ->andWhere('p.isOfTheMoment = true')
-            ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
-            ->setParameter('branch', $branch)
+            ->setParameter('branch', $branchOccurrence->getBranch())
             ->getQuery()
             ->getResult();
 
@@ -151,18 +149,7 @@ class ProductRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
-        return $this->getForProducerQueryBuilder($producer, $qb)
-                ->andWhere(
-                    $qb->expr()->orx(
-                        $qb->expr()->eq('p.availability', ':available'),
-                        $qb->expr()->andx(
-                            $qb->expr()->eq('p.availability', ':accordingToStock'),
-                            $qb->expr()->gt('p.stock', 0)
-                        )
-                    )
-                )
-                ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
-                ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK);
+        return $this->filterAvailable($this->getForProducerQueryBuilder($producer, $qb));
     }
 
     /**
@@ -180,7 +167,8 @@ class ProductRepository extends EntityRepository
         return $qb->addSelect('b')
                 ->leftJoin('p.branches', 'b')
                 ->andWhere('p.producer = :producer')
-                ->setParameter('producer', $producer);
+                ->setParameter('producer', $producer)
+                ->addOrderBy('p.name');
     }
 
     /**
@@ -196,16 +184,115 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Returns queryBuilder to find out of stock products of a producer
+     * Returns query builder for association available products
      *
-     * @param Producer $producer
+     * @param Association $association
+     * @param QueryBuilder $qb
      *
      * @return QueryBuilder
      */
-    public function getOutOfStockForProducerQueryBuilder(Producer $producer)
+    public function getAvailableForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
     {
-        return $this->createQueryBuilder('p')
-                ->where('p.producer = :producer')
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $this->filterAvailable($this->getForAssociationQueryBuilder($association, $qb));
+
+    }
+
+    /**
+     * Returns query builder for available products
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterAvailable(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->andWhere(
+                    $qb->expr()->orx(
+                        $qb->expr()->eq('p.availability', ':available'),
+                        $qb->expr()->andx(
+                            $qb->expr()->eq('p.availability', ':accordingToStock'),
+                            $qb->expr()->gt('p.stock', 0)
+                        )
+                    )
+                )
+                ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
+                ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK);
+    }
+
+    /**
+     * Returns query builder for available products
+     *
+     * @param BranchOccurrence $branchOccurrence Branch occurrence
+     * @param QueryBuilder     $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterAvailableForBranchOccurrence(BranchOccurrence $branchOccurrence, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->innerJoin('p.producer', 'pr')
+            ->innerJoin('pr.producerAttendances', 'pra', Expr\Join::WITH, $qb->expr()->eq('pra.branchOccurrence', ':branchOccurrence'))
+            ->andWhere('pra.isAttendee = true')
+            ->andWhere(
+                $qb->expr()->orx(
+                    $qb->expr()->eq('p.availability', ':available'),
+                    $qb->expr()->andx(
+                        $qb->expr()->eq('p.availability', ':accordingToStock'),
+                        $qb->expr()->gt('p.stock', 0)
+                    ),
+                    $qb->expr()->andx(
+                        $qb->expr()->eq('p.availability', ':availableAt'),
+                        $qb->expr()->lt('p.availableAt', ':begin')
+                    )
+                )
+            )
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
+            ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK)
+            ->setParameter('availableAt', Product::AVAILABILITY_AVAILABLE_AT)
+            ->setParameter('begin', $branchOccurrence->getBegin());
+    }
+
+    /**
+     * Returns query builder for association products
+     *
+     * @param Association $association
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->addSelect('b')
+                ->innerJoin('p.producer', 'pr')
+                ->innerJoin('pr.associations', 'a')
+                ->leftJoin('p.branches', 'b')
+                ->andWhere('a.id = :associationId')
+                ->setParameter('associationId', $association->getId())
+                ->addOrderBy('p.name')
+                ->addGroupBy('p.id');
+    }
+
+    /**
+     * Returns queryBuilder to find out of stock products of a producer
+     *
+     * @param Producer $producer
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getOutOfStockForProducerQueryBuilder(Producer $producer, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->where('p.producer = :producer')
                 ->setParameter('producer', $producer)
                 ->andWhere('p.availability = :availability')
                 ->setParameter('availability', Product::AVAILABILITY_ACCORDING_TO_STOCK)

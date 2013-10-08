@@ -14,7 +14,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\HttpFoundation\Request;
-use Isics\Bundle\OpenMiamMiamBundle\Form\Type\Admin\ProducerType;
 
 class GeneralController extends BaseController
 {

@@ -1,0 +1,36 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Payment:
+    properties:
+        amount:
+            - NotNull: { groups: [without_allocation] }
+        rest:
+            - NotNull: { groups: [without_allocation] }
+            - GreaterThanOrEqual:
+                value: 0
+        date:
+            - NotNull: ~
+            - Date: ~
+        type:
+            - Choice: { callback: getTypes }
+        user:
+            - Valid: ~
+        association:
+            - NotNull: ~
+            - Valid: ~
+
+Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocation: ~
+    properties:
+        amount:
+            - NotNull: ~
+            - GreaterThan:
+                value: 0
+        date:
+            - NotNull: ~
+            - Date: ~
+        salesOrder:
+            - NotNull: ~
+            - Valid: ~
+        payment:
+            - NotNull: ~
+            - Valid: ~

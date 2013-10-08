@@ -12,9 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProductAvailability;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ProductAvailability;
 
 class BranchOccurrenceManager
 {
@@ -93,6 +95,21 @@ class BranchOccurrenceManager
     public function hasNext(Branch $branch)
     {
         return null !== $this->getNext($branch);
+    }
+
+    /**
+     * Returns next branch occurrence for an association
+     *
+     * @param Association $association Association
+     */
+    public function getNextForAssociation(Association $association) {
+        foreach ($association->getBranches() as $branch) {
+            if ($this->hasNext($branch)) {
+                return $this->getNext($branch);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -197,5 +214,45 @@ class BranchOccurrenceManager
         }
 
         return $productAvailability;
+    }
+
+    /**
+     * Sort occurrences by begin date and branch name
+     *
+     * @param BranchOccurrence $occurrence1
+     * @param BranchOccurrence $occurrence2
+     *
+     * @return bool
+     */
+    public static function sortOccurrences(BranchOccurrence $occurrence1, BranchOccurrence $occurrence2)
+    {
+        if ($occurrence1->getBegin() == $occurrence2->getBegin()) {
+            return $occurrence1->getBranch()->getName() > $occurrence2->getBranch()->getName();
+        }
+
+        return $occurrence1->getBegin() > $occurrence2->getBegin();
+    }
+
+    /**
+     * Returns occurrences to process for an association
+     *
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function getToProcessForAssociation(Association $association)
+    {
+        $repository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
+        $latest = $repository->findAllLatestForAssociation($association);
+
+        $nextForBranches = array();
+        foreach ($association->getBranches() as $branch) {
+            $nextForBranches[] = $repository->findOneNextForBranch($branch);
+        }
+
+        $occurrences = array_merge($latest, $nextForBranches);
+        usort($occurrences, array($this, 'sortOccurrences'));
+
+        return $occurrences;
     }
 }

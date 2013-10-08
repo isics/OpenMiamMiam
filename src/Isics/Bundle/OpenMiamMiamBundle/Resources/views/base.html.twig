@@ -14,6 +14,7 @@
         {% block stylesheet %}
             {% include 'IsicsOpenMiamMiamBundle::baseStylesheets.html.twig' %}
         {% endblock %}
+        <link rel="icon" type="image/png" href="/favicon.png" />
     </head>
     <body>
         <div class="container">
@@ -55,12 +56,16 @@
                 {% include 'IsicsOpenMiamMiamBundle::messages.html.twig' %}
                 {% block content %}{% endblock %}
             {% endblock %}
+        </div>
 
+        {% block footer %}
             <footer>
                 <hr />
-                {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
+                <div class="container">
+                    {% include 'IsicsOpenMiamMiamBundle::copyright.html.twig' %}
+                </div>
             </footer>
-        </div>
+        {% endblock %}
 
         {% block javascript %}
             {% include 'IsicsOpenMiamMiamBundle::baseJavascripts.html.twig' %}

@@ -11,13 +11,16 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
+
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 
 class ProducerRepository extends EntityRepository
 {
     /**
-     * Finds next occurrences for a branch
+     * Finds all producers for a branch
      *
      * @param Branch  $branch Branch
      * @param integer $limit  Limit
@@ -27,7 +30,7 @@ class ProducerRepository extends EntityRepository
     public function findAllRandomForBranch(Branch $branch, $limit = 5)
     {
         // Retrieve all producers ids
-        $ids = $this->findAllIds();
+        $ids = $this->findAllIds($branch);
         if (empty($ids)) {
             return array();
         }
@@ -50,9 +53,9 @@ class ProducerRepository extends EntityRepository
 
         return $producers;
     }
-    
+
     /**
-     * 
+     *
      * @param Branch $branch
      * @return array
      */
@@ -63,7 +66,7 @@ class ProducerRepository extends EntityRepository
         if (empty($ids)) {
             return array();
         }
-    
+
         // Randomize ids
         shuffle($ids);
 
@@ -73,32 +76,53 @@ class ProducerRepository extends EntityRepository
         ->setParameter('ids', $ids)
         ->getQuery()
         ->getResult();
-    
+
         // Randomize producers
         shuffle($producers);
-    
+
         return $producers;
     }
-    
+
 
     /**
      * Finds all ids
      *
+     * @param Branch  $branch Branch
+     *
      * @return array
      */
-    public function findAllIds()
+    public function findAllIds(Branch $branch = null)
     {
-        $ids = $this->createQueryBuilder('p')
-            ->select('p.id')
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('p')->select('p.id');
+        if (null !== $branch) {
+            $qb->innerJoin('p.branches', 'b')
+                ->andWhere('b.id = :branchId')
+                ->setParameter('branchId', $branch->getId());
+        }
 
         $flattenIds = array();
-        foreach ($ids as $id) {
+        foreach ($qb->getQuery()->getResult() as $id) {
             $flattenIds[] = $id['id'];
         }
 
         return $flattenIds;
     }
-    
+
+    /**
+     * Returns query builder to find all producer of association
+     *
+     * @param Association $association
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function getForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        return $qb->innerjoin('p.associations', 'a')
+                ->andWhere('a.id = :associationId')
+                ->setParameter('associationId', $association->getId())
+                ->addOrderBy('p.name', 'ASC');
+    }
 }

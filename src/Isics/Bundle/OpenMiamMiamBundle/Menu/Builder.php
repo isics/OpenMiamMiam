@@ -48,6 +48,7 @@ class Builder
      *
      * @param FactoryInterface    $factory    Factory
      * @param TranslatorInterface $translator Translator
+     * @param AdminManager $adminManager
      */
     public function __construct(FactoryInterface $factory, TranslatorInterface $translator, AdminManager $adminManager)
     {
@@ -59,8 +60,7 @@ class Builder
     /**
      * Admin menu
      *
-     * @param FactoryInteface $factory
-     * @param array           $options
+     * @return \Knp\Menu\ItemInterface
      */
     public function createAdminMenu()
     {
@@ -89,7 +89,20 @@ class Builder
      */
     protected function addSuperAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
-        // @todo
+        $menuName = 'super';
+
+        $menu->addChild($menuName, array(
+            'route' => 'open_miam_miam.admin.super.show_dashboard',
+            'label' => sprintf($this->translator->trans($resource->getType())),
+        ));
+        $menu[$menuName]->addChild('Dashboard', array(
+            'route' => 'open_miam_miam.admin.super.show_dashboard',
+            'label' => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.super.menu.dashboard')),
+        ));
+        $menu[$menuName]->addChild('UserSwitch', array(
+            'route' => 'open_miam_miam.admin.super.user_switch.list',
+            'label' => sprintf($this->labelFormat, 'transfer', $this->translator->trans('admin.super.menu.user_switch')),
+        ));
     }
 
     /**
@@ -98,9 +111,32 @@ class Builder
      * @param ItemInterface          $menu     Root menu
      * @param AdminResourceInterface $resource Admin resource
      */
-    protected function addAssocationAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    protected function addAssociationAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
-        // @todo
+        $association = $resource->getEntity();
+
+        $menuName = sprintf('association%s', $association->getId());
+
+        $menu->addChild($menuName, array(
+            'route'           => 'open_miam_miam.admin.association.show_dashboard',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf('%s (%s)', $association->getName(), $this->translator->trans($resource->getType())),
+        ));
+        $menu[$menuName]->addChild('Dashboard', array(
+            'route'           => 'open_miam_miam.admin.association.show_dashboard',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.association.menu.dashboard')),
+        ));
+        $menu[$menuName]->addChild('Orders', array(
+            'route'           => 'open_miam_miam.admin.association.sales_order.list',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('admin.association.menu.orders')),
+        ));
+        $menu[$menuName]->addChild('Consumers', array(
+            'route'           => 'open_miam_miam.admin.association.consumer.list',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.association.menu.consumers')),
+        ));
     }
 
     /**

@@ -179,7 +179,7 @@ class ProducerAttendancesManager
     public function getNbUnknownAttendances(ProducerAttendances $attendances)
     {
         $count = 0;
-        foreach ($attendances as $branchAttendances) {
+        foreach ($attendances->getBranchAttendances() as $branchAttendances) {
             $count += $this->getNbUnknownBranchAttendances($branchAttendances);
         }
 
@@ -196,7 +196,7 @@ class ProducerAttendancesManager
     public function getNbUnknownBranchAttendances(ProducerBranchAttendances $branchAttendances)
     {
         $count = 0;
-        foreach ($branchAttendances as $branchOccurrenceAttendance) {
+        foreach ($branchAttendances->getBranchOccurrenceAttendances() as $branchOccurrenceAttendance) {
             $count += $branchOccurrenceAttendance->getAttendance() ==  ProducerBranchOccurrenceAttendance::ATTENDANCE_UNKNOWN ?  1 : 0;
         }
 

@@ -53,10 +53,14 @@ class OpenMiamMiamExtension extends \Twig_Extension
      * @param string          $title           Title
      * @param string          $currency        Currency
      * @param ProductManager  $productManager  Product manager
-     * @param ProducerManager $produerManager  Producer manager
+     * @param ProducerManager $producerManager Producer manager
      * @param ConsumerManager $consumerManager Consumer manager
      */
-    public function __construct($title, $currency, ProductManager $productManager, ProducerManager $producerManager, ConsumerManager $consumerManager)
+    public function __construct($title,
+                                $currency,
+                                ProductManager $productManager,
+                                ProducerManager $producerManager,
+                                ConsumerManager $consumerManager)
     {
         $this->title           = $title;
         $this->currency        = $currency;
@@ -127,7 +131,7 @@ class OpenMiamMiamExtension extends \Twig_Extension
     {
         return $this->producerManager->getProfilImagePath($producer);
     }
-    
+
     /**
      * Returns presentation image producer path
      *

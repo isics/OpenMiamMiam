@@ -12,6 +12,7 @@ price:                "Prix"
 producer:             "Producteur"
 product:              "Produit"
 quantity:             "Quantité"
+super_admin:          "Super administrateur"
 total:                "Total"
 update:               "Mettre à jour"
 consumer:             "Consommateur"
@@ -20,6 +21,14 @@ number:               "n°"
 no_price_statement:   "Le prix sera défini lors de la préparation de la commande."
 my_account:           "Mon compte"
 artificial_product:   "Produit divers"
+
+
+
+# Payment
+payment.cash: "espèce"
+payment.cheque: "Chèque"
+
+
 
 # Zones
 zone.header.branch.change:         "changer de comptoir"
@@ -32,7 +41,12 @@ zone.producers.link:               "Tous les producteurs"
 zone.next_occurrences.title:       "Prochains comptoirs"
 zone.location.title:               "S'y rendre"
 zone.location.route_link:          "Calculer l'itinéraire"
+zone.news.title:                   "Actualités"
+zone.news.link:                    "Toutes les actualités"
 zone.products_of_the_moment.title: "Les produits du moment"
+zone.footer.admin_link:            "Accès gestionnaire"
+
+
 
 # Branch
 branch.producers.name:          "Nom"
@@ -65,6 +79,8 @@ cart.add_form.order_closed: "Patientez"
 cart.unable_to_add_item:    "Impossible d'ajouter ce produit !"
 cart.unable_to_update:      "Impossible de mettre à jour le panier !"
 
+
+
 # Order process
 order.confirm.title:                 "Confirmez votre commande"
 order.confirm.consumer.title:        "Consommateur"
@@ -82,35 +98,14 @@ order.confirmed.body_html:           |
     <p>La commande <strong>%ref%</strong> a bien été enregistrée.</p>
     <p>Un e-mail récapitulatif vous a été envoyé.</p>
 
-# Login
-login.title:          "Identifiez-vous"
-login.existing.title: "Déjà client ?"
-login.new.title:      "Nouveau client ?"
-login.submit:         "S'identifier"
-login.register:       "Créer un compte"
 
-# Register
-register.title:                 "Créez votre compte :"
-register.firstname:             "Prénom"
-register.lastname:              "Nom"
-register.email:                 "Adresse e-mail"
-register.password:              "Mot de passe"
-register.password_confirmation: "Vérification"
-register.address1:              "Adresse"
-register.address2:              "Complément"
-register.zipcode:               "Code postal"
-register.city:                  "Ville"
-register.cancel:                "Annuler"
-register.submit:                "S'inscrire"
-register.confirmed.title:       "Bienvenue %firstname% !"
-register.confirmed.body_html:   |
-    <p>Votre compte a bien été créé.<p>
-register.confirmed.next:        "Continuer"
 
 # Attendance
 attendance.yes:     "Oui"
 attendance.no:      "Non"
 attendance.unknown: "Inconnue"
+
+
 
 # Availability
 availability:                 "Dispo"
@@ -121,11 +116,16 @@ availability.out_of_stock:    "Trop tard!"
 availability.producer_absent: "Producteur absent"
 availability.available_at:    "Dispo le %date%"
 
+
+
 # Admin common
 admin.title:                 "Accès gestionnaire"
 admin.save:                  "Enregistrer"
 admin.return:                "Retourner à la liste"
-admin.activity_stream.title: "Flux d'activité"
+admin.activity_stream.title: "Historique"
+admin.add:                   "Ajouter"
+
+
 
 # Admin login
 admin.login.title:                "Accès gestionnaire"
@@ -133,8 +133,106 @@ admin.login.email.placeholder:    "Adresse e-mail"
 admin.login.password.placeholder: "Mot de passe"
 admin.login.submit:               "Connexion"
 
+
+
 # Admin index
 admin.index.title: "Choisissez un rôle :"
+
+
+
+# Admin / Super / Menu
+admin.super.menu.dashboard:   "Tableau de bord"
+admin.super.menu.user_switch: "Usurpateur d'identité"
+
+# Admin / Super / Dashboard
+admin.super.dashboard.title: "Tableau de bord"
+
+# Admin / Super / User switch
+admin.super.user_switch.title:          "Usurpateur d'identité"
+admin.super.user_switch.list.lastname:  "Nom"
+admin.super.user_switch.list.firstname: "Prénom"
+admin.super.user_switch.list.roles:     "Rôle(s)"
+admin.super.user_switch.list.switch:    "Usurper l'identité"
+admin.super.user_switch.alert.message:  "Vous avez usurpé l'identité de %firstname% %lastname%."
+admin.super.user_switch.alert.exit:     "Retour au rôle Super administrateur"
+
+
+
+# Admin / Association / Menu
+admin.association.menu.dashboard: "Tableau de bord"
+admin.association.menu.orders:    "Caisse"
+admin.association.menu.consumers: "Consommateurs"
+
+# Admin / Association / Dashboard
+admin.association.dashboard.title: "Tableau de bord"
+
+# Admin / Association / Consumer
+admin.association.consumers.list.title:       "Consommateurs"
+admin.association.consumers.list.no_consumer: "Il n'y a pas encore de consommateur."
+admin.association.consumers.list.ref:         "Réf"
+admin.association.consumers.list.name:        "Nom"
+admin.association.consumers.list.credit:      "Solde"
+
+# Admin / Association / Sales orders
+admin.association.sales_orders.list.title:                      "Caisse"
+admin.association.sales_orders.list.no_order:                   "Il n'y a pas encore de commande pour ce comptoir."
+admin.association.sales_orders.list.ref:                        "Réf"
+admin.association.sales_orders.list.date:                       "Date"
+admin.association.sales_orders.list.consumer:                   "Consommateur"
+admin.association.sales_orders.list.nb_articles:                "Articles"
+admin.association.sales_orders.list.total:                      "Montant"
+admin.association.sales_orders.list.left_to_pay:                "A régler"
+admin.association.sales_orders.list.edit:                       "Editer la commande"
+admin.association.sales_orders.list.pay:                        "Régler la commande"
+admin.association.sales_orders.list.payments.type:              "Mode de règlement"
+admin.association.sales_orders.list.payments.nb:                "Nb"
+admin.association.sales_orders.list.payments.total:             "Montant"
+admin.association.sales_orders.list.totals.total:               "Total"
+admin.association.sales_orders.list.totals.payed:               "Réglé"
+admin.association.sales_orders.list.totals.left_to_pay:         "A régler"
+admin.association.sales_orders.form.edit_title:                 "Commande %ref%"
+admin.association.sales_orders.form.sales_order_rows.no:        "Il n'y a pas de ligne de commande pour cette commande."
+admin.association.sales_orders.form.consumer:                   "Consommateur"
+admin.association.sales_orders.form.withdrawal_title:           "Retrait des produits"
+admin.association.sales_orders.form.sales_order_row.ref:        "Réf"
+admin.association.sales_orders.form.sales_order_row.product:    "Produit"
+admin.association.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
+admin.association.sales_orders.form.sales_order_row.quantity:   "Quantité"
+admin.association.sales_orders.form.sales_order_row.total:      "Total"
+admin.association.sales_orders.form.sales_order_row.producer:   "Producteur"
+admin.association.sales_orders.form.total:                      "Total"
+admin.association.sales_orders.form.sales_order_row.delete:     "Supprimer la ligne de commande"
+admin.association.sales_orders.form.sales_order_row.create:     "Ajouter des produits"
+admin.association.sales_orders.form.sales_order_row.create:     "Ajouter des produits"
+admin.association.sales_orders.form.add_rows.title:             "Ajouter des produits à la commande %ref%"
+admin.association.sales_orders.form.add_rows.name:              "Nom"
+admin.association.sales_orders.form.add_rows.price:             "Prix"
+admin.association.sales_orders.form.add_rows.return:            "Retour à la commande"
+admin.association.sales_orders.form.add_rows.producer:          "Producteur"
+admin.association.sales_orders.payment.title:                   "Régler la commande %ref%"
+admin.association.sales_orders.payment.new_payment:             "Nouveau règlement"
+admin.association.sales_orders.payment.left_to_pay:             "Reste à régler"
+admin.association.sales_orders.payment.settled:                 "Soldée"
+admin.association.sales_orders.payment.payment_allocations:     "Règlements déjà affectués"
+admin.association.sales_orders.payment.date:                    "Date"
+admin.association.sales_orders.payment.type:                    "Mode de paiement"
+admin.association.sales_orders.payment.amount:                  "Montant"
+admin.association.sales_orders.payment.allocated:               "Affecté"
+admin.association.sales_orders.payment.delete_allocation:       "Désaffecter"
+admin.association.sales_orders.payment.type_1:                  "espèce"
+admin.association.sales_orders.payment.type_2:                  "chèque"
+admin.association.sales_orders.payment.payments_to_allocate:    "Règlements à affecter"
+admin.association.sales_orders.payment.rest:                    "Reste à affecter"
+admin.association.sales_orders.payment.allocate_payment:        "Affecter"
+
+admin.producer.sales_orders.message.payment_added:              "Le règlement a bien été affecté à la commande."
+admin.producer.sales_orders.message.payment_allocation_deleted: "Paiement désaffecté."
+
+admin.association.sales_orders.message.updated: "La commande a bien été mise à jour."
+
+admin.association.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
+
+
 
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"
@@ -172,14 +270,15 @@ admin.producer.sales_orders.list.title:                      "Commandes à prép
 admin.producer.sales_orders.list.no_order:                   "Il n'y a pas encore de commande pour ce comptoir."
 admin.producer.sales_orders.list.ref:                        "Réf"
 admin.producer.sales_orders.list.date:                       "Date"
-admin.producer.sales_orders.list.consumer:                   "Client"
-admin.producer.sales_orders.list.nb_articles:                "Nb articles"
+admin.producer.sales_orders.list.consumer:                   "Consommateur"
+admin.producer.sales_orders.list.nb_articles:                "Articles"
 admin.producer.sales_orders.list.producer_total:             "Montant producteur"
+admin.producer.sales_orders.list.edit:                       "Editer la commande"
 admin.producer.sales_orders.form.edit_title:                 "Commande %ref%"
 admin.producer.sales_orders.form.consumer:                   "Consommateur"
 admin.producer.sales_orders.form.withdrawal_title:           "Retrait des produits"
 admin.producer.sales_orders.form.total:                      "Total"
-admin.producer.sales_orders.form.sales_order_rows.no:        "Il n'y a pas de ligne de commande pour cette commande"
+admin.producer.sales_orders.form.sales_order_rows.no:        "Il n'y a pas de ligne de commande pour cette commande."
 admin.producer.sales_orders.form.sales_order_row.ref:        "Réf"
 admin.producer.sales_orders.form.sales_order_row.product:    "Produit"
 admin.producer.sales_orders.form.sales_order_row.unit_price: "Prix unitaire"
@@ -250,21 +349,27 @@ admin.producer.calendar.attendance.no:      "Non"
 admin.producer.calendar.attendance.unknown: "Ne sais pas encore"
 admin.producer.calendar.message.updated:    "Le calendrier de présence a été pris en compte."
 
+
+
 # Messages
 message.cart.added:   "Le produit a été ajouté à votre panier."
 message.cart.updated: "Votre panier a été mis à jour."
 
+
+
 # Activités
 activity_stream.product.created: "a créé le produit %name%."
 activity_stream.product.updated: "a mis à jour le produit %name%."
-
-activity_stream.sales_order.created: "a passé la commande %ref%"
-activity_stream.sales_order.updated: "a modifié la commande %ref%"
-activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)"
-activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)"
-activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)"
-activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%"
-activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à la commande %order_ref%"
+activity_stream.sales_order.created: "a passé la commande %ref%."
+activity_stream.sales_order.updated: "a modifié la commande %ref%."
+activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)."
+activity_stream.sales_order.row.quantity_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)."
+activity_stream.sales_order.row.total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (total %old_total% -> %total%)."
+activity_stream.sales_order.row.deleted: "a supprimé le produit %name% (%ref%) de la commande %order_ref%."
+activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à la commande %order_ref%."
+activity_stream.sales_order.payment.added: "a ajouté un nouveau règlement à la commande %order_ref% (montant : %amount%)."
+activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règlement à la commande %order_ref% (montant : %amount%)."
+activity_stream.sales_order.payment.allocated: "a affecté un règlement à la commande %order_ref% (montant : %amount%)."
 
 
 
@@ -286,6 +391,10 @@ error.cart.product_unavailable:           "Produit indisponible"
 error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"
 
 error.artificial_product.invalid: "Les deux champs doivent être renseignés"
+
+error.payment_allocation.amount_invalid: "Montant invalide. (max: %max%)"
+
+
 
 # Dialogue de suppression
 admin.delete_dialog.title:   "Attention !"
