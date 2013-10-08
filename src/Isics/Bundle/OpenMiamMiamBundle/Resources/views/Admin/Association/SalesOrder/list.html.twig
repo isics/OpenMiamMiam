@@ -13,52 +13,117 @@
             <h1>{{ 'admin.association.sales_orders.list.title'|trans }}</h1>
         </div>
 
-        <select id="branch-occurrence-switcher">
-            {% for _branchOccurrence in branchOccurrences %}
-                <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
-            {% endfor %}
-        </select>
+        <div class="col-md-6">
+            <p>
+                <select id="branch-occurrence-switcher" class="form-control input-lg">
+                    {% for _branchOccurrence in branchOccurrences %}
+                        <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
     </div>
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sales-orders">
+            <table class="table table-bordered table-striped table-association-sales-orders">
                 <thead>
-                <tr>
-                    <th>{{ 'admin.association.sales_orders.list.ref'|trans }}</th>
-                    <th>{{ 'admin.association.sales_orders.list.date'|trans }}</th>
-                    <th>{{ 'admin.association.sales_orders.list.consumer'|trans }}</th>
-                    <th>{{ 'admin.association.sales_orders.list.nb_articles'|trans }}</th>
-                    <th>{{ 'admin.association.sales_orders.list.producer_total'|trans }}</th>
-                    <th>{{ 'admin.association.sales_orders.list.left_to_pay'|trans }}</th>
-                    <th>&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th>{{ 'admin.association.sales_orders.list.ref'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.list.date'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.list.consumer'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.list.nb_articles'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.list.total'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.list.left_to_pay'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for salesOrder in salesOrders %}
-                    <tr>
-                        <td>{{ salesOrder.ref }}</td>
-                        <td>{{ salesOrder.date|format_date }}</td>
-                        <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }}</td>
-                        <td>{{ salesOrder.salesOrderRows|length }}</td>
-                        <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
-                        <td>
-                            {% if salesOrder.leftToPay %}
-                                {{ salesOrder.leftToPay|number_format_currency(open_miam_miam.currency) }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
-                        </td>
-                    </tr>
-                {% endfor %}
+                    {% for salesOrder in salesOrders %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
+                                    {{ salesOrder.ref }}
+                                </a>
+                            </td>
+                            <td>{{ salesOrder.date|format_datetime }}</td>
+                            <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }} ({{ salesOrder.user|format_consumer_ref }})</td>
+                            <td>{{ salesOrder.salesOrderRows|length }}</td>
+                            <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
+                            <td>
+                                {% if salesOrder.leftToPay %}
+                                    {{ salesOrder.leftToPay|number_format_currency(open_miam_miam.currency) }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-condensed table-striped table-association-sales-orders-payments">
+                        <thead>
+                            <tr>
+                                <th>{{ 'admin.association.sales_orders.list.payments.type'|trans }}</th>
+                                <th>{{ 'admin.association.sales_orders.list.payments.nb'|trans }}</th>
+                                <th>{{ 'admin.association.sales_orders.list.payments.total'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ ('admin.association.sales_orders.payment.type_'~'1')|trans }}</td>
+                                <td>2</td>
+                                <td>{{ 290.5|number_format_currency(open_miam_miam.currency) }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ ('admin.association.sales_orders.payment.type_'~'2')|trans }}</td>
+                                <td>12</td>
+                                <td>{{ 83.62|number_format_currency(open_miam_miam.currency) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-2">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-condensed table-striped table-association-sales-orders-totals">
+                        <tbody>
+                            <tr>
+                                <th>{{ 'admin.association.sales_orders.list.totals.total'|trans }}</th>
+                                <td>{{ 2127.78|number_format_currency(open_miam_miam.currency) }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.association.sales_orders.list.totals.payed'|trans }}</th>
+                                <td>{{ 1202.70|number_format_currency(open_miam_miam.currency) }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'admin.association.sales_orders.list.totals.left_to_pay'|trans }}</th>
+                                <td>{{ 925.08|number_format_currency(open_miam_miam.currency) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.sales_orders.list.no_order'|trans} %}
     {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.AssociationBranchOccurrenceSwitcher;
+        });
+    </script>
 {% endblock %}
