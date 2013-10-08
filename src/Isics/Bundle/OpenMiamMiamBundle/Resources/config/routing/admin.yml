@@ -90,6 +90,10 @@ open_miam_miam.admin.association.consumer.delete_payment_allocation:
     pattern: /associations/{id}/consumers/{consumerId}/payments/allocations/{paymentAllocationId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePaymentAllocation }
 
+open_miam_miam.admin.association.consumer.allocate_sales_order:
+    pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/allocate_sales_order/{salesOrderId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:allocateSalesOrder }
+
 
 
 #

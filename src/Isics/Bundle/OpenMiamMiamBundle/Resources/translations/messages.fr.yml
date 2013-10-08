@@ -166,11 +166,18 @@ admin.association.consumers.payments.form.allocated_amount:          "Affecté"
 admin.association.consumers.payments.form.sales_order_total:         "Montant"
 admin.association.consumers.payments.form.sales_order:               "Commande"
 admin.association.consumers.payments.form.delete_allocation_payment: "Désaffecter"
+admin.association.consumers.payments.form.sales_order_date:          "Date"
+admin.association.consumers.payments.form.sales_order_ref:           "Réf"
+admin.association.consumers.payments.form.sales_order_total:         "Total"
+admin.association.consumers.payments.form.sales_order_leftToPay:     "Reste à payer"
+admin.association.consumers.payments.form.sales_order_to_allocate:   "Commandes à affecter"
+admin.association.consumers.payments.form.allocate_sales_order:      "Affecter"
 
 admin.producer.consumers.message.payment_created:            "Le règlement a bien été ajouté."
 admin.producer.consumers.message.payment_updated:            "Le règlement a bien été mis à jour."
 admin.producer.consumers.message.payment_deleted:            "Le règlement a bien été supprimé."
 admin.producer.consumers.message.payment_allocation_deleted: "Le règlement a bien été désaffecté."
+admin.producer.consumers.message.sales_order_allocated:      "Le règlement a bien été affecté"
 
 admin.association.consumers.payments.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer ce règlement ?"
 

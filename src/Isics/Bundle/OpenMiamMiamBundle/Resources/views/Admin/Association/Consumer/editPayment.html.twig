@@ -38,6 +38,45 @@
             </div>
         </div>
     </div>
+    {% if salesOrders|length > 0 %}
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">{{ 'admin.association.consumers.payments.form.sales_order_to_allocate'|trans }}</h2>
+                    </div>
+                    <div class="panel-body text-center">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ 'admin.association.consumers.payments.form.sales_order_date'|trans }}</th>
+                                <th>{{ 'admin.association.consumers.payments.form.sales_order_ref'|trans }}</th>
+                                <th>{{ 'admin.association.consumers.payments.form.sales_order_total'|trans }}</th>
+                                <th>{{ 'admin.association.consumers.payments.form.sales_order_leftToPay'|trans }}</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for salesOrder in salesOrders %}
+                                <tr>
+                                    <td>{{ salesOrder.date|format_date }}</td>
+                                    <td>{{ salesOrder.ref }}</td>
+                                    <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td>{{ salesOrder.leftToPay|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td>
+                                        {% if payment.rest > 0 %}
+                                            <a href="{{ path('open_miam_miam.admin.association.consumer.allocate_sales_order', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id, 'salesOrderId': salesOrder.id}) }}">{{ 'admin.association.consumers.payments.form.allocate_sales_order'|trans }}</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% if payment.paymentAllocations|length > 0 %}
         <div class="row">
             <div class="col-md-9">

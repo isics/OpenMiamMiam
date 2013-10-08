@@ -15,6 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -260,7 +261,11 @@ class ConsumerController extends BaseController
             'association'=> $association,
             'consumer' => $consumer,
             'payment' => $payment,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'salesOrders' => $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findNotSettledForUserAndAssociation(
+                $consumer,
+                $association
+            )
         ));
     }
 
@@ -294,6 +299,48 @@ class ConsumerController extends BaseController
         );
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.producer.consumers.message.payment_allocation_deleted');
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.association.consumer.edit_payment',
+            array('id' => $association->getId(), 'consumerId' => $consumer->getId(), 'paymentId' => $payment->getId())
+        ));
+    }
+
+    /**
+     * Allocate payment to sales order
+     *
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
+     * @ParamConverter("payment", class="IsicsOpenMiamMiamBundle:Payment", options={"mapping": {"paymentId": "id"}})
+     *
+     * @param Association $association
+     * @param User $consumer
+     * @param Payment $payment
+     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function allocateSalesOrderAction(Association $association, User $consumer, Payment $payment, SalesOrder $order)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        if ($payment->getRest() == 0) {
+            throw $this->createNotFoundException('No rest for payment');
+        }
+        if ($order->getLeftToPay() == 0) {
+            throw $this->createNotFoundException('Order is settled');
+        }
+
+        $this->get('open_miam_miam.payment_manager')->allocatePayment(
+            $payment,
+            $order,
+            $this->get('security.context')->getToken()->getUser()
+        );
+
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.consumers.message.sales_order_allocated');
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.association.consumer.edit_payment',
