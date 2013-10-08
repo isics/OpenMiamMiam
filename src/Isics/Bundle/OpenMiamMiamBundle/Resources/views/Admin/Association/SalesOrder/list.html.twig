@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                     {% for salesOrder in salesOrders %}
-                        <tr>
+                        <tr{% if salesOrder.leftToPay %} class="danger"{% endif %}>
                             <td>
                                 <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
                                     {{ salesOrder.ref }}
@@ -54,7 +54,7 @@
                                 {% if salesOrder.leftToPay %}
                                     {{ salesOrder.leftToPay|number_format_currency(open_miam_miam.currency) }}
                                 {% else %}
-                                    -
+                                    {{ 0|number_format_currency(open_miam_miam.currency) }}
                                 {% endif %}
                             </td>
                             <td>
