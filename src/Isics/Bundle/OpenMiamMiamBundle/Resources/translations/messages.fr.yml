@@ -263,7 +263,7 @@ admin.producer.sales_orders.form.add_rows.name:              "Nom"
 admin.producer.sales_orders.form.add_rows.price:             "Prix"
 admin.producer.sales_orders.form.add_rows.return:            "Retour à la commande"
 
-admin.producer.sales_orders.message.updated: "La commande a bien été mise à jour"
+admin.producer.sales_orders.message.updated: "La commande a bien été mise à jour."
 
 admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 

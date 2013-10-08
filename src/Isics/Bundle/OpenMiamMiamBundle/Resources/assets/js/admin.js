@@ -5,7 +5,10 @@ $(function() {
     });
 });
 
-var OpenMiamMiam = {};
+
+if (undefined === OpenMiamMiam) {
+    var OpenMiamMiam = {};
+}
 
 
 OpenMiamMiam.PanelForm = function() {

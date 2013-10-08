@@ -147,6 +147,37 @@ h1 {
 }
 
 //
+// Producer / Order
+//
+.table-producer-sales-order {
+    td {
+        vertical-align: middle !important;
+    }
+
+    th:nth-child(n+3),
+    td:nth-child(4),
+    td:nth-child(6) {
+        text-align: center;
+    }
+
+    td:nth-child(3),
+    td:nth-child(5) {
+        font-weight: bold;
+        text-align: right;
+    }
+
+    tfoot {
+        font-size: @font-size-large;
+        font-weight: bold;
+
+        th,
+        td {
+            text-align: right;
+        }
+    }
+}
+
+//
 // Producer / Products
 //
 .table-products {
