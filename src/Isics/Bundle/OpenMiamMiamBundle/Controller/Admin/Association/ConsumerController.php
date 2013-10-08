@@ -52,8 +52,6 @@ class ConsumerController extends BaseController
                 || $payment->getUser()->getId() != $consumer->getId()) {
             throw $this->createNotFoundException('Invalid payment for association');
         }
-
-
     }
 
     /**
