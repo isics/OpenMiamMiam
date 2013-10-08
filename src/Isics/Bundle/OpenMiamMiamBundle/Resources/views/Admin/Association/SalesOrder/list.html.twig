@@ -24,6 +24,8 @@
         </div>
     </div>
 
+    <a href="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-association-sales-orders">
