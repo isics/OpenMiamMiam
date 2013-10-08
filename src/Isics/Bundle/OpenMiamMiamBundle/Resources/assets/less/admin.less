@@ -83,6 +83,37 @@ h1 {
 }
 
 //
+// Association / Order
+//
+.table-association-sales-order {
+    td {
+        vertical-align: middle !important;
+    }
+
+    th:nth-child(n+4),
+    td:nth-child(5),
+    td:nth-child(7) {
+        text-align: center;
+    }
+
+    td:nth-child(4),
+    td:nth-child(6) {
+        font-weight: bold;
+        text-align: right;
+    }
+
+    tfoot {
+        font-size: @font-size-large;
+        font-weight: bold;
+
+        th,
+        td {
+            text-align: right;
+        }
+    }
+}
+
+//
 // Producer dashboard
 //
 #producer-dashboard {

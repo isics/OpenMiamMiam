@@ -9,7 +9,7 @@
 
 {% block content %}
     {% set order=producerSalesOrder.salesOrder %}
-    <h1>{{ 'admin.producer.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} - {{ order.date|format_datetime }}</h1>
+    <h1>{{ 'admin.producer.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} <small>- {{ order.date|format_datetime }}</small></h1>
 
     <div class="row">
         <div class="col-md-6">
