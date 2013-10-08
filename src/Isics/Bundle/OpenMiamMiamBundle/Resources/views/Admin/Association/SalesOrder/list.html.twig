@@ -13,11 +13,15 @@
             <h1>{{ 'admin.association.sales_orders.list.title'|trans }}</h1>
         </div>
 
-        <select id="branch-occurrence-switcher">
-            {% for _branchOccurrence in branchOccurrences %}
-                <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
-            {% endfor %}
-        </select>
+        <div class="col-md-6">
+            <p>
+                <select id="branch-occurrence-switcher" class="form-control input-lg">
+                    {% for _branchOccurrence in branchOccurrences %}
+                        <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+        </div>
     </div>
 
     {% if salesOrders|length > 0 %}
@@ -61,4 +65,13 @@
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.sales_orders.list.no_order'|trans} %}
     {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.AssociationBranchOccurrenceSwitcher;
+        });
+    </script>
 {% endblock %}
