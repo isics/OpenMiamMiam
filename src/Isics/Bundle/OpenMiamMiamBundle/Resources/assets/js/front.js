@@ -36,18 +36,21 @@ OpenMiamMiam.LocationMap = function() {
                         title: self.markerTitle
                     });
 
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function(position) {
+                    $('#location-map').after($('<p><a href="#" id="route-link">'+self.routeLink+'</a></p>'));
 
-                            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-                            $('#location-map').after($('<p><a href="https://maps.google.fr/maps?saddr='+pos+'&daddr='+self.address+'">'+self.routeLink+'</a></p>'));
-                        });
-                    }
+                    $('#route-link').click(function() {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                                var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                                window.location = 'https://maps.google.fr/maps?saddr='+pos+'&daddr='+self.address;
+                            });
+                        }
+                    });
                 }
             });
         }
     };
+
     return object;
 }();
 

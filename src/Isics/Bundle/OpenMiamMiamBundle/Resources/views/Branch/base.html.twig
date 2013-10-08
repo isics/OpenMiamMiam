@@ -51,16 +51,16 @@
     {{ parent() }}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script type="text/javascript">
-    $(function() {
-        new OpenMiamMiam.LocationMap(
-            '{{ branch.name }}',
-            '{{ 'zone.location.route_link'|trans }}',
-            '{{ branch.address1 }}',
-            '{{ branch.address2 }}',
-            '{{ branch.zipcode }}',
-            '{{ branch.city }}',
-            'FRANCE' {#todo add openmiammiam.country param#}
-        );
-    });
+        $(function() {
+            new OpenMiamMiam.LocationMap(
+                '{{ branch.name }}',
+                '{{ 'zone.location.route_link'|trans }}',
+                '{{ branch.address1 }}',
+                '{{ branch.address2 }}',
+                '{{ branch.zipcode }}',
+                '{{ branch.city }}',
+                'FRANCE' {#todo add openmiammiam.country param#}
+            );
+        });
     </script>
 {% endblock %}
