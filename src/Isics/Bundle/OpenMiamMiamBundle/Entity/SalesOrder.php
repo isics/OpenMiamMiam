@@ -429,6 +429,16 @@ class SalesOrder
     }
 
     /**
+     * Returns paid amount
+     *
+     * @return float
+     */
+    public function getPaidAmount()
+    {
+        return $this->total-$this->getLeftToPay();
+    }
+
+    /**
      * @param $paymentAllocations
      */
     public function setPaymentAllocations($paymentAllocations)

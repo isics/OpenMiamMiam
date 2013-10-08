@@ -18,6 +18,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -107,11 +108,17 @@ class SalesOrderController extends BaseController
         $this->secure($association);
         $this->secureBranchOccurrence($association, $branchOccurrence);
 
+        $salesOrders = $this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence);
+
+        $statistics = $this->get('open_miam_miam.sales_order_statistics');
+        $statistics->setSalesOrders($salesOrders);
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:list.html.twig', array(
             'association' => $association,
             'branchOccurrence' => $branchOccurrence,
             'branchOccurrences' => $this->get('open_miam_miam.branch_occurrence_manager')->getToProcessForAssociation($association),
-            'salesOrders' => $this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence)
+            'salesOrders' => $salesOrders,
+            'salesOrdersStats' => $statistics
         ));
     }
 

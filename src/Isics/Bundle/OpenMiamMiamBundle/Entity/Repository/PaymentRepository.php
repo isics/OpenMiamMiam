@@ -78,4 +78,25 @@ class PaymentRepository extends EntityRepository
                 ->setParameter('association', $association)
                ->addOrderBy('p.date', 'DESC');
     }
+
+    /**
+     * Returns statistics for sales orders
+     *
+     * @param array $salesOrders
+     *
+     * @return array
+     */
+    public function getStatisticsForSalesOrders(array $salesOrders)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb->select('p.type AS type, SUM(pa.amount) AS amount, COUNT(p.id) AS counter')
+                ->innerJoin('p.paymentAllocations', 'pa')
+                ->andWhere($qb->expr()->in('pa.salesOrder', ':salesOrders'))
+                ->setParameter('salesOrders', $salesOrders)
+                ->groupBy('p.type')
+                ->addOrderBy('p.type', 'ASC')
+                ->getQuery()
+                ->getResult();
+    }
 }
