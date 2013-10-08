@@ -38,5 +38,42 @@
             </div>
         </div>
     </div>
+    {% if payment.paymentAllocations|length > 0 %}
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">{{ 'admin.association.consumers.payments.form.allocations'|trans }}</h2>
+                    </div>
+                    <div class="panel-body text-center">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{ 'admin.association.consumers.payments.form.date'|trans }}</th>
+                                <th>{{ 'admin.association.consumers.payments.form.sales_order'|trans }}</th>
+                                <th>{{ 'admin.association.consumers.payments.form.sales_order_total'|trans }}</th>
+                                <th>{{ 'admin.association.consumers.payments.form.allocated_amount'|trans }}</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for allocation in payment.paymentAllocations %}
+                                <tr>
+                                    <td>{{ allocation.date|format_date }}</td>
+                                    <td>{{ allocation.salesOrder.ref }}</td>
+                                    <td>{{ allocation.salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td>{{ allocation.amount|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td>
+                                        <a href="{{ path('open_miam_miam.admin.association.consumer.delete_payment_allocation', {'id': association.id, 'consumerId': consumer.id, 'paymentAllocationId': allocation.id}) }}">{{ 'admin.association.consumers.payments.form.delete_allocation_payment'|trans }}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {'id': association.id, 'consumerId': consumer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 {% endblock %}

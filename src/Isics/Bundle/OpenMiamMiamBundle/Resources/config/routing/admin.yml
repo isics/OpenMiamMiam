@@ -59,7 +59,7 @@ open_miam_miam.admin.association.sales_order.pay:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:Pay }
 
 open_miam_miam.admin.association.sales_order.delete_payment_allocation:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payment_allocations/{paymentAllocationId}/delete
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/allocations/{paymentAllocationId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:deletePaymentAllocation }
 
 open_miam_miam.admin.association.sales_order.allocate_payment:
@@ -85,6 +85,10 @@ open_miam_miam.admin.association.consumer.edit_payment:
 open_miam_miam.admin.association.consumer.delete_payment:
     pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePayment }
+
+open_miam_miam.admin.association.consumer.delete_payment_allocation:
+    pattern: /associations/{id}/consumers/{consumerId}/payments/allocations/{paymentAllocationId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePaymentAllocation }
 
 
 

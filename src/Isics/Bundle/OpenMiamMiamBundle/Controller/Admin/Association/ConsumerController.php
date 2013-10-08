@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -185,7 +186,6 @@ class ConsumerController extends BaseController
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      * @ParamConverter("payment", class="IsicsOpenMiamMiamBundle:Payment", options={"mapping": {"paymentId": "id"}})
      *
-     * @param Request $request
      * @param Association $association
      * @param User $consumer
      * @param Payment $payment
@@ -194,7 +194,7 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function deletePaymentAction(Request $request, Association $association, User $consumer, Payment $payment)
+    public function deletePaymentAction(Association $association, User $consumer, Payment $payment)
     {
         $this->secure($association);
         $this->securePayment($association, $consumer, $payment);
@@ -259,7 +259,45 @@ class ConsumerController extends BaseController
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:editPayment.html.twig', array(
             'association'=> $association,
             'consumer' => $consumer,
+            'payment' => $payment,
             'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * Delete payment allocation to sales order
+     *
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("paymentAllocation", class="IsicsOpenMiamMiamBundle:PaymentAllocation", options={"mapping": {"paymentAllocationId": "id"}})
+     *
+     * @param Association $association
+     * @param User $consumer
+     * @param PaymentAllocation $paymentAllocation
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function deletePaymentAllocationAction(Association $association, User $consumer, PaymentAllocation $paymentAllocation)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        $payment = $paymentAllocation->getPayment();
+        if ($payment->getUser()->getId() !== $consumer->getId()) {
+            throw $this->createNotFoundException('Invalid payment allocation for consumer');
+        }
+
+        $this->get('open_miam_miam.payment_manager')->deletePaymentAllocation(
+            $paymentAllocation,
+            $this->get('security.context')->getToken()->getUser()
+        );
+
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.consumers.message.payment_allocation_deleted');
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.association.consumer.edit_payment',
+            array('id' => $association->getId(), 'consumerId' => $consumer->getId(), 'paymentId' => $payment->getId())
         ));
     }
 }
