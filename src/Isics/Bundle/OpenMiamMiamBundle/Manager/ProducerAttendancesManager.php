@@ -143,27 +143,29 @@ class ProducerAttendancesManager
                 $this->config['nb_next_producer_attendances_to_define']
             );
 
-            $producerAttendances = $producerAttendanceRepository->findBy(array(
-                'producer' => $producer,
-                'branchOccurrence' => $branchOccurrences
-            ));
+            if (!empty($branchOccurrences)) {
+                $producerAttendances = $producerAttendanceRepository->findBy(array(
+                    'producer' => $producer,
+                    'branchOccurrence' => $branchOccurrences
+                ));
 
-            foreach ($branchOccurrences as $occurrence) {
-                $branchOccurrenceAttendance = new ProducerBranchOccurrenceAttendance($producer, $occurrence);
+                foreach ($branchOccurrences as $occurrence) {
+                    $branchOccurrenceAttendance = new ProducerBranchOccurrenceAttendance($producer, $occurrence);
 
-                $producerAttendance = null;
-                foreach ($producerAttendances as $attendance) {
-                    if ($attendance->getBranchOccurrence()->getId() == $occurrence->getId()) {
-                        $producerAttendance = $attendance;
-                        break;
+                    $producerAttendance = null;
+                    foreach ($producerAttendances as $attendance) {
+                        if ($attendance->getBranchOccurrence()->getId() == $occurrence->getId()) {
+                            $producerAttendance = $attendance;
+                            break;
+                        }
                     }
+                    $branchOccurrenceAttendance->setProducerAttendance($producerAttendance);
+
+                    $branchAttendances->addBranchOccurrenceAttendance($branchOccurrenceAttendance);
                 }
-                $branchOccurrenceAttendance->setProducerAttendance($producerAttendance);
 
-                $branchAttendances->addBranchOccurrenceAttendance($branchOccurrenceAttendance);
+                $attendances->addBranchAttendances($branchAttendances);
             }
-
-            $attendances->addBranchAttendances($branchAttendances);
         }
 
         return $attendances;
