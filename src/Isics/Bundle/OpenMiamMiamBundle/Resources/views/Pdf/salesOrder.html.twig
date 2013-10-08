@@ -27,7 +27,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <strong>{{ order.firstname }} {{ order.lastname }} ({{ user|format_consumer_ref }})</strong><br />
+                                    <strong>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</strong><br />
                                     {{ order.address1 }}<br />
                                     {% if order.address2 != null %}
                                         {{ order.address2 }}<br />
@@ -44,12 +44,13 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <strong>{{ order.branch.name }}</strong><br />
-                                    {{ order.branch.address1 }}<br />
-                                    {% if order.branch.address2 != null %}
-                                        {{ order.branch.address2 }}<br />
+                                    {% set branch=order.branchOccurrence.branch %}
+                                    <strong>{{ branch.name }}</strong><br />
+                                    {{ branch.address1 }}<br />
+                                    {% if branch.address2 != null %}
+                                        {{ branch.address2 }}<br />
                                     {% endif %}
-                                    {{ order.branch.zipcode }} {{ order.branch.city }}
+                                    {{ branch.zipcode }} {{ branch.city }}
                                 </td>
                             </tr>
                         </tbody>
@@ -83,7 +84,7 @@
         <tfoot>
             <tr>
                 <th colspan="4">{{ 'pdf.sales_order.total'|trans }}</th>
-                <td>{{ cart.total|number_format_currency(open_miam_miam.currency) }}</td>
+                <td>{{ order.total|number_format_currency(open_miam_miam.currency) }}</td>
             </tr>
         </tfoot>
     </table>

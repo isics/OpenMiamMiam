@@ -439,8 +439,11 @@ class SalesOrderController extends BaseController
         $this->secure($association);
         $this->secureBranchOccurrence($association, $branchOccurrence);
 
-        $salesOrders = $this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence);
+        $salesOrdersPdf = $this->get('open_miam_miam.sales_orders_pdf');
+        $salesOrdersPdf->setSalesOrders($this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence));
 
-        return new StreamedResponse();
+        return new StreamedResponse(function() use ($salesOrdersPdf){
+            $salesOrdersPdf->render();
+        });
     }
 }
