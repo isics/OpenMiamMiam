@@ -1,0 +1,90 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Pdf:base.html.twig' %}
+
+{% block content %}
+    <h1>{{ open_miam_miam.title }}</h1>
+
+    <h2>{{ 'pdf.sales_order.title'|trans({'ref': order.ref, 'date': order.date|format_datetime}) }}</h2>
+
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>{{ 'pdf.sales_order.consumer'|trans }}</th>
+                <td>&nbsp;</td>
+                <th>{{ 'pdf.sales_order.withdrawal'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="45%">
+                    <table width="100%" border="1">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>{{ order.firstname }} {{ order.lastname }} ({{ user|format_consumer_ref }})</strong><br />
+                                    {{ order.address1 }}<br />
+                                    {% if order.address2 != null %}
+                                        {{ order.address2 }}<br />
+                                    {% endif %}
+                                    {{ order.zipcode }} {{ order.city }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td width="10%">&nbsp;</td>
+                <td width="45%">
+                    <table width="100%" border="1">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>{{ order.branch.name }}</strong><br />
+                                    {{ order.branch.address1 }}<br />
+                                    {% if order.branch.address2 != null %}
+                                        {{ order.branch.address2 }}<br />
+                                    {% endif %}
+                                    {{ order.branch.zipcode }} {{ order.branch.city }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table width="100%" border="1">
+        <thead>
+            <tr>
+                <th>{{ 'pdf.sales_order.product'|trans }}</th>
+                <th>{{ 'pdf.sales_order.producer'|trans }}</th>
+                <th>{{ 'pdf.sales_order.price'|trans }}</th>
+                <th>{{ 'pdf.sales_order.quantity'|trans }}</th>
+                <th>{{ 'pdf.sales_order.total'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in order.salesOrderRows %}
+                <tr>
+                    <td>{{ row.product.name }}</td>
+                    <td>{{ row.product.producer }}</td>
+                    <td>{{ row.product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                    <td>{{ row.quantity }}</td>
+                    <td>{{ row.total|number_format_currency(open_miam_miam.currency) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4">{{ 'pdf.sales_order.total'|trans }}</th>
+                <td>{{ cart.total|number_format_currency(open_miam_miam.currency) }}</td>
+            </tr>
+        </tfoot>
+    </table>
+{% endblock %}
