@@ -1,54 +1,59 @@
-
 {#
-# This file is part of the OpenMiamMiam project.
-# (c) Isics <contact@isics.fr>
-#
-# This source file is subject to the AGPL v3 license that is bundled
-# with this source code in the file LICENSE.
-#}
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
-
     {% block content %}
-        {% for producer in producers %}
+        <h1>{{ 'branch.producers.title'|trans({'%name%': branch.name}) }}</h1>
+
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-condensed ">
-                <caption>{{ producer.name }}</caption>
-                <tbody>
+            <table class="table table-bordered table-striped table-branch-producers">
+                <thead>
                     <tr>
-                        <th>{{ 'branch.producers.image'|trans }}</th>
-                        <td>
-                            {% if producer.image is not null %}
-                                    <p><img src="{{ asset(get_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
-                            {% endif %}
-                        </td>
-                    </tr>
-                        <tr>
-                        <th>{{ 'branch.producers.presentation'|trans }}</th>
-                        <td>{{ producer.presentation }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'branch.producers.address'|trans }}</th>
-                        <td>{{ producer.address1}}{{ producer.address2}} {{ producer.zipcode}} {{ producer.city}}</td>
-                    </tr>
-                    <tr>
+                        <td>&nbsp;</td>
+                        <th>{{ 'branch.producers.name'|trans }}</th>
+                        <th>{{ 'branch.producers.zipcode'|trans }}</th>
+                        <th>{{ 'branch.producers.city'|trans }}</th>
                         <th>{{ 'branch.producers.phone1'|trans }}</th>
-                        <td>{{ producer.phone1 }}</td>
-                    </tr>
-                    <tr>
                         <th>{{ 'branch.producers.phone2'|trans }}</th>
-                        <td>{{ producer.phone2 }}</td>
+                        <td>&nbsp;</td>
                     </tr>
-                    <tr>
-                        <th>{{ 'branch.producers.website'|trans }}</th>
-                        <td>{{ producer.website }}</td>
-                    </tr>
-                    <tr>
-                        <th>{{ 'branch.producers.facebook'|trans }}</th>
-                        <td>{{ producer.facebook }}</td>
-                    </tr>
+                </thead>
+                <tbody>
+                    {% for producer in producers %}
+                        <tr>
+                            <td>
+                                {% if producer.profileImage is not null %}
+                                    <img src="{{ asset(get_producer_profile_image_path(producer))|imagine_filter('s') }}" class="img-circle" alt="{{ producer.name }}" />
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ producer.name }}
+                            </td>
+                            <td>
+                                {{ producer.zipcode }}
+                            </td>
+                            <td>
+                                {{ producer.city }}
+                            </td>
+                            <td>
+                                {{ producer.phone1 }}
+                            </td>
+                            <td>
+                                {{ producer.phone2 }}
+                            </td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">
+                                    {{ 'branch.producers.more'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
-        {% endfor %}
     {% endblock %}
 {% endembed %}

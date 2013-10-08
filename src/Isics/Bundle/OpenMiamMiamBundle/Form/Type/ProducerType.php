@@ -28,7 +28,7 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', 'text')
-                ->add('profilImageFile', 'file', array(
+                ->add('profileImageFile', 'file', array(
                         'required' => false
                 ))
                 ->add('presentationImageFile', 'file', array(
@@ -80,8 +80,8 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
         $form = $event->getForm();
         $producer = $event->getData();
 
-        if (null !== $producer->getProfilImage()) {
-            $form->add('deleteProfilImage', 'checkbox', array('required' => false));
+        if (null !== $producer->getProfileImage()) {
+            $form->add('deleteProfileImage', 'checkbox', array('required' => false));
         }
         if (null !== $producer->getPresentationImage()) {
             $form->add('deletePresentationImage', 'checkbox', array('required' => false));

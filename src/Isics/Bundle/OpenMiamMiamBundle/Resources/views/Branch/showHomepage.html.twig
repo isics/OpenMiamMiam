@@ -42,14 +42,4 @@
             });
         </script>
     {% endblock %}
-
-    {% block javascript %}
-        {{ parent() }}
-        <script type="text/javascript">
-            $(function() {
-                new OpenMiamMiam.QuantityButtons;
-                new OpenMiamMiam.CartAddForm;
-            });
-        </script>
-    {% endblock %}
 {% endembed %}

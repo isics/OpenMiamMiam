@@ -142,24 +142,24 @@ class Producer
     /**
      * @var string $image
      *
-     * @ORM\Column(name="profilImage", type="string", length=128, nullable=true)
+     * @ORM\Column(name="profile_image", type="string", length=128, nullable=true)
      */
-    private $profilImage;
+    private $profileImage;
 
     /**
      * @var UploadedFile string
      */
-    private $profilImageFile;
+    private $profileImageFile;
 
     /**
-     * @var boolean $deleteProfilImage
+     * @var boolean $deleteProfileImage
      */
-    private $deleteProfilImage;
+    private $deleteProfileImage;
 
     /**
      * @var string $presentationImage
      *
-     * @ORM\Column(name="presentationImage", type="string", length=128, nullable=true)
+     * @ORM\Column(name="presentation_image", type="string", length=128, nullable=true)
      */
     private $presentationImage;
 
@@ -182,9 +182,9 @@ class Producer
         $this->productRefCounter = 0;
 
         $this->associations = new ArrayCollection();
-        $this->branches     = new ArrayCollection();
-        $this->deleteProfilImage = false;
-        $this->deleteProducerImage = false;
+        $this->branches = new ArrayCollection();
+        $this->deleteProfileImage = false;
+        $this->deletePresentationImage = false;
     }
 
     public function __toString()
@@ -512,74 +512,74 @@ class Producer
     }
 
     /**
-     * Set ProfilImage
+     * Set ProfileImage
      *
-     * @param string $profilImage
+     * @param string $profileImage
      * @return Product
      */
-    public function setProfilImage($profilImage)
+    public function setProfileImage($profileImage)
     {
-        $this->profilImage = $profilImage;
+        $this->profileImage = $profileImage;
 
         return $this;
     }
 
     /**
-     * Get profilImage
+     * Get profileImage
      *
      * @return string
      */
-    public function getProfilImage()
+    public function getProfileImage()
     {
-        return $this->profilImage;
+        return $this->profileImage;
     }
 
     /**
-     * Set ProfilImage file
+     * Set profile image file
      *
-     * @param UploadedFile $profilImageFile
+     * @param UploadedFile $profileImageFile
      *
      * @return Producer
      */
-    public function setProfilImageFile(UploadedFile $profilImageFile = null)
+    public function setProfileImageFile(UploadedFile $profileImageFile = null)
     {
-        $this->profilImageFile = $profilImageFile;
+        $this->profileImageFile = $profileImageFile;
 
         return $this;
     }
 
     /**
-     * Get profilImage file
+     * Get profileImage file
      *
      * @return UploadedFile
      */
-    public function getProfilImageFile()
+    public function getProfileImageFile()
     {
-        return $this->profilImageFile;
+        return $this->profileImageFile;
     }
 
     /**
-     * Set deleteProfilImage flag
+     * Set deleteProfileImage flag
      *
-     * @param boolean $deleteProfilImage
+     * @param boolean $deleteProfileImage
      *
      * @return Producer
      */
-    public function setDeleteProfilImage($deleteProfilImage)
+    public function setDeleteProfileImage($deleteProfileImage)
     {
-        $this->deleteProfilImage = (bool)$deleteProfilImage;
+        $this->deleteProfileImage = (bool)$deleteProfileImage;
 
         return $this;
     }
 
     /**
-     * Get deleteProfilImage flag
+     * Get deleteProfileImage flag
      *
      * @return boolean
      */
-    public function getDeleteProfilImage()
+    public function getDeleteProfileImage()
     {
-        return $this->deleteProfilImage;
+        return $this->deleteProfileImage;
     }
 
     /**
@@ -606,7 +606,7 @@ class Producer
     }
 
     /**
-     * Set prensentationImage file
+     * Set prensentation image file
      *
      * @param UploadedFile $presentationImageFile
      *

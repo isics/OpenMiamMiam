@@ -1,70 +1,64 @@
-
 {#
-# This file is part of the OpenMiamMiam project.
-# (c) Isics <contact@isics.fr>
-#
-# This source file is subject to the AGPL v3 license that is bundled
-# with this source code in the file LICENSE.
-#}
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
-    {% block content %}
+{% block content %}
+    <h1>
+        {% if producer.profileImage is not null %}
+            <img src="{{ asset(get_producer_profile_image_path(producer))|imagine_filter('s') }}" class="img-circle" alt="{{ producer.name }}" />
+        {% endif %}
+        {{ producer.name }}
+    </h1>
 
-        <div class="row">
-            <div class="col-md-6">
-            
-                <div class="row">
-                    <div class="col-md-2 producer_image">
-                        {% if producer.profilImage is not null %}
-                            <img src="{{ asset(get_profil_image_producer_path(producer))|imagine_filter('a') }}" class="img-circle" alt="{{ producer.name }}" />
-                        {% endif %}
-                    </div>
-                    <div class="col-md-10 producer_name">
-                       <strong><h1>{{ producer.name }}</h1></strong>
-                    </div>
-                </div>
-                
-                <div class="well contact">
-                    <p><strong>{{ 'producer.contact'|trans }}</strong></p>
-                    <adddress>
-                        <strong>
-                            {{ producer.address1 }} {{ producer.address2 }}</br> 
-                            {{ producer.zipcode }} {{ producer.city }}</br>
-                        </strong>
+    <div class="row">
+        <div class="col-md-8">
+            {% if producer.presentationImage is not null %}
+                <p class="text-center">
+                    <img src="{{ asset(get_producer_presentation_image_path(producer))|imagine_filter('l') }}" class="img-thumbnail" alt="{{ producer.name }}" />
+                </p>
+            {% endif %}
+
+            {% if producer.presentation is not null %}
+                {{ producer.presentation|raw }}
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="well">
+                <h2>{{ 'producer.contact'|trans }}</h2>
+                <p>
+                    <address>
+                        {{ producer.address1 }} {{ producer.address2 }}</br>
+                        {{ producer.zipcode }} {{ producer.city }}
                     </address>
+                </p>
+                <dl>
                     {% if producer.phone1 is not null %}
-                        {{ 'producer.phone1'|trans }}
-                        {{ producer.phone1 }}</br>
+                        <dt>{{ 'producer.phone1'|trans }}</dt>
+                        <dd>{{ producer.phone1 }}</dd>
                     {% endif %}
 
                     {% if producer.phone2 is not null %}
-                        {{ 'producer.phone2'|trans }}
-                        {{ producer.phone2 }}</br>
+                        <dt>{{ 'producer.phone2'|trans }}</dt>
+                        <dd>{{ producer.phone2 }}</dd>
                     {% endif %}
 
                     {% if producer.facebook is not null %}
-                        {{ 'producer.website'|trans }}
-                        <a href="{{ producer.website }}">{{ producer.website }}</a></br>
+                        <dt>{{ 'producer.website'|trans }}</dt>
+                        <dd><a href="{{ producer.website }}">{{ producer.website }}</a></dd>
                     {% endif %}
 
                     {% if producer.facebook is not null %}
-                        {{ 'producer.facebook'|trans }}
-                        <a href="{{ producer.facebook }}">{{ producer.facebook }}</a>
+                        <dt>{{ 'producer.facebook'|trans }}</dt>
+                        <dd><a href="{{ producer.facebook }}">{{ producer.facebook }}</a></dd>
                     {% endif %}
-                </div> 
+                </dl>
             </div>
-            <div class="col-md-6 presentation_image">
-                {% if producer.presentationImage is not null %}
-                    <img src="{{ asset(get_presentation_image_producer_path(producer))|imagine_filter('b') }}" class="img-polaroid" alt="{{ producer.name }}" />
-                {% endif %}
-            </div>
-            
-            </div>
-            {% if producer.presentation is not null %}
-                <div class="row">
-                    <div class="col-md-12 well">
-                        {{ producer.presentation |raw }}
-                    </div>
-                </div>
-            {% endif %} 
-    {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

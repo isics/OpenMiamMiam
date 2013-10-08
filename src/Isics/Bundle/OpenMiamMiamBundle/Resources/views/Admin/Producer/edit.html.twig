@@ -10,33 +10,29 @@
 
 {% block content %}
     <div class="producer_form">
-        <h1>{{ 'admin.producer.infos.title'|trans }}</h1> 
-        {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_producer_form', 'novalidate': ''}}) }} 
+        <h1>{{ 'admin.producer.infos.title'|trans }}</h1>
+        {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_producer_form', 'novalidate': ''}}) }}
         {{ form_row(form.name, {'label': 'admin.producer.infos.name'|trans}) }}
         {{ form_row(form.address1, {'label': 'admin.producer.infos.address1'|trans}) }}
-        <div class="row">    
-            <div class="col-md-12">
-                {{ form_errors(form.address2) }}
-                {{ form_row(form.address2, {'label': 'admin.producer.infos.address2'|trans}) }}
-            </div>   
-        </div>    
-        <div class="row">    
+        {{ form_errors(form.address2) }}
+        {{ form_row(form.address2, {'label': 'admin.producer.infos.address2'|trans}) }}
+        <div class="row">
             <div class="col-md-3">
-                {{ form_row(form.zipcode, {'label': 'admin.producer.infos.zipcode'|trans}) }} 
+                {{ form_row(form.zipcode, {'label': 'admin.producer.infos.zipcode'|trans}) }}
             </div>
             <div class="col-md-9">
-                {{ form_row(form.city, {'label': 'admin.producer.infos.city'|trans}) }} 
+                {{ form_row(form.city, {'label': 'admin.producer.infos.city'|trans}) }}
             </div>
-        </div>        
-        <div class="row">    
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 {{ form_row(form.phone1, {'label': 'admin.producer.infos.phone1'|trans}) }}
             </div>
             <div class="col-md-6">
                 {{ form_row(form.phone2, {'label': 'admin.producer.infos.phone2'|trans}) }}
             </div>
-        </div>        
-        <div class="row">    
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 {{ form_row(form.website, {'label': 'admin.producer.infos.website'|trans}) }}
             </div>
@@ -44,37 +40,34 @@
                 {{ form_row(form.facebook, {'label': 'admin.producer.infos.facebook'|trans}) }}
             </div>
         </div>
+
+        {{ form_row(form.presentation, {'label': 'admin.producer.infos.presentation'|trans, 'attr': {'class': 'tinymce'}}) }}
+
         <div class="row">
-               <div class="col-md-12">
-               {{ form_row(form.presentation, {'label': 'admin.producer.infos.presentation'|trans, 'attr': {'class': 'tinymce'}}) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                {{ form_label(form.profilImageFile, 'admin.producer.infos.profilImage'|trans) }}
-                {% if producer.profilImage is not null %}
-                    <p><img src="{{ asset(get_profil_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
-                    {{ form_row(form.deleteProfilImage, {'label': 'admin.producer.infos.delete_image'|trans}) }}
+            <div class="col-md-6">
+                {{ form_label(form.profileImageFile, 'admin.producer.infos.profile_image'|trans) }}
+                {% if producer.profileImage is not null %}
+                    <p><img src="{{ asset(get_producer_profile_image_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+                    {{ form_row(form.deleteProfileImage, {'label': 'admin.producer.infos.delete_image'|trans}) }}
                 {% endif %}
-                {{ form_errors(form.profilImageFile) }}
-                {{ form_widget(form.profilImageFile) }}
+                {{ form_errors(form.profileImageFile) }}
+                {{ form_widget(form.profileImageFile) }}
             </div>
-            <div class="col-md-4">
-                {{ form_label(form.presentationImageFile, 'admin.producer.infos.presentationImage'|trans) }}
+            <div class="col-md-6">
+                {{ form_label(form.presentationImageFile, 'admin.producer.infos.presentation_image'|trans) }}
                 {% if producer.presentationImage is not null %}
-                    <p><img src="{{ asset(get_presentation_image_producer_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
+                    <p><img src="{{ asset(get_producer_presentation_image_path(producer))|imagine_filter('s') }}" alt="{{ producer.name }}" /></p>
                     {{ form_row(form.deletePresentationImage, {'label': 'admin.producer.infos.delete_image'|trans}) }}
                 {% endif %}
                 {{ form_errors(form.presentationImageFile) }}
                 {{ form_widget(form.presentationImageFile) }}
             </div>
-           </div>
+        </div>
         <div class="edit-producer-button">
             <button type="submit" class="btn btn-primary btn-lg" />
                 <span class="glyphicon glyphicon-floppy-save"></span>
                 {{ 'admin.save'|trans }}
             </button>
-            <a href="dashboard" class="btn btn-default btn-lg" <span class="glyphicon glyphicon-remove"></span> {{ 'register.cancel'|trans }} </a>
         </div>
     </div>
     {{ form_end(form) }}
