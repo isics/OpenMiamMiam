@@ -26,6 +26,7 @@ my_account:           "Mon compte"
 # Payment
 payment.cash:   "Espèces"
 payment.cheque: "Chèque"
+payment.transfer: "Virement"
 
 
 
