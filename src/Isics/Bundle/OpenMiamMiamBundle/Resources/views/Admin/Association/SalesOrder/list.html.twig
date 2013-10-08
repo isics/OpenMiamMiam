@@ -15,7 +15,7 @@
 
         <div class="col-md-6">
             <p>
-                <select id="branch-occurrence-switcher" class="form-control input-lg">
+                <select class="form-control input-lg" data-type="url-switcher">
                     {% for _branchOccurrence in branchOccurrences %}
                         <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
                     {% endfor %}
@@ -24,7 +24,19 @@
         </div>
     </div>
 
-    <a href="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+    <p>
+        <form class="form-inline" role="form" data-type="action-in-select">
+            <div class="form-group">
+                <select class="form-control input-md">
+                    <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.sales_orders'|trans }}</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-md">
+                <span class="glyphicon glyphicon-open"></span>
+                {{ 'admin.association.sales_orders.list.export'|trans }}
+            </button>
+        </form>
+    </p>
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
@@ -122,7 +134,7 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function() {
-            new OpenMiamMiam.AssociationBranchOccurrenceSwitcher;
+            new OpenMiamMiam.ActionInSelectForm();
         });
     </script>
 {% endblock %}
