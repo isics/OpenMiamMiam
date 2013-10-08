@@ -178,6 +178,7 @@ admin.association.sales_orders.form.sales_order_row.quantity:   "Quantité"
 admin.association.sales_orders.form.sales_order_row.total:      "Total"
 admin.association.sales_orders.form.sales_order_row.producer:   "Producteur"
 admin.association.sales_orders.form.total:                      "Total"
+admin.association.sales_orders.form.left_to_pay:                "A régler"
 admin.association.sales_orders.form.sales_order_row.create:     "Ajouter des produits"
 admin.association.sales_orders.form.sales_order_row.delete:     "Supprimer la ligne de commande"
 admin.association.sales_orders.form.add_rows.title:             "Ajouter des produits à la commande %ref%"
@@ -189,7 +190,7 @@ admin.association.sales_orders.payment.title:                   "Régler la comm
 admin.association.sales_orders.payment.new_payment:             "Nouveau règlement"
 admin.association.sales_orders.payment.left_to_pay:             "Reste à régler"
 admin.association.sales_orders.payment.settled:                 "Soldée"
-admin.association.sales_orders.payment.payment_allocations:     "Règlements déjà affectués"
+admin.association.sales_orders.payment.payment_allocations:     "Règlements déjà effectués"
 admin.association.sales_orders.payment.date:                    "Date"
 admin.association.sales_orders.payment.type:                    "Mode de paiement"
 admin.association.sales_orders.payment.amount:                  "Montant"
@@ -202,7 +203,9 @@ admin.association.sales_orders.payment.rest:                    "Reste à affect
 admin.association.sales_orders.payment.allocate_payment:        "Affecter"
 
 admin.producer.sales_orders.message.payment_added:              "Le règlement a bien été affecté à la commande."
+admin.producer.sales_orders.message.payment_allocated:          "Paiement affecté."
 admin.producer.sales_orders.message.payment_allocation_deleted: "Paiement désaffecté."
+
 
 admin.association.sales_orders.message.updated: "La commande a bien été mise à jour."
 

@@ -109,6 +109,17 @@
                             <td>{{ order.total|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>&nbsp;</td>
                         </tr>
+                        <tr{% if order.leftToPay %} class="danger"{% endif %}>
+                            <th colspan="5">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</th>
+                            <td>
+                                {% if order.leftToPay %}
+                                    {{ order.leftToPay|number_format_currency(open_miam_miam.currency) }}
+                                {% else %}
+                                    {{ 0|number_format_currency(open_miam_miam.currency) }}
+                                {% endif %}
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
