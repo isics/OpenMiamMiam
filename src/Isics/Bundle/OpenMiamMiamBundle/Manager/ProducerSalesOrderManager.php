@@ -53,7 +53,7 @@ class ProducerSalesOrderManager
         $salesOrderRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
 
         foreach ($producer->getBranches() as $branch) {
-            $branchOccurrence = $branchOccurrenceRepository->findOneNextForBranch($branch, true);
+            $branchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             if (null !== $branchOccurrence) {
                 $branchOccurrenceSaleOrders = new ProducerBranchOccurrenceSalesOrders($producer, $branchOccurrence);
                 $orders = $salesOrderRepository->findForProducer($producer, $branchOccurrence);

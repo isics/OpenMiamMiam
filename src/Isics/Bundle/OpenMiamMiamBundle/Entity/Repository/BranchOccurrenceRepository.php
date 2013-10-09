@@ -18,7 +18,32 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 class BranchOccurrenceRepository extends EntityRepository
 {
     /**
-     * Finds next occurrennce for a branch
+     * Finds next occurrence for a branch which is not closed
+     *
+     * @param Branch $branch Branch
+     *
+     * @return BranchOccurrence|null
+     */
+    public function findOneNextNotClosedForBranch(Branch $branch)
+    {
+        $date = new \DateTime();
+        $date->sub(new \DateInterval(
+            sprintf('PT%sS', $branch->getAssociation()->getOpeningDelay())
+        ));
+
+        return $this->createQueryBuilder('bo')
+                ->where('bo.branch = :branch')
+                ->andWhere('bo.end >= :date')
+                ->orderBy('bo.begin')
+                ->setMaxResults(1)
+                ->setParameter('branch', $branch)
+                ->setParameter('date', $date)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
+
+    /**
+     * Finds next occurrence for a branch
      *
      * @param Branch  $branch Branch
      * @param boolean $open   Open
