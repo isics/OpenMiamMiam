@@ -92,7 +92,7 @@
                                 <td>
                                     {% if child.total is defined %}
                                         {{ form_errors(child.total) }}
-                                        {{ form_widget(child.total) }}
+                                        {{ form_widget(child.total, {'attr': {'class': 'form-control input-total'}}) }}
                                     {% else %}
                                         {{ salesOrderRow.total|number_format_currency(open_miam_miam.currency) }}
                                     {% endif %}
