@@ -81,9 +81,11 @@ class SalesOrderController extends BaseController
         $this->secure($association);
 
         $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
-        $nextBranchOccurrence = $branchOccurrenceManager->getNextForAssociation($association);
+        $nextBranchOccurrence = $branchOccurrenceManager->getNextNotClosedForAssociation($association);
         if (null === $nextBranchOccurrence) {
-            throw $this->createNotFoundException('No branch for association '.$association->getName());
+            return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:noBranchOccurrence.html.twig', array(
+                'association' => $association
+            ));
         }
 
         return $this->redirect($this->generateUrl(

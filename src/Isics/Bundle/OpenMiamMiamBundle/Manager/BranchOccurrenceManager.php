@@ -98,14 +98,18 @@ class BranchOccurrenceManager
     }
 
     /**
-     * Returns next branch occurrence for an association
+     * Returns next branch occurrence not closed for an association
      *
      * @param Association $association Association
+     *
+     * @return BranchOccurrence|null
      */
-    public function getNextForAssociation(Association $association) {
+    public function getNextNotClosedForAssociation(Association $association) {
         foreach ($association->getBranches() as $branch) {
-            if ($this->hasNext($branch)) {
-                return $this->getNext($branch);
+            $branchOccurrence = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+                    ->findOneNextNotClosedForBranch($branch);
+            if (null !== $branchOccurrence) {
+                return $branchOccurrence;
             }
         }
 

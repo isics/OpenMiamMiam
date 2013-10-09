@@ -209,6 +209,7 @@ admin.association.consumers.payments.delete_dialog.content: "Êtes-vous vraiment
 # Admin / Association / Sales orders
 admin.association.sales_orders.list.title:                      "Caisse"
 admin.association.sales_orders.list.no_order:                   "Il n'y a pas encore de commande pour ce comptoir."
+admin.association.sales_orders.list.no_branch_occurrence:       "Il n'y a pas de prochain comptoir."
 admin.association.sales_orders.list.export.sales_orders:        "Bons de commande"
 admin.association.sales_orders.list.export:                     "Exporter"
 admin.association.sales_orders.list.ref:                        "Réf"
