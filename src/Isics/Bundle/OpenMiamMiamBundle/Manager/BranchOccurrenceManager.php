@@ -251,7 +251,10 @@ class BranchOccurrenceManager
 
         $nextForBranches = array();
         foreach ($association->getBranches() as $branch) {
-            $nextForBranches[] = $repository->findOneNextForBranch($branch);
+            $nextBranchOccurrence = $repository->findOneNextNotClosedForBranch($branch);
+            if (null !== $nextBranchOccurrence) {
+                $nextForBranches[] = $nextBranchOccurrence;
+            }
         }
 
         $occurrences = array_merge($latest, $nextForBranches);
