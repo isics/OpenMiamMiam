@@ -6,5 +6,5 @@
 {% endblock %}
 {% block body_text %}{% endblock %}
 {% block body_html %}
-    {{ 'registration.email.message_html'|trans({'%username%': user.firstname, '%confirmationUrl%': confirmationUrl})|raw }}
+    {{ 'registration.email.message_html'|trans({'%firstname%': user.firstname, '%lastname%': user.lastname, '%confirmationUrl%': confirmationUrl})|raw }}
 {% endblock %}
