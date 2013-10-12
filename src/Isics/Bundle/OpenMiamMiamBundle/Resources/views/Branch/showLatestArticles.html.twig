@@ -1,0 +1,22 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+<div id="news" class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title"><span class="glyphicon glyphicon-comment"></span> {{ 'zone.news.title'|trans }}</h2>
+    </div>
+    <ul class="list-group">
+        {% for article in articles %}
+            <li class="list-group-item">
+                <a href="#">{{ article.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="panel-footer">
+        <a href="#">{{ 'zone.news.link'|trans }}</a>
+    </div>
+</div>

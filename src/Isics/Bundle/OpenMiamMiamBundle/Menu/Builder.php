@@ -103,6 +103,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.user_switch.list',
             'label' => sprintf($this->labelFormat, 'transfer', $this->translator->trans('admin.super.menu.user_switch')),
         ));
+        $menu[$menuName]->addChild('News', array(
+            'route' => 'open_miam_miam.admin.super.article.list',
+            'label' => sprintf($this->labelFormat, 'bullhorn', $this->translator->trans('admin.super.menu.news')),
+        ));
     }
 
     /**
@@ -136,6 +140,11 @@ class Builder
             'route'           => 'open_miam_miam.admin.association.consumer.list',
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.association.menu.consumers')),
+        ));
+        $menu[$menuName]->addChild('News', array(
+            'route'           => 'open_miam_miam.admin.association.article.list',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'bullhorn', $this->translator->trans('admin.association.menu.news')),
         ));
     }
 

@@ -14,19 +14,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div id="news" class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="panel-title"><span class="glyphicon glyphicon-comment"></span> {{ 'zone.news.title'|trans }}</h2>
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a href="#">Le nouveau site Internet est en ligne !</a>
-                        </li>
-                    </ul>
-                    <div class="panel-footer">
-                        <a href="#">{{ 'zone.news.link'|trans }}</a>
-                    </div>
-                </div>
+                {{ render(controller('IsicsOpenMiamMiamBundle:Branch:ShowLatestArticles', {'branch': branch})) }}
             </div>
         </div>
 

@@ -34,6 +34,26 @@ class BranchController extends Controller
     }
 
     /**
+     * Shows latest articles
+     *
+     * @param Branch  $branch
+     * @param integer $limit
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showLatestArticlesAction(Branch $branch, $limit = 3)
+    {
+        $articles = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Article')
+            ->findPublishedForBranch($branch, $limit);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:showLatestArticles.html.twig', array(
+            'articles' => $articles,
+        ));
+    }
+
+    // public function showArticleAction(Branch $branch)
+
+    /**
      * Shows next occurrences
      *
      * @param Branch  $branch
@@ -69,21 +89,21 @@ class BranchController extends Controller
             'branch' => $branch
         ));
     }
-    
+
     public function listProducersAction($branchSlug)
     {
         $branch = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Branch')->findOneBySlug($branchSlug);
-        
+
         if (null === $branch) {
             throw new NotFoundHttpException('Branch not found');
         }
-        
+
         $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch);
-        
+
         if (null === $producers) {
             throw new NotFoundHttpException('Producers not found');
         }
-        
+
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducers.html.twig', array('producers'  => $producers, 'branch' => $branch));
     }
 }

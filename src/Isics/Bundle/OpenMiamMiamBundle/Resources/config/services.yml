@@ -20,6 +20,7 @@ parameters:
     open_miam_miam.consumer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
     open_miam_miam.admin_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
     open_miam_miam.acl_manager.class:                     'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
+    open_miam_miam.article_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ArticleManager'
     open_miam_miam.product_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
     open_miam_miam.producer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager'
     open_miam_miam.producer_attendances_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
@@ -31,6 +32,8 @@ parameters:
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
     open_miam_miam.form.type.hidden_product.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
+    open_miam_miam.form.type.super_article.class:                         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperArticleType'
+    open_miam_miam.form.type.association_article.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationArticleType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
     open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
@@ -96,6 +99,11 @@ services:
 
 
     # Form types
+    open_miam_miam.form.type.association_article:
+        class:     %open_miam_miam.form.type.association_article.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_association_article }
+
     open_miam_miam.form.type.cart:
         class: %open_miam_miam.form.type.cart.class%
         tags:
@@ -225,6 +233,10 @@ services:
         class: %open_miam_miam.admin_manager.class%
         arguments: [@security.context, @doctrine.orm.entity_manager]
         shared: true
+
+    open_miam_miam.article_manager:
+        class: %open_miam_miam.article_manager.class%
+        arguments: [@doctrine.orm.entity_manager, @kernel, @open_miam_miam.activity_manager]
 
     open_miam_miam.consumer_manager:
         class: %open_miam_miam.consumer_manager.class%

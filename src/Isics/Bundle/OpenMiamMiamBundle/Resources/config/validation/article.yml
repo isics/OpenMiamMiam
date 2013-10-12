@@ -1,0 +1,10 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Article:
+    properties:
+        title:
+            - NotNull: ~
+            - Length:
+                max: 128
+        body:
+            - NotNull: ~
+        isPublished:
+            - Type: bool

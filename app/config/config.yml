@@ -83,8 +83,9 @@ stof_doctrine_extensions:
     default_locale: %locale%
     orm:
         default:
-            sluggable: true
-            tree: true
+            sluggable:     true
+            timestampable: true
+            tree:          true
 
 # FOSUserBundle Configuration
 fos_user:

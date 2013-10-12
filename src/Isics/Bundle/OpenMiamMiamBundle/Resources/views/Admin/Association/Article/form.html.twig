@@ -1,0 +1,34 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
+{% set article = form.vars.data %}
+
+{{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_article_form'}}) }}
+
+    {{ form_errors(form) }}
+
+    {{ form_row(form.title, {'label': 'admin.association.articles.form.title'|trans}) }}
+    {{ form_row(form.body, {'label': 'admin.association.articles.form.body'|trans, 'attr': {'rows': 10}}) }}
+    {{ form_row(form.isPublished, {'label': 'admin.association.articles.form.is_published'|trans}) }}
+    <hr />
+    {{ form_row(form.branches, {'label': 'admin.association.articles.form.branches'|trans}) }}
+
+    <a href="{{ path('open_miam_miam.admin.association.article.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+
+    <button type="submit" class="btn btn-primary btn-lg" />
+        <span class="glyphicon glyphicon-floppy-save"></span>
+        {{ 'admin.save'|trans }}
+    </button>
+
+    {% if article.id is not null %}
+        <a data-url="{{ path('open_miam_miam.admin.association.article.delete', {'id': association.id, 'articleId': article.id}) }}" class="btn btn-danger btn-lg" title="{{ 'admin.association.articles.form.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+    {% endif %}
+
+    {% do form.save.setRendered %}
+{{ form_end(form) }}

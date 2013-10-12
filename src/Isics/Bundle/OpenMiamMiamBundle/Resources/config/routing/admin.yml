@@ -25,6 +25,22 @@ open_miam_miam.admin.super.user_switch.list:
     pattern:  /super/user-switch
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\UserSwitch:list }
 
+open_miam_miam.admin.super.article.list:
+    pattern:  /super/articles
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:list }
+
+open_miam_miam.admin.super.article.create:
+    pattern:  /super/articles/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:create }
+
+open_miam_miam.admin.super.article.edit:
+    pattern:  /super/articles/{articleId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:edit }
+
+open_miam_miam.admin.super.article.delete:
+    pattern:  /super/articles/{articleId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:delete }
+
 
 
 #
@@ -98,6 +114,21 @@ open_miam_miam.admin.association.consumer.allocate_sales_order:
     pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/allocate_sales_order/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:allocateSalesOrder }
 
+open_miam_miam.admin.association.article.list:
+    pattern:  /associations/{id}/articles
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:list }
+
+open_miam_miam.admin.association.article.create:
+    pattern:  /associations/{id}/articles/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:create }
+
+open_miam_miam.admin.association.article.edit:
+    pattern:  /associations/{id}/articles/{articleId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:edit }
+
+open_miam_miam.admin.association.article.delete:
+    pattern:  /associations/{id}/articles/{articleId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:delete }
 
 
 #
