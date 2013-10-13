@@ -36,6 +36,23 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
+     * Return a published article by its id and visible in branch
+     *
+     * @param integer $id
+     * @param Branch  $branch
+     *
+     * @return Article|null
+     */
+    public function findOnePublishedByIdAndBranch($id, Branch $branch)
+    {
+        return $this->filterPublished($this->filterBranch($branch))
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Returns published articles and visible in branch
      *
      * @param Branch   $branch
@@ -43,9 +60,40 @@ class ArticleRepository extends EntityRepository
      *
      * @return array
      */
-    public function findPublishedForBranch(Branch $branch, $limit = 3)
+    public function findPublishedForBranch(Branch $branch, $limit = null)
     {
-        return $this->filterPublished($this->filterBranch($branch))
+        $qb = $this->filterPublished($this->filterBranch($branch));
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
+            ->addOrderBy('a.publishedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns published articles and visible in branch except an article
+     *
+     * @param Branch   $branch
+     * @param Article  $article
+     * @param interger $limit
+     *
+     * @return array
+     */
+    public function findPublishedForBranchExcept(Branch $branch, Article $article, $limit = 3)
+    {
+        $qb = $this->filterPublished($this->filterBranch($branch));
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
+            ->andWhere('a != :article')
+            ->setParameter('article', $article)
             ->setMaxResults($limit)
             ->addOrderBy('a.publishedAt', 'desc')
             ->getQuery()

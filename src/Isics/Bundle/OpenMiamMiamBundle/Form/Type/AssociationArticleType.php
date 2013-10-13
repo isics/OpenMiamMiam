@@ -13,11 +13,14 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Article;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AssociationArticleType extends AbstractType
+class AssociationArticleType extends AbstractType implements EventSubscriberInterface
 {
     /**
      * @see AbstractType
@@ -26,18 +29,49 @@ class AssociationArticleType extends AbstractType
     {
         $builder->add('title', 'text')
                 ->add('body', 'textarea')
-                ->add('branches', 'entity', array(
-                    'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                    'property' => 'name',
-                    'empty_value' => '',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'by_reference' => false
-                ))
                 ->add('isPublished', 'checkbox', array(
                     'required' => false
                 ))
-                ->add('save', 'submit');
+                ->add('save', 'submit')
+                ->addEventSubscriber($this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $article = $event->getData();
+
+        if (null === $article) {
+            return;
+        }
+
+        $association = $article->getAssociation();
+        if (null !== $association) {
+            $form->add('branches', 'entity', array(
+                'class' => 'IsicsOpenMiamMiamBundle:Branch',
+                'property' => 'name',
+                'empty_value' => '',
+                'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false,
+                'query_builder' => function(EntityRepository $er) use ($association) {
+                    return $er->createQueryBuilder('b')
+                        ->where('b.association = :association')
+                        ->setParameter('association', $association);
+                },
+            ));
+        }
     }
 
     /**

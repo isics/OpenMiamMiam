@@ -27,6 +27,17 @@ open_miam_miam.branch.homepage:
     pattern:  /{branchSlug}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showHomepage }
 
+open_miam_miam.branch.article.list:
+    pattern:  /{branchSlug}/news
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:listArticles }
+
+open_miam_miam.branch.article.show:
+    pattern:  /{branchSlug}/news/{articleSlug}-{articleId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showArticle }
+    requirements:
+        articleSlug: '[^/]+'
+        articleId:   '\d+'
+
 open_miam_miam.branch.producers:
     pattern:  /{branchSlug}/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:listProducers }

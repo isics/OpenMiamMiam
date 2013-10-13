@@ -12,11 +12,11 @@
     <ul class="list-group">
         {% for article in articles %}
             <li class="list-group-item">
-                <a href="#">{{ article.title }}</a>
+                <a href="{{ path('open_miam_miam.branch.article.show', {'branchSlug': branch.slug, 'articleSlug': article.slug, 'articleId': article.id}) }}">{{ article.title }}</a>
             </li>
         {% endfor %}
     </ul>
     <div class="panel-footer">
-        <a href="#">{{ 'zone.news.link'|trans }}</a>
+        <a href="{{ path('open_miam_miam.branch.article.list', {'branchSlug': branch.slug}) }}">{{ 'zone.news.link'|trans }}</a>
     </div>
 </div>

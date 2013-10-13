@@ -34,6 +34,26 @@ class BranchController extends Controller
     }
 
     /**
+     * Lists all articles
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
+     *
+     * @param Branch  $branch
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listArticlesAction(Branch $branch, $limit = 3)
+    {
+        $articles = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Article')
+            ->findPublishedForBranch($branch);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:listArticles.html.twig', array(
+            'branch'   => $branch,
+            'articles' => $articles,
+        ));
+    }
+
+    /**
      * Shows latest articles
      *
      * @param Branch  $branch
@@ -47,11 +67,53 @@ class BranchController extends Controller
             ->findPublishedForBranch($branch, $limit);
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showLatestArticles.html.twig', array(
+            'branch'   => $branch,
             'articles' => $articles,
         ));
     }
 
-    // public function showArticleAction(Branch $branch)
+    /**
+     * Shows article
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
+     *
+     * @param Branch  $branch      Branch
+     * @param string  $articleSlug Article slug
+     * @param integer $articleId   Article id
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showArticleAction(Branch $branch, $articleSlug, $articleId)
+    {
+        $repository = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Article');
+
+        $article = $repository->findOnePublishedByIdAndBranch($articleId, $branch);
+
+        if (null === $article) {
+            throw new NotFoundHttpException('Article not found');
+        }
+
+        if ($article->getSlug() !== $articleSlug) {
+            return $this->redirect($this->generateUrl(
+                'open_miam_miam.branch.article.show',
+                array(
+                    'branchSlug'  => $branch->getSlug(),
+                    'articleSlug' => $article->getSlug(),
+                    'articleId'   => $articleId,
+                )
+            ), 301);
+        }
+
+        $otherArticles = $repository->findPublishedForBranchExcept($branch, $article, 5);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:showArticle.html.twig', array(
+            'branch'        => $branch,
+            'article'       => $article,
+            'otherArticles' => $otherArticles,
+        ));
+    }
 
     /**
      * Shows next occurrences

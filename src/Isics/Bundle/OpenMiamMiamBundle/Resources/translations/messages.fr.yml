@@ -117,6 +117,11 @@ availability.producer_absent: "Producteur absent"
 availability.available_at:    "Dispo le %date%"
 
 
+# News
+news:              "Actualité"
+news.others.title: "A lire également"
+news.others.link:  "Toute l'actualité"
+
 
 # Admin common
 admin.title:                 "Accès gestionnaire"
