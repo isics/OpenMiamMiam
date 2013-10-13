@@ -32,7 +32,6 @@ parameters:
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
     open_miam_miam.form.type.hidden_product.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
-    open_miam_miam.form.type.super_article.class:                         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperArticleType'
     open_miam_miam.form.type.association_article.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationArticleType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
@@ -42,6 +41,7 @@ parameters:
     open_miam_miam.form.type.sales_order.class:                           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderType'
     open_miam_miam.form.type.sales_order_row.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderRowType'
     open_miam_miam.form.type.producer_sales_order.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerSalesOrderType'
+    open_miam_miam.form.type.super_article.class:                         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperArticleType'
     open_miam_miam.form.type.cart_item.class:                             'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartItemType'
     open_miam_miam.form.type.cart.class:                                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartType'
     open_miam_miam.form.type.add_rows_sales_order.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AddRowsToSalesOrderType'
@@ -100,7 +100,7 @@ services:
 
     # Form types
     open_miam_miam.form.type.association_article:
-        class:     %open_miam_miam.form.type.association_article.class%
+        class: %open_miam_miam.form.type.association_article.class%
         tags:
             - { name: form.type, alias: open_miam_miam_association_article }
 
@@ -155,6 +155,11 @@ services:
         class: %open_miam_miam.form.type.sales_order_row.class%
         tags:
             - { name: form.type, alias: open_miam_miam_sales_order_row }
+
+    open_miam_miam.form.type.super_article:
+        class: %open_miam_miam.form.type.super_article.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_super_article }
 
     open_miam_miam.form.type.producer_sales_order:
         class: %open_miam_miam.form.type.producer_sales_order.class%

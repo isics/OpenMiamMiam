@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BranchController extends Controller
 {

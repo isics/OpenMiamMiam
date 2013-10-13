@@ -1,0 +1,63 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ 'admin.super.articles.list.title'|transchoice(articles|length, {'%nb%': articles|length}) }}</h1>
+        </div>
+        <div class="col-md-6">
+            <a href="{{ path('open_miam_miam.admin.super.article.create') }}" class="btn btn-primary btn-lg pull-right">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                {{ 'admin.super.articles.list.create'|trans }}
+            </a>
+        </div>
+    </div>
+
+    {% if articles|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-super-articles">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.super.articles.list.published_at'|trans }}</th>
+                        <th>{{ 'admin.super.articles.list.table_title'|trans }}</th>
+                        <th>{{ 'admin.super.articles.list.is_published'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td>{{ article.publishedAt|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</a></td>
+                            <td><a href="{{ path('open_miam_miam.admin.super.article.edit', {'articleId': article.id}) }}">{{ article.title }}</a></td>
+                            <td>{% if article.isPublished %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.super.article.edit', {'articleId': article.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.super.articles.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.super.article.delete', {'articleId': article.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.super.articles.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\Article\\deleteDialog.html.twig' %}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.super.articles.list.no_article'|trans} %}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.DeleteDialog;
+        });
+    </script>
+{% endblock %}

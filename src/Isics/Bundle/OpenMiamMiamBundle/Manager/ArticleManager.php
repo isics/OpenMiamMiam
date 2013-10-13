@@ -74,6 +74,23 @@ class ArticleManager
     }
 
     /**
+     * Returns a new article for super
+     *
+     * @return Article
+     */
+    public function createForSuper()
+    {
+        $article = new Article();
+
+        // Select all branches
+        $article->setBranches(
+            $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Branch')->findAll()
+        );
+
+        return $article;
+    }
+
+    /**
      * Saves a article
      *
      * @param Article $article
@@ -85,14 +102,14 @@ class ArticleManager
 
         $activityTransKey = null;
         if (null === $article->getId()) {
-            $activityTransKey = 'activity_stream.association_article.created';
+            $activityTransKey = 'activity_stream.article.created';
         } else {
             $unitOfWork = $this->entityManager->getUnitOfWork();
             $unitOfWork->computeChangeSets();
 
             $changeSet = $unitOfWork->getEntityChangeSet($article);
             if (!empty($changeSet)) {
-                $activityTransKey = 'activity_stream.association_article.updated';
+                $activityTransKey = 'activity_stream.article.updated';
             }
         }
 

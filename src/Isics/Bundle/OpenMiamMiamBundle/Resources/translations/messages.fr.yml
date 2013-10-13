@@ -120,7 +120,8 @@ availability.available_at:    "Dispo le %date%"
 # News
 news:              "Actualité"
 news.others.title: "A lire également"
-news.others.link:  "Toute l'actualité"
+news.others.link:  "Toutes les actualités"
+news.list.title:   "Toutes les actualités"
 
 
 # Admin common
@@ -148,6 +149,7 @@ admin.index.title: "Choisissez un rôle :"
 # Admin / Super / Menu
 admin.super.menu.dashboard:   "Tableau de bord"
 admin.super.menu.user_switch: "Usurpateur d'identité"
+admin.super.menu.news:        "Actualité"
 
 # Admin / Super / Dashboard
 admin.super.dashboard.title: "Tableau de bord"
@@ -161,6 +163,23 @@ admin.super.user_switch.list.switch:    "Usurper l'identité"
 admin.super.user_switch.alert.message:  "Vous avez usurpé l'identité de %firstname% %lastname%."
 admin.super.user_switch.alert.exit:     "Retour au rôle Super administrateur"
 
+# Admin / Super / Article
+admin.super.articles.list.title:            "Actualité"
+admin.super.articles.list.create:           "Nouvel article"
+admin.super.articles.list.no_article:       "Aucun article n'a encore été rédigé."
+admin.super.articles.list.published_at:     "Date"
+admin.super.articles.list.table_title:      "Titre"
+admin.super.articles.list.is_published:     "Publié"
+admin.super.articles.form.new_title:        "Nouvel article"
+admin.super.articles.form.edit_title:       "Article %title%"
+admin.super.articles.form.title:            "Titre"
+admin.super.articles.form.body:             "Corps"
+admin.super.articles.form.is_published:     "Publié"
+admin.super.articles.form.branches:         "Comptoir(s) où diffuser cet article"
+admin.super.articles.message.created:       "L'article a bien été créé."
+admin.super.articles.message.updated:       "L'article a bien été mis à jour."
+admin.super.articles.message.deleted:       "L'article a bien été supprimé."
+admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
 
 # Admin / Association / Menu
@@ -278,22 +297,22 @@ admin.association.sales_orders.message.updated: "La commande a bien été mise �
 admin.association.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 
 # Admin / Association / Article
-admin.association.articles.list.title:           "Actualité"
-admin.association.articles.list.create:          "Nouvel article"
-admin.association.articles.list.no_article:      "Aucun article n'a encore été rédigé."
-admin.association.articles.list.published_at:    "Date"
-admin.association.articles.list.table_title:     "Titre"
-admin.association.articles.list.is_published:    "Publié"
-admin.association.articles.form.new_title:       "Nouvel article"
-admin.association.articles.form.edit_title:      "Article %title%"
-admin.association.articles.form.title:           "Titre"
-admin.association.articles.form.body:            "Corps"
-admin.association.articles.form.is_published:    "Publié"
-admin.association.articles.form.branches:        "Comptoir(s) où diffuser cet article"
-admin.association.articles.message.created:      "L'article a bien été créé."
-admin.association.articles.message.updated:      "L'article a bien été mis à jour."
-admin.association.articles.message.deleted:      "L'article a bien été supprimé."
-admin.assocation.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
+admin.association.articles.list.title:            "Actualité"
+admin.association.articles.list.create:           "Nouvel article"
+admin.association.articles.list.no_article:       "Aucun article n'a encore été rédigé."
+admin.association.articles.list.published_at:     "Date"
+admin.association.articles.list.table_title:      "Titre"
+admin.association.articles.list.is_published:     "Publié"
+admin.association.articles.form.new_title:        "Nouvel article"
+admin.association.articles.form.edit_title:       "Article %title%"
+admin.association.articles.form.title:            "Titre"
+admin.association.articles.form.body:             "Corps"
+admin.association.articles.form.is_published:     "Publié"
+admin.association.articles.form.branches:         "Comptoir(s) où diffuser cet article"
+admin.association.articles.message.created:       "L'article a bien été créé."
+admin.association.articles.message.updated:       "L'article a bien été mis à jour."
+admin.association.articles.message.deleted:       "L'article a bien été supprimé."
+admin.association.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
 
 # Admin / Producer / Menu
@@ -432,8 +451,8 @@ activity_stream.sales_order.row.added: "a ajouté le produit %name% (%ref%) à l
 activity_stream.sales_order.payment.added: "a ajouté un nouveau règlement à la commande %order_ref% (montant : %amount%)."
 activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règlement à la commande %order_ref% (montant : %amount%)."
 activity_stream.sales_order.payment.allocated: "a affecté un règlement à la commande %order_ref% (montant : %amount%)."
-activity_stream.association_article.created: "a créé l'article %title%."
-activity_stream.association_article.updated: "a modifié l'article %title%."
+activity_stream.article.created: "a créé l'article %title%."
+activity_stream.article.updated: "a modifié l'article %title%."
 
 
 

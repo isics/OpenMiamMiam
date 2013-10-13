@@ -36,6 +36,19 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
+     * Returns articles of super
+     *
+     * @return array
+     */
+    public function findForSuper()
+    {
+        return $this->filterSuper()
+            ->addOrderBy('a.publishedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Return a published article by its id and visible in branch
      *
      * @param integer $id
@@ -114,6 +127,20 @@ class ArticleRepository extends EntityRepository
 
         return $qb->andWhere('a.association = :association')
             ->setParameter('association', $association);
+    }
+
+    /**
+     * Filters articles of super
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterSuper(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('a') : $qb;
+
+        return $qb->andWhere('a.association IS NULL');
     }
 
     /**

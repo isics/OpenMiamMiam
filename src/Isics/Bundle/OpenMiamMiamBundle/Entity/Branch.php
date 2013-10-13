@@ -187,6 +187,16 @@ class Branch
     }
 
     /**
+     * Get name with association
+     *
+     * @return string
+     */
+    public function getNameWithAssociation()
+    {
+        return $this->getAssociation()->getName().' / '.$this->name;
+    }
+
+    /**
      * Set slug
      *
      * @param string $slug
