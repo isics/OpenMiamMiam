@@ -86,6 +86,22 @@ open_miam_miam.admin.association.sales_order.allocate_payment:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/{paymentId}/allocate
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:allocatePayment }
 
+open_miam_miam.admin.association.branch.list:
+    pattern:  /associations/{id}/branches
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:list }
+
+open_miam_miam.admin.association.branch.create:
+    pattern:  /associations/{id}/branches/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:create }
+
+open_miam_miam.admin.association.branch.edit:
+    pattern:  /associations/{id}/branches/{branchId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:edit }
+
+open_miam_miam.admin.association.branch.delete:
+    pattern:  /associations/{id}/branches/{branchId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:delete }
+
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }

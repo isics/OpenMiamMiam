@@ -35,6 +35,22 @@ class BranchController extends Controller
     }
 
     /**
+     * Shows branch presentation
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
+     *
+     * @param Branch $branch
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showPresentationAction(Branch $branch)
+    {
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:showPresentation.html.twig', array(
+            'branch' => $branch,
+        ));
+    }
+
+    /**
      * Lists all articles
      *
      * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})

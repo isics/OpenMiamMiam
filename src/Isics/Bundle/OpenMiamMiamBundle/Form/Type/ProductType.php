@@ -132,7 +132,7 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
                 'expanded' => true,
                 'by_reference' => false,
                 'query_builder' => function(EntityRepository $er) use ($producer) {
-                    return $er->getBranchesForProducerQueryBuilder($producer);
+                    return $er->getForProducerQueryBuilder($producer);
                 },
             ));
         }

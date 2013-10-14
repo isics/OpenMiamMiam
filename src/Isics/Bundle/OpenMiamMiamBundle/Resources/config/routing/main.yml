@@ -27,6 +27,10 @@ open_miam_miam.branch.homepage:
     pattern:  /{branchSlug}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showHomepage }
 
+open_miam_miam.branch.presentation:
+    pattern:  /{branchSlug}/presentation
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showPresentation }
+
 open_miam_miam.branch.article.list:
     pattern:  /{branchSlug}/news
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:listArticles }

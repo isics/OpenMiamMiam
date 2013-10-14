@@ -16,7 +16,7 @@
 
         <ol class="breadcrumb">
             <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
-            <li><a href="{{ path('open_miam_miam.catalog.category', {'branchSlug': branch.slug, 'categorySlug': product.category.slug}) }}">{{ root_category.name }}</a></li>
+            <li><a href="{{ path('open_miam_miam.catalog.category', {'branchSlug': branch.slug, 'categorySlug': root_category.slug}) }}">{{ root_category.name }}</a></li>
             <li class="active">{{ product.name }}</li>
         </ol>
 

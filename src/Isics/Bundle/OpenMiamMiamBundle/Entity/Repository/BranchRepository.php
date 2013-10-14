@@ -12,24 +12,50 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
 class BranchRepository extends EntityRepository
 {
     /**
+     * Returns query builder to find association's branches
+     *
+     * @param Association $association
+     *
+     * @return QueryBuilder
+     */
+    public function getForAssociationQueryBuilder(Association $association)
+    {
+        return $this->filterAssociation($association)
+            ->orderBy('b.name');
+    }
+
+    /**
      * Returns query builder to find producer's branches
      *
      * @param Producer $producer
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getBranchesForProducerQueryBuilder(Producer $producer)
+    public function getForProducerQueryBuilder(Producer $producer)
     {
-        return $this->createQueryBuilder('b')
-                ->innerJoin('b.producers', 'p')
-                ->where('p.id = :producerId')
-                ->setParameter('producerId', $producer->getId())
-                ->orderBy('b.name', 'ASC');
+        return $this->filterProducer($producer)
+            ->orderBy('b.name');
+    }
+
+    /**
+     * Returns branches for association
+     *
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function findForAssociation(Association $association)
+    {
+        return $this->getForAssociationQueryBuilder($association)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -41,8 +67,42 @@ class BranchRepository extends EntityRepository
      */
     public function findForProducer(Producer $producer)
     {
-        return $this->getBranchesForProducerQueryBuilder($producer)
+        return $this->getForProducerQueryBuilder($producer)
                 ->getQuery()
                 ->getResult();
+    }
+
+    /**
+     * Filters branches of an association
+     *
+     * @param Association  $association
+     * @param QueryBuilder $qb
+     * @param string       $alias
+     *
+     * @return QueryBuilder
+     */
+    public function filterAssociation(Association $association, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('b') : $qb;
+
+        return $qb->andWhere('b.association = :association')
+            ->setParameter('association', $association);
+    }
+
+    /**
+     * Filters branches of a producer
+     *
+     * @param Producer     $producer
+     * @param QueryBuilder $qb
+     * @param string       $alias
+     *
+     * @return QueryBuilder
+     */
+    public function filterProducer(Producer $producer, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('b') : $qb;
+
+        return $qb->innerJoin('b.producers', 'p', Expr\Join::WITH, $qb->expr()->eq('p', ':producer'))
+                ->setParameter('producer', $producer);
     }
 }

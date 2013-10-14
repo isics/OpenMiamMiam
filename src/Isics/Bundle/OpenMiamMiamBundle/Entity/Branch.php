@@ -58,6 +58,13 @@ class Branch
     private $slug;
 
     /**
+     * @var string $welcomeText
+     *
+     * @ORM\Column(name="welcome_text", type="text", nullable=true)
+     */
+    private $welcomeText;
+
+    /**
      * @var string $presentation
      *
      * @ORM\Column(name="presentation", type="text", nullable=true)
@@ -217,6 +224,29 @@ class Branch
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set homepage presentation
+     *
+     * @param string $welcomeText
+     * @return Branch
+     */
+    public function setWelcomeText($welcomeText)
+    {
+        $this->welcomeText = $welcomeText;
+
+        return $this;
+    }
+
+    /**
+     * Get homepage presentation
+     *
+     * @return string
+     */
+    public function getWelcomeText()
+    {
+        return $this->welcomeText;
     }
 
     /**
