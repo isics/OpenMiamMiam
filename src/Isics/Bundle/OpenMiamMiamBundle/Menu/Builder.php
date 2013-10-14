@@ -136,6 +136,11 @@ class Builder
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'shopping-cart', $this->translator->trans('admin.association.menu.orders')),
         ));
+        $menu[$menuName]->addChild('Branches', array(
+            'route'           => 'open_miam_miam.admin.association.branch.list',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'pushpin', $this->translator->trans('admin.association.menu.branches')),
+        ));
         $menu[$menuName]->addChild('Consumers', array(
             'route'           => 'open_miam_miam.admin.association.consumer.list',
             'routeParameters' => array('id' => $association->getId()),

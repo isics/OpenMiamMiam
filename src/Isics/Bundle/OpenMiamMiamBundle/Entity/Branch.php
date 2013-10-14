@@ -58,6 +58,13 @@ class Branch
     private $slug;
 
     /**
+     * @var string $homepagePresentation
+     *
+     * @ORM\Column(name="homepage_presentation", type="text", nullable=true)
+     */
+    private $homepagePresentation;
+
+    /**
      * @var string $presentation
      *
      * @ORM\Column(name="presentation", type="text", nullable=true)
@@ -217,6 +224,29 @@ class Branch
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set homepage presentation
+     *
+     * @param string $homepagePresentation
+     * @return Branch
+     */
+    public function setHomepagePresentation($homepagePresentation)
+    {
+        $this->homepagePresentation = $homepagePresentation;
+
+        return $this;
+    }
+
+    /**
+     * Get homepage presentation
+     *
+     * @return string
+     */
+    public function getHomepagePresentation()
+    {
+        return $this->homepagePresentation;
     }
 
     /**
