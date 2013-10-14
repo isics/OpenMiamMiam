@@ -59,3 +59,12 @@
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.branch.list.no_branch'|trans} %}
     {% endif %}
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.DeleteDialog;
+        });
+    </script>
+{% endblock %}

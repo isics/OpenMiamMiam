@@ -13,16 +13,15 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Article;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 /**
- * Class ArticleManager
+ * Class BranchManager
  *
  * @package Isics\Bundle\OpenMiamMiamBundle\Manager
  */
-class ArticleManager
+class BranchManager
 {
     /**
      * @var EntityManager $entityManager
@@ -48,73 +47,53 @@ class ArticleManager
     }
 
     /**
-     * Returns a new article for a association
+     * Returns a new branch for a association
      *
      * @param Association $association
      *
-     * @return Article
+     * @return Branch
      */
     public function createForAssociation(Association $association)
     {
-        $article = new Article();
-        $article->setAssociation($association);
+        $branch = new Branch();
+        $branch->setAssociation($association);
 
-        // Select all association branches
-        $article->setBranches($association->getBranches());
-
-        return $article;
+        return $branch;
     }
 
     /**
-     * Returns a new article for super
+     * Saves a branch
      *
-     * @return Article
+     * @param Branch $branch
+     * @param User   $user
      */
-    public function createForSuper()
+    public function save(Branch $branch, User $user = null)
     {
-        $article = new Article();
-
-        // Select all branches
-        $article->setBranches(
-            $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Branch')->findAll()
-        );
-
-        return $article;
-    }
-
-    /**
-     * Saves a article
-     *
-     * @param Article $article
-     * @param User $user
-     */
-    public function save(Article $article, User $user = null)
-    {
-        $association = $article->getAssociation();
+        $association = $branch->getAssociation();
 
         $activityTransKey = null;
-        if (null === $article->getId()) {
-            $activityTransKey = 'activity_stream.article.created';
+        if (null === $branch->getId()) {
+            $activityTransKey = 'activity_stream.branch.created';
         } else {
             $unitOfWork = $this->entityManager->getUnitOfWork();
             $unitOfWork->computeChangeSets();
 
-            $changeSet = $unitOfWork->getEntityChangeSet($article);
+            $changeSet = $unitOfWork->getEntityChangeSet($branch);
             if (!empty($changeSet)) {
-                $activityTransKey = 'activity_stream.article.updated';
+                $activityTransKey = 'activity_stream.branch.updated';
             }
         }
 
         // Save object
-        $this->entityManager->persist($article);
+        $this->entityManager->persist($branch);
         $this->entityManager->flush();
 
         // Activity
         if (null !== $activityTransKey) {
             $activity = $this->activityManager->createFromEntities(
                 $activityTransKey,
-                array('%title%' => $article->getTitle()),
-                $article,
+                array('%name%' => $branch->getName()),
+                $branch,
                 $association,
                 $user
             );
@@ -124,25 +103,25 @@ class ArticleManager
     }
 
     /**
-     * Deletes a article
+     * Deletes a branch
      *
-     * @param Article $article
+     * @param Branch $branch
      */
-    public function delete(Article $article)
+    public function delete(Branch $branch)
     {
-        $this->entityManager->remove($article);
+        $this->entityManager->remove($branch);
         $this->entityManager->flush();
     }
 
     /**
-     * Returns activities of a article
+     * Returns activities of a branch
      *
-     * @param Article $article
+     * @param Branch $branch
      *
      * @return array
      */
-    public function getActivities(Article $article)
+    public function getActivities(Branch $branch)
     {
-        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($article, $article->getAssociation());
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($branch, $branch->getAssociation());
     }
 }

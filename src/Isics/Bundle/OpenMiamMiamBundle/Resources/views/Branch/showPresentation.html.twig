@@ -1,0 +1,14 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch, 'homepage': true} %}
+    {% block content %}
+        <h1>{{ branch.name }}</h1>
+
+        {{ branch.presentation|raw }}
+    {% endblock %}
+{% endembed %}

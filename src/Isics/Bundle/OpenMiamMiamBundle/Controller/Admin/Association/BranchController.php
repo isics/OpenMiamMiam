@@ -53,132 +53,132 @@ class BranchController extends BaseController
         ));
     }
 
+    /**
+     * Create branch
+     *
+     * @param Request     $request
+     * @param Association $association
+     *
+     * @return Response
+     */
+    public function createAction(Request $request, Association $association)
+    {
+        $this->secure($association);
+
+        $branchManager = $this->get('open_miam_miam.branch_manager');
+        $branch = $branchManager->createForAssociation($association);
+
+        $form = $this->getForm($branch);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $branchManager->save($branch, $this->get('security.context')->getToken()->getUser());
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.message.created');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.branch.edit',
+                    array('id' => $association->getId(), 'branchId' => $branch->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:create.html.twig', array(
+            'association' => $association,
+            'form'        => $form->createView(),
+        ));
+    }
+
+    /**
+     * Edit branch
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchId": "id"}})
+     *
+     * @param Request     $request
+     * @param Association $association
+     * @param Branch     $branch
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Association $association, Branch $branch)
+    {
+        $this->secure($association);
+        $this->secureBranch($association, $branch);
+
+        $branchManager = $this->get('open_miam_miam.branch_manager');
+
+        $form = $this->getForm($branch);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $branchManager->save($branch, $this->get('security.context')->getToken()->getUser());
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.message.updated');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.branch.edit',
+                    array('id' => $association->getId(), 'branchId' => $branch->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:edit.html.twig', array(
+            'association' => $association,
+            'form'        => $form->createView(),
+            'activities'  => $branchManager->getActivities($branch),
+        ));
+    }
+
+    /**
+     * Return branch form
+     *
+     * @param Branch $branch
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function getForm(Branch $branch)
+    {
+        if (null === $branch->getId()) {
+            $action = $this->generateUrl(
+                'open_miam_miam.admin.association.branch.create',
+                array('id' => $branch->getAssociation()->getId())
+            );
+        } else {
+            $action = $this->generateUrl(
+                'open_miam_miam.admin.association.branch.edit',
+                array('id' => $branch->getAssociation()->getId(), 'branchId' => $branch->getId())
+            );
+        }
+
+        return $this->createForm(
+            $this->get('open_miam_miam.form.type.branch'),
+            $branch,
+            array('action' => $action, 'method' => 'POST')
+        );
+    }
+
     // /**
-    //  * Create article
+    //  * Delete branch
     //  *
-    //  * @param Request     $request
+    //  * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchId": "id"}})
+    //  *
     //  * @param Association $association
+    //  * @param Branch     $branch
     //  *
     //  * @return Response
     //  */
-    // public function createAction(Request $request, Association $association)
+    // public function deleteAction(Association $association, Branch $branch)
     // {
     //     $this->secure($association);
+    //     $this->secureBranch($association, $branch);
 
-    //     $articleManager = $this->get('open_miam_miam.article_manager');
-    //     $article = $articleManager->createForAssociation($association);
+    //     $branchManager = $this->get('open_miam_miam.branch_manager');
+    //     $branchManager->delete($branch);
 
-    //     $form = $this->getForm($article);
-    //     if ($request->isMethod('POST')) {
-    //         $form->handleRequest($request);
-    //         if ($form->isValid()) {
-    //             $articleManager->save($article, $this->get('security.context')->getToken()->getUser());
-
-    //             $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.created');
-
-    //             return $this->redirect($this->generateUrl(
-    //                 'open_miam_miam.admin.association.article.edit',
-    //                 array('id' => $association->getId(), 'articleId' => $article->getId())
-    //             ));
-    //         }
-    //     }
-
-    //     return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Article:create.html.twig', array(
-    //         'association' => $association,
-    //         'form'        => $form->createView(),
-    //     ));
-    // }
-
-    // /**
-    //  * Edit article
-    //  *
-    //  * @ParamConverter("article", class="IsicsOpenMiamMiamBundle:Article", options={"mapping": {"articleId": "id"}})
-    //  *
-    //  * @param Request     $request
-    //  * @param Association $association
-    //  * @param Article     $article
-    //  *
-    //  * @return Response
-    //  */
-    // public function editAction(Request $request, Association $association, Article $article)
-    // {
-    //     $this->secure($association);
-    //     $this->secureArticle($association, $article);
-
-    //     $articleManager = $this->get('open_miam_miam.article_manager');
-
-    //     $form = $this->getForm($article);
-    //     if ($request->isMethod('POST')) {
-    //         $form->handleRequest($request);
-    //         if ($form->isValid()) {
-    //             $articleManager->save($article, $this->get('security.context')->getToken()->getUser());
-
-    //             $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.updated');
-
-    //             return $this->redirect($this->generateUrl(
-    //                 'open_miam_miam.admin.association.article.edit',
-    //                 array('id' => $association->getId(), 'articleId' => $article->getId())
-    //             ));
-    //         }
-    //     }
-
-    //     return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Article:edit.html.twig', array(
-    //         'association' => $association,
-    //         'form'        => $form->createView(),
-    //         'activities'  => $articleManager->getActivities($article),
-    //     ));
-    // }
-
-    // /**
-    //  * Return article form
-    //  *
-    //  * @param Article $article
-    //  *
-    //  * @return \Symfony\Component\Form\Form
-    //  */
-    // protected function getForm(Article $article)
-    // {
-    //     if (null === $article->getId()) {
-    //         $action = $this->generateUrl(
-    //             'open_miam_miam.admin.association.article.create',
-    //             array('id' => $article->getAssociation()->getId())
-    //         );
-    //     } else {
-    //         $action = $this->generateUrl(
-    //             'open_miam_miam.admin.association.article.edit',
-    //             array('id' => $article->getAssociation()->getId(), 'articleId' => $article->getId())
-    //         );
-    //     }
-
-    //     return $this->createForm(
-    //         $this->get('open_miam_miam.form.type.association_article'),
-    //         $article,
-    //         array('action' => $action, 'method' => 'POST')
-    //     );
-    // }
-
-    // /**
-    //  * Delete article
-    //  *
-    //  * @ParamConverter("article", class="IsicsOpenMiamMiamBundle:Article", options={"mapping": {"articleId": "id"}})
-    //  *
-    //  * @param Association $association
-    //  * @param Article     $article
-    //  *
-    //  * @return Response
-    //  */
-    // public function deleteAction(Association $association, Article $article)
-    // {
-    //     $this->secure($association);
-    //     $this->secureArticle($association, $article);
-
-    //     $articleManager = $this->get('open_miam_miam.article_manager');
-    //     $articleManager->delete($article);
-
-    //     $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.deleted');
+    //     $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.message.deleted');
 
     //     return $this->redirect($this->generateUrl(
-    //         'open_miam_miam.admin.association.article.list',
+    //         'open_miam_miam.admin.association.branch.list',
     //         array('id' => $association->getId())
     //     ));
     // }

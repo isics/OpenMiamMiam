@@ -95,11 +95,11 @@ open_miam_miam.admin.association.branch.create:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:create }
 
 open_miam_miam.admin.association.branch.edit:
-    pattern:  /associations/{id}/articles/{branchId}
+    pattern:  /associations/{id}/branches/{branchId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:edit }
 
 open_miam_miam.admin.association.branch.delete:
-    pattern:  /associations/{id}/articles/{branchId}/delete
+    pattern:  /associations/{id}/branches/{branchId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:delete }
 
 open_miam_miam.admin.association.consumer.list:
