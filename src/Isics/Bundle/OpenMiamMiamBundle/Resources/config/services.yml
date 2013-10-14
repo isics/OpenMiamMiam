@@ -50,9 +50,11 @@ parameters:
     open_miam_miam.form.type.payment_allocation.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentAllocationType'
 
     # Models
-    open_miam_miam.sales_order_statistics.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
-    open_miam_miam.tcpdf.class:                  TCPDF
-    open_miam_miam.sales_orders_pdf.class:       'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
+    open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
+    open_miam_miam.tcpdf.class:                     TCPDF
+    open_miam_miam.sales_orders_pdf.class:          'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
+    open_miam_miam.producer_sales_orders_pdf.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersPdf'
+    open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
 
 services:
     # Validators
@@ -293,4 +295,14 @@ services:
     open_miam_miam.sales_orders_pdf:
         class:     %open_miam_miam.sales_orders_pdf.class%
         arguments: [%open_miam_miam.sales_orders_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        scope:     prototype
+
+    open_miam_miam.producer_sales_orders_pdf:
+        class:     %open_miam_miam.producer_sales_orders_pdf.class%
+        arguments: [%open_miam_miam.producer_sales_orders_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        scope:     prototype
+
+    open_miam_miam.products_to_prepare_pdf:
+        class:     %open_miam_miam.products_to_prepare_pdf.class%
+        arguments: [%open_miam_miam.product%, %open_miam_miam.products_to_prepare_pdf_view%, @open_miam_miam.tcpdf, @templating]
         scope:     prototype

@@ -12,15 +12,30 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SalesOrderController extends BaseController
 {
+    /**
+     * @param Producer $producer
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function secureBranchOccurrence(Producer $producer, BranchOccurrence $branchOccurrence)
+    {
+        if (!$producer->hasBranch($branchOccurrence->getBranch())) {
+            throw $this->createNotFoundException('Invalid branch for producer');
+        }
+    }
+
     /**
      * @param Producer $producer
      * @param SalesOrder $order
@@ -237,5 +252,65 @@ class SalesOrderController extends BaseController
             'salesOrder' => $order,
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * Get producer sales orders PDF for branch occurrence
+     *
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Producer $producer
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function getSalesOrdersPdfForBranchOccurrenceAction(Producer $producer, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($producer);
+        $this->secureBranchOccurrence($producer, $branchOccurrence);
+
+        $salesOrdersPdf = $this->get('open_miam_miam.producer_sales_orders_pdf');
+
+        $salesOrdersPdf->setSalesOrders(
+            $this->get('open_miam_miam.producer_sales_order_manager')->getForBranchOccurrence($producer, $branchOccurrence)
+                ->getSalesOrders()
+        );
+
+        return new StreamedResponse(function() use ($salesOrdersPdf){
+            $salesOrdersPdf->render();
+        });
+    }
+
+    /**
+     * Get products to prepare PDF for branch occurrence
+     *
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Producer $producer
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function getProductsToPreparePdfForBranchOccurrenceAction(Producer $producer, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($producer);
+        $this->secureBranchOccurrence($producer, $branchOccurrence);
+
+        $productsToPreparePdf = $this->get('open_miam_miam.products_to_prepare_pdf');
+
+        $productsToPreparePdf->setProducerSalesOrders(
+            $this->get('open_miam_miam.producer_sales_order_manager')->getForBranchOccurrence(
+                $producer,
+                $branchOccurrence
+            )
+        );
+
+        return new StreamedResponse(function() use ($productsToPreparePdf){
+            $productsToPreparePdf->render();
+        });
     }
 }

@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerBranchOccurrenceSalesOrders;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
@@ -50,22 +51,37 @@ class ProducerSalesOrderManager
         $producerSalesOrders = new ProducerSalesOrders($producer);
 
         $branchOccurrenceRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
-        $salesOrderRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
 
         foreach ($producer->getBranches() as $branch) {
             $branchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             if (null !== $branchOccurrence) {
-                $branchOccurrenceSaleOrders = new ProducerBranchOccurrenceSalesOrders($producer, $branchOccurrence);
-                $orders = $salesOrderRepository->findForProducer($producer, $branchOccurrence);
-                foreach ($orders as $order) {
-                    $branchOccurrenceSaleOrders->addSalesOrder(new ProducerSalesOrder($producer, $order));
-                }
-
+                $branchOccurrenceSaleOrders = $this->getForBranchOccurrence($producer, $branchOccurrence);
                 $producerSalesOrders->addProducerBranchOccurrenceSalesOrders($branchOccurrenceSaleOrders);
             }
         }
 
         return $producerSalesOrders;
+    }
+
+    /**
+     * Returns sales order of a producer for a branch occurrence
+     *
+     * @param Producer $producer
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return ProducerBranchOccurrenceSalesOrders
+     */
+    public function getForBranchOccurrence(Producer $producer, BranchOccurrence $branchOccurrence)
+    {
+        $salesOrderRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
+
+        $branchOccurrenceSaleOrders = new ProducerBranchOccurrenceSalesOrders($producer, $branchOccurrence);
+        $orders = $salesOrderRepository->findForProducer($producer, $branchOccurrence);
+        foreach ($orders as $order) {
+            $branchOccurrenceSaleOrders->addSalesOrder(new ProducerSalesOrder($producer, $order));
+        }
+
+        return $branchOccurrenceSaleOrders;
     }
 
     /**

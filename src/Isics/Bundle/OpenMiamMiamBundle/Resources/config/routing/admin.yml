@@ -59,7 +59,7 @@ open_miam_miam.admin.association.sales_order.list_for_branch_occurrence:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:listForBranchOccurrence }
 
 open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/salesOrders
+    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
 
 open_miam_miam.admin.association.sales_order.edit:
@@ -165,6 +165,14 @@ open_miam_miam.admin.producer.calendar.edit:
 open_miam_miam.admin.producer.sales_order.list:
     pattern:  /producers/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list }
+
+open_miam_miam.admin.producer.sales_order.get_products_to_prepare_pdf_for_branch_occurrence:
+    pattern:  /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/products_to_prepare
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:getProductsToPreparePdfForBranchOccurrence }
+
+open_miam_miam.admin.producer.sales_order.get_sales_orders_pdf_for_branch_occurrence:
+    pattern:  /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/sales_orders
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
 
 open_miam_miam.admin.producer.sales_order.edit:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}

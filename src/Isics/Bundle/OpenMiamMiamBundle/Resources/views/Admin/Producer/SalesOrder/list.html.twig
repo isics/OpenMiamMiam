@@ -21,6 +21,22 @@
         </h2>
 
         {% if branchOccurrenceSalesOrders.salesOrders|length > 0 %}
+
+            <p>
+                <form class="form-inline" role="form" data-type="action-in-select">
+                    <div class="form-group">
+                        <select class="form-control input-md">
+                            <option value="{{ path('open_miam_miam.admin.producer.sales_order.get_products_to_prepare_pdf_for_branch_occurrence', {'id': producer.id, 'branchOccurrenceId': branchOccurrenceSalesOrders.branchOccurrence.id}) }}">{{ 'admin.producer.sales_orders.list.export.products_to_prepare'|trans }}</option>
+                            <option value="{{ path('open_miam_miam.admin.producer.sales_order.get_sales_orders_pdf_for_branch_occurrence', {'id': producer.id, 'branchOccurrenceId': branchOccurrenceSalesOrders.branchOccurrence.id}) }}">{{ 'admin.producer.sales_orders.list.export.sales_orders'|trans }}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-md">
+                        <span class="glyphicon glyphicon-open"></span>
+                        {{ 'admin.producer.sales_orders.list.export'|trans }}
+                    </button>
+                </form>
+            </p>
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-producer-sales-orders">
                     <thead>
@@ -57,4 +73,13 @@
             {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.list.no_order'|trans} %}
         {% endif %}
     {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.ActionInSelectForm();
+        });
+    </script>
 {% endblock %}

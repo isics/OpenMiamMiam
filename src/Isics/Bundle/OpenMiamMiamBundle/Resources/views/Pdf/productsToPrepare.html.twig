@@ -1,0 +1,50 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Pdf:base.html.twig' %}
+
+{% block content %}
+    {% spaceless %}
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <h1>{{ open_miam_miam.title }}</h1>
+                </td>
+                <td align="right">
+                    <h1>{{ 'pdf.products_to_prepare.title'|trans }}</h1>
+                    <h2>
+                        {{ branchOccurrence.branch.name }} -
+                        {{ branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')) }}
+                    </h2>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+
+        <table width="100%" border="1" cellpadding="3" cellspacing="0">
+            <thead>
+            <tr>
+                <th width="20%">{{ 'pdf.products_to_prepare.ref'|trans }}</th>
+                <th width="60%" align="center">{{ 'pdf.products_to_prepare.name'|trans }}</th>
+                <th width="20%" align="center">{{ 'pdf.products_to_prepare.quantity'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td width="20%">{{ product.row.ref }}</td>
+                    <td width="60%" align="right">{{ product.row.name }}</td>
+                    <td width="20%" align="center">{{ product.nb }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endspaceless %}
+{% endblock %}
