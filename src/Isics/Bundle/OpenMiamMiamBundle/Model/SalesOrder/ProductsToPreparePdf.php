@@ -82,6 +82,7 @@ class ProductsToPreparePdf
 
         $this->pdf->AddPage();
         $this->pdf->writeHTML($this->engine->render($this->view, array(
+            'producer' => $this->producerSalesOrders->getProducer(),
             'products' => $this->products,
             'branchOccurrence' => $this->producerSalesOrders->getBranchOccurrence()
         )));

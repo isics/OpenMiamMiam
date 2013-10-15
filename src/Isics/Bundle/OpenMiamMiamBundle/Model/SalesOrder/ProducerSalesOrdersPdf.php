@@ -69,6 +69,7 @@ class ProducerSalesOrdersPdf
             $this->pdf->AddPage();
             $this->pdf->writeHTML(
                 $this->engine->render($this->view, array(
+                    'producer' => $producerSalesOrder->getProducer(),
                     'producerSalesOrder' => $producerSalesOrder,
                 ))
             );
