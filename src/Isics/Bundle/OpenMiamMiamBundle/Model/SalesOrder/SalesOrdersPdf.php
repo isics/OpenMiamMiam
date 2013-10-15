@@ -26,11 +26,6 @@ class SalesOrdersPdf
     protected $engine;
 
     /**
-     * @var string $view
-     */
-    protected $view;
-
-    /**
      * @var array
      */
     protected $salesOrders;
@@ -39,15 +34,13 @@ class SalesOrdersPdf
     /**
      * Constructs object
      *
-     * @param string $view
      * @param \TCPDF $pdf
      * @param EngineInterface $engine
      */
-    public function __construct($view, \TCPDF $pdf, EngineInterface $engine)
+    public function __construct(\TCPDF $pdf, EngineInterface $engine)
     {
         $this->pdf = $pdf;
         $this->engine = $engine;
-        $this->view = $view;
     }
 
     /**
@@ -68,7 +61,7 @@ class SalesOrdersPdf
         foreach ($this->salesOrders as $salesOrder) {
             $this->pdf->AddPage();
             $this->pdf->writeHTML(
-                $this->engine->render($this->view, array('order' => $salesOrder))
+                $this->engine->render('IsicsOpenMiamMiamBundle:Pdf:salesOrder.html.twig', array('order' => $salesOrder))
             );
         }
     }

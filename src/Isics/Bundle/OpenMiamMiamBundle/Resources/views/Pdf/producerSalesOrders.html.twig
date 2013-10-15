@@ -1,0 +1,67 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Pdf:base.html.twig' %}
+
+{% block content %}
+    {% spaceless %}
+        {% set branchOccurrence=branchOccurrenceSalesOrders.branchOccurrence %}
+        {% set branch=branchOccurrence.branch %}
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <h1>{{ open_miam_miam.title }}</h1>
+                </td>
+                <td align="right">
+                    <h1>{{ 'pdf.producer_sales_orders.title'|trans }}</h1>
+                    <h2>
+                        {{ branch.name }} -
+                        {{ branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')) }}
+                    </h2>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+
+        {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
+            {% set order=producerSalesOrder.salesOrder %}
+
+            <h3>{{ 'pdf.sales_order.title'|trans({'%ref%': order.ref})  }}</h3>
+            <p>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</p>
+
+            <table width="100%" border="1" cellpadding="3" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="40%">{{ 'pdf.sales_order.product'|trans }}</th>
+                        <th width="20%" align="center">{{ 'pdf.sales_order.price'|trans }}</th>
+                        <th width="20%" align="center">{{ 'pdf.sales_order.quantity'|trans }}</th>
+                        <th width="20%" align="center">{{ 'pdf.sales_order.row_total'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in producerSalesOrder.salesOrderRows %}
+                        <tr>
+                            <td width="40%">{{ row.name }}</td>
+                            <td width="20%" align="right">{{ row.unitPrice|number_format_currency(open_miam_miam.currency) }}</td>
+                            <td width="20%" align="center">{{ row.quantity|number_format }}</td>
+                            <td width="20%" align="right">{{ row.total|number_format_currency(open_miam_miam.currency) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" align="right">{{ 'pdf.sales_order.total'|trans }}</th>
+                        <td align="right"><strong>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}
