@@ -73,6 +73,13 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(array('piece', 'g', 'kg', 'm'))
                     ->prototype('scalar')->end()
                 ->end()
+                ->arrayNode('mailer')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('sender_address')->defaultValue('%mailer_sender_address%')->end()
+                        ->scalarNode('sender_name')->defaultValue('%mailer_sender_name%')->end()
+                    ->end()
+                ->end()
                 ->scalarNode('sales_orders_pdf_view')->defaultValue('IsicsOpenMiamMiamBundle:Pdf:salesOrder.html.twig')->end()
             ->end();
 
