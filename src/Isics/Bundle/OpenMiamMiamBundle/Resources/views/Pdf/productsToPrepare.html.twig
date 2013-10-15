@@ -17,11 +17,13 @@
                     </td>
                     <td align="right">
                         <h1>{{ 'pdf.products_to_prepare.title'|trans }}</h1>
-                        <h2>
-                            {{ branchOccurrence.branch.name }}
-                            -
+                        <h2>{{ branchOccurrence.branch.name }}</h2>
+                        <h3>
                             {{ branchOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL'))|capitalize }}
-                        </h2>
+                            {{ branchOccurrence.begin|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                            -
+                            {{ branchOccurrence.end|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                        </h3>
                     </td>
                 </tr>
             </tbody>
