@@ -478,7 +478,7 @@ class FeatureContext extends BehatContext
      */
     public function theAdministrationAreaSwitcherShouldBeOn($value)
     {
-        $this->assertElementContains('#admin-switcher', 'selected="selected">'.$value);
+        $this->assertElementContains('select[data-type="url-switcher"]', 'selected="selected">'.$value);
     }
 
     /**
