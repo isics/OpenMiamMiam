@@ -275,7 +275,6 @@ class SalesOrderController extends BaseController
 
         $salesOrdersPdf->setSalesOrders(
             $this->get('open_miam_miam.producer_sales_order_manager')->getForBranchOccurrence($producer, $branchOccurrence)
-                ->getSalesOrders()
         );
 
         return new StreamedResponse(function() use ($salesOrdersPdf){

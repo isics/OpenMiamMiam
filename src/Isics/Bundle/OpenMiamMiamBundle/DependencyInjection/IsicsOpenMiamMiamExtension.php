@@ -45,10 +45,6 @@ class IsicsOpenMiamMiamExtension extends Extension
 
         $container->setParameter('open_miam_miam.mailer', $config['mailer']);
 
-        $container->setParameter('open_miam_miam.sales_orders_pdf_view', $config['sales_orders_pdf_view']);
-        $container->setParameter('open_miam_miam.producer_sales_orders_pdf_view', $config['producer_sales_orders_pdf_view']);
-        $container->setParameter('open_miam_miam.products_to_prepare_pdf_view', $config['products_to_prepare_pdf_view']);
-
         $this->loadValidationFiles($container);
     }
 

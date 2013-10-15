@@ -305,15 +305,15 @@ services:
 
     open_miam_miam.sales_orders_pdf:
         class:     %open_miam_miam.sales_orders_pdf.class%
-        arguments: [%open_miam_miam.sales_orders_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        arguments: [@open_miam_miam.tcpdf, @templating]
         scope:     prototype
 
     open_miam_miam.producer_sales_orders_pdf:
         class:     %open_miam_miam.producer_sales_orders_pdf.class%
-        arguments: [%open_miam_miam.producer_sales_orders_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        arguments: [@open_miam_miam.tcpdf, @templating]
         scope:     prototype
 
     open_miam_miam.products_to_prepare_pdf:
         class:     %open_miam_miam.products_to_prepare_pdf.class%
-        arguments: [%open_miam_miam.product%, %open_miam_miam.products_to_prepare_pdf_view%, @open_miam_miam.tcpdf, @templating]
+        arguments: [%open_miam_miam.product%, @open_miam_miam.tcpdf, @templating]
         scope:     prototype

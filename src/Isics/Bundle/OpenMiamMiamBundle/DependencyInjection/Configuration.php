@@ -80,9 +80,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('sender_name')->defaultValue('%mailer_sender_name%')->end()
                     ->end()
                 ->end()
-                ->scalarNode('sales_orders_pdf_view')->defaultValue('IsicsOpenMiamMiamBundle:Pdf:salesOrder.html.twig')->end()
-                ->scalarNode('producer_sales_orders_pdf_view')->defaultValue('IsicsOpenMiamMiamBundle:Pdf:producerSalesOrder.html.twig')->end()
-                ->scalarNode('products_to_prepare_pdf_view')->defaultValue('IsicsOpenMiamMiamBundle:Pdf:productsToPrepare.html.twig')->end()
             ->end();
 
         return $treeBuilder;
