@@ -68,9 +68,8 @@
                 <table class="table table-bordered table-striped table-association-sales-order">
                     <thead>
                         <tr>
-                            <th>{{ 'admin.association.sales_orders.form.sales_order_row.ref'|trans }}</th>
-                            <th>{{ 'admin.association.sales_orders.form.sales_order_row.product'|trans }}</th>
                             <th>{{ 'admin.association.sales_orders.form.sales_order_row.producer'|trans }}</th>
+                            <th>{{ 'admin.association.sales_orders.form.sales_order_row.product'|trans }}</th>
                             <th>{{ 'admin.association.sales_orders.form.sales_order_row.unit_price'|trans }}</th>
                             <th>{{ 'admin.association.sales_orders.form.sales_order_row.quantity'|trans }}</th>
                             <th>{{ 'admin.association.sales_orders.form.sales_order_row.total'|trans }}</th>
@@ -81,9 +80,8 @@
                         {% for child in form.children.salesOrderRows %}
                             {% set salesOrderRow = child.vars.data %}
                             <tr>
-                                <td>{{ salesOrderRow.ref }}</td>
-                                <td>{{ salesOrderRow.name }}</td>
                                 <td>{{ salesOrderRow.producer.name }}</td>
+                                <td>{{ salesOrderRow.name }}</td>
                                 <td>{{ salesOrderRow.unitPrice|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
                                     {{ form_errors(child.quantity) }}
@@ -105,12 +103,12 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">{{ 'admin.association.sales_orders.form.total'|trans }}</th>
+                            <th colspan="4">{{ 'admin.association.sales_orders.form.total'|trans }}</th>
                             <td>{{ order.total|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr{% if order.leftToPay %} class="danger"{% endif %}>
-                            <th colspan="5">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</th>
+                            <th colspan="4">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</th>
                             <td>
                                 {% if order.leftToPay %}
                                     {{ order.leftToPay|number_format_currency(open_miam_miam.currency) }}

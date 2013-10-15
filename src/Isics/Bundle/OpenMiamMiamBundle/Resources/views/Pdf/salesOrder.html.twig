@@ -61,8 +61,8 @@
     <table width="100%" border="1" cellpadding="3" cellspacing="0">
         <thead>
             <tr>
-                <th width="30%">{{ 'pdf.sales_order.product'|trans }}</th>
                 <th width="25%">{{ 'pdf.sales_order.producer'|trans }}</th>
+                <th width="30%">{{ 'pdf.sales_order.product'|trans }}</th>
                 <th width="15%" align="center">{{ 'pdf.sales_order.price'|trans }}</th>
                 <th width="15%" align="center">{{ 'pdf.sales_order.quantity'|trans }}</th>
                 <th width="15%" align="center">{{ 'pdf.sales_order.row_total'|trans }}</th>
@@ -71,8 +71,8 @@
         <tbody>
             {% for row in order.salesOrderRows %}
                 <tr>
-                    <td width="30%">{{ row.name }}</td>
                     <td width="25%">{{ row.producer }}</td>
+                    <td width="30%">{{ row.name }}</td>
                     <td width="15%" align="right">{{ row.unitPrice|number_format_currency(open_miam_miam.currency) }}</td>
                     <td width="15%" align="center">{{ row.quantity|number_format }}</td>
                     <td width="15%" align="right">{{ row.total|number_format_currency(open_miam_miam.currency) }}</td>

@@ -86,17 +86,25 @@ class SalesOrderController extends BaseController
     /**
      * Update a sales order
      *
-     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
-     *
      * @param Request $request
      * @param Producer $producer
-     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
-    public function editAction(Request $request, Producer $producer, SalesOrder $order)
+    public function editAction(Request $request, Producer $producer)
     {
         $this->secure($producer);
+
+        $order = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findOneWithRows(
+            $request->attributes->get('salesOrderId')
+        );
+
+        if (null === $order) {
+            throw $this->createNotFoundException('No sales order found');
+        }
+
         $this->secureSalesOrder($producer, $order);
 
         $producerSalesOrder = new ProducerSalesOrder($producer, $order);

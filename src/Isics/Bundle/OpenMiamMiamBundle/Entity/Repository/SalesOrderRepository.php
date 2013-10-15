@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
@@ -63,7 +64,8 @@ class SalesOrderRepository extends EntityRepository
                 ->innerJoin('so.salesOrderRows', 'sor')
                 ->andWhere('sor.producer = :producer')
                 ->setParameter('producer', $producer)
-                ->addOrderBy('so.id');
+                ->addOrderBy('so.id')
+                ->addOrderBy('sor.name', 'ASC');
 
         if (null !== $branchOccurrence) {
             $qb->andWhere('so.branchOccurrence = :branchOccurrence')
@@ -82,14 +84,14 @@ class SalesOrderRepository extends EntityRepository
      */
     public function findForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
-        $qb = $this->createQueryBuilder('so')
+        return $this->createQueryBuilder('so')
                 ->addSelect('sor')
                 ->leftJoin('so.salesOrderRows', 'sor')
                 ->andWhere('so.branchOccurrence = :branchOccurrence')
                 ->setParameter('branchOccurrence', $branchOccurrence)
-                ->addOrderBy('so.id');
-
-        return $qb->getQuery()->getResult();
+                ->addOrderBy('so.id')
+                ->getQuery()
+                ->getResult();
     }
 
     /**
@@ -137,5 +139,65 @@ class SalesOrderRepository extends EntityRepository
                 ->setParameter('association', $association)
                 ->getQuery()
                 ->getResult();
+    }
+
+
+    /**
+     * Gets query builder to get sales orders with rows
+     *
+     * @return QueryBuilder
+     */
+    public function getWithRowsQueryBuilder()
+    {
+        return $this->createQueryBuilder('so')
+                ->addSelect('sor, p')
+                ->leftJoin('so.salesOrderRows', 'sor')
+                ->leftJoin('sor.producer', 'p')
+                ->addOrderBy('p.name', 'ASC')
+                ->addOrderBy('sor.name', 'ASC');
+    }
+
+    /**
+     * Finds a sales order with rows specifically ordered
+     *
+     * @param $id Sales order ID
+     *
+     * @return SalesOrder|null
+     */
+    public function findOneWithRows($id)
+    {
+        return $this->getWithRowsQueryBuilder()
+                ->where('so.id = :salesOrderId')
+                ->setParameter('salesOrderId', $id)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
+
+    /**
+     * Returns sales orders with rows for a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function findWithRowsForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        return $this->filterBranchOccurrence($this->getWithRowsQueryBuilder(), $branchOccurrence)
+                ->getQuery()
+                ->getResult();
+    }
+
+    /**
+     * Filters sales orders by branch occurrence
+     *
+     * @param QueryBuilder $qb
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return QueryBuilder
+     */
+    public function filterBranchOccurrence(QueryBuilder $qb, BranchOccurrence $branchOccurrence)
+    {
+        return $qb->andWhere('so.branchOccurrence = :branchOccurrence')
+                ->setParameter('branchOccurrence', $branchOccurrence);
     }
 }

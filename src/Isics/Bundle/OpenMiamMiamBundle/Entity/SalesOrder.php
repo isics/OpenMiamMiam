@@ -49,6 +49,7 @@ class SalesOrder
      * @var array
      *
      * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="salesOrder", cascade="all", orphanRemoval=true)
+     * @ORM\OrderBy({"ref" = "ASC"})
      */
     private $salesOrderRows;
 

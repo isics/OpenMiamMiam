@@ -128,17 +128,25 @@ class SalesOrderController extends BaseController
     /**
      * Update a sales order
      *
-     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
-     *
      * @param Request $request
      * @param Association $association
-     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
-    public function editAction(Request $request, Association $association, SalesOrder $order)
+    public function editAction(Request $request, Association $association)
     {
         $this->secure($association);
+
+        $order = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findOneWithRows(
+            $request->attributes->get('salesOrderId')
+        );
+
+        if (null === $order) {
+            throw $this->createNotFoundException('No sales order found');
+        }
+
         $this->secureSalesOrder($association, $order);
 
         $form = $this->createForm(
@@ -442,7 +450,9 @@ class SalesOrderController extends BaseController
         $this->secureBranchOccurrence($association, $branchOccurrence);
 
         $salesOrdersPdf = $this->get('open_miam_miam.sales_orders_pdf');
-        $salesOrdersPdf->setSalesOrders($this->get('open_miam_miam.sales_order_manager')->getForBranchOccurrence($branchOccurrence));
+        $salesOrdersPdf->setSalesOrders(
+            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findWithRowsForBranchOccurrence($branchOccurrence)
+        );
 
         return new StreamedResponse(function() use ($salesOrdersPdf){
             $salesOrdersPdf->render();

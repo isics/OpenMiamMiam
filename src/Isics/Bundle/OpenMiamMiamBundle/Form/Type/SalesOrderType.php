@@ -24,7 +24,6 @@ class SalesOrderType extends AbstractType
     {
         $builder->add('salesOrderRows','collection', array('type' => 'open_miam_miam_sales_order_row'))
                 ->add('save', 'submit');
-
     }
 
     /**

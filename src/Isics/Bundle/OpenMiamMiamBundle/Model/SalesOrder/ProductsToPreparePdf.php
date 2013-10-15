@@ -96,12 +96,10 @@ class ProductsToPreparePdf
     public function initProducts()
     {
         $this->products = array();
-        $miscProducts = array();
-
         foreach ($this->producerSalesOrders->getSalesOrders() as $producerSalesOrder) {
             foreach ($producerSalesOrder->getSalesOrderRows() as $row) {
                 if ($row->getRef() == $this->productConfig['artificial_product_ref']) {
-                    $miscProducts[] = array('nb' => $row->getQuantity(), 'row' => $row);
+                    $this->products[] = array('nb' => $row->getQuantity(), 'row' => $row);
                     continue;
                 }
 
@@ -112,10 +110,6 @@ class ProductsToPreparePdf
                 }
             }
         }
-
-        ksort($this->products);
-
-        $this->products = array_merge($this->products, $miscProducts);
     }
 
     /**

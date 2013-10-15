@@ -96,9 +96,9 @@ class SalesOrderManager
      * @return SalesOrder
      */
     public function processSalesOrderFromCart(Cart $cart,
-                                      BranchOccurrence $branchOccurrence,
-                                      User $user,
-                                      SalesOrderConfirmation $confirmation = null)
+                                              BranchOccurrence $branchOccurrence,
+                                              User $user,
+                                              SalesOrderConfirmation $confirmation = null)
     {
         $order = $this->createFromCart($cart, $branchOccurrence, $user);
 
@@ -360,8 +360,6 @@ class SalesOrderManager
                 $order->addSalesOrderRow($salesOrderRow);
             }
         }
-
-
     }
 
     /**
