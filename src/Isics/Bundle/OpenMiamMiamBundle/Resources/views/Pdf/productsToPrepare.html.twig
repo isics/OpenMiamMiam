@@ -46,7 +46,7 @@
                     <tr>
                         <td width="20%">{{ product.row.ref }}</td>
                         <td width="60%">{{ product.row.name }}</td>
-                        <td width="20%" align="center">{{ product.nb }}</td>
+                        <td width="20%" align="center">{{ product.nb|number_format }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

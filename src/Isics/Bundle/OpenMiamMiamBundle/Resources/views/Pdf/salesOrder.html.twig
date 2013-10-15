@@ -74,7 +74,7 @@
                     <td width="30%">{{ row.name }}</td>
                     <td width="25%">{{ row.producer }}</td>
                     <td width="15%" align="right">{{ row.unitPrice|number_format_currency(open_miam_miam.currency) }}</td>
-                    <td width="15%" align="center">{{ row.quantity }}</td>
+                    <td width="15%" align="center">{{ row.quantity|number_format }}</td>
                     <td width="15%" align="right">{{ row.total|number_format_currency(open_miam_miam.currency) }}</td>
                 </tr>
             {% endfor %}
