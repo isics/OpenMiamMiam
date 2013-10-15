@@ -20,8 +20,10 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class SalesOrderManager
@@ -35,32 +37,68 @@ class SalesOrderManager
     protected $entityManager;
 
     /**
-     * @var array $config
+     * @var array $orderConfig
      */
-    protected $config;
+    protected $orderConfig;
 
     /**
      * @var ActivityManager $activityManager
      */
     protected $activityManager;
 
+    /**
+     * @var \Swift_mailer
+     */
+    protected $mailer;
+
+    /**
+     * @var array $mailerConfig
+     */
+    protected $mailerConfig;
+
+    /**
+     * @var EngineInterface
+     */
+    protected $engine;
+
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
 
 
     /**
      * Constructs object
      *
-     * @param array $config
-     * @param EntityManager $entityManager
-     * @param ActivityManager $activityManager
+     * @param array               $orderConfig
+     * @param EntityManager       $entityManager
+     * @param ActivityManager     $activityManager
+     * @param \Swift_Mailer       $mailer
+     * @param array               $mailerConfig
+     * @param EngineInterface     $engine
+     * @param TranslatorInterface $translator
      */
-    public function __construct(array $config, EntityManager $entityManager, ActivityManager $activityManager)
+    public function __construct(array $orderConfig,
+                                EntityManager $entityManager,
+                                ActivityManager $activityManager,
+                                \Swift_Mailer $mailer,
+                                array $mailerConfig,
+                                EngineInterface $engine,
+                                TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
         $this->activityManager = $activityManager;
+        $this->mailer = $mailer;
+        $this->engine = $engine;
+        $this->translator = $translator;
 
         $resolver = new OptionsResolver();
-        $this->setDefaultOptions($resolver);
-        $this->config = $resolver->resolve($config);
+        $this->setOrderConfigResolverDefaultOptions($resolver);
+        $this->orderConfig = $resolver->resolve($orderConfig);
+
+        $resolver = new OptionsResolver();
+        $this->setMailerConfigResolverDefaultOptions($resolver);
+        $this->mailerConfig = $resolver->resolve($mailerConfig);
     }
 
     /**
@@ -68,9 +106,19 @@ class SalesOrderManager
      *
      * @param OptionsResolverInterface $resolver
      */
-    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    protected function setOrderConfigResolverDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'artificial_product_ref'));
+    }
+
+    /**
+     * Set the defaults options
+     *
+     * @param OptionsResolverInterface $resolver
+     */
+    protected function setMailerConfigResolverDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array('sender_name', 'sender_address'));
     }
 
     /**
@@ -170,7 +218,9 @@ class SalesOrderManager
 
         $activitiesStack = array();
 
-        if (null === $order->getId()) {
+        $isNewOrder = null === $order->getId();
+
+        if ($isNewOrder) {
             // Increase reference for order
             $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
             $association->setOrderRefCounter($association->getOrderRefCounter()+1);
@@ -179,8 +229,8 @@ class SalesOrderManager
             // Sets ref
             $order->setRef(sprintf(
                 '%s%s',
-                $this->config['ref_prefix'],
-                str_pad($association->getOrderRefCounter(), $this->config['ref_pad_length'], '0', STR_PAD_LEFT)
+                $this->orderConfig['ref_prefix'],
+                str_pad($association->getOrderRefCounter(), $this->orderConfig['ref_pad_length'], '0', STR_PAD_LEFT)
             ));
 
             // Activity
@@ -265,6 +315,11 @@ class SalesOrderManager
         // Save
         $this->entityManager->persist($order);
         $this->entityManager->flush();
+
+        // Send mail to consumer
+        if ($isNewOrder) {
+            $this->sendMailToConsumer($order);
+        }
 
         // Activity
         foreach ($activitiesStack as $activityParams) {
@@ -403,5 +458,27 @@ class SalesOrderManager
     public function getActivities(SalesOrder $order)
     {
         return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($order);
+    }
+
+    /**
+     * Send email ton consumer
+     *
+     * @param SalesOrder $order
+     */
+    public function sendMailToConsumer(SalesOrder $order)
+    {
+        if (null === $order->getUser()) {
+            return;
+        }
+
+        $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:consumerNewSalesOrder.html.twig', array('order' => $order));
+
+        $message = \Swift_Message::newInstance()
+            ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
+            ->setTo($order->getUser()->getEmail())
+            ->setSubject($this->translator->trans('mail.consumer.new_order.subject', array('%ref%' => $order->getRef())))
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
     }
 }

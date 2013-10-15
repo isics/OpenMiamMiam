@@ -26,11 +26,6 @@ class ProductsToPreparePdf
     protected $engine;
 
     /**
-     * @var string $view
-     */
-    protected $view;
-
-    /**
      * @var ProducerBranchOccurrenceSalesOrders
      */
     protected $producerSalesOrders;
@@ -51,15 +46,13 @@ class ProductsToPreparePdf
      * Constructs object
      *
      * @param array $productConfig
-     * @param string $view
      * @param \TCPDF $pdf
      * @param EngineInterface $engine
      */
-    public function __construct(array $productConfig, $view, \TCPDF $pdf, EngineInterface $engine)
+    public function __construct(array $productConfig, \TCPDF $pdf, EngineInterface $engine)
     {
         $this->pdf = $pdf;
         $this->engine = $engine;
-        $this->view = $view;
         $this->productConfig = $productConfig;
     }
 
@@ -81,7 +74,7 @@ class ProductsToPreparePdf
         $this->initProducts();
 
         $this->pdf->AddPage();
-        $this->pdf->writeHTML($this->engine->render($this->view, array(
+        $this->pdf->writeHTML($this->engine->render('IsicsOpenMiamMiamBundle:Pdf:productsToPrepare.html.twig', array(
             'producer' => $this->producerSalesOrders->getProducer(),
             'products' => $this->products,
             'branchOccurrence' => $this->producerSalesOrders->getBranchOccurrence()

@@ -514,17 +514,36 @@ admin.delete_dialog.confirm: "OUI, supprimer"
 
 
 # PDFs
-pdf.sales_order.title:            "Commande %ref%"
-pdf.sales_order.consumer:         "Consommateur :"
-pdf.sales_order.withdrawal:       "Mode de retrait :"
-pdf.sales_order.product:          "Produit"
-pdf.sales_order.producer:         "Producteur"
-pdf.sales_order.price:            "Prix"
-pdf.sales_order.quantity:         "Quantité"
-pdf.sales_order.row_total:        "Total"
-pdf.sales_order.total:            "TOTAL"
-pdf.products_to_prepare.title:    "Produits à préparer"
-pdf.products_to_prepare.producer: "Producteur"
-pdf.products_to_prepare.ref:      "Réf."
-pdf.products_to_prepare.name:     "Produit"
-pdf.products_to_prepare.quantity: "Quantité"
+pdf.sales_order.title:              "Commande %ref%"
+pdf.sales_order.consumer:           "Consommateur :"
+pdf.sales_order.withdrawal:         "Mode de retrait :"
+pdf.sales_order.product:            "Produit"
+pdf.sales_order.producer:           "Producteur"
+pdf.sales_order.price:              "Prix"
+pdf.sales_order.quantity:           "Quantité"
+pdf.sales_order.row_total:          "Total"
+pdf.sales_order.total:              "TOTAL"
+pdf.products_to_prepare.title:      "Produits à préparer"
+pdf.products_to_prepare.producer:   "Producteur"
+pdf.products_to_prepare.ref:        "Réf."
+pdf.products_to_prepare.name:       "Produit"
+pdf.products_to_prepare.quantity:   "Quantité"
+pdf.producer_sales_orders.title:    "Commandes"
+pdf.producer_sales_orders.producer: "Producteur :"
+
+
+
+# Mails
+mail.consumer.new_order.subject:         "Enregistrement de votre commande %ref%"
+mail.consumer.new_order.message_html:    |
+    <p>Bonjour %firstname%,</p>
+    <p>Votre commande <strong>%ref%</strong> a bien été enregistrée !</p>
+mail.consumer.new_order.withdrawal:      "Retrait :"
+mail.consumer.new_order.order.title:     "Rappel de votre commande :"
+mail.consumer.new_order.order.product:   "Produit"
+mail.consumer.new_order.order.producer:  "Producteur"
+mail.consumer.new_order.order.price:     "Prix"
+mail.consumer.new_order.order.quantity:  "Quantité"
+mail.consumer.new_order.order.row_total: "Total"
+mail.consumer.new_order.order.total:     "TOTAL"
+mail.consumer.new_order.order.comment:   "Votre commentaire :"

@@ -26,38 +26,31 @@ class ProducerSalesOrdersPdf
     protected $engine;
 
     /**
-     * @var string $view
+     * @var ProducerBranchOccurrenceSalesOrders
      */
-    protected $view;
-
-    /**
-     * @var array
-     */
-    protected $producerSalesOrders;
+    protected $branchOccurrenceSalesOrders;
 
 
     /**
      * Constructs object
      *
-     * @param string $view
      * @param \TCPDF $pdf
      * @param EngineInterface $engine
      */
-    public function __construct($view, \TCPDF $pdf, EngineInterface $engine)
+    public function __construct(\TCPDF $pdf, EngineInterface $engine)
     {
         $this->pdf = $pdf;
         $this->engine = $engine;
-        $this->view = $view;
     }
 
     /**
-     * Sets sales orders
+     * Sets producer branch occurrence sales orders
      *
-     * @param array $producerSalesOrders
+     * @param ProducerBranchOccurrenceSalesOrders $branchOccurrenceSalesOrders
      */
-    public function setSalesOrders(array $producerSalesOrders)
+    public function setSalesOrders(ProducerBranchOccurrenceSalesOrders $branchOccurrenceSalesOrders)
     {
-        $this->producerSalesOrders = $producerSalesOrders;
+        $this->branchOccurrenceSalesOrders = $branchOccurrenceSalesOrders;
     }
 
     /**
@@ -65,15 +58,13 @@ class ProducerSalesOrdersPdf
      */
     public function build()
     {
-        foreach ($this->producerSalesOrders as $producerSalesOrder) {
-            $this->pdf->AddPage();
-            $this->pdf->writeHTML(
-                $this->engine->render($this->view, array(
-                    'producer' => $producerSalesOrder->getProducer(),
-                    'producerSalesOrder' => $producerSalesOrder,
-                ))
-            );
-        }
+        $this->pdf->AddPage();
+        $this->pdf->writeHTML(
+            $this->engine->render('IsicsOpenMiamMiamBundle:Pdf:producerSalesOrders.html.twig', array(
+                'producer' => $this->branchOccurrenceSalesOrders->getProducer(),
+                'branchOccurrenceSalesOrders' => $this->branchOccurrenceSalesOrders,
+            ))
+        );
     }
 
     /**
