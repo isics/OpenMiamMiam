@@ -281,7 +281,7 @@ services:
 
     open_miam_miam.sales_order_manager:
         class: %open_miam_miam.sales_order_manager.class%
-        arguments: [%open_miam_miam.order%, @doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
+        arguments: [%open_miam_miam.order%, @doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating, @translator]
 
     open_miam_miam.producer_sales_order_manager:
         class: %open_miam_miam.producer_sales_order_manager.class%
