@@ -11,30 +11,49 @@
     {% spaceless %}
         {% set branchOccurrence=branchOccurrenceSalesOrders.branchOccurrence %}
         {% set branch=branchOccurrence.branch %}
-        <table>
+        <table width="100%">
             <tbody>
-            <tr>
-                <td>
-                    <h1>{{ open_miam_miam.title }}</h1>
-                </td>
-                <td align="right">
-                    <h1>{{ 'pdf.producer_sales_orders.title'|trans }}</h1>
-                    <h2>
-                        {{ branch.name }} -
-                        {{ branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')) }}
-                    </h2>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <h1>{{ open_miam_miam.title }}</h1>
+                    </td>
+                    <td align="right">
+                        <h1>{{ 'pdf.producer_sales_orders.title'|trans }}</h1>
+                        <h2>{{ branch.name }}</h2>
+                        <h3>
+                            {{ branchOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::LONG')) }}
+                            {{ branchOccurrence.begin|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                            -
+                            {{ branchOccurrence.end|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                        </h3>
+                    </td>
+                </tr>
             </tbody>
         </table>
+
+        <p>&nbsp;</p>
+
+        <h2>{{ 'pdf.producer_sales_orders.producer'|trans }} {{ producer.name }}</h2>
 
         <p>&nbsp;</p>
 
         {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
             {% set order=producerSalesOrder.salesOrder %}
 
-            <h3>{{ 'pdf.sales_order.title'|trans({'%ref%': order.ref})  }}</h3>
-            <p>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</p>
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td><strong>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</strong>
+                            {% if order.user is defined %}
+                                <br />{{ order.user.zipcode }} {{ order.user.city }}
+                            {% endif %}
+                        </td>
+                        <td align="right">
+                            <strong>{{ 'pdf.sales_order.title'|trans({'%ref%': order.ref})  }}</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><br /><br />
 
             <table width="100%" border="1" cellpadding="3" cellspacing="0">
                 <thead>
@@ -62,6 +81,8 @@
                     </tr>
                 </tfoot>
             </table>
+
+            <p>&nbsp;</p>
         {% endfor %}
     {% endspaceless %}
 {% endblock %}

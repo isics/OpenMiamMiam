@@ -61,6 +61,7 @@ class ProducerSalesOrdersPdf
         $this->pdf->AddPage();
         $this->pdf->writeHTML(
             $this->engine->render('IsicsOpenMiamMiamBundle:Pdf:producerSalesOrders.html.twig', array(
+                'producer' => $this->branchOccurrenceSalesOrders->getProducer(),
                 'branchOccurrenceSalesOrders' => $this->branchOccurrenceSalesOrders,
             ))
         );
