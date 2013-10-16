@@ -46,6 +46,20 @@ class BranchRepository extends EntityRepository
     }
 
     /**
+     * Returns query builder to find branches with number of producers
+     *
+     * @return QueryBuilder
+     */
+    public function getWithProducersCountQueryBuilder()
+    {
+        return $this->createQueryBuilder('b')
+            ->addSelect('COUNT(p.id) AS nbProducers')
+            ->join('b.producers', 'p')
+            ->groupBy('b.id')
+            ->orderBy('b.name');
+    }
+
+    /**
      * Returns branches for association
      *
      * @param Association $association
@@ -69,8 +83,20 @@ class BranchRepository extends EntityRepository
     public function findForProducer(Producer $producer)
     {
         return $this->getForProducerQueryBuilder($producer)
-                ->getQuery()
-                ->getResult();
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns branches with number of producers
+     *
+     * @return array
+     */
+    public function findWithProducersCount()
+    {
+        return $this->getWithProducersCountQueryBuilder()
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -104,6 +130,6 @@ class BranchRepository extends EntityRepository
         $qb = null === $qb ? $this->createQueryBuilder('b') : $qb;
 
         return $qb->innerJoin('b.producers', 'p', Expr\Join::WITH, $qb->expr()->eq('p', ':producer'))
-                ->setParameter('producer', $producer);
+            ->setParameter('producer', $producer);
     }
 }

@@ -59,7 +59,7 @@ class BranchController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listArticlesAction(Branch $branch, $limit = 3)
+    public function listArticlesAction(Branch $branch)
     {
         $articles = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Article')
             ->findPublishedForBranch($branch);

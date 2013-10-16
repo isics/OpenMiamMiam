@@ -3,6 +3,55 @@ if (undefined === OpenMiamMiam) {
 }
 
 
+OpenMiamMiam.HomepageMap = function() {
+
+    var object = function(country) {
+        this.country = country;
+        this.addMap();
+    }
+
+    object.prototype = {
+        addMap: function() {
+            this.map = new google.maps.Map(
+                document.getElementById('homepage-map-map'),
+                {
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+            );
+
+            this.bounds = new google.maps.LatLngBounds();
+        },
+
+        addBranch: function(branch) {
+            var self = this;
+            var address = $.trim(branch.address1+' '+branch.address2)+' '+branch.zipcode+' '+branch.city+' '+this.country;
+            var geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({address: address}, function(results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    var location = results[0].geometry.location;
+
+                    var marker = new google.maps.Marker({
+                        position: location,
+                        map: self.map,
+                        title: branch.name
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function() {
+                        window.location = branch.url;
+                    });
+
+                    self.bounds.extend(location);
+                    self.map.fitBounds(self.bounds);
+                }
+            });
+        }
+    };
+
+    return object;
+}();
+
+
 OpenMiamMiam.LocationMap = function() {
 
     var object = function(markerTitle, routeLink, address1, address2, zipcode, city, country) {
@@ -25,7 +74,7 @@ OpenMiamMiam.LocationMap = function() {
                         document.getElementById('location-map'),
                         {
                             zoom: 10,
-                           center: location,
+                            center: location,
                             mapTypeId: google.maps.MapTypeId.ROADMAP
                         }
                     );

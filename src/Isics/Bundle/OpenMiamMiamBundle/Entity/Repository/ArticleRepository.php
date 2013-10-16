@@ -49,7 +49,40 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
-     * Return a published article by its id and visible in branch
+     * Returns published general articles
+     *
+     * @param interger $limit
+     *
+     * @return array
+     */
+    public function findGeneralPublished($limit = 3)
+    {
+        $qb = $this->filterPublished($this->filterGeneral());
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
+            ->addOrderBy('a.publishedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns one published general articles
+     *
+     * @return array
+     */
+    public function findOneGeneralPublished()
+    {
+        return $this->filterPublished($this->filterGeneral())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Returns a published article by its id and visible in branch
      *
      * @param integer $id
      * @param Branch  $branch
@@ -107,7 +140,6 @@ class ArticleRepository extends EntityRepository
         return $qb
             ->andWhere('a != :article')
             ->setParameter('article', $article)
-            ->setMaxResults($limit)
             ->addOrderBy('a.publishedAt', 'desc')
             ->getQuery()
             ->getResult();
@@ -127,6 +159,20 @@ class ArticleRepository extends EntityRepository
 
         return $qb->andWhere('a.association = :association')
             ->setParameter('association', $association);
+    }
+
+    /**
+     * Filters articles of no association (general)
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterGeneral(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('a') : $qb;
+
+        return $qb->andWhere('a.association IS NULL');;
     }
 
     /**

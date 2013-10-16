@@ -1,0 +1,53 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div id="homepage-map">
+        <h2>{{ 'homepage.map.title'|trans }}</h2>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div id="homepage-map-map"></div>
+            </div>
+
+            <div id="homepage-map-list" class="col-md-4">
+                <h3>{{ 'homepage.map.branches'|trans }}</h3>
+                <ul>
+                    {% for branchWithNbProducer in branchesWithNbProducers %}
+                        {% set branch = branchWithNbProducer|first %}
+                        <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ branch.name }} ({{ 'homepage.map.nb_producers'|transchoice(branchWithNbProducer.nbProducers, {'%nb%': branchWithNbProducer.nbProducers}) }})</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {{ render(controller('IsicsOpenMiamMiamBundle:General:ShowLatestArticles')) }}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script type="text/javascript">
+        var homepageMap = new OpenMiamMiam.HomepageMap('FRANCE' {#todo add openmiammiam.country param#});
+
+        {% for branchWithNbProducer in branchesWithNbProducers %}
+            {% set branch = branchWithNbProducer|first %}
+            homepageMap.addBranch({
+                name:     '{{ branch.name }}',
+                url:      '{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}',
+                address1: '{{ branch.address1 }}',
+                address2: '{{ branch.address2 }}',
+                zipcode:  '{{ branch.zipcode }}',
+                city:     '{{ branch.city }}'
+            });
+        {% endfor %}
+    </script>
+{% endblock %}

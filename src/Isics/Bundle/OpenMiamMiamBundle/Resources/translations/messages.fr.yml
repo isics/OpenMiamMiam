@@ -24,6 +24,13 @@ artificial_product:   "Produit divers"
 
 
 
+# Hompage
+homepage.map.title:        "Choisissez le comptoir ou le relais près de chez vous :"
+homepage.map.branches:     "Comptoirs"
+homepage.map.nb_producers: "{0} Aucun producteur|{1} 1 producteur|]1,Inf] %nb% producteurs"
+
+
+
 # Payment
 payment.cash:   "Espèces"
 payment.cheque: "Chèque"

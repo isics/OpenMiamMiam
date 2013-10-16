@@ -12,6 +12,17 @@ open_miam_miam.homepage:
     pattern:  /
     defaults: { _controller: IsicsOpenMiamMiamBundle:General:showHomepage }
 
+open_miam_miam.article.list:
+    pattern:  /news
+    defaults: { _controller: IsicsOpenMiamMiamBundle:General:listArticles }
+
+open_miam_miam.article.show:
+    pattern:  /news/{articleSlug}-{articleId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:General:showArticle }
+    requirements:
+        articleSlug: '[^/]+'
+        articleId:   '\d+'
+
 open_miam_miam.association:
     pattern:  /association/{associationSlug}
     defaults: { _controller: IsicsOpenMiamMiamBundle:General:showAssociation }
