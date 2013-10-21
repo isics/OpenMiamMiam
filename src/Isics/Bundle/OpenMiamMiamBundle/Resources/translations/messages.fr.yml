@@ -189,6 +189,8 @@ admin.super.articles.message.updated:       "L'article a bien été mis à jour.
 admin.super.articles.message.deleted:       "L'article a bien été supprimé."
 admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
+# Admin / Super / Newsletter
+
 
 # Admin / Association / Menu
 admin.association.menu.dashboard: "Tableau de bord"
@@ -341,6 +343,7 @@ admin.association.articles.message.updated:       "L'article a bien été mis à
 admin.association.articles.message.deleted:       "L'article a bien été supprimé."
 admin.association.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
+# Admin / Association / Newsletter
 
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"

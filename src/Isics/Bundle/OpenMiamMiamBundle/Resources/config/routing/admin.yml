@@ -41,8 +41,14 @@ open_miam_miam.admin.super.article.delete:
     pattern:  /super/articles/{articleId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:delete }
 
+open_miam_miam.admin.super.newsletter.create:
+    pattern:  /super/newsletters/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:create }
 
-
+open_miam_miam.admin.super.newsletter.edit:
+    pattern:  /super/newsletters/{newsletterId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:edit }
+    
 #
 # Admin Association
 #
@@ -146,6 +152,13 @@ open_miam_miam.admin.association.article.delete:
     pattern:  /associations/{id}/articles/{articleId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:delete }
 
+open_miam_miam.admin.association.newsletter.create:
+    pattern:  /associations/newsletters/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create }
+
+open_miam_miam.admin.association.newsletter.edit:
+    pattern:  /super/newsletters/{newsletterId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:edit }
 
 #
 # Admin Producer
