@@ -21,6 +21,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Newsletter
 {
+    const RECIPIENT_TYPE_ALL      = 0;
+    const RECIPIENT_TYPE_PRODUCER = 1;
+    const RECIPIENT_TYPE_CONSUMER = 2;
+
     /**
      * @var integer $id
      *
@@ -29,35 +33,7 @@ class Newsletter
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-    
-    /**
-     * @var string $recipientType
-     *
-     * @ORM\Column(name="recipient_type", type="string", length=64, nullable=true)
-     */
-    private $recipientType;
-    
-    /**
-     * @var string $subject
-     *
-     * @ORM\Column(name="subject", type="string", length=128, nullable=false)
-     */
-    private $subject;
-    
-    /**
-     * @var string $body
-     *
-     * @ORM\Column(name="body", type="text", nullable=false)
-     */
-    private $body;
-    
-    /**
-     * @var \DateTime $sendAt
-     *
-     * @ORM\Column(name="sent_at", type="datetime", nullable=false)
-     */
-    private $sentAt;
-    
+
     /**
      * @var Association
      *
@@ -67,20 +43,35 @@ class Newsletter
      * })
      */
     private $association;
-    
+
     /**
-    * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
-    * @ORM\JoinTable(name="newsletter_has_branch",
-    *   joinColumns={
-    *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
-    *   },
-    *   inverseJoinColumns={
-    *      @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
-    *   }
-    * )
-    */
-    private $branches;
-    
+     * @var integer $recipientType
+     *
+     * @ORM\Column(name="recipient_type", type="integer", nullable=false)
+     */
+    private $recipientType;
+
+    /**
+     * @var string $subject
+     *
+     * @ORM\Column(name="subject", type="string", length=128, nullable=false)
+     */
+    private $subject;
+
+    /**
+     * @var string $body
+     *
+     * @ORM\Column(name="body", type="text", nullable=false)
+     */
+    private $body;
+
+    /**
+     * @var \DateTime $sentAt
+     *
+     * @ORM\Column(name="sent_at", type="datetime", nullable=true)
+     */
+    private $sentAt;
+
     /**
      * @ORM\ManyToMany(targetEntity="Association", inversedBy="newsletters")
      * @ORM\JoinTable(name="newsletter_has_association",
@@ -93,15 +84,29 @@ class Newsletter
      * )
      */
     private $associations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
+     * @ORM\JoinTable(name="newsletter_has_branch",
+     *   joinColumns={
+     *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
+     *   },
+     *   inverseJoinColumns={
+     *      @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
+     *   }
+     * )
+     */
+    private $branches;
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->branches = new ArrayCollection();
         $this->associations = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
-    
+
     /**
      * Set id
      *
@@ -111,7 +116,7 @@ class Newsletter
     public function setId($id)
     {
         $this->id = $id;
-    
+
         return $this;
     }
     /**
@@ -123,99 +128,7 @@ class Newsletter
     {
         return $this->id;
     }
-    
-    /**
-     * Set recipientType
-     *
-     * @param string $recipientType
-     * @return Newsletter
-     */
-    public function setRecipientType($recipientType)
-    {
-        $this->recipientType = $recipientType;
-    
-        return $this;
-    }
-    
-    /**
-     * Get recipientType
-     *
-     * @return string
-     */
-    public function getRecipientType()
-    {
-        return $this->recipientType;
-    }
-    
-    /**
-     * Set subject
-     *
-     * @param string $from
-     * @return Newsletter
-     */
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-    
-        return $this;
-    }
-    
-    /**
-     * Get subject
-     *
-     * @return string
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-    
-    /**
-     * Set body
-     *
-     * @param string $body
-     * @return Newsletter
-     */
-    public function setBody($body)
-    {
-        $this->body = $body;
-    
-        return $this;
-    }
-    
-    /**
-     * Get body
-     *
-     * @return string
-     */
-    public function getBody()
-    {
-        return $this->body;
-    }
-    
-    /**
-     * Set sentAt
-     *
-     * @param dateTime $sentAt
-     * @return Newsletter
-     */
-    public function setSentAt($sentAt)
-    {
-        $this->sentAt = $sentAt;
-    
-        return $this;
-    }
-    
-    /**
-     * Get sentAt
-     * 
-     * @return \DateTime
-     */
-    public function getSentAt()
-    {
-        return $this->sentAt;
-    }
-    
+
     /**
      * Set association
      *
@@ -225,10 +138,10 @@ class Newsletter
     public function setAssociation(Association $association = null)
     {
         $this->association = $association;
-    
+
         return $this;
     }
-    
+
     /**
      * Get association
      *
@@ -238,7 +151,99 @@ class Newsletter
     {
         return $this->association;
     }
-    
+
+    /**
+     * Set recipientType
+     *
+     * @param integer $recipientType
+     * @return Newsletter
+     */
+    public function setRecipientType($recipientType)
+    {
+        $this->recipientType = $recipientType;
+
+        return $this;
+    }
+
+    /**
+     * Get recipientType
+     *
+     * @return integer
+     */
+    public function getRecipientType()
+    {
+        return $this->recipientType;
+    }
+
+    /**
+     * Set subject
+     *
+     * @param string $from
+     * @return Newsletter
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * Get subject
+     *
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * Set body
+     *
+     * @param string $body
+     * @return Newsletter
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * Get body
+     *
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * Set sentAt
+     *
+     * @param dateTime $sentAt
+     * @return Newsletter
+     */
+    public function setSentAt($sentAt)
+    {
+        $this->sentAt = $sentAt;
+
+        return $this;
+    }
+
+    /**
+     * Get sentAt
+     *
+     * @return \DateTime
+     */
+    public function getSentAt()
+    {
+        return $this->sentAt;
+    }
+
     /**
      * Add branch
      *
@@ -248,10 +253,10 @@ class Newsletter
     public function addBranch(Branch $branch)
     {
         $this->branches[] = $branch;
-    
+
         return $this;
     }
-    
+
     /**
      * Remove branch
      *
@@ -261,7 +266,7 @@ class Newsletter
     {
         $this->branches->removeElement($branch);
     }
-    
+
     /**
      * Get branches
      *
@@ -271,7 +276,7 @@ class Newsletter
     {
         return $this->branches;
     }
-    
+
     /**
      * Set branches
      *
@@ -280,12 +285,12 @@ class Newsletter
     public function setBranches($branches)
     {
         $this->branches = new ArrayCollection();
-    
+
         foreach ($branches as $branch) {
             $this->addBranch($branch);
         }
     }
-    
+
     /**
      * Returns true if newsletter has branch
      *
@@ -300,10 +305,10 @@ class Newsletter
                 return true;
             }
         }
-    
+
         return false;
     }
-    
+
     /**
      * Add association
      *
@@ -313,10 +318,10 @@ class Newsletter
     public function addAssociation(Association $association)
     {
         $this->associations[] = $association;
-    
+
         return $this;
     }
-    
+
     /**
      * Remove association
      *
@@ -326,7 +331,7 @@ class Newsletter
     {
         $this->associations->removeElement($association);
     }
-    
+
     /**
      * Get associations
      *
@@ -336,7 +341,7 @@ class Newsletter
     {
         return $this->associations;
     }
-    
+
     /**
      * Set associations
      *
@@ -345,12 +350,12 @@ class Newsletter
     public function setAssociations($associations)
     {
         $this->associations = new ArrayCollection();
-    
+
         foreach ($associations as $association) {
             $this->addAssociation($association);
         }
     }
-    
+
     /**
      * Returns true if newsletter has association
      *
@@ -365,7 +370,7 @@ class Newsletter
                 return true;
             }
         }
-    
+
         return false;
     }
 }
