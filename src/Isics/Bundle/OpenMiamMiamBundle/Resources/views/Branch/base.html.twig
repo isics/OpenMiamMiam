@@ -12,7 +12,7 @@
 {% block header %}
     <header>
         <div id="header-logo">
-            <a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}</a>
+            <a href="{{ path('open_miam_miam.homepage') }}">{% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}</a>
         </div>
 
         {% if homepage is not defined %}
