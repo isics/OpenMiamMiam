@@ -39,6 +39,6 @@ class ProfileEditingListener implements EventSubscriberInterface
 
     public function onSuccess(FormEvent $event)
     {
-        $event->setResponse(new RedirectResponse($this->router->generate('fos_user_profile_edit')));
+        $event->setResponse(new RedirectResponse($this->router->generate('open_miam_miam.homepage')));
     }
 }
