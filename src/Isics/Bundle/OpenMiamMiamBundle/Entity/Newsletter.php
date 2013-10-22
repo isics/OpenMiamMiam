@@ -42,18 +42,23 @@ class Newsletter
     private $association;
     
     /**
+     * @ORM\ManyToMany(targetEntity="Association", inversedBy="newsletter")
+     * @ORM\JoinTable(name="newsletter_has_association",
+     *   joinColumns={
+     *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
+     *   },
+     *   inverseJoinColumns={
+     *      @ORM\JoinColumn(name="association_id", referencedColumnName="id", onDelete="CASCADE")
+     *   }
+     * )
+     */
+    private $associations;
+    /**
      * @var string $recipientType
      *
      * @ORM\Column(name="recipient_type", type="string", length=64, nullable=true)
      */
     private $recipientType;
-    
-    /**
-     * @var string $from
-     *
-     * @ORM\Column(name="from", type="email", nullable=false)
-     */
-    private $from;
     
     /**
      * @var string $subject
@@ -72,25 +77,29 @@ class Newsletter
     /**
      * @var \DateTime $sendAt
      *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="send_at", type="datetime", nullable=false)
+     * @ORM\Column(name="sent_at", type="datetime", nullable=false)
      */
-    private $sendAt;
+    private $sentAt;
 
     /**
-     * @var string $isConfirmed
-     *
-     * @ORM\Column(name="$is_Confirmed", type="boolean", nullable=false)
-     */
-    private $isConfirmed;
-    
-    
+    * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletter")
+    * @ORM\JoinTable(name="newsletter_has_branch",
+            *   joinColumns={
+        *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
+        *   },
+        *   inverseJoinColumns={
+            *      @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
+            *   }
+    * )
+    */
+    private $branches;
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->isConfirmed = false;
+        $this->branches = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
     
     /**
@@ -106,9 +115,9 @@ class Newsletter
     /**
      * @return \DateTime
      */
-    public function getSendAt()
+    public function getSentAt()
     {
-        return $this->sendAt;
+        return $this->sentAt;
     }
     
     /**
@@ -227,25 +236,132 @@ class Newsletter
     }
     
     /**
-     * Set isConfirmed
+     * Add branch
      *
-     * @param boolean $isConfirmed
+     * @param Branch $branch
      * @return Newsletter
      */
-    public function setIsConfirmed($isConfirmed)
+    public function addBranch(Branch $branch)
     {
-        $this->isConfirmed = $isConfirmed;
+        $this->branches[] = $branch;
     
         return $this;
     }
     
     /**
-     * Get isConfirmed
+     * Remove branch
+     *
+     * @param Branch $branch
+     */
+    public function removeBranch(Branch $branch)
+    {
+        $this->branches->removeElement($branch);
+    }
+    
+    /**
+     * Get branches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBranches()
+    {
+        return $this->branches;
+    }
+    
+    /**
+     * Set branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches Branches
+     */
+    public function setBranches($branches)
+    {
+        $this->branches = new ArrayCollection();
+    
+        foreach ($branches as $branch) {
+            $this->addBranch($branch);
+        }
+    }
+    
+    /**
+     * Returns true if newsletter has branch
+     *
+     * @param Branch $branch
      *
      * @return boolean
      */
-    public function getIsConfirmed()
+    public function hasBranch(Branch $branch)
     {
-        return $this->isConfirmed;
+        foreach ($this->getBranches() as $_branch) {
+            if ($_branch->getId() === $branch->getId()) {
+                return true;
+            }
+        }
+    
+        return false;
+    }
+    
+    /**
+     * Add association
+     *
+     * @param Association $association
+     * @return Newsletter
+     */
+    public function addAssociation(Association $association)
+    {
+        $this->associations[] = $association;
+    
+        return $this;
+    }
+    
+    /**
+     * Remove association
+     *
+     * @param Association $association
+     */
+    public function removeAssociation(Association $association)
+    {
+        $this->associations->removeElement($association);
+    }
+    
+    /**
+     * Get associations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAssociations()
+    {
+        return $this->associations;
+    }
+    
+    /**
+     * Set associations
+     *
+     * @param \Doctrine\Common\Collections\Collection $associations Associations
+     */
+    public function setAssociations($associations)
+    {
+        $this->associations = new ArrayCollection();
+    
+        foreach ($associations as $association) {
+            $this->addAssociation($association);
+        }
+    }
+    
+    /**
+     * Returns true if newsletter has association
+     *
+     * @param Association $association
+     *
+     * @return boolean
+     */
+    public function hasAssociation(Association $association)
+    {
+        foreach ($this->getAssociations() as $_association) {
+            if ($_association->getId() === $association->getId()) {
+                return true;
+            }
+        }
+    
+        return false;
     }
 }
