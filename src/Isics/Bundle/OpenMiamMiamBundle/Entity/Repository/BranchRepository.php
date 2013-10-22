@@ -26,9 +26,12 @@ class BranchRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function getForAssociationQueryBuilder(Association $association)
+    public function getForAssociationWithProducersCountQueryBuilder(Association $association)
     {
         return $this->filterAssociation($association)
+            ->addSelect('COUNT(p.id) AS nbProducers')
+            ->join('b.producers', 'p')
+            ->groupBy('b.id')
             ->orderBy('b.name');
     }
 
@@ -66,9 +69,9 @@ class BranchRepository extends EntityRepository
      *
      * @return array
      */
-    public function findForAssociation(Association $association)
+    public function findForAssociationWithProducersCount(Association $association)
     {
-        return $this->getForAssociationQueryBuilder($association)
+        return $this->getForAssociationWithProducersCountQueryBuilder($association)
             ->getQuery()
             ->getResult();
     }

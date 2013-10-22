@@ -45,11 +45,17 @@ class BranchController extends BaseController
     {
         $this->secure($association);
 
-        $branches = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Branch')->findForAssociation($association);
+        $branchesWithNbProducers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Branch')->findForAssociationWithProducersCount($association);
+
+        foreach ($branchesWithNbProducers as &$branchWithNbProducers) {
+            $branchWithNbProducers['nextOccurrence'] = $this->getDoctrine()
+                ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+                ->findOneNextNotClosedForBranch($branchWithNbProducers[0]);
+        }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:list.html.twig', array(
-            'association' => $association,
-            'branches'    => $branches
+            'association'                              => $association,
+            'branchesWithNbProducersAndNextOccurrence' => $branchesWithNbProducers,
         ));
     }
 

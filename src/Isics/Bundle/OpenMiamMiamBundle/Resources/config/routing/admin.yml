@@ -98,6 +98,10 @@ open_miam_miam.admin.association.branch.edit:
     pattern:  /associations/{id}/branches/{branchId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:edit }
 
+open_miam_miam.admin.association.branch.edit_calendar:
+    pattern:  /associations/{id}/branches/{branchId}/calendar
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:editCalendar }
+
 open_miam_miam.admin.association.branch.delete:
     pattern:  /associations/{id}/branches/{branchId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:delete }

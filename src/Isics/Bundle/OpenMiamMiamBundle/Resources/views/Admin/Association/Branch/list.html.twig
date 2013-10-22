@@ -10,7 +10,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6">
-            <h1>{{ 'admin.association.branch.list.title'|transchoice(branches|length, {'%nb%': branches|length}) }}</h1>
+            <h1>{{ 'admin.association.branch.list.title'|transchoice(branchesWithNbProducersAndNextOccurrence|length, {'%nb%': branchesWithNbProducersAndNextOccurrence|length}) }}</h1>
         </div>
         <div class="col-md-6">
             <a href="{{ path('open_miam_miam.admin.association.branch.create', {'id': association.id}) }}" class="btn btn-primary btn-lg pull-right">
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    {% if branches|length > 0 %}
+    {% if branchesWithNbProducersAndNextOccurrence|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-branches">
                 <thead>
@@ -32,7 +32,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for branch in branches %}
+                {% for branchWithNbProducersAndNextOccurrence in branchesWithNbProducersAndNextOccurrence %}
+                    {% set branch = branchWithNbProducersAndNextOccurrence|first %}
+                    {% set nbProducers = branchWithNbProducersAndNextOccurrence.nbProducers %}
+                    {% set nextOccurrence = branchWithNbProducersAndNextOccurrence.nextOccurrence %}
                     <tr>
                         <td>
                             <a href="{{ path('open_miam_miam.admin.association.branch.edit', {'id': association.id, 'branchId': branch.id}) }}">
@@ -40,14 +43,14 @@
                             </a>
                         </td>
                         <td>
-                            ?
+                            {{ nbProducers }}
                         </td>
                         <td>
-                            ?
+                            {{ nextOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL')) }}
                         </td>
                         <td>
                             <a href="{{ path('open_miam_miam.admin.association.branch.edit', {'id': association.id, 'branchId': branch.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.branch.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            <a href="{{ path('open_miam_miam.admin.association.branch.edit', {'id': association.id, 'branchId': branch.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.branch.list.edit'|trans }}"><span class="glyphicon glyphicon-time"></span></a>
+                            <a href="{{ path('open_miam_miam.admin.association.branch.edit_calendar', {'id': association.id, 'branchId': branch.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.branch.list.edit_calendar'|trans }}"><span class="glyphicon glyphicon-time"></span></a>
                             <a data-url="{{ path('open_miam_miam.admin.association.branch.delete', {'id': association.id, 'branchId': branch.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.branch.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
