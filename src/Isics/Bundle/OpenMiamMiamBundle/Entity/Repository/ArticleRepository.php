@@ -70,13 +70,41 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
-     * Returns one published general articles
+     * Returns published general articles except an article
+     *
+     * @param Article  $article
+     * @param interger $limit
      *
      * @return array
      */
-    public function findOneGeneralPublished()
+    public function findGeneralPublishedExcept(Article $article, $limit = 3)
+    {
+        $qb = $this->filterPublished($this->filterGeneral());
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
+            ->andWhere('a != :article')
+            ->setParameter('article', $article)
+            ->addOrderBy('a.publishedAt', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns one published general articles
+     *
+     * @param integer $id
+     *
+     * @return Article|null
+     */
+    public function findOneGeneralPublishedById($id)
     {
         return $this->filterPublished($this->filterGeneral())
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
     }

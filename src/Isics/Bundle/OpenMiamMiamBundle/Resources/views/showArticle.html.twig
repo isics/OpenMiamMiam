@@ -1,0 +1,46 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% embed 'IsicsOpenMiamMiamBundle::base.html.twig' %}
+    {% block title %}{{ article.title }}{% endblock %}
+
+    {% block content %}
+        <ol class="breadcrumb">
+            <li><a href="{{ path('open_miam_miam.homepage') }}">{{ 'homepage'|trans }}</a></li>
+            <li><a href="{{ path('open_miam_miam.article.list') }}">{{ 'news'|trans }}</a></li>
+            <li class="active">{{ article.title }}</li>
+        </ol>
+
+        <h1>{{ article.title }}</h1>
+
+        <p>
+            <span class="badge">{{ article.publishedAt|format_date(null, null, null, constant('IntlDateFormatter::FULL'))|capitalize }}</span>
+        </p>
+
+        {{ article.body|raw }}
+
+        {% if otherArticles|length > 0 %}
+            <p>&nbsp;</p>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><span class="glyphicon glyphicon-bullhorn"></span> {{ 'news.others.title'|trans }}</h2>
+                </div>
+                <ul class="list-group">
+                    {% for otherArticle in otherArticles %}
+                        <li class="list-group-item">
+                            <span class="badge">{{ otherArticle.publishedAt|format_date(null, null, null, constant('IntlDateFormatter::SHORT')) }}</span>
+                            <a href="{{ path('open_miam_miam.article.show', {'articleSlug': otherArticle.slug, 'articleId': otherArticle.id}) }}">{{ otherArticle.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="panel-footer">
+                    <a href="{{ path('open_miam_miam.article.list') }}">{{ 'news.others.link'|trans }}</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endembed %}

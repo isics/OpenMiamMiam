@@ -95,7 +95,7 @@ class GeneralController extends Controller
             ), 301);
         }
 
-        $otherArticles = $repository->findPublishedForBranchExcept($branch, $article, 5);
+        $otherArticles = $repository->findGeneralPublishedExcept($article, 5);
 
         return $this->render('IsicsOpenMiamMiamBundle::showArticle.html.twig', array(
             'article'       => $article,
