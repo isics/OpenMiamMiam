@@ -40,6 +40,21 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         # Services
         $userManager = $this->container->get('fos_user.user_manager');
 
+        # Admin
+        $user = $userManager->createUser();
+        $user->setUsername('admin@domain.tld');
+        $user->setPlainPassword('admin');
+        $user->setEmail('admin@domain.tld');
+        $user->setEnabled(true);
+        $user->setSuperAdmin(true);
+        $user->setFirstname('Admin');
+        $user->setLastname('Admin');
+        $user->setAddress1('First line of address');
+        $user->setAddress2('Second line of address');
+        $user->setZipcode('AA9A 9AA');
+        $user->setCity('York');
+        $userManager->updateUser($user);
+
         # User 1
         $user = $userManager->createUser();
         $user->setUsername('foo@bar.com');
