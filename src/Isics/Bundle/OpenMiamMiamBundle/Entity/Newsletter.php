@@ -31,28 +31,6 @@ class Newsletter
     private $id;
     
     /**
-     * @var Association
-     *
-     * @ORM\ManyToOne(targetEntity="Association")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     * })
-     */
-    private $association;
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="Association", inversedBy="newsletter")
-     * @ORM\JoinTable(name="newsletter_has_association",
-     *   joinColumns={
-     *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
-     *   },
-     *   inverseJoinColumns={
-     *      @ORM\JoinColumn(name="association_id", referencedColumnName="id", onDelete="CASCADE")
-     *   }
-     * )
-     */
-    private $associations;
-    /**
      * @var string $recipientType
      *
      * @ORM\Column(name="recipient_type", type="string", length=64, nullable=true)
@@ -79,19 +57,42 @@ class Newsletter
      * @ORM\Column(name="sent_at", type="datetime", nullable=false)
      */
     private $sentAt;
-
+    
     /**
-    * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletter")
+     * @var Association
+     *
+     * @ORM\ManyToOne(targetEntity="Association")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
+     */
+    private $association;
+    
+    /**
+    * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
     * @ORM\JoinTable(name="newsletter_has_branch",
-            *   joinColumns={
-        *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
-        *   },
-        *   inverseJoinColumns={
-            *      @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
-            *   }
+    *   joinColumns={
+    *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
+    *   },
+    *   inverseJoinColumns={
+    *      @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
+    *   }
     * )
     */
     private $branches;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Association", inversedBy="newsletters")
+     * @ORM\JoinTable(name="newsletter_has_association",
+     *   joinColumns={
+     *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
+     *   },
+     *   inverseJoinColumns={
+     *      @ORM\JoinColumn(name="association_id", referencedColumnName="id", onDelete="CASCADE")
+     *   }
+     * )
+     */
+    private $associations;
     /**
      * Constructor
      */
@@ -101,6 +102,18 @@ class Newsletter
         $this->associations = new ArrayCollection();
     }
     
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Newsletter
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    
+        return $this;
+    }
     /**
      * Get id
      *
@@ -112,38 +125,7 @@ class Newsletter
     }
     
     /**
-     * @return \DateTime
-     */
-    public function getSentAt()
-    {
-        return $this->sentAt;
-    }
-    
-    /**
-    * Set association
-    *
-    * @param Association $association
-    * @return Newsletter
-    */
-    public function setAssociation(Association $association = null)
-    {
-        $this->association = $association;
-    
-        return $this;
-    }
-    
-    /**
-     * Get association
-     *
-     * @return Association
-     */
-    public function getAssociation()
-    {
-        return $this->association;
-    }
-    
-    /**
-     * Set to
+     * Set recipientType
      *
      * @param string $recipientType
      * @return Newsletter
@@ -156,36 +138,13 @@ class Newsletter
     }
     
     /**
-     * Get to
+     * Get recipientType
      *
      * @return string
      */
-    public function getTo()
+    public function getRecipientType()
     {
-        return $this->to;
-    }
-    
-    /**
-     * Set from
-     *
-     * @param email $from
-     * @return Newsletter
-     */
-    public function setFrom($from)
-    {
-        $this->from = $from;
-    
-        return $this;
-    }
-    
-    /**
-     * Get from
-     *
-     * @return email
-     */
-    public function getFrom()
-    {
-        return $this->from;
+        return $this->recipientType;
     }
     
     /**
@@ -232,6 +191,52 @@ class Newsletter
     public function getBody()
     {
         return $this->body;
+    }
+    
+    /**
+     * Set sentAt
+     *
+     * @param dateTime $sentAt
+     * @return Newsletter
+     */
+    public function setSentAt($sentAt)
+    {
+        $this->sentAt = $sentAt;
+    
+        return $this;
+    }
+    
+    /**
+     * Get sentAt
+     * 
+     * @return \DateTime
+     */
+    public function getSentAt()
+    {
+        return $this->sentAt;
+    }
+    
+    /**
+     * Set association
+     *
+     * @param Association $association
+     * @return Newsletter
+     */
+    public function setAssociation(Association $association = null)
+    {
+        $this->association = $association;
+    
+        return $this;
+    }
+    
+    /**
+     * Get association
+     *
+     * @return Association
+     */
+    public function getAssociation()
+    {
+        return $this->association;
     }
     
     /**
