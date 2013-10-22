@@ -65,8 +65,8 @@ OpenMiamMiam.ProducerProductForm = function() {
 
     object.prototype = {
         handlePrice: function() {
-            $('#open_miam_miam_admin_product_hasNoPrice').change(function() {
-                $('#open_miam_miam_admin_product_price').prop(
+            $('#open_miam_miam_product_hasNoPrice').change(function() {
+                $('#open_miam_miam_product_price').prop(
                     'disabled',
                     $(this).is(':checked')
                 )
@@ -74,7 +74,6 @@ OpenMiamMiam.ProducerProductForm = function() {
         },
 
         handleAvailability: function() {
-
             //
             // Stock
             //
