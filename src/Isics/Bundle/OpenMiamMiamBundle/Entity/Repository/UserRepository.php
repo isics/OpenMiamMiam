@@ -13,7 +13,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence
@@ -47,36 +46,90 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * Return Consumer of an Association
+     * Returns query builder to find consumers of an association
      *
-     *@param Association $association
-     *@param QueryBuilder $qb
+     * @param Association $association
      *
-     *@return QueryBuilder
+     * @return QueryBuilder
      */
-    public function findConsumerForAssociation(Association $association, QueryBuilder $qb = null)
+    public function getConsumersForAssociationQueryBuilder(Association $association)
     {
-        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
-
-        return $qb->innerJoin('u.subscription', 's', Expr\Join::WITH, $qb->expr()->eq('a', ':association'))
-                    ->setParameter('association', $association);
+        return $this->filterConsumerForAssociation($association);
     }
 
     /**
-     * Return Consumer of an branch
+     * Returns consumers of an association
      *
-     *@param Branch $branch
-     *@param QueryBuilder $qb
+     * @param Association $association
      *
-     *@return QueryBuilder
+     * @return array
      */
-    public function findConsumerForBranch(Branch $branch, QueryBuilder $qb = null)
+    public function findConsumersForAssociation(Association $association)
+    {
+        return $this->getConsumersForAssociationQueryBuilder($association)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Filters consumers of an branch
+     *
+     * @param Branch        $branch
+     * @param QueryBuilder  $qb
+     * @param string        $alias
+     *
+     * @return QueryBuilder
+     */
+    public function filterConsumersForAssociation(Association $association, QueryBuilder $qb = null)
     {
         $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
 
-        return $qb->innerJoin('u.sales_order', 's', Expr\Join::ON, 'u.id = s.user_id')
-                    ->innerJoin('s.branch_occurence', 'bo', Expr\Join::ON, 's.branch_occurence_id = bo.id'))
-                    ->innerJoin('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
-                    ->setParameter('branch', $branch);             
+        return $qb->innerJoin('u.subscription', 's')
+            ->setParameter('association', $association);
+    }
+
+    /**
+     * Returns query builder to find consumers of an branch
+     *
+     * @param Branch $branch
+     *
+     * @return QueryBuilder
+     */
+    public function getConsumersForBranchQueryBuilder(Branch $branch)
+    {
+        return $this->filterConsumersForBranch($branch);
+    }
+
+    /**
+     * Returns consumers of an branch
+     *
+     * @param Branch $branch
+     *
+     * @return array
+     */
+    public function findConsumersForBranch(Branch $branch)
+    {
+        return $this->getConsumersForBranchQueryBuilder($branch)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Filters consumers of an branch
+     *
+     * @param Branch        $branch
+     * @param QueryBuilder  $qb
+     * @param string        $alias
+     *
+     * @return QueryBuilder
+     */
+    public function filterConsumersForBranch(Branch $branch, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        return $qb->Join('u.sales_order', 's')
+            ->Join('s.branch_occurence', 'bo')
+            ->Join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
+            ->setParameter('branch', $branch);
     }
 }
