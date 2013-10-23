@@ -133,7 +133,7 @@ class SalesOrderController extends BaseController
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $user,
+                    $order->getUser(),
                     $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 
@@ -182,7 +182,7 @@ class SalesOrderController extends BaseController
         );
 
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-            $user,
+            $order->getUser(),
             $order->getBranchOccurrence()->getBranch()->getAssociation()
         );
 
@@ -242,7 +242,7 @@ class SalesOrderController extends BaseController
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $user,
+                    $order->getUser(),
                     $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 

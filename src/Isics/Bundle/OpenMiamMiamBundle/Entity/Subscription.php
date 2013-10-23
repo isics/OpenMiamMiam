@@ -42,7 +42,7 @@ class Subscription
     /**
      * @var User $user
      *
-     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="salesOrders")
+     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="subscriptions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      * })
@@ -52,7 +52,7 @@ class Subscription
     /**
      * @var Association $association
      *
-     * @ORM\ManyToOne(targetEntity="Association", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="Association", inversedBy="subscriptions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false)
      * })

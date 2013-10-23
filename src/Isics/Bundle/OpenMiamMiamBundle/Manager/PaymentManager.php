@@ -108,8 +108,6 @@ class PaymentManager
             $subscription = new Subscription();
             $subscription->setAssociation($association);
             $subscription->setUser($user);
-
-            $this->entityManager->persist($subscription);
         }
 
         $salesOrderTotal = $this->entityManager
@@ -121,6 +119,7 @@ class PaymentManager
 
         $subscription->setCredit($paymentsAmount-$salesOrderTotal);
 
+        $this->entityManager->persist($subscription);
         $this->entityManager->flush();
     }
 
@@ -143,7 +142,9 @@ class PaymentManager
         $this->entityManager->flush();
 
         // Subscription
-        $this->computeConsumerCredit($user, $payment->getAssociation());
+        if (null !== $order->getUser()) {
+            $this->computeConsumerCredit($order->getUser(), $payment->getAssociation());
+        }
 
         // Activity
         $activity = $this->activityManager->createFromEntities(

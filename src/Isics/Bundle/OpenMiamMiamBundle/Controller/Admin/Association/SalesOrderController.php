@@ -173,7 +173,7 @@ class SalesOrderController extends BaseController
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $user,
+                    $order->getUser(),
                     $association
                 );
 
@@ -220,7 +220,7 @@ class SalesOrderController extends BaseController
         );
 
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-            $user,
+            $order->getUser(),
             $association
         );
 
@@ -280,7 +280,7 @@ class SalesOrderController extends BaseController
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $user,
+                    $order->getUser(),
                     $association
                 );
 
