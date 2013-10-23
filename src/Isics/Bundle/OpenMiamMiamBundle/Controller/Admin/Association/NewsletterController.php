@@ -25,7 +25,7 @@ class NewsletterController extends BaseController
      *
      * @return Response
      */
-    public function createAction(Request $request, Newsletter $newsletter)
+    public function createAction(Request $request)
     {
         $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
         $newsletter = $newsletterManager->createForAssociation($association);
@@ -34,9 +34,9 @@ class NewsletterController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $user= $this->get('security.context')->getToken()->getUser();
                 $newsletterManager->save($newsletter);
-                //envoyer mail
-                
+                $newsletterManager->sendTest($newsletter, $user);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.created');
             }
         }
@@ -54,11 +54,33 @@ class NewsletterController extends BaseController
      *
      * @return Response
      */
-    public function editAction()
+    public function editAction(Newsletter $newsletter)
     {
-        $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
+        $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
         
         $form = $this->getForm($newsletter);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $newsletterManager->save($newsletter);
+                $this->send($newsletter);
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.created');
+            }
+        }
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create.html.twig', array(
+                'association' => $association,
+                'form'        => $form->createView(),
+        ));
+    }
+    
+    public function send($newsletter)
+    {
+        if($newsletter->getSentAt() != null)
+        {
+            newsletterManager->send($newsletter);
+            $newsletter->setSentAt(new \DateTime())
+        }
+        
     }
     
     /**
@@ -68,8 +90,24 @@ class NewsletterController extends BaseController
      *
      * @return \Symfony\Component\Form\Form
      */
-    protected function getForm()
+    protected function getForm(Newsletter $newsletter)
     {
-    
+        if (null === $newsletter->getId()) {
+            $action = $this->generateUrl(
+                'open_miam_miam.admin.association.newsletter.create',
+                array('id' => $newsletter->getAssociation()->getId())
+            );
+        } else {
+            $action = $this->generateUrl(
+                'open_miam_miam.admin.association.newsletter.edit',
+                array('id' => $newsletter->getAssociation()->getId(), 'newsletterId' => $newsletter->getId())
+            );
+        }
+
+        return $this->createForm(
+            $this->get('open_miam_miam.form.type.association_newsletter'),
+            $newsletter,
+            array('action' => $action, 'method' => 'POST')
+        );
     }
 }

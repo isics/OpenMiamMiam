@@ -201,7 +201,7 @@ services:
             - { name: form.type, alias: open_miam_miam_payment }
 
     open_miam_miam.form.type.association_newsletter:
-        class: %open_miam_miam.form.type.newsletter.class%
+        class: %open_miam_miam.form.type.association_newsletter.class%
         tags:
             - { name: form.type, alias: open_miam_miam_association_newsletter }
 

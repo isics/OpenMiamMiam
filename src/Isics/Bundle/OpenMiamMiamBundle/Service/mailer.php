@@ -25,7 +25,7 @@ class Mailer {
         $this->mailer->send( $mail );
     }
     
-    public function sendTestMessage()
+    public function sendTestMessage($newsletter)
     {
         
     }

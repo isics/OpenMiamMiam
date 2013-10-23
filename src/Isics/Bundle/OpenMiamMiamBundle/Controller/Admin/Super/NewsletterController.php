@@ -14,7 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
 use Symfony\Component\HttpFoundation\Request;
 
-class NewsletterController
+class NewsletterController extends Controller
 {
     /**
      * Create newsletter
@@ -24,9 +24,24 @@ class NewsletterController
      *
      * @return Response
      */
-    public function createAction(Request $request, Newsletter $newsletter)
+    public function createAction(Request $request)
     {
+        $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
+        $newsletter = $newsletterManager->createForSuper();
         
+        $form = $this->getForm($newsletter);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $user= $this->get('security.context')->getToken()->getUser();
+                $newsletterManager->save($newsletter);
+                $newsletterManager->sendTest($newsletter, $user);
+                $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.created');
+            }
+        }
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:create.html.twig', array(
+                'form'        => $form->createView(),
+        ));
     }
     
     /**
@@ -37,18 +52,31 @@ class NewsletterController
      *
      * @return Response
      */
-    public function editAction()
+    public function editAction(Newsletter $newsletter)
     {
+        $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
         
+        $form = $this->getForm($newsletter);
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $newsletterManager->save($newsletter);
+                $this->send($newsletter);
+                $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.created');
+            }
+        }
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:create.html.twig', array(
+                'form'        => $form->createView(),
+        ));
     }
     
-    public function sendMail($recipientType, $subject, $body)
+    public function send($newsletter)
     {
-        
-    }
-    
-    public function sendTestMail()
-    {
+        if($newsletter->getSentAt() != null)
+        {
+            newsletterManager->send($newsletter);
+            $newsletter->setSentAt(new \DateTime())
+        }
         
     }
     
@@ -59,9 +87,23 @@ class NewsletterController
      *
      * @return \Symfony\Component\Form\Form
      */
-    protected function getForm()
+    protected function getForm(Newsletter $newsletter)
     {
-        
-    }
+        if (null === $newsletter->getId()) {
+            $action = $this->generateUrl(
+                'open_miam_miam.admin.super.newsletter.create'
+            );
+        } else {
+            $action = $this->generateUrl(
+                'open_miam_miam.admin.super.newsletter.edit',
+                array('newsletterId' => $newsletter->getId())
+            );
+        }
 
+        return $this->createForm(
+            $this->get('open_miam_miam.form.type.super_newsletter'),
+            $newsletter,
+            array('action' => $action, 'method' => 'POST')
+        );
+    }
 }
