@@ -12,20 +12,22 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterController extends BaseController
 {
     /**
      * Create newsletter
-     *
-     * @param Request $request
+     * 
+     * @param Request    $request
      * @param Newsletter $newsletter
      *
      * @return Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, Association $association)
     {
         $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
         $newsletter = $newsletterManager->createForAssociation($association);
@@ -35,9 +37,14 @@ class NewsletterController extends BaseController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $user= $this->get('security.context')->getToken()->getUser();
-                $newsletterManager->save($newsletter);
-                $newsletterManager->sendTest($newsletter, $user);
+                $newsletterManager->save($newsletter, $user);
+                $newsletterManager->sendTest($newsletter, $user, $association);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.created');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.newsletter.edit',
+                    array('id' => $association->getId(), 'newsletterId' => $newsletter->getId())
+                ));
             }
         }
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create.html.twig', array(
@@ -49,38 +56,78 @@ class NewsletterController extends BaseController
     /**
      * Edit newsletter
      *
-     * @param Request $request
+     * @ParamConverter("newsletter", class="IsicsOpenMiamMiamBundle:Newsletter", options={"mapping": {"newsletterId": "id"}})
+     * 
+     * @param Request    $request
      * @param Newsletter $newsletter
      *
      * @return Response
      */
-    public function editAction(Newsletter $newsletter)
+    public function editAction(Request $request, Newsletter $newsletter, Association $association)
     {
-        $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
-        
-        $form = $this->getForm($newsletter);
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $newsletterManager->save($newsletter);
-                $this->send($newsletter);
-                $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.created');
+        if($newsletter->getSentAt() == null)
+        {
+            $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
+            $user= $this->get('security.context')->getToken()->getUser();
+
+            $form = $this->getForm($newsletter);
+            if ($request->isMethod('POST')) {
+                $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $user= $this->get('security.context')->getToken()->getUser();
+                    $newsletterManager->save($newsletter, $user);
+                    $newsletterManager->sendTest($newsletter, $user, $association);
+                    $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.edited');
+
+                    return $this->redirect($this->generateUrl(
+                        'open_miam_miam.admin.association.newsletter.edit',
+                        array('id' => $association->getId(), 'newsletterId' => $newsletter->getId())
+                    ));
+                }
             }
+            return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create.html.twig', array(
+                    'association' => $association,
+                    'form'        => $form->createView(),
+            ));
         }
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create.html.twig', array(
-                'association' => $association,
-                'form'        => $form->createView(),
-        ));
+        else 
+        {
+            $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.alreadySent');
+
+            return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
+        }
+        
     }
     
-    public function send($newsletter)
+    /**
+     * Send email to consumers or/and producers
+     * 
+     * @ParamConverter("newsletter", class="IsicsOpenMiamMiamBundle:Newsletter", options={"mapping": {"newsletterId": "id"}})
+     * 
+     * @param $newsletter
+     * 
+     * @return responce
+     */
+    public function confirmSendAction(Newsletter $newsletter)
     {
-        if($newsletter->getSentAt() != null)
+        if($newsletter->getSentAt() == null)
         {
-            newsletterManager->send($newsletter);
-            $newsletter->setSentAt(new \DateTime())
+            $user= $this->get('security.context')->getToken()->getUser();
+            $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
+            $newsletterManager->send($newsletter);
+            $newsletter->setSentAt(new \DateTime());
+            $newsletterManager->save($newsletter, $user);
+
+            $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.sent');
+
+            return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
         }
-        
+        else
+        {
+            $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.alreadySent');
+
+            return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
+        }
     }
     
     /**

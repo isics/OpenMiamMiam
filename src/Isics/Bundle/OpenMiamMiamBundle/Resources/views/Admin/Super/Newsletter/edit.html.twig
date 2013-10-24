@@ -1,0 +1,23 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% set newsletter = form.vars.data %}
+
+{% block content %}
+    <h1>{{ 'admin.super.newletter.form.edit_title'|trans({'%title%': newsletter.subject}) }}</h1>
+
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Super\\Newsletter\\form.html.twig' with {'form': form} %}
+
+    {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {{ tinymce_init() }}
+{% endblock %}

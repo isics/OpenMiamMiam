@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NewsletterType 
+class AssociationNewsletterType extends AbstractType implements EventSubscriberInterface
 {
     /**
      * Builds the form
@@ -32,12 +32,18 @@ class NewsletterType
     {
         $builder->add('recipientType', 'choice', array(
                     'choices' => array(
+                        '1' => 'admin.association.newsletter.form.consumer',
+                        '2' => 'admin.association.newsletter.form.producer'
                     ),
+                    'multiple' => true,
                     'expanded' => true,
                 ))
-                ->add('Object', 'text')
-                ->add('message', 'textarea')
-                ->add('save', 'submit')
+                ->add('all', 'checkbox', array(
+                    'mapped' => false,
+                    'required' => false
+                ))
+                ->add('subject', 'text')
+                ->add('body', 'textarea')
                 ->addEventSubscriber($this);
     }
     /**
@@ -54,7 +60,7 @@ class NewsletterType
     public function preSetData(FormEvent $event)
     {
         $form = $event->getForm();
-        $article = $event->getData();
+        $newsletter = $event->getData();
     
         if (null === $newsletter) {
             return;

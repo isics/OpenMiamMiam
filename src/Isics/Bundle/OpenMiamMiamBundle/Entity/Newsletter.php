@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -45,9 +46,9 @@ class Newsletter
     private $association;
 
     /**
-     * @var integer $recipientType
+     * @var array $recipientType
      *
-     * @ORM\Column(name="recipient_type", type="integer", nullable=false)
+     * @ORM\Column(name="recipient_type", type="array", nullable=false)
      */
     private $recipientType;
 
@@ -86,6 +87,8 @@ class Newsletter
     private $associations;
 
     /**
+     * @var Doctrine\Common\Collections\Collection $branches
+     * 
      * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
      * @ORM\JoinTable(name="newsletter_has_branch",
      *   joinColumns={

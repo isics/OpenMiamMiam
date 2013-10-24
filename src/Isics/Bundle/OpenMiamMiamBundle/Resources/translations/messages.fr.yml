@@ -158,6 +158,7 @@ admin.index.title: "Choisissez un rôle :"
 admin.super.menu.dashboard:   "Tableau de bord"
 admin.super.menu.user_switch: "Usurpateur d'identité"
 admin.super.menu.news:        "Actualité"
+admin.super.menu.newsletter:  "Lettre d'information"
 
 # Admin / Super / Dashboard
 admin.super.dashboard.title: "Tableau de bord"
@@ -191,13 +192,27 @@ admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de voul
 
 # Admin / Super / Newsletter
 
+admin.super.newsletter.form.new_title:            "Nouvelle lettre d'information"
+admin.super.newsletter.form.edit_title:           "Lettre d'information %title%"
+admin.super.newsletter.form.consumer:             "Consommateur"
+admin.super.newsletter.form.producer:             "Producteur"
+admin.super.newsletter.form.allAssociation:       "Toute les associations"
+admin.super.newsletter.form.recipientType:        "Destinataires"
+admin.super.newsletter.form.subject:              "Object"
+admin.super.newsletter.form.body:                 "Message"
+admin.super.newsletter.form.send_test_message:    "Envoyer un message test"
+admin.super.newsletter.form.all:                  "Toute les associations"
+admin.super.newsletter.message.created:           "La lettre d'information a bien été créé et vous a été envoyé par email "
+admin.super.newsletter.message.sent:              "Message envoyé"
+admin.super.newsletter.message.alreadySent:       "Vous avez déjà confirmé cette lettre d'information"
 
 # Admin / Association / Menu
-admin.association.menu.dashboard: "Tableau de bord"
-admin.association.menu.orders:    "Caisse"
-admin.association.menu.branches:  "Comptoirs"
-admin.association.menu.consumers: "Consommateurs"
-admin.association.menu.news:      "Actualité"
+admin.association.menu.dashboard:   "Tableau de bord"
+admin.association.menu.orders:      "Caisse"
+admin.association.menu.branches:    "Comptoirs"
+admin.association.menu.consumers:   "Consommateurs"
+admin.association.menu.news:        "Actualité"
+admin.association.menu.newsletter:  "Lettre d'information"
 
 # Admin / Association / Dashboard
 admin.association.dashboard.title: "Tableau de bord"
@@ -344,6 +359,19 @@ admin.association.articles.message.deleted:       "L'article a bien été suppri
 admin.association.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
 # Admin / Association / Newsletter
+admin.association.newsletter.form.new_title:            "Nouvelle lettre d'information"
+admin.association.newsletter.form.edit_title:           "Lettre d'information %title%"
+admin.association.newsletter.form.consumer:             "Consommateur"
+admin.association.newsletter.form.producer:             "Producteur"
+admin.association.newsletter.form.allAssociation:       "Toute l'association"
+admin.association.newsletter.form.recipientType:        "Destinataires"
+admin.association.newsletter.form.subject:              "Object"
+admin.association.newsletter.form.body:                 "Message"
+admin.association.newsletter.form.send_test_message:    "Envoyer un message test"
+admin.association.newsletter.form.all:                  "Toute l'association"
+admin.association.newsletter.message.created:           "La lettre d'information a bien été créé et vous a été envoyé par email "
+admin.association.newsletter.message.sent:              "Message envoyé"
+admin.association.newsletter.message.alreadySent:       "Vous avez déjà confirmé cette lettre d'information, vous ne pouvez donc ni la modifier, ni l'envoyer de nouveau"
 
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"
@@ -490,7 +518,8 @@ activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règl
 activity_stream.sales_order.payment.allocated:          "a affecté un règlement à la commande %order_ref% (montant : %amount%)."
 activity_stream.article.created:                        "a créé l'article %title%."
 activity_stream.article.updated:                        "a modifié l'article %title%."
-
+activity_stream.newsletter.created:                     "a créé la newsletter %subject%"
+activity_stream.newsletter.updated:                     "a modifié la newsletter %subject%"
 
 
 # Errors
@@ -557,3 +586,7 @@ mail.consumer.new_order.order.quantity:  "Quantité"
 mail.consumer.new_order.order.row_total: "Total"
 mail.consumer.new_order.order.total:     "TOTAL"
 mail.consumer.new_order.order.comment:   "Votre commentaire :"
+mail.newsletter.confim_send:             "Oui"
+mail.newsletter.edit:                    "Non"
+mail.newsletter.confim_send.info:        "Envoyer à tous les destinataires"
+mail.newsletter.edit.info:               "Corriger et envoyer un nouveau message test"

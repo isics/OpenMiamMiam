@@ -11,29 +11,45 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NewsletterType 
+class SuperNewsletterType extends AbstractType
 {
     /**
      * Builds the form
      *
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param FormBuilderInterface  $builder
+     * @param array                 $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('recipientType', 'choice', array(
                     'choices' => array(
+                        '1' => 'admin.super.newsletter.form.consumer',
+                        '2' => 'admin.super.newsletter.form.producer'
                     ),
+                    'multiple' => true,
                     'expanded' => true,
                 ))
-                ->add('Object', 'text')
-                ->add('message', 'textarea')
-                ->add('save', 'submit');
+                ->add('branches', 'entity', array(
+                    'class' => 'IsicsOpenMiamMiamBundle:Branch',
+                    'property' => 'nameWithAssociation',
+                    'empty_value' => '',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'by_reference' => false,
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('b')
+                            ->addOrderBy('b.association')
+                            ->addOrderBy('b.name');
+                    },
+                ))
+                ->add('subject', 'text')
+                ->add('body', 'textarea');
     }
     
     /**

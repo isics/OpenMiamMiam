@@ -28,7 +28,7 @@ class NewsletterRepository extends entityRepository
     public function findForAssociation(Association $association)
     {
         return $this->filterAssociation($association)
-        ->addOrderBy('n.sendAt', 'desc')
+        ->addOrderBy('n.sentAt', 'desc')
         ->getQuery()
         ->getResult();
     }
@@ -41,7 +41,7 @@ class NewsletterRepository extends entityRepository
     public function findForSuper()
     {
         return $this->filterSuper()
-        ->addOrderBy('n.sendAt', 'desc')
+        ->addOrderBy('n.sentAt', 'desc')
         ->getQuery()
         ->getResult();
     }
@@ -73,19 +73,5 @@ class NewsletterRepository extends entityRepository
         $qb = null === $qb ? $this->createQueryBuilder('n') : $qb;
     
         return $qb->andWhere('n.association IS NULL');
-    }
-
-    /**
-     * Filters unconfirmed newsletter
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return QueryBuilder
-     */
-    public function filterUnconfirmed(QueryBuilder $qb = null)
-    {
-        $qb = null === $qb ? $this->createQueryBuilder('n') : $qb;
-    
-        return $qb->andWhere('n.is_confirmed = false');
     }
 }
