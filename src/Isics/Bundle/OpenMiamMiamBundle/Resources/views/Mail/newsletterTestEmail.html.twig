@@ -1,0 +1,44 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Mail:base.html.twig' %}
+
+{% block content %}
+
+    {{ newsletter.body|raw }}
+
+    <div class="row">
+        {% if newsletter.association is not null %}
+            <div class="col-md-6">
+                <a href="{{ url('open_miam_miam.admin.association.newsletter.confirm_send', {'id': association.id, 'newsletterId': newsletter.id}) }}" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    {{ 'mail.newsletter.confim_send'|trans }}
+                </a>
+            </div>
+                <div class="col-md-6">
+                <a href="{{ url('open_miam_miam.admin.association.newsletter.edit', {'id': association.id, 'newsletterId': newsletter.id}) }}" class="btn">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    {{ 'mail.newsletter.edit'|trans }}
+                </a>
+            </div>
+        {% else %}
+            <div class="col-md-6">
+                <a href="{{ url('open_miam_miam.admin.super.newsletter.confirm_send', {'newsletterId': newsletter.id}) }}" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    {{ 'mail.newsletter.confim_send'|trans }}
+                </a>
+            </div>
+                <div class="col-md-6">
+                <a href="{{ url('open_miam_miam.admin.super.newsletter.edit', {'newsletterId': newsletter.id}) }}" class="btn">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    {{ 'mail.newsletter.edit'|trans }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

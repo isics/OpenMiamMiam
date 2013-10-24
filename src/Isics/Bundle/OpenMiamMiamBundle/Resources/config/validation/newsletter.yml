@@ -1,0 +1,10 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter:
+    properties:
+        subject:
+            - NotNull: ~
+            - Length:
+                max: 128
+        body:
+            - NotNull: ~
+        sentAt:
+            - DateTime: ~
