@@ -147,12 +147,13 @@ admin.login.email.placeholder:    "Adresse e-mail"
 admin.login.password.placeholder: "Mot de passe"
 admin.login.submit:               "Connexion"
 
-
-
 # Admin index
 admin.index.title: "Choisissez un rôle :"
 
-
+# Admin recipient type
+recipient.type.all: "Clients et producteurs"
+recipient.type.producers: "Producteurs"
+recipient.type.consumers: "Clients"
 
 # Admin / Super / Menu
 admin.super.menu.dashboard:   "Tableau de bord"
@@ -198,7 +199,7 @@ admin.super.newsletter.form.consumer:             "Consommateur"
 admin.super.newsletter.form.producer:             "Producteur"
 admin.super.newsletter.form.allAssociation:       "Toute les associations"
 admin.super.newsletter.form.recipientType:        "Destinataires"
-admin.super.newsletter.form.subject:              "Object"
+admin.super.newsletter.form.subject:              "Objet"
 admin.super.newsletter.form.body:                 "Message"
 admin.super.newsletter.form.send_test_message:    "Envoyer un message test"
 admin.super.newsletter.form.all:                  "Toute les associations"
@@ -365,7 +366,7 @@ admin.association.newsletter.form.consumer:             "Consommateur"
 admin.association.newsletter.form.producer:             "Producteur"
 admin.association.newsletter.form.allAssociation:       "Toute l'association"
 admin.association.newsletter.form.recipientType:        "Destinataires"
-admin.association.newsletter.form.subject:              "Object"
+admin.association.newsletter.form.subject:              "Objet"
 admin.association.newsletter.form.body:                 "Message"
 admin.association.newsletter.form.send_test_message:    "Envoyer un message test"
 admin.association.newsletter.form.all:                  "Toute l'association"

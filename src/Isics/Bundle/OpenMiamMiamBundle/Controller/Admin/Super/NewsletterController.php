@@ -65,8 +65,7 @@ class NewsletterController extends Controller
      */
     public function editAction(Request $request, Newsletter $newsletter)
     {
-        if($newsletter->getSentAt() == null)
-        {
+        if($newsletter->getSentAt() == null) {
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
             $user= $this->get('security.context')->getToken()->getUser();
 
@@ -108,8 +107,7 @@ class NewsletterController extends Controller
      */
     public function confirmSendAction(Newsletter $newsletter)
     {
-        if($newsletter->getSentAt() == null)
-        {
+        if($newsletter->getSentAt() == null) {
             $user= $this->get('security.context')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
             $newsletterManager->send($newsletter);
@@ -120,8 +118,7 @@ class NewsletterController extends Controller
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
         }
-        else
-        {
+        else {
             $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.alreadySent');
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));

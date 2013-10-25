@@ -1,5 +1,7 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter:
     properties:
+        recipientType:
+            - NotNull: ~
         subject:
             - NotNull: ~
             - Length:

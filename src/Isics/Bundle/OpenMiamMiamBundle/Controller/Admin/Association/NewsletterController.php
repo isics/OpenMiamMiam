@@ -65,14 +65,14 @@ class NewsletterController extends BaseController
      */
     public function editAction(Request $request, Newsletter $newsletter, Association $association)
     {
-        if($newsletter->getSentAt() == null)
-        {
+        if($newsletter->getSentAt() == null) {
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
             $user= $this->get('security.context')->getToken()->getUser();
 
             $form = $this->getForm($newsletter);
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
+                
                 if ($form->isValid()) {
                     $user= $this->get('security.context')->getToken()->getUser();
                     $newsletterManager->save($newsletter, $user);
@@ -90,8 +90,7 @@ class NewsletterController extends BaseController
                     'form'        => $form->createView(),
             ));
         }
-        else 
-        {
+        else {
             $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.alreadySent');
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
@@ -110,8 +109,7 @@ class NewsletterController extends BaseController
      */
     public function confirmSendAction(Newsletter $newsletter)
     {
-        if($newsletter->getSentAt() == null)
-        {
+        if($newsletter->getSentAt() == null) {
             $user= $this->get('security.context')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
             $newsletterManager->send($newsletter);
@@ -122,8 +120,7 @@ class NewsletterController extends BaseController
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
         }
-        else
-        {
+        else {
             $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.alreadySent');
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));

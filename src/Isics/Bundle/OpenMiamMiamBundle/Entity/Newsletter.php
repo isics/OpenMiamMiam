@@ -46,9 +46,9 @@ class Newsletter
     private $association;
 
     /**
-     * @var array $recipientType
+     * @var integer $recipientType
      *
-     * @ORM\Column(name="recipient_type", type="array", nullable=false)
+     * @ORM\Column(name="recipient_type", type="integer", nullable=false)
      */
     private $recipientType;
 
@@ -74,19 +74,6 @@ class Newsletter
     private $sentAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Association", inversedBy="newsletters")
-     * @ORM\JoinTable(name="newsletter_has_association",
-     *   joinColumns={
-     *      @ORM\JoinColumn(name="newsletter_id", referencedColumnName="id", onDelete="CASCADE")
-     *   },
-     *   inverseJoinColumns={
-     *      @ORM\JoinColumn(name="association_id", referencedColumnName="id", onDelete="CASCADE")
-     *   }
-     * )
-     */
-    private $associations;
-
-    /**
      * @var Doctrine\Common\Collections\Collection $branches
      * 
      * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
@@ -106,7 +93,6 @@ class Newsletter
      */
     public function __construct()
     {
-        $this->associations = new ArrayCollection();
         $this->branches = new ArrayCollection();
     }
 
@@ -305,71 +291,6 @@ class Newsletter
     {
         foreach ($this->getBranches() as $_branch) {
             if ($_branch->getId() === $branch->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Add association
-     *
-     * @param Association $association
-     * @return Newsletter
-     */
-    public function addAssociation(Association $association)
-    {
-        $this->associations[] = $association;
-
-        return $this;
-    }
-
-    /**
-     * Remove association
-     *
-     * @param Association $association
-     */
-    public function removeAssociation(Association $association)
-    {
-        $this->associations->removeElement($association);
-    }
-
-    /**
-     * Get associations
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAssociations()
-    {
-        return $this->associations;
-    }
-
-    /**
-     * Set associations
-     *
-     * @param \Doctrine\Common\Collections\Collection $associations Associations
-     */
-    public function setAssociations($associations)
-    {
-        $this->associations = new ArrayCollection();
-
-        foreach ($associations as $association) {
-            $this->addAssociation($association);
-        }
-    }
-
-    /**
-     * Returns true if newsletter has association
-     *
-     * @param Association $association
-     *
-     * @return boolean
-     */
-    public function hasAssociation(Association $association)
-    {
-        foreach ($this->getAssociations() as $_association) {
-            if ($_association->getId() === $association->getId()) {
                 return true;
             }
         }

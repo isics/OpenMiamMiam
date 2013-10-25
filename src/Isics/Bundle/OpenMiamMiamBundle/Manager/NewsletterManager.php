@@ -126,7 +126,8 @@ class NewsletterManager
         $activityTransKey = null;
         if (null === $newsletter->getId()) {
             $activityTransKey = 'activity_stream.newsletter.created';
-        } else {
+        } 
+        else {
             $unitOfWork = $this->entityManager->getUnitOfWork();
             $unitOfWork->computeChangeSets();
 
@@ -161,49 +162,36 @@ class NewsletterManager
      */
     public function send(Newsletter $newsletter)
     {
-
-        $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterEmail.html.twig', array('newsletter' => $newsletter));
-
+        $recipients = array();
         $recipientType = $newsletter->getRecipientType();
 
-        if($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER)
-        {
-            if($newsletter->hasAssociation() == true)
-            {
-                $to = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findConsumerForAssociation($newsletter->getAssociations());
-            }
-            else
-            {
-                $to = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findConsumerForBranch($newsletter->getBranches());
-            } 
-        }
-        else if($recipientType === Newsletter::RECIPIENT_TYPE_PRODUCER)
-        {
-            if($newsletter->hasAssociation() == true)
-            {
-                $to = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findProducerForAssociation($newsletter->getAssociations());
-            }
-            else
-            {
-                $to = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findProducerForBranch($newsletter->getBranches());
-            } 
-        }
-        else
-        {
-            $to = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->FindAll(
-                    $newsletter->getAssociations(), 
-                    $newsletter->getBranches()
-                );  
-        }
+        if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL ) {
 
-        $message = \Swift_Message::newInstance()
-            ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
-            ->setTo('anciaux.dimitri.lycee@gmail.com')
-            ->setSubject($newsletter->getSubject())
-            ->setBody($body, 'text/html');
+            $consumers = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findConsumersForBranches($newsletter->getBranches());
 
-        $this->mailer->send($message);
+            $recipients = array_merge($recipients, $consumers);
+        }
+        if ($recipientType === Newsletter::RECIPIENT_TYPE_PRODUCER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) { 
 
+            $producers = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findProducersForBranches($newsletter->getBranches());
+
+            $recipients = array_merge($recipients, $producers);
+
+        }
+        
+        foreach ($recipients as $recipient) {
+
+            $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterEmail.html.twig', array('newsletter' => $newsletter));
+
+            $message = \Swift_Message::newInstance()
+                ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
+                ->setTo($recipient->getEmail())
+                ->setSubject($newsletter->getSubject())
+                ->setBody($body, 'text/html');
+
+            $this->mailer->send($message);
+
+        }
     }
 
     /**
@@ -219,7 +207,7 @@ class NewsletterManager
 
         $message = \Swift_Message::newInstance()
             ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
-            ->setTo('anciaux.dimitri.lycee@gmail.com')
+            ->setTo($user->getEmail())
             ->setSubject($newsletter->getSubject())
             ->setBody($body, 'text/html');
 
@@ -239,7 +227,7 @@ class NewsletterManager
 
         $message = \Swift_Message::newInstance()
             ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
-            ->setTo('anciaux.dimitri.lycee@gmail.com')
+            ->setTo($user->getEmail())
             ->setSubject($newsletter->getSubject())
             ->setBody($body, 'text/html');
 

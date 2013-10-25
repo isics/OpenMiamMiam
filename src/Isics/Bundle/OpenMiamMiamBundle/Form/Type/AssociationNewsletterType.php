@@ -32,11 +32,13 @@ class AssociationNewsletterType extends AbstractType implements EventSubscriberI
     {
         $builder->add('recipientType', 'choice', array(
                     'choices' => array(
-                        '1' => 'admin.association.newsletter.form.consumer',
-                        '2' => 'admin.association.newsletter.form.producer'
+                        Newsletter::RECIPIENT_TYPE_ALL => 'recipient.type.all',
+                        Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
+                        Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
                     ),
-                    'multiple' => true,
+                    'multiple' => false,
                     'expanded' => true,
+                    'required' => true, 
                 ))
                 ->add('all', 'checkbox', array(
                     'mapped' => false,
@@ -75,6 +77,7 @@ class AssociationNewsletterType extends AbstractType implements EventSubscriberI
                     'multiple' => true,
                     'expanded' => true,
                     'by_reference' => false,
+                    'required' => true,
                     'query_builder' => function(EntityRepository $er) use ($association) {
                         return $er->createQueryBuilder('b')
                         ->where('b.association = :association')
