@@ -75,7 +75,7 @@ class Newsletter
 
     /**
      * @var Doctrine\Common\Collections\Collection $branches
-     * 
+     *
      * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
      * @ORM\JoinTable(name="newsletter_has_branch",
      *   joinColumns={

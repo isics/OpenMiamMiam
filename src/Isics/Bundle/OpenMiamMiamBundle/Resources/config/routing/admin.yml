@@ -49,9 +49,9 @@ open_miam_miam.admin.super.newsletter.edit:
     pattern:  /super/newsletters/{newsletterId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:edit }
 
-open_miam_miam.admin.super.newsletter.confirm_send:
+open_miam_miam.admin.super.newsletter.send:
     pattern:  /super/newsletters/{newsletterId}/send
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:confirmSend }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:send }
 
 #
 # Admin Association
@@ -164,9 +164,9 @@ open_miam_miam.admin.association.newsletter.edit:
     pattern:  /associations/{id}/newsletters/{newsletterId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:edit }
 
-open_miam_miam.admin.association.newsletter.confirm_send:
+open_miam_miam.admin.association.newsletter.send:
     pattern:  /associations/{id}/newsletters/{newsletterId}/send
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:confirmSend }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:send }
 
 #
 # Admin Producer

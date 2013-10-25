@@ -87,8 +87,8 @@ QUERY;
     /**
      * Return Producer of branches
      *
-     *@param \Doctrine\Common\Collections\Collection $branches
-     * 
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
      * @return array
      */
     public function findProducersForBranches($branches)
@@ -97,15 +97,15 @@ QUERY;
     }
 
     /**
-     * Returns query builder to find consumers of an branch
+     * Returns query builder to find consumers of branches
      *
-     * @param Branch $branch
+     * @param \Doctrine\Common\Collections\Collection $branches
      *
      * @return QueryBuilder
      */
-    public function getConsumersForBranchesQueryBuilder(Branch $branch)
+    public function getConsumersForBranchesQueryBuilder($branches)
     {
-        return $this->filterConsumersForBranches($branch);
+        return $this->filterConsumersForBranches($branches);
     }
 
     /**
@@ -113,34 +113,34 @@ QUERY;
      *
      * @param \Doctrine\Common\Collections\Collection $branches
      *
-     * @return array $consumers
+     * @return array Consumers
      */
     public function findConsumersForBranches($branches)
     {
-        foreach ($branches as $branch) {
-            $consumers = $this->getConsumersForBranchesQueryBuilder($branch)
-                        ->getQuery()
-                        ->getResult();
-        }
-        return $consumers;
+        return $this->getConsumersForBranchesQueryBuilder($branches)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
-     * Filters consumers of an branches
+     * Filters consumers of branches
      *
-     * @param Branch        $branch
-     * @param QueryBuilder  $qb
-     * @param string        $alias
+     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param QueryBuilder                            $qb
      *
      * @return QueryBuilder
      */
-    public function filterConsumersForBranches(Branch $branch, QueryBuilder $qb = null)
+    public function filterConsumersForBranches($branches, QueryBuilder $qb = null)
     {
         $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
 
-        return $qb->Join('u.salesOrders', 's')
-            ->Join('s.branchOccurrence', 'bo')
-            ->Join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
-            ->setParameter('branch', $branch);
+        $branchesIds = array();
+        foreach ($branches as $branch) {
+            $branchesIds[] = $branch->getId();
+        }
+
+        return $qb->join('u.salesOrders', 's')
+            ->join('s.branchOccurrence', 'bo')
+            ->join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->in('b.id', $branchesIds));
     }
 }

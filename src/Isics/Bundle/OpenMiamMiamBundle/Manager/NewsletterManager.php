@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class NewsletterManager
- * 
+ *
  * @package Isics\Bundle\OpenMiamMiamBundle\Manager
  */
 class NewsletterManager
@@ -60,7 +60,7 @@ class NewsletterManager
      * @param array             $mailerConfig
      * @param EngineInterface   $engine
      */
-    public function __construct(EntityManager $entityManager, 
+    public function __construct(EntityManager $entityManager,
                                 ActivityManager $activityManager,
                                 \Swift_Mailer $mailer,
                                 array $mailerConfig,
@@ -75,7 +75,7 @@ class NewsletterManager
         $this->setMailerConfigResolverDefaultOptions($resolver);
         $this->mailerConfig = $resolver->resolve($mailerConfig);
     }
-    
+
     /**
      * Set the defaults options
      *
@@ -87,7 +87,7 @@ class NewsletterManager
     }
 
     /**
-     * Returns a new newsletter for a association
+     * Returns a new newsletter for an association
      *
      * @param Association $association
      *
@@ -97,10 +97,15 @@ class NewsletterManager
     {
         $newsletter = new Newsletter();
         $newsletter->setAssociation($association);
-        
+
+        $newsletter->setRecipientType(Newsletter::RECIPIENT_TYPE_ALL);
+
+        // Select all association branches
+        $newsletter->setBranches($association->getBranches());
+
         return $newsletter;
     }
-    
+
     /**
      * Returns a new newsletter for super
      *
@@ -109,10 +114,10 @@ class NewsletterManager
     public function createForSuper()
     {
         $newsletter = new Newsletter();
-        
+
         return $newsletter;
     }
-    
+
     /**
      * Saves a newsletter
      *
@@ -126,7 +131,7 @@ class NewsletterManager
         $activityTransKey = null;
         if (null === $newsletter->getId()) {
             $activityTransKey = 'activity_stream.newsletter.created';
-        } 
+        }
         else {
             $unitOfWork = $this->entityManager->getUnitOfWork();
             $unitOfWork->computeChangeSets();
@@ -156,54 +161,65 @@ class NewsletterManager
     }
 
     /**
-     * Send email to consumer and/or producer
+     * Send email to consumers and/or producers
      *
      * @param Newsletter $newsletter
+     * @param User       $user
+     *
+     * @return integer Number of recipients
      */
-    public function send(Newsletter $newsletter)
+    public function send(Newsletter $newsletter, $user)
     {
-        $recipients = array();
+        $recipients    = array();
         $recipientType = $newsletter->getRecipientType();
 
-        if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL ) {
-
-            $consumers = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findConsumersForBranches($newsletter->getBranches());
+        if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
+            $consumers = $this->entityManager
+                ->getRepository('IsicsOpenMiamMiamUserBundle:User')
+                ->findConsumersForBranches($newsletter->getBranches());
 
             $recipients = array_merge($recipients, $consumers);
         }
-        if ($recipientType === Newsletter::RECIPIENT_TYPE_PRODUCER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) { 
 
-            $producers = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findProducersForBranches($newsletter->getBranches());
+        if ($recipientType === Newsletter::RECIPIENT_TYPE_PRODUCER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
+            $producers = $this->entityManager
+                ->getRepository('IsicsOpenMiamMiamUserBundle:User')
+                ->findProducersForBranches($newsletter->getBranches());
 
             $recipients = array_merge($recipients, $producers);
-
         }
-        
-        foreach ($recipients as $recipient) {
 
-            $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterEmail.html.twig', array('newsletter' => $newsletter));
+        $nbRecipients = count($recipients);
 
-            $message = \Swift_Message::newInstance()
-                ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
-                ->setTo($recipient->getEmail())
-                ->setSubject($newsletter->getSubject())
-                ->setBody($body, 'text/html');
+        if (0 < $nbRecipients) {
+            foreach ($recipients as $recipient) {
+                $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterEmail.html.twig', array('newsletter' => $newsletter));
 
-            $this->mailer->send($message);
+                $message = \Swift_Message::newInstance()
+                    ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
+                    ->setTo($recipient->getEmail())
+                    ->setSubject($newsletter->getSubject())
+                    ->setBody($body, 'text/html');
 
+                $this->mailer->send($message);
+            }
         }
+
+        // $newsletter->setSentAt(new \DateTime());
+        $this->save($newsletter, $user);
+
+        return $nbRecipients;
     }
 
     /**
-     * Send Test email Super
+     * Send test
      *
-     * @param Newsletter  $newsletter
-     * @param User        $user
-     * 
+     * @param Newsletter $newsletter
+     * @param User       $user
      */
-    public function sendTestSuper(Newsletter $newsletter, User $user)
+    public function sendTest(Newsletter $newsletter, User $user)
     {
-        $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTestEmail.html.twig', array('newsletter' => $newsletter));
+        $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTest.html.twig', array('newsletter' => $newsletter));
 
         $message = \Swift_Message::newInstance()
             ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -215,23 +231,15 @@ class NewsletterManager
     }
 
     /**
-     * Send Test email Association
+     * Save newsletter and send test
      *
-     * @param Newsletter  $newsletter
-     * @param User        $user
-     * @param Association $association
+     * @param Newsletter $newsletter
+     * @param User       $user
      */
-    public function sendTest(Newsletter $newsletter, User $user, Association $association)
+    public function saveAndSendTest(Newsletter $newsletter, User $user)
     {
-        $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTestEmail.html.twig', array('newsletter' => $newsletter, 'association' => $association));
-
-        $message = \Swift_Message::newInstance()
-            ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
-            ->setTo($user->getEmail())
-            ->setSubject($newsletter->getSubject())
-            ->setBody($body, 'text/html');
-
-        $this->mailer->send($message);
+        $this->save($newsletter);
+        $this->sendTest($newsletter, $user);
     }
 
     /**

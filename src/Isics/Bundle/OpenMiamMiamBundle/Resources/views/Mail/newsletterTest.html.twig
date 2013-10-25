@@ -1,0 +1,68 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Mail:newsletter.html.twig' %}
+
+{% block content %}
+    {{ parent() }}
+
+    <hr />
+    <h2>{{ 'mail.newsletter_test.confirm_title'|trans }}</h2>
+
+    {% set association = newsletter.association %}
+    {% if association is not null %}
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="{{ url('open_miam_miam.admin.association.newsletter.send', {'id': association.id, 'newsletterId': newsletter.id}) }}">
+                            {{ 'mail.newsletter_test.send'|trans }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url('open_miam_miam.admin.association.newsletter.edit', {'id': association.id, 'newsletterId': newsletter.id}) }}">
+                            {{ 'mail.newsletter_test.edit'|trans }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ 'mail.newsletter_test.send_help'|trans }}
+                    </td>
+                    <td>
+                        {{ 'mail.newsletter_test.edit_help'|trans }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="{{ url('open_miam_miam.admin.super.newsletter.send', {'newsletterId': newsletter.id}) }}">
+                            {{ 'mail.newsletter_test.send'|trans }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url('open_miam_miam.admin.super.newsletter.edit', {'newsletterId': newsletter.id}) }}">
+                            {{ 'mail.newsletter_test.edit'|trans }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ 'mail.newsletter_test.send_help'|trans }}
+                    </td>
+                    <td>
+                        {{ 'mail.newsletter_test.edit_help'|trans }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

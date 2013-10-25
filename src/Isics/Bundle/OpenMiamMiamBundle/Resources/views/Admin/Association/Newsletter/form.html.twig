@@ -11,22 +11,32 @@
 
     {{ form_errors(form) }}
 
-    {{ form_row(form.recipientType, {'label': 'admin.association.newsletter.form.recipientType'|trans}) }}
-
-    {{ form_row(form.all, {'label': 'admin.association.newsletter.form.all'|trans}) }}
-
-    {{ form_errors(form.branches) }}
-    {{ form_widget(form.branches) }}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ form_label(form.recipientType, 'admin.association.newsletter.form.recipients'|trans) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_errors(form.branches) }}
+                    {{ form_widget(form.branches) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_errors(form.recipientType) }}
+                    {{ form_widget(form.recipientType) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{ form_row(form.subject, {'label': 'admin.association.newsletter.form.subject'|trans}) }}
 
-    {{ form_row(form.body, {'label': 'admin.association.newsletter.form.body'|trans, 'attr': {'class': 'tinymce'}}) }}
-    
+    {{ form_row(form.body, {'label': 'admin.association.newsletter.form.body'|trans, 'attr': {'rows': 10, 'class': 'tinymce'}}) }}
+
     <div class="edit-producer-button">
-            <button type="submit" class="btn btn-primary btn-lg" />
-                <span class="glyphicon glyphicon-envelope"></span>
-                {{ 'admin.association.newsletter.send_test_message'|trans }}
-            </button>
-        </div>
+        <button type="submit" class="btn btn-primary btn-lg" />
+            <span class="glyphicon glyphicon-envelope"></span>
+            {{ 'admin.association.newsletter.form.send_test'|trans }}
+        </button>
+    </div>
+    {% do form.send.setRendered %}
 
 {{ form_end(form) }}
