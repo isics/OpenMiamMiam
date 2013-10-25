@@ -102,3 +102,28 @@
     {% endfor %}
 {% endspaceless %}
 {% endblock choice_widget_expanded %}
+
+{% block date_widget %}
+{% spaceless %}
+    {% if widget == 'single_text' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {{ date_pattern|replace({
+            '{{ year }}':  form_widget(form.year, {'attr': attr}),
+            '{{ month }}': form_widget(form.month, {'attr': attr}),
+            '{{ day }}':   form_widget(form.day, {'attr': attr}),
+        })|raw }}
+    {% endif %}
+{% endspaceless %}
+{% endblock date_widget %}
+
+{% block time_widget %}
+{% spaceless %}
+    {% if widget == 'single_text' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {% set vars = widget == 'text' ? { 'attr': attr|merge({ 'size': 1 })} : {'attr': attr} %}
+        {{ form_widget(form.hour, vars) }}{% if with_minutes %}:{{ form_widget(form.minute, vars) }}{% endif %}{% if with_seconds %}:{{ form_widget(form.second, vars) }}{% endif %}
+    {% endif %}
+{% endspaceless %}
+{% endblock time_widget %}

@@ -46,7 +46,9 @@
                             {{ nbProducers }}
                         </td>
                         <td>
-                            {{ nextOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL')) }}
+                            {% if nextOccurrence is not null %}
+                                {{ nextOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL')) }}
+                            {% endif %}
                         </td>
                         <td>
                             <a href="{{ path('open_miam_miam.admin.association.branch.edit', {'id': association.id, 'branchId': branch.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.branch.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>

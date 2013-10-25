@@ -12,8 +12,10 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 
 class BranchOccurrenceRepository extends EntityRepository
 {
@@ -90,13 +92,18 @@ class BranchOccurrenceRepository extends EntityRepository
             ));
         }
 
-        return $this->createQueryBuilder('bo')
+        $qb = $this->createQueryBuilder('bo')
             ->where('bo.branch = :branch')
             ->andWhere('bo.begin >= :date')
             ->orderBy('bo.begin')
-            ->setMaxResults($limit)
             ->setParameter('branch', $branch)
-            ->setParameter('date', $date)
+            ->setParameter('date', $date);
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb
             ->getQuery()
             ->getResult();
     }
@@ -156,5 +163,61 @@ class BranchOccurrenceRepository extends EntityRepository
                 ->setParameter('stop', $stop)
                 ->getQuery()
                 ->getResult();
+    }
+
+    /**
+     * Finds farthest occurrences for a branch
+     *
+     * @param Branch  $branh
+     * @param integer $limit
+     *
+     * @return array
+     */
+    public function findFarthestForBranch(Branch $branch, $limit = null)
+    {
+        $qb = $this->createQueryBuilder('bo')
+            ->where('bo.branch = :branch')
+            ->setParameter('branch', $branch)
+            ->addOrderBy('bo.begin', 'DESC');
+
+        if (null != $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns true if $branchOccurrence is overlapping another occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return boolean
+     */
+    public function isOverlapping(BranchOccurrence $branchOccurrence)
+    {
+        $qb = $this->createQueryBuilder('bo');
+
+        return $qb
+            ->select('COUNT(bo.id)')
+            ->where('bo.branch = :branch')
+            ->andWhere(
+                $qb->expr()->orx(
+                    $qb->expr()->andx(
+                        $qb->expr()->lte('bo.begin', ':begin'),
+                        $qb->expr()->gte('bo.end', ':begin')
+                    ),
+                    $qb->expr()->andx(
+                        $qb->expr()->lte('bo.begin', ':end'),
+                        $qb->expr()->gte('bo.end', ':end')
+                    )
+                )
+            )
+            ->setParameter('branch', $branchOccurrence->getBranch())
+            ->setParameter('begin', $branchOccurrence->getBegin())
+            ->setParameter('end', $branchOccurrence->getEnd())
+            ->getQuery()
+            ->getSingleScalarResult() > 0;
     }
 }

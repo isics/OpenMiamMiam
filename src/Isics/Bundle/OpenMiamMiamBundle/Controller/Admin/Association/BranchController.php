@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -102,7 +103,7 @@ class BranchController extends BaseController
      *
      * @param Request     $request
      * @param Association $association
-     * @param Branch     $branch
+     * @param Branch      $branch
      *
      * @return Response
      */
@@ -132,6 +133,87 @@ class BranchController extends BaseController
             'association' => $association,
             'form'        => $form->createView(),
             'activities'  => $branchManager->getActivities($branch),
+        ));
+    }
+
+    /**
+     * Edit branch's calendar
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchId": "id"}})
+     *
+     * @param Request     $request
+     * @param Association $association
+     * @param Branch      $branch
+     *
+     * @return Response
+     */
+    public function editCalendarAction(Request $request, Association $association, Branch $branch)
+    {
+        $this->secure($association);
+
+        $branchOccurrences = $this->getDoctrine()
+            ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+            ->findAllNextForBranch($branch, false, null);
+
+        $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
+
+        $branchOccurrence = $branchOccurrenceManager->createForBranch($branch);
+
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.branch_occurrence'),
+            $branchOccurrence,
+            array(
+                'action' => $this->generateUrl('open_miam_miam.admin.association.branch.edit_calendar', array('id' => $association->getId(), 'branchId' => $branch->getId())),
+                'method' => 'POST',
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $branchOccurrenceManager->save($branchOccurrence, $this->get('security.context')->getToken()->getUser());
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.calendar.message.created');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.branch.edit_calendar',
+                    array('id' => $association->getId(), 'branchId' => $branch->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:editCalendar.html.twig', array(
+            'branch'            => $branch,
+            'branchOccurrences' => $branchOccurrences,
+            'form'              => $form->createView(),
+        ));
+    }
+
+    /**
+     * Delete branch occurrence
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchId": "id"}})
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Association      $association
+     * @param Branch           $branch
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return Response
+     */
+    public function deleteOccurrenceAction(Association $association, Branch $branch, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($association);
+        $this->secureBranch($association, $branch);
+
+        $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
+        $branchOccurrenceManager->delete($branchOccurrence);
+
+        $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.calendar.message.deleted');
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.association.branch.edit_calendar',
+            array('id' => $association->getId(), 'branchId' => $branch->getId())
         ));
     }
 

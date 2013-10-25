@@ -107,6 +107,47 @@ class BranchOccurrence
     }
 
     /**
+     * @see getBegin()
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->getBegin();
+    }
+
+    /**
+     * @see setBegin()
+     */
+    public function setDate(\DateTime $date)
+    {
+        return $this->setBegin($date);
+    }
+
+    /**
+     * @see getBegin()
+     *
+     * @return \DateTime
+     */
+    public function getBeginTime()
+    {
+        return $this->getBegin();
+    }
+
+    /**
+     * Set begin time
+     *
+     * @param \DateTime
+     */
+    public function setBeginTime($time)
+    {
+        $this->begin->setTime(
+            (int) $time->format('H'),
+            (int) $time->format('i')
+        );
+    }
+
+    /**
      * Set end
      *
      * @param \DateTime $ebd
@@ -128,6 +169,31 @@ class BranchOccurrence
     public function getEnd()
     {
         return $this->end;
+    }
+
+    /**
+     * @see getEnd()
+     *
+     * @return \DateTime
+     */
+    public function getEndTime()
+    {
+        return $this->getEnd();
+    }
+
+    /**
+     * Set end time
+     *
+     * @param \DateTime
+     */
+    public function setEndTime($time)
+    {
+        $this->setEnd(clone $this->getBegin());
+
+        $this->end->setTime(
+            (int) $time->format('H'),
+            (int) $time->format('i')
+        );
     }
 
     /**

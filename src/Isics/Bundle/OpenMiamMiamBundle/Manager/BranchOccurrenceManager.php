@@ -17,6 +17,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ProductAvailability;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class BranchOccurrenceManager
 {
@@ -24,6 +25,11 @@ class BranchOccurrenceManager
      * @var EntityManager
      */
     protected $entityManager;
+
+    /**
+     * @var ActivityManager $activityManager
+     */
+    protected $activityManager;
 
     /**
      * @var array
@@ -35,10 +41,107 @@ class BranchOccurrenceManager
      *
      * @param EntityManager $entityManager Object Manager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, ActivityManager $activityManager)
     {
-        $this->entityManager = $entityManager;
-        $this->dates         = array();
+        $this->entityManager   = $entityManager;
+        $this->activityManager = $activityManager;
+        $this->dates           = array();
+    }
+
+    /**
+     * Create an occurrence for a branch
+     *
+     * @param Branch $branch
+     *
+     * @return BranchOccurrence
+     */
+    public function createForBranch(Branch $branch)
+    {
+        $branchOccurrence = new BranchOccurrence();
+        $branchOccurrence->setBranch($branch);
+
+        // 2 farthest occurrences
+        $farthestOccurrences = $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+            ->findFarthestForBranch($branch, 2);
+
+        $nbFarthestOccurrences = count($farthestOccurrences);
+
+        // No farthest occurrence: default tomorrow 8 A.M. - 10 P.M.
+        if (0 === $nbFarthestOccurrences) {
+            $branchOccurrence->setBegin(new \DateTime('tomorrow 8 am'));
+            $branchOccurrence->setEnd(new \DateTime('tomorrow 10 am'));
+        // 1 farthest occurrence: default +1 week, sames hours
+        } else if (1 === $nbFarthestOccurrences) {
+            $begin = clone $farthestOccurrences[0]->getBegin();
+            $end   = clone $farthestOccurrences[0]->getEnd();
+            $branchOccurrence->setBegin($begin->modify('+1 week'));
+            $branchOccurrence->setEnd($end->modify('+1 week'));
+        // 2 farthest occurrences: same frequence, sames hours
+        } else if (2 === $nbFarthestOccurrences) {
+            $begin = clone $farthestOccurrences[0]->getBegin();
+            $end   = clone $farthestOccurrences[0]->getEnd();
+            $diff  = $farthestOccurrences[1]->getBegin()->diff($farthestOccurrences[0]->getBegin())->format('%d');
+            $branchOccurrence->setBegin($begin->modify(sprintf('+%s days', $diff)));
+            $branchOccurrence->setEnd($end->modify(sprintf('+%s days', $diff)));
+        }
+
+        return $branchOccurrence;
+    }
+
+    /**
+     * Saves a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     * @param User             $user
+     */
+    public function save(BranchOccurrence $branchOccurrence, User $user = null)
+    {
+        $association = $branchOccurrence->getBranch()->getAssociation();
+
+        $activityTransKey = null;
+        if (null === $branchOccurrence->getId()) {
+            $activityTransKey = 'activity_stream.branch_occurrence.created';
+        } else {
+            $unitOfWork = $this->entityManager->getUnitOfWork();
+            $unitOfWork->computeChangeSets();
+
+            $changeSet = $unitOfWork->getEntityChangeSet($branchOccurrence);
+            if (!empty($changeSet)) {
+                $activityTransKey = 'activity_stream.branch_occurrence.updated';
+            }
+        }
+
+        // Save object
+        $this->entityManager->persist($branchOccurrence);
+        $this->entityManager->flush();
+
+        // Activity
+        if (null !== $activityTransKey) {
+            $activity = $this->activityManager->createFromEntities(
+                $activityTransKey,
+                array(
+                    '%name%' => $branchOccurrence->getBranch()->getName(),
+                    '%date%' => $branchOccurrence->getBegin(),
+                ),
+                $branchOccurrence,
+                $association,
+                $user
+            );
+            $this->entityManager->persist($activity);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * Deletes a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     */
+    public function delete(BranchOccurrence $branchOccurrence)
+    {
+        $this->entityManager->remove($branchOccurrence);
+        $this->entityManager->flush();
     }
 
     /**

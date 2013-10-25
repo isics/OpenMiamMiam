@@ -1,0 +1,90 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'admin.association.branch.calendar.title'|trans({'%name%': branch.name}) }}</h1>
+
+    {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-branch-calendar">
+                <thead>
+                <tr>
+                    <th>{{ 'admin.association.branch.calendar.date'|trans }}</th>
+                    <th>{{ 'admin.association.branch.calendar.from'|trans }}</th>
+                    <th>{{ 'admin.association.branch.calendar.to'|trans }}</th>
+                    <th>{{ 'admin.association.branch.calendar.attendees'|trans }}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for branchOccurrence in branchOccurrences %}
+                        <tr>
+                            <td>
+                                {{ branchOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL'))|capitalize }}
+                            </td>
+                            <td>
+                                {{ branchOccurrence.begin|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                            </td>
+                            <td>
+                                {{ branchOccurrence.end|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                            </td>
+                            <td>
+                                ?
+                            </td>
+                            <td>
+                                <a data-url="{{ path('open_miam_miam.admin.association.branch.delete_occurrence', {'id': branchOccurrence.branch.association.id, 'branchId': branchOccurrence.branch.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.branch.calendar.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            {{ form_errors(form.date) }}
+                            {{ form_widget(form.date, {'attr': {'class': 'input-lg'}}) }}
+                        </td>
+                        <td>
+                            {{ form_errors(form.beginTime) }}
+                            {{ form_widget(form.beginTime, {'attr': {'class': 'input-lg'}}) }}
+                        </td>
+                        <td>
+                            {{ form_errors(form.endTime) }}
+                            {{ form_widget(form.endTime, {'attr': {'class': 'input-lg'}}) }}
+                        </td>
+                        <td colspan="2">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" />
+                                <span class="glyphicon glyphicon-floppy-save"></span>
+                                {{ 'admin.add'|trans }}
+                            </button>
+                            {% do form.add.setRendered %}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    {{ form_end(form) }}
+
+    {% if branchOccurrences|length > 0 %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\Branch\\deleteOccurrenceDialog.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.DeleteDialog;
+        });
+    </script>
+    {{ tinymce_init() }}
+{% endblock %}

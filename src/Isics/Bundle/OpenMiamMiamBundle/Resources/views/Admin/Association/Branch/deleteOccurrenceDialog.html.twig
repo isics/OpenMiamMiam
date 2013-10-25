@@ -5,10 +5,8 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:deleteDialog.html.twig' %}
 
 {% block content %}
-    <h1>{{ 'admin.super.dashboard.title'|trans }}</h1>
-
-    {#% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %#}
+    {{ 'admin.association.branch.calendar.delete_dialog.content'|trans }}
 {% endblock %}
