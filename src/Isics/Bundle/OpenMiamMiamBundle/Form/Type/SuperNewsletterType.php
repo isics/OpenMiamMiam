@@ -29,11 +29,17 @@ class SuperNewsletterType extends AbstractType
     {
         $builder->add('recipientType', 'choice', array(
                     'choices' => array(
-                        '1' => 'admin.super.newsletter.form.consumer',
-                        '2' => 'admin.super.newsletter.form.producer'
+                        Newsletter::RECIPIENT_TYPE_ALL => 'recipient.type.all',
+                        Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
+                        Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
                     ),
-                    'multiple' => true,
+                    'multiple' => false,
                     'expanded' => true,
+                    'required' => true,
+                ))
+                ->add('all', 'checkbox', array(
+                    'mapped' => false,
+                    'required' => false
                 ))
                 ->add('branches', 'entity', array(
                     'class' => 'IsicsOpenMiamMiamBundle:Branch',
@@ -42,6 +48,7 @@ class SuperNewsletterType extends AbstractType
                     'multiple' => true,
                     'expanded' => true,
                     'by_reference' => false,
+                    'required' => true,
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('b')
                             ->addOrderBy('b.association')
