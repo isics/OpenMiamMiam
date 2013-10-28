@@ -20,12 +20,12 @@ Feature: Admin authentication & authorization
     And I should see "Manager access"
 
   Scenario: Redirect to the login
-    Given I am on "/admin"
+    Given I am on "/admin/"
     Then I should be on "/admin/login"
     And I should see "Manager access"
 
   Scenario: Log to the administration area but have no credentials
-    Given I am on "/admin"
+    Given I am on "/admin/"
     And I should see "Manager access"
     When I fill username field with "john@smith.com"
     And I fill password field with "secret3"
@@ -33,7 +33,7 @@ Feature: Admin authentication & authorization
     Then the response status code should be 403
 
   Scenario: Redirect to producer's administration area after logged in
-    Given I am on "/admin"
+    Given I am on "/admin/"
     And I should see "Manager access"
     When I fill username field with "foo@bar.com"
     And I fill password field with "secret1"
@@ -42,7 +42,7 @@ Feature: Admin authentication & authorization
     And the administration area switcher should be on "Elsa Dorsa"
 
   Scenario: Choose administration area after logged in
-    Given I am on "/admin"
+    Given I am on "/admin/"
     And I should see "Manager access"
     When I fill username field with "john@doe.com"
     And I fill password field with "secret2"
@@ -54,7 +54,7 @@ Feature: Admin authentication & authorization
     And the administration area switcher should be on "Elsa Dorsa"
 
   Scenario: Attempt to access not permitted administration area after login
-    Given I am on "/admin"
+    Given I am on "/admin/"
     And I should see "Manager access"
     When I fill username field with "foo@bar.com"
     And I fill password field with "secret1"
