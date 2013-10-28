@@ -1,0 +1,20 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Newsletter: ~
+    properties:
+        association:
+            - Valid: ~
+        branches:
+            - Valid: ~
+            - Count :
+                min: 1
+        recipientType:
+            - NotNull: ~
+        subject:
+            - NotNull: ~
+            - Length:
+                max: 128
+        body:
+            - NotNull: ~
+        sentAt:
+            - DateTime: ~

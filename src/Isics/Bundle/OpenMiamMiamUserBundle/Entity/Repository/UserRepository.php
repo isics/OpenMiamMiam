@@ -13,8 +13,13 @@ namespace Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 
 class UserRepository extends EntityRepository
 {
@@ -61,7 +66,7 @@ class UserRepository extends EntityRepository
         $query = <<<QUERY
             SELECT DISTINCT u.*
             FROM %s u INNER JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
-            INNER JOIN %s e ON (e.security_identity_id = si.id)
+            JOIN %s e ON (e.security_identity_id = si.id)
             ORDER BY u.lastname
 QUERY;
 
@@ -77,5 +82,101 @@ QUERY;
         $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
 
         return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
+    }
+
+    /**
+     * Return users managing producer(s)
+     *
+     * @param mixed $producer Producer or array of Producer ids
+     *
+     * @return array
+     */
+    public function findManagingProducer($producer)
+    {
+        $producersIds = array();
+        if (is_array($producer)) {
+            foreach ($producer as $_producer) {
+                $producersIds[] = $_producer;
+            }
+        } else {
+            $producersIds[] = $producer->getId();
+        }
+
+        $query = <<<QUERY
+            SELECT DISTINCT u.*
+            FROM %s u
+            JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
+            JOIN %s e ON (e.security_identity_id = si.id)
+            JOIN %s oi ON (oi.id = e.object_identity_id )
+            JOIN %s c ON (c.id = oi.class_id)
+            WHERE c.class_type = '%s'
+            AND oi.object_identifier IN (%s)
+            ORDER BY u.lastname
+QUERY;
+
+        $query = sprintf(
+            $query,
+            'fos_user',
+            'acl_security_identities',
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            'acl_entries',
+            'acl_object_identities',
+            'acl_classes',
+            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Producer'),
+            implode(',', $producersIds)
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
+    }
+
+    /**
+     * Returns query builder to find consumers of branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return QueryBuilder
+     */
+    public function getConsumersForBranchesQueryBuilder($branches)
+    {
+        return $this->filterConsumersForBranches($branches);
+    }
+
+    /**
+     * Returns consumers of branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return array Consumers
+     */
+    public function findConsumersForBranches($branches)
+    {
+        return $this->getConsumersForBranchesQueryBuilder($branches)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Filters consumers of branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param QueryBuilder                            $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterConsumersForBranches($branches, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        $branchesIds = array();
+        foreach ($branches as $branch) {
+            $branchesIds[] = $branch->getId();
+        }
+
+        return $qb->join('u.salesOrders', 's')
+            ->join('s.branchOccurrence', 'bo')
+            ->join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->in('b.id', $branchesIds));
     }
 }

@@ -10,6 +10,7 @@ parameters:
     open_miam_miam.cart_item_validator.class:                    'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
     open_miam_miam.buying_unit_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'
     open_miam_miam.product_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProductValidator'
+    open_miam_miam.newsletter_validator.class:                   'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\NewsletterValidator'
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
@@ -29,6 +30,7 @@ parameters:
     open_miam_miam.sales_order_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
     open_miam_miam.producer_sales_order_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
     open_miam_miam.payment_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager'
+    open_miam_miam.newsletter_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -52,7 +54,8 @@ parameters:
     open_miam_miam.form.type.artificial_product.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ArtificialProductType'
     open_miam_miam.form.type.payment.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentType'
     open_miam_miam.form.type.payment_allocation.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentAllocationType'
-
+    open_miam_miam.form.type.association_newsletter.class:                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationNewsletterType'
+    open_miam_miam.form.type.super_newsletter.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperNewsletterType'
     # Models
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.tcpdf.class:                     TCPDF
@@ -73,6 +76,11 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_sales_order_validator}
+
+    open_miam_miam.newsletter_validator:
+        class:     %open_miam_miam.newsletter_validator.class%
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam.newsletter_validator}
 
     open_miam_miam.cart_item_validator:
         class:     %open_miam_miam.cart_item_validator.class%
@@ -108,7 +116,10 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_payment_validator }
 
-
+    # Mailer
+    open_miam_miam.mailer:
+        class: Isics\Bundle\OpenMiamMiamBundle\Service\Mailer
+        arguments: [@mailer, @templating]
 
     # Form types
     open_miam_miam.form.type.association_article:
@@ -208,7 +219,15 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_payment }
 
+    open_miam_miam.form.type.association_newsletter:
+        class: %open_miam_miam.form.type.association_newsletter.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_association_newsletter }
 
+    open_miam_miam.form.type.super_newsletter:
+        class: %open_miam_miam.form.type.super_newsletter.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_super_newsletter }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -303,6 +322,10 @@ services:
     open_miam_miam.payment_manager:
         class: %open_miam_miam.payment_manager.class%
         arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
+
+    open_miam_miam.newsletter_manager:
+        class: %open_miam_miam.newsletter_manager.class%
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating]
 
 
 

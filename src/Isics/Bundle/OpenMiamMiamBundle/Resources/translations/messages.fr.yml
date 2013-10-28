@@ -149,17 +149,19 @@ admin.login.email.placeholder:    "Adresse e-mail"
 admin.login.password.placeholder: "Mot de passe"
 admin.login.submit:               "Connexion"
 
-
-
 # Admin index
 admin.index.title: "Choisissez un rôle :"
 
-
+# Admin recipient type
+recipient.type.all:       "Consommateurs et producteurs"
+recipient.type.producers: "Producteurs"
+recipient.type.consumers: "Consommateurs"
 
 # Admin / Super / Menu
 admin.super.menu.dashboard:   "Tableau de bord"
 admin.super.menu.user_switch: "Usurpateur d'identité"
 admin.super.menu.news:        "Actualité"
+admin.super.menu.newsletter:  "Lettre d'information"
 
 # Admin / Super / Dashboard
 admin.super.dashboard.title: "Tableau de bord"
@@ -191,13 +193,31 @@ admin.super.articles.message.updated:       "L'article a bien été mis à jour.
 admin.super.articles.message.deleted:       "L'article a bien été supprimé."
 admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
+# Admin / Super / Newsletter
+admin.super.newsletter.form.new_title:       "Envoyer une lettre d'information"
+admin.super.newsletter.form.edit_title:      "Envoyer une lettre d'information (correction)"
+admin.super.newsletter.form.recipients:      "Destinataires"
+admin.super.newsletter.form.subject:         "Objet"
+admin.super.newsletter.form.body:            "Message"
+admin.super.newsletter.form.send_test:       "Envoyer une lettre test"
+admin.super.newsletter.message.created:      "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.super.newsletter.message.updated:      "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.super.newsletter.message.sent:         "La lettre a été envoyée aux destinataires."
+admin.super.newsletter.message.already_sent: "Cette lettre d'information a déjà été envoyée !"
+admin.super.newsletter.report.subject:       "Objet"
+admin.super.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
+admin.super.newsletter.report.sent_at:       "Envoyée le"
+admin.super.newsletter.report.nb_recipients: "Destinataires"
+
+
 
 # Admin / Association / Menu
-admin.association.menu.dashboard: "Tableau de bord"
-admin.association.menu.orders:    "Caisse"
-admin.association.menu.branches:  "Comptoirs"
-admin.association.menu.consumers: "Consommateurs"
-admin.association.menu.news:      "Actualité"
+admin.association.menu.dashboard:   "Tableau de bord"
+admin.association.menu.orders:      "Caisse"
+admin.association.menu.branches:    "Comptoirs"
+admin.association.menu.consumers:   "Consommateurs"
+admin.association.menu.news:        "Actualité"
+admin.association.menu.newsletter:  "Lettre d'information"
 
 # Admin / Association / Dashboard
 admin.association.dashboard.title: "Tableau de bord"
@@ -357,6 +377,22 @@ admin.association.articles.message.updated:       "L'article a bien été mis à
 admin.association.articles.message.deleted:       "L'article a bien été supprimé."
 admin.association.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
+# Admin / Association / Newsletter
+admin.association.newsletter.form.new_title:       "Envoyer une lettre d'information"
+admin.association.newsletter.form.edit_title:      "Envoyer une lettre d'information (correction)"
+admin.association.newsletter.form.recipients:      "Destinataires :"
+admin.association.newsletter.form.subject:         "Objet"
+admin.association.newsletter.form.body:            "Message"
+admin.association.newsletter.form.send_test:       "Envoyer une lettre test"
+admin.association.newsletter.message.created:      "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.association.newsletter.message.updated:      "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.association.newsletter.message.sent:         "La lettre a été envoyée aux destinataires."
+admin.association.newsletter.message.already_sent: "Cette lettre d'information a déjà été envoyée !"
+admin.association.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
+admin.association.newsletter.report.subject:       "Objet"
+admin.association.newsletter.report.sent_at:       "Envoyée le"
+admin.association.newsletter.report.nb_recipients: "Destinataires"
+
 
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"
@@ -503,7 +539,9 @@ activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règl
 activity_stream.sales_order.payment.allocated:          "a affecté un règlement à la commande %order_ref% (montant : %amount%)."
 activity_stream.article.created:                        "a créé l'article %title%."
 activity_stream.article.updated:                        "a modifié l'article %title%."
-
+activity_stream.newsletter.created:                     "a créé la lettre d'information «%subject%»."
+activity_stream.newsletter.updated:                     "a modifié la lettre d'information «%subject%»."
+activity_stream.newsletter.sent:                        "a envoyé la lettre d'information «%subject%»."
 
 
 # Errors
@@ -570,3 +608,8 @@ mail.consumer.new_order.order.quantity:  "Quantité"
 mail.consumer.new_order.order.row_total: "Total"
 mail.consumer.new_order.order.total:     "TOTAL"
 mail.consumer.new_order.order.comment:   "Votre commentaire :"
+mail.newsletter_test.confirm_title:      "Cette lettre de test vous convient-elle ?"
+mail.newsletter_test.send:               "OUI"
+mail.newsletter_test.edit:               "NON"
+mail.newsletter_test.send_help:          "Envoyer à tous les destinataires"
+mail.newsletter_test.edit_help:          "Corriger et envoyer un nouveau test"

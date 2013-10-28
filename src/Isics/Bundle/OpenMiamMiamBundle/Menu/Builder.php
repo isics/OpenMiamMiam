@@ -107,6 +107,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.article.list',
             'label' => sprintf($this->labelFormat, 'bullhorn', $this->translator->trans('admin.super.menu.news')),
         ));
+        $menu[$menuName]->addChild('Newsletter', array(
+            'route' => 'open_miam_miam.admin.super.newsletter.create',
+            'label' => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.super.menu.newsletter')),
+        ));
     }
 
     /**
@@ -150,6 +154,11 @@ class Builder
             'route'           => 'open_miam_miam.admin.association.article.list',
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'bullhorn', $this->translator->trans('admin.association.menu.news')),
+        ));
+        $menu[$menuName]->addChild('Newsletter', array(
+            'route'           => 'open_miam_miam.admin.association.newsletter.create',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.association.menu.newsletter')),
         ));
     }
 
