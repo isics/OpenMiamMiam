@@ -95,7 +95,7 @@ class NewsletterController extends BaseController
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $user= $this->get('security.context')->getToken()->getUser();
+                    $user = $this->get('security.context')->getToken()->getUser();
                     $newsletterManager->saveAndSendTest($newsletter, $user);
                     $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.updated');
 
@@ -105,15 +105,16 @@ class NewsletterController extends BaseController
                     ));
                 }
             }
-            return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create.html.twig', array(
-                    'association' => $association,
-                    'form'        => $form->createView(),
+            return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:edit.html.twig', array(
+                'association' => $association,
+                'form'        => $form->createView(),
+                'activities'  => $newsletterManager->getActivities($newsletter),
             ));
         }
         else {
             $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.already_sent');
 
-            return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
+            return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create', array('id' => $association->getId())));
         }
 
     }

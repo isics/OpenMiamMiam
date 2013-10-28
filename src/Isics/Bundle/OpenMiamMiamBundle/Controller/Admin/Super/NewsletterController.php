@@ -21,7 +21,7 @@ class NewsletterController extends Controller
     /**
      * Create newsletter
      *
-     * @param Request    $request
+     * @param Request $request
      *
      * @return Response
      */
@@ -29,12 +29,12 @@ class NewsletterController extends Controller
     {
         $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
         $newsletter = $newsletterManager->createForSuper();
-        
+
         $form = $this->getForm($newsletter);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user= $this->get('security.context')->getToken()->getUser();
+                $user = $this->get('security.context')->getToken()->getUser();
                 $newsletterManager->saveAndSendTest($newsletter, $user);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.created');
 
@@ -44,16 +44,17 @@ class NewsletterController extends Controller
                 ));
             }
         }
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:create.html.twig', array(
-                'form'        => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
-    
+
     /**
      * Edit newsletter
      *
      * @ParamConverter("newsletter", class="IsicsOpenMiamMiamBundle:Newsletter", options={"mapping": {"newsletterId": "id"}})
-     * 
+     *
      * @param Request    $request
      * @param Newsletter $newsletter
      *
@@ -61,14 +62,15 @@ class NewsletterController extends Controller
      */
     public function editAction(Request $request, Newsletter $newsletter)
     {
-        if($newsletter->getSentAt() == null) {
-            $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
-            
+        if ($newsletter->getSentAt() === null) {
+            $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
+
             $form = $this->getForm($newsletter);
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
+
                 if ($form->isValid()) {
-                    $user= $this->get('security.context')->getToken()->getUser();
+                    $user = $this->get('security.context')->getToken()->getUser();
                     $newsletterManager->saveAndSendTest($newsletter, $user);
                     $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.updated');
 
@@ -79,8 +81,8 @@ class NewsletterController extends Controller
                 }
             }
             return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:edit.html.twig', array(
-                    'form'        => $form->createView(),
-                    'activities' => $newsletterManager->getActivities($newsletter)
+                'form'       => $form->createView(),
+                'activities' => $newsletterManager->getActivities($newsletter),
             ));
         } else {
             $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.already_sent');
@@ -88,20 +90,20 @@ class NewsletterController extends Controller
             return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
         }
     }
-    
+
     /**
      * Send email to consumers or/and producers
-     * 
+     *
      * @ParamConverter("newsletter", class="IsicsOpenMiamMiamBundle:Newsletter", options={"mapping": {"newsletterId": "id"}})
-     * 
-     * @param $newsletter
-     * 
-     * @return responce
+     *
+     * @param Newsletter $newsletter
+     *
+     * @return response
      */
     public function sendAction(Newsletter $newsletter)
     {
-        if ($newsletter->getSentAt() == null) {
-            $user= $this->get('security.context')->getToken()->getUser();
+        if ($newsletter->getSentAt() === null) {
+            $user = $this->get('security.context')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
             $newsletterManager->send($newsletter, $user);
 
@@ -111,10 +113,9 @@ class NewsletterController extends Controller
             $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.already_sent');
         }
 
-        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create')
-        );    
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
     }
-    
+
     /**
      * Return newsletter form
      *

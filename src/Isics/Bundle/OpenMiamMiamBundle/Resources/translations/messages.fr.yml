@@ -192,15 +192,16 @@ admin.super.articles.message.deleted:       "L'article a bien été supprimé."
 admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
 # Admin / Super / Newsletter
-admin.super.newsletter.form.new_title:            "Envoyer une lettre d'information"
-admin.super.newsletter.form.recipients:           "Destinataires"
-admin.super.newsletter.form.subject:              "Objet"
-admin.super.newsletter.form.body:                 "Message"
-admin.super.newsletter.form.send_test:            "Envoyer une lettre test"
-admin.super.newsletter.message.created:           "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
-admin.super.newsletter.message.updated:           "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
-admin.super.newsletter.message.sent:              "La lettre a été envoyée aux destinataires."
-admin.super.newsletter.message.already_sent:      "Vous avez déjà confirmé cette lettre d'information !"
+admin.super.newsletter.form.new_title:       "Envoyer une lettre d'information"
+admin.super.newsletter.form.edit_title:      "Envoyer une lettre d'information (correction)"
+admin.super.newsletter.form.recipients:      "Destinataires"
+admin.super.newsletter.form.subject:         "Objet"
+admin.super.newsletter.form.body:            "Message"
+admin.super.newsletter.form.send_test:       "Envoyer une lettre test"
+admin.super.newsletter.message.created:      "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.super.newsletter.message.updated:      "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.super.newsletter.message.sent:         "La lettre a été envoyée aux destinataires."
+admin.super.newsletter.message.already_sent: "Vous avez déjà confirmé cette lettre d'information !"
 
 # Admin / Association / Menu
 admin.association.menu.dashboard:   "Tableau de bord"
@@ -356,6 +357,7 @@ admin.association.articles.delete_dialog.content: "Êtes-vous vraiment certain d
 
 # Admin / Association / Newsletter
 admin.association.newsletter.form.new_title:       "Envoyer une lettre d'information"
+admin.association.newsletter.form.edit_title:      "Envoyer une lettre d'information (correction)"
 admin.association.newsletter.form.recipients:      "Destinataires :"
 admin.association.newsletter.form.subject:         "Objet"
 admin.association.newsletter.form.body:            "Message"
@@ -512,8 +514,9 @@ activity_stream.sales_order.payment.allocation_deleted: "a désaffecté un règl
 activity_stream.sales_order.payment.allocated:          "a affecté un règlement à la commande %order_ref% (montant : %amount%)."
 activity_stream.article.created:                        "a créé l'article %title%."
 activity_stream.article.updated:                        "a modifié l'article %title%."
-activity_stream.newsletter.created:                     "a créé la newsletter %subject%"
-activity_stream.newsletter.updated:                     "a modifié la newsletter %subject%"
+activity_stream.newsletter.created:                     "a créé la lettre d'information «%subject%»."
+activity_stream.newsletter.updated:                     "a modifié la lettre d'information «%subject%»."
+activity_stream.newsletter.sent:                        "a envoyé la lettre d'information «%subject%»."
 
 
 # Errors

@@ -145,7 +145,7 @@ class NewsletterManager
 
             $changeSet = $unitOfWork->getEntityChangeSet($newsletter);
             if (!empty($changeSet)) {
-                $activityTransKey = 'activity_stream.newsletter.updated';
+                $activityTransKey = 'activity_stream.newsletter.'.(array_key_exists('sentAt', $changeSet) ? 'sent': 'updated');
             }
         }
 
@@ -157,7 +157,7 @@ class NewsletterManager
         if (null !== $activityTransKey) {
             $activity = $this->activityManager->createFromEntities(
                 $activityTransKey,
-                array('%title%' => $newsletter->getSubject()),
+                array('%subject%' => $newsletter->getSubject()),
                 $newsletter,
                 $association,
                 $user
@@ -255,7 +255,7 @@ class NewsletterManager
      */
     public function saveAndSendTest(Newsletter $newsletter, User $user)
     {
-        $this->save($newsletter);
+        $this->save($newsletter, $user);
         $this->sendTest($newsletter, $user);
     }
 
@@ -268,6 +268,8 @@ class NewsletterManager
      */
     public function getActivities(Newsletter $newsletter)
     {
-        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($newsletter, $newsletter->getAssociation());
+        return $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:Activity')
+            ->findByEntities($newsletter, $newsletter->getAssociation());
     }
 }

@@ -10,57 +10,71 @@
 {% block content %}
     {{ parent() }}
 
-    <div style="width: 668px; padding: 15px; background: #f5f5f5; border: 1px solid #e3e3e3">
+    <p>&nbsp;</p>
+
+    <div style="padding: 15px; background: #f5f5f5; border: 1px solid #e3e3e3">
         <h2 style="margin: 0 0 15px 0">{{ 'mail.newsletter_test.confirm_title'|trans }}</h2>
 
         {% set association = newsletter.association %}
-        <table border="0" width="100%">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tbody>
                 {% if association is not null %}
                     <tr>
                         <td width="50%">
-                            <strong>
-                                <a href="{{ url('open_miam_miam.admin.association.newsletter.send', {'id': association.id, 'newsletterId': newsletter.id}) }}" style="font-size: 24px">
-                                    {{ 'mail.newsletter_test.send'|trans }}
-                                </a>
-                            </strong>
+                            <p>
+                                <strong>
+                                    <a href="{{ url('open_miam_miam.admin.association.newsletter.send', {'id': association.id, 'newsletterId': newsletter.id}) }}" style="font-size: 24px">
+                                        {{ 'mail.newsletter_test.send'|trans }}
+                                    </a>
+                                </strong>
+                            </p>
                         </td>
                         <td width="50%">
-                            <strong>
-                                <a href="{{ url('open_miam_miam.admin.association.newsletter.edit', {'id': association.id, 'newsletterId': newsletter.id}) }}" style="font-size: 24px">
-                                    {{ 'mail.newsletter_test.edit'|trans }}
-                                </a>
-                            </strong>
+                            <p>
+                                <strong>
+                                    <a href="{{ url('open_miam_miam.admin.association.newsletter.edit', {'id': association.id, 'newsletterId': newsletter.id}) }}" style="font-size: 24px">
+                                        {{ 'mail.newsletter_test.edit'|trans }}
+                                    </a>
+                                </strong>
+                            </p>
                         </td>
                     </tr>
                 {% else %}
                     <tr>
                         <td width="50%">
-                            <strong>
-                                <a href="{{ url('open_miam_miam.admin.super.newsletter.send', {'newsletterId': newsletter.id}) }}" style="font-size: 24px; font-weight: bold">
-                                    {{ 'mail.newsletter_test.send'|trans }}
-                                </a>
-                            </strong>
+                            <p>
+                                <strong>
+                                    <a href="{{ url('open_miam_miam.admin.super.newsletter.send', {'newsletterId': newsletter.id}) }}" style="font-size: 24px; font-weight: bold">
+                                        {{ 'mail.newsletter_test.send'|trans }}
+                                    </a>
+                                </strong>
+                            </p>
                         </td>
                         <td width="50%">
-                            <strong>
-                                <a href="{{ url('open_miam_miam.admin.super.newsletter.edit', {'newsletterId': newsletter.id}) }}" style="font-size: 24px; font-weight: bold">
-                                    {{ 'mail.newsletter_test.edit'|trans }}
-                                </a>
-                            </strong>
+                            <p>
+                                <strong>
+                                    <a href="{{ url('open_miam_miam.admin.super.newsletter.edit', {'newsletterId': newsletter.id}) }}" style="font-size: 24px; font-weight: bold">
+                                        {{ 'mail.newsletter_test.edit'|trans }}
+                                    </a>
+                                </strong>
+                            </p>
                         </td>
                     </tr>
                 {% endif %}
                 <tr>
                     <td>
-                        <strong>
-                            {{ 'mail.newsletter_test.send_help'|trans }}
-                        </strong>
+                        <p>
+                            <strong>
+                                {{ 'mail.newsletter_test.send_help'|trans }}
+                            </strong>
+                        </p>
                     </td>
                     <td>
-                        <strong>
-                            {{ 'mail.newsletter_test.edit_help'|trans }}
-                        </strong>
+                        <p>
+                            <strong>
+                                {{ 'mail.newsletter_test.edit_help'|trans }}
+                            </strong>
+                        </p>
                     </td>
                 </tr>
             </tbody>
