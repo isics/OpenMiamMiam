@@ -161,7 +161,7 @@ class NewsletterManager
     }
 
     /**
-     * Send email to consumers and/or producers
+     * Send newsletter to consumers and/or producers
      *
      * @param Newsletter $newsletter
      * @param User       $user
@@ -184,16 +184,22 @@ class NewsletterManager
         if ($recipientType === Newsletter::RECIPIENT_TYPE_PRODUCER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
             $producers = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamUserBundle:User')
-                ->findProducersForBranches($newsletter->getBranches());
+                ->findManagingProducer(
+                    $this->entityManager
+                        ->getRepository('IsicsOpenMiamMiamBundle:Producer')
+                        ->findIdsForBranch($newsletter->getBranches())
+                );
 
             $recipients = array_merge($recipients, $producers);
         }
+
+        $recipients = array_unique($recipients);
 
         $nbRecipients = count($recipients);
 
         if (0 < $nbRecipients) {
             foreach ($recipients as $recipient) {
-                $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterEmail.html.twig', array('newsletter' => $newsletter));
+                $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletter.html.twig', array('newsletter' => $newsletter));
 
                 $message = \Swift_Message::newInstance()
                     ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -205,14 +211,14 @@ class NewsletterManager
             }
         }
 
-        // $newsletter->setSentAt(new \DateTime());
+        $newsletter->setSentAt(new \DateTime());
         $this->save($newsletter, $user);
 
         return $nbRecipients;
     }
 
     /**
-     * Send test
+     * Send test newsletter
      *
      * @param Newsletter $newsletter
      * @param User       $user

@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
@@ -87,7 +88,7 @@ class ProducerRepository extends EntityRepository
     /**
      * Finds all ids
      *
-     * @param Branch  $branch Branch
+     * @param Branch $branch Branch
      *
      * @return array
      */
@@ -109,9 +110,70 @@ class ProducerRepository extends EntityRepository
     }
 
     /**
+     * Finds ids of producers in branches
+     *
+     * @param mixed $branch Branch or array of branches
+     *
+     * @return array
+     */
+    public function findIdsForBranch($branch)
+    {
+        $flattenIds = array();
+        foreach ($this->getIdsForBranchQueryBuilder($branch)->getQuery()->getResult() as $id) {
+            $flattenIds[] = $id['id'];
+        }
+
+        return $flattenIds;
+    }
+
+    /**
+     * Filter for branch
+     *
+     * @param mixed        $branch Branch or array of branches
+     * @param QueryBuilder $qb     Query builder
+     *
+     * @return QueryBuilder
+     */
+    public function filterBranch($branch, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        if ($branch instanceof \ArrayAccess) {
+            $branchesIds = array();
+            foreach ($branch as $_branch) {
+                $branchesIds[] = $_branch->getId();
+            }
+
+            $qb->innerJoin('p.branches', 'b')
+                ->andWhere('b.id IN (:branchesIds)')
+                ->setParameter('branchesIds', $branchesIds);
+
+        } else {
+            die('teest');
+            $qb->innerJoin('p.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
+                ->setParameter('branch', $branch);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Returns query builder to find all producers ids of branches
+     *
+     * @param mixed $branch Branch or array of branches
+     *
+     * @return QueryBuilder
+     */
+    public function getIdsForBranchQueryBuilder($branch)
+    {
+        return $this->filterBranch($branch)
+            ->select('DISTINCT p.id');
+    }
+
+    /**
      * Returns query builder to find all producer of association
      *
-     * @param Association $association
+     * @param Association  $association
      * @param QueryBuilder $qb
      *
      * @return QueryBuilder

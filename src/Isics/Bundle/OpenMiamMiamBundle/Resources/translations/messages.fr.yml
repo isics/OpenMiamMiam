@@ -151,9 +151,9 @@ admin.login.submit:               "Connexion"
 admin.index.title: "Choisissez un rôle :"
 
 # Admin recipient type
-recipient.type.all:       "Clients et producteurs"
+recipient.type.all:       "Consommateurs et producteurs"
 recipient.type.producers: "Producteurs"
-recipient.type.consumers: "Clients"
+recipient.type.consumers: "Consommateurs"
 
 # Admin / Super / Menu
 admin.super.menu.dashboard:   "Tableau de bord"
@@ -203,7 +203,7 @@ admin.super.newsletter.form.send_test_message:    "Envoyer un message test"
 admin.super.newsletter.form.all:                  "Toute les associations"
 admin.super.newsletter.message.created:           "La lettre d'information a bien été créé et vous a été envoyé par email "
 admin.super.newsletter.message.sent:              "Message envoyé"
-admin.super.newsletter.message.alreadySent:       "Vous avez déjà confirmé cette lettre d'information"
+admin.super.newsletter.message.already_sent:      "Vous avez déjà confirmé cette lettre d'information"
 
 # Admin / Association / Menu
 admin.association.menu.dashboard:   "Tableau de bord"
@@ -358,15 +358,17 @@ admin.association.articles.message.deleted:       "L'article a bien été suppri
 admin.association.articles.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cet article ?"
 
 # Admin / Association / Newsletter
-admin.association.newsletter.form.new_title:      "Envoyer une lettre d'information"
-admin.association.newsletter.form.recipients:     "Destinataires :"
-admin.association.newsletter.form.subject:        "Objet"
-admin.association.newsletter.form.body:           "Message"
-admin.association.newsletter.form.send_test:      "Envoyer une lettre test"
-admin.association.newsletter.message.created:     "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
-admin.association.newsletter.message.updated:     "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
-admin.association.newsletter.message.sent:        "La lettre a été envoyée aux destinataires."
-admin.association.newsletter.message.alreadySent: "Vous avez déjà confirmé cette lettre d'information, vous ne pouvez donc ni la modifier, ni l'envoyer de nouveau"
+admin.association.newsletter.form.new_title:       "Envoyer une lettre d'information"
+admin.association.newsletter.form.recipients:      "Destinataires :"
+admin.association.newsletter.form.subject:         "Objet"
+admin.association.newsletter.form.body:            "Message"
+admin.association.newsletter.form.send_test:       "Envoyer une lettre test"
+admin.association.newsletter.message.created:      "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.association.newsletter.message.updated:      "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
+admin.association.newsletter.message.sent:         "La lettre a été envoyée aux destinataires."
+admin.association.newsletter.message.already_sent: "Vous avez déjà envoyé cette lettre d'information !"
+
+
 
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"
@@ -581,8 +583,8 @@ mail.consumer.new_order.order.quantity:  "Quantité"
 mail.consumer.new_order.order.row_total: "Total"
 mail.consumer.new_order.order.total:     "TOTAL"
 mail.consumer.new_order.order.comment:   "Votre commentaire :"
-mail.newsletter_test.confirm_title:      "Cette lettre vous convient-elle ?"
+mail.newsletter_test.confirm_title:      "Cette lettre de test vous convient-elle ?"
 mail.newsletter_test.send:               "OUI"
 mail.newsletter_test.edit:               "NON"
 mail.newsletter_test.send_help:          "Envoyer à tous les destinataires"
-mail.newsletter_test.edit_help:          "Corriger et envoyer un nouveau message test"
+mail.newsletter_test.edit_help:          "Corriger et envoyer une nouvelle lettre test"

@@ -107,10 +107,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.article.list',
             'label' => sprintf($this->labelFormat, 'bullhorn', $this->translator->trans('admin.super.menu.news')),
         ));
-        $menu[$menuName]->addChild('Newsletter', array(
-            'route' => 'open_miam_miam.admin.super.newsletter.create',
-            'label' => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.super.menu.newsletter')),
-        ));
+        // $menu[$menuName]->addChild('Newsletter', array(
+        //     'route' => 'open_miam_miam.admin.super.newsletter.create',
+        //     'label' => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.super.menu.newsletter')),
+        // ));
     }
 
     /**

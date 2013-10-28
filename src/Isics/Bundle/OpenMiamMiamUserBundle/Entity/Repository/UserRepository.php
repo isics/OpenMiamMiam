@@ -66,7 +66,7 @@ class UserRepository extends EntityRepository
         $query = <<<QUERY
             SELECT DISTINCT u.*
             FROM %s u INNER JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
-            INNER JOIN %s e ON (e.security_identity_id = si.id)
+            JOIN %s e ON (e.security_identity_id = si.id)
             ORDER BY u.lastname
 QUERY;
 
@@ -85,15 +85,51 @@ QUERY;
     }
 
     /**
-     * Return Producer of branches
+     * Return users managing producer(s)
      *
-     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param mixed $producer Producer or array of Producer ids
      *
      * @return array
      */
-    public function findProducersForBranches($branches)
+    public function findManagingProducer($producer)
     {
+        $producersIds = array();
+        if (is_array($producer)) {
+            foreach ($producer as $_producer) {
+                $producersIds[] = $_producer;
+            }
+        } else {
+            $producersIds[] = $producer->getId();
+        }
 
+        $query = <<<QUERY
+            SELECT DISTINCT u.*
+            FROM %s u
+            JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
+            JOIN %s e ON (e.security_identity_id = si.id)
+            JOIN %s oi ON (oi.id = e.object_identity_id )
+            JOIN %s c ON (c.id = oi.class_id)
+            WHERE c.class_type = '%s'
+            AND oi.object_identifier IN (%s)
+            ORDER BY u.lastname
+QUERY;
+
+        $query = sprintf(
+            $query,
+            'fos_user',
+            'acl_security_identities',
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            'acl_entries',
+            'acl_object_identities',
+            'acl_classes',
+            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Producer'),
+            implode(',', $producersIds)
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
     }
 
     /**

@@ -63,6 +63,7 @@ class NewsletterController extends BaseController
                 ));
             }
         }
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create.html.twig', array(
             'association' => $association,
             'form'        => $form->createView(),
@@ -110,7 +111,7 @@ class NewsletterController extends BaseController
             ));
         }
         else {
-            $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.alreadySent');
+            $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.already_sent');
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.association.newsletter.create',array('id' => $newsletter->getAssociation()->getId())));
         }
@@ -139,7 +140,7 @@ class NewsletterController extends BaseController
 
             $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.sent');
         } else {
-            $this->get('session')->getFlashBag()->add('error', 'admin.association.newsletter.message.alreadySent');
+            $this->get('session')->getFlashBag()->add('error', 'admin.association.newsletter.message.already_sent');
         }
 
         return $this->redirect(
