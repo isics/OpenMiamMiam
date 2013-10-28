@@ -1,0 +1,21 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+
+    <dl class="dl-horizontal">
+      <dt>{{ 'admin.super.newsletter.show_report.subject'|trans }}</dt>
+      <dd>{{ newsletter.subject }}</dd>
+      <dt>{{ 'admin.super.newsletter.show_report.sent_at'|trans }}</dt>
+      <dd>{{ newsletter.sentAt|format_datetime(null, null, null, constant('IntlDateFormatter::FULL')) }}</dd>
+      <dt>{{ 'admin.super.newsletter.show_report.nb_recipient'|trans }}</dt>
+      <dd>{{ newsletter.nbRecipients }}</dd>
+    </dl>
+    {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}
+{% endblock %}

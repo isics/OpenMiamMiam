@@ -221,6 +221,7 @@ class NewsletterManager
         }
 
         $newsletter->setSentAt(new \DateTime());
+        $newsletter->setNbRecipients($nbRecipients);
         $this->save($newsletter, $user);
 
         return $nbRecipients;

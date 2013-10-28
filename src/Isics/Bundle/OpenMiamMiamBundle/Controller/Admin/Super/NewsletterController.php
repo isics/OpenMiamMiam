@@ -110,10 +110,28 @@ class NewsletterController extends Controller
             $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.sent');
 
         } else {
-            $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.already_sent');
+            $this->get('session')->getFlashBag()->add('error', 'admin.super.newsletter.message.already_sent');
         }
 
-        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.report',
+            array('newsletterId' => $newsletter->getId())));
+    }
+
+    /**
+     * Show newsletter send
+     * 
+     * @ParamConverter("newsletter", class="IsicsOpenMiamMiamBundle:Newsletter", options={"mapping": {"newsletterId": "id"}})
+     * 
+     * @return response
+     */
+    public function showReportAction(Newsletter $newsletter)
+    {
+        $newsletters = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Newsletter')->findForSuper();
+        $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:showReport.html.twig', array(
+            'newsletter' => $newsletter,
+            'activities' => $newsletterManager->getActivities($newsletter),
+        ));
     }
 
     /**

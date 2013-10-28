@@ -74,6 +74,13 @@ class Newsletter
     private $sentAt;
 
     /**
+     * @var integer $nbRecipients
+     *
+     * @ORM\Column(name="nb_recipients", type="integer", nullable=true)
+     */
+    private $nbRecipients;
+
+    /**
      * @var Doctrine\Common\Collections\Collection $branches
      *
      * @ORM\ManyToMany(targetEntity="Branch", inversedBy="newsletters")
@@ -231,6 +238,29 @@ class Newsletter
     public function getSentAt()
     {
         return $this->sentAt;
+    }
+
+    /**
+     * Set nbRecipients
+     *
+     * @param interget $nbRecipients
+     * @return Newsletter
+     */
+    public function setNbRecipients($nbRecipients)
+    {
+        $this->nbRecipients = $nbRecipients;
+
+        return $this;
+    }
+
+    /**
+     * Get nbRecipient
+     *
+     * @return integer
+     */
+    public function getNbRecipients()
+    {
+        return $this->nbRecipients;
     }
 
     /**
