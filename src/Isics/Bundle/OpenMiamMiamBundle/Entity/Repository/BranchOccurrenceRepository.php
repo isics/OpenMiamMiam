@@ -199,8 +199,7 @@ class BranchOccurrenceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('bo');
 
-        return $qb
-            ->select('COUNT(bo.id)')
+        $qb->select('COUNT(bo.id)')
             ->where('bo.branch = :branch')
             ->andWhere(
                 $qb->expr()->orx(
@@ -216,8 +215,13 @@ class BranchOccurrenceRepository extends EntityRepository
             )
             ->setParameter('branch', $branchOccurrence->getBranch())
             ->setParameter('begin', $branchOccurrence->getBegin())
-            ->setParameter('end', $branchOccurrence->getEnd())
-            ->getQuery()
-            ->getSingleScalarResult() > 0;
+            ->setParameter('end', $branchOccurrence->getEnd());
+
+        if (null !== $branchOccurrence->getId()) {
+            $qb->andWhere('bo != :branchOccurrence')
+                ->setParameter('branchOccurrence', $branchOccurrence);
+        }
+
+        return $qb->getQuery()->getSingleScalarResult() > 0;
     }
 }
