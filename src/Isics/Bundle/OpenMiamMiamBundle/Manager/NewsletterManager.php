@@ -115,6 +115,13 @@ class NewsletterManager
     {
         $newsletter = new Newsletter();
 
+        $newsletter->setRecipientType(Newsletter::RECIPIENT_TYPE_ALL);
+
+        // Select all branches
+        $newsletter->setBranches(
+            $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Branch')->findAll()
+        );
+
         return $newsletter;
     }
 

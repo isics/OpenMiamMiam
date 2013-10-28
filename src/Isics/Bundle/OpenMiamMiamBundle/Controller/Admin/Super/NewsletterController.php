@@ -22,7 +22,6 @@ class NewsletterController extends Controller
      * Create newsletter
      *
      * @param Request    $request
-     * @param Newsletter $newsletter
      *
      * @return Response
      */
@@ -30,16 +29,13 @@ class NewsletterController extends Controller
     {
         $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
         $newsletter = $newsletterManager->createForSuper();
-        $user= $this->get('security.context')->getToken()->getUser();
         
         $form = $this->getForm($newsletter);
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                
-                $newsletterManager->save($newsletter, $user);
-                $newsletterManager->sendTestSuper($newsletter, $user);
-
+                $user= $this->get('security.context')->getToken()->getUser();
+                $newsletterManager->saveAndSendTest($newsletter, $user);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.created');
 
                 return $this->redirect($this->generateUrl(
@@ -67,14 +63,13 @@ class NewsletterController extends Controller
     {
         if($newsletter->getSentAt() == null) {
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager'); 
-            $user= $this->get('security.context')->getToken()->getUser();
-
+            
             $form = $this->getForm($newsletter);
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
                 if ($form->isValid()) {
-                    $newsletterManager->save($newsletter, $user);
-                    $newsletterManager->sendTestSuper($newsletter, $user);
+                    $user= $this->get('security.context')->getToken()->getUser();
+                    $newsletterManager->saveAndSendTest($newsletter, $user);
                     $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.updated');
 
                     return $this->redirect($this->generateUrl(
@@ -87,10 +82,8 @@ class NewsletterController extends Controller
                     'form'        => $form->createView(),
                     'activities' => $newsletterManager->getActivities($newsletter)
             ));
-        }
-        else
-        {
-            $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.alreadySent');
+        } else {
+            $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.already_sent');
 
             return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
         }
@@ -105,24 +98,21 @@ class NewsletterController extends Controller
      * 
      * @return responce
      */
-    public function confirmSendAction(Newsletter $newsletter)
+    public function sendAction(Newsletter $newsletter)
     {
-        if($newsletter->getSentAt() == null) {
+        if ($newsletter->getSentAt() == null) {
             $user= $this->get('security.context')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
-            $newsletterManager->send($newsletter);
-            $newsletter->setSentAt(new \DateTime());
-            $newsletterManager->save($newsletter, $user);
+            $newsletterManager->send($newsletter, $user);
 
             $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.sent');
 
-            return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
+        } else {
+            $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.already_sent');
         }
-        else {
-            $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.alreadySent');
 
-            return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create'));
-        }
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.newsletter.create')
+        );    
     }
     
     /**
