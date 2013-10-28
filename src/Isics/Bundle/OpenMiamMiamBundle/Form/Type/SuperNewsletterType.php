@@ -22,41 +22,38 @@ class SuperNewsletterType extends AbstractType
     /**
      * Builds the form
      *
-     * @param FormBuilderInterface  $builder
-     * @param array                 $options
+     * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('recipientType', 'choice', array(
-                    'choices' => array(
-                        Newsletter::RECIPIENT_TYPE_ALL => 'recipient.type.all',
-                        Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
-                        Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
-                    ),
-                    'multiple' => false,
-                    'expanded' => true,
-                    'required' => true,
-                ))
-                ->add('all', 'checkbox', array(
-                    'mapped' => false,
-                    'required' => false
-                ))
-                ->add('branches', 'entity', array(
-                    'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                    'property' => 'nameWithAssociation',
-                    'empty_value' => '',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'by_reference' => false,
-                    'required' => true,
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('b')
-                            ->addOrderBy('b.association')
-                            ->addOrderBy('b.name');
-                    },
-                ))
-                ->add('subject', 'text')
-                ->add('body', 'textarea');
+        $builder
+            ->add('recipientType', 'choice', array(
+                'choices' => array(
+                    Newsletter::RECIPIENT_TYPE_ALL      => 'recipient.type.all',
+                    Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
+                    Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
+                ),
+                'multiple' => false,
+                'expanded' => true,
+            ))
+            ->add('branches', 'entity', array(
+                'class'         => 'IsicsOpenMiamMiamBundle:Branch',
+                'property'      => 'nameWithAssociation',
+                'empty_value'   => '',
+                'multiple'      => true,
+                'expanded'      => true,
+                'by_reference'  => false,
+                'required'      => true,
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('b')
+                        ->addOrderBy('b.association')
+                        ->addOrderBy('b.name');
+                },
+            ))
+            ->add('subject', 'text')
+            ->add('body', 'textarea')
+            ->add('send', 'submit');
     }
     
     /**

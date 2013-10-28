@@ -7,10 +7,8 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
-{% set newsletter = form.vars.data %}
-
 {% block content %}
-    <h1>{{ 'admin.super.newletter.form.edit_title'|trans({'%title%': newsletter.subject}) }}</h1>
+    <h1>{{ 'admin.super.newsletter.form.new_title'|trans}}</h1>
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:Super\\Newsletter\\form.html.twig' with {'form': form} %}
 
