@@ -9,6 +9,7 @@ parameters:
     open_miam_miam.cart_item_validator.class:                    'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
     open_miam_miam.buying_unit_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'
     open_miam_miam.product_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProductValidator'
+    open_miam_miam.newsletter_validator.class:                   'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\NewsletterValidator'
     open_miam_miam.branch_occurrence_attendance_validator.class: 'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendanceValidator'
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
@@ -67,6 +68,11 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_sales_order_validator}
+
+    open_miam_miam.newsletter_validator:
+        class:     %open_miam_miam.newsletter_validator.class%
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam.newsletter_validator}
 
     open_miam_miam.cart_item_validator:
         class:     %open_miam_miam.cart_item_validator.class%
