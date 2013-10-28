@@ -172,8 +172,6 @@ class NewsletterManager
      *
      * @param Newsletter $newsletter
      * @param User       $user
-     *
-     * @return integer Number of recipients
      */
     public function send(Newsletter $newsletter, $user)
     {
@@ -223,8 +221,6 @@ class NewsletterManager
         $newsletter->setSentAt(new \DateTime());
         $newsletter->setNbRecipients($nbRecipients);
         $this->save($newsletter, $user);
-
-        return $nbRecipients;
     }
 
     /**

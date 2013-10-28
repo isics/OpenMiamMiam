@@ -243,7 +243,7 @@ class Newsletter
     /**
      * Set nbRecipients
      *
-     * @param interget $nbRecipients
+     * @param integer $nbRecipients
      * @return Newsletter
      */
     public function setNbRecipients($nbRecipients)

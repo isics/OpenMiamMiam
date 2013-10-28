@@ -201,7 +201,13 @@ admin.super.newsletter.form.send_test:       "Envoyer une lettre test"
 admin.super.newsletter.message.created:      "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
 admin.super.newsletter.message.updated:      "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
 admin.super.newsletter.message.sent:         "La lettre a été envoyée aux destinataires."
-admin.super.newsletter.message.already_sent: "Vous avez déjà confirmé cette lettre d'information !"
+admin.super.newsletter.message.already_sent: "Cette lettre d'information a déjà été envoyée !"
+admin.super.newsletter.report.subject:       "Objet"
+admin.super.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
+admin.super.newsletter.report.sent_at:       "Envoyée le"
+admin.super.newsletter.report.nb_recipients: "Destinataires"
+
+
 
 # Admin / Association / Menu
 admin.association.menu.dashboard:   "Tableau de bord"
@@ -365,8 +371,11 @@ admin.association.newsletter.form.send_test:       "Envoyer une lettre test"
 admin.association.newsletter.message.created:      "Une lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
 admin.association.newsletter.message.updated:      "Une nouvelle lettre test vous a été envoyée. Consultez-la pour confirmer l'envoi aux destinataires."
 admin.association.newsletter.message.sent:         "La lettre a été envoyée aux destinataires."
-admin.association.newsletter.message.already_sent: "Vous avez déjà envoyé cette lettre d'information !"
-
+admin.association.newsletter.message.already_sent: "Cette lettre d'information a déjà été envoyée !"
+admin.association.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
+admin.association.newsletter.report.subject:       "Objet"
+admin.association.newsletter.report.sent_at:       "Envoyée le"
+admin.association.newsletter.report.nb_recipients: "Destinataires"
 
 
 # Admin / Producer / Menu
