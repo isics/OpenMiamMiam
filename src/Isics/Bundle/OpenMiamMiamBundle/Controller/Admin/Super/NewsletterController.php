@@ -118,19 +118,19 @@ class NewsletterController extends Controller
     }
 
     /**
-     * Show newsletter send
-     * 
+     * Show newsletter report
+     *
      * @ParamConverter("newsletter", class="IsicsOpenMiamMiamBundle:Newsletter", options={"mapping": {"newsletterId": "id"}})
-     * 
+     *
+     * @param Newsletter $newsletter
+     *
      * @return response
      */
     public function showReportAction(Newsletter $newsletter)
     {
-        $newsletters = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Newsletter')->findForSuper();
-        $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:showReport.html.twig', array(
             'newsletter' => $newsletter,
-            'activities' => $newsletterManager->getActivities($newsletter),
+            'activities' => $this->get('open_miam_miam.newsletter_manager')->getActivities($newsletter),
         ));
     }
 
