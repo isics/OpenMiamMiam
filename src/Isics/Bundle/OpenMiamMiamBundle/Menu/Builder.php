@@ -111,6 +111,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.newsletter.create',
             'label' => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.super.menu.newsletter')),
         ));
+        $menu[$menuName]->addChild('Category', array(
+            'route' => 'open_miam_miam.admin.super.category.list',
+            'label' => sprintf($this->labelFormat, 'sort-by-attributes', $this->translator->trans('admin.super.menu.category')),
+        ));
     }
 
     /**

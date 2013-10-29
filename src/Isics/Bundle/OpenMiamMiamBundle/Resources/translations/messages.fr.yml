@@ -162,6 +162,7 @@ admin.super.menu.dashboard:   "Tableau de bord"
 admin.super.menu.user_switch: "Usurpateur d'identité"
 admin.super.menu.news:        "Actualité"
 admin.super.menu.newsletter:  "Lettre d'information"
+admin.super.menu.category:    "Catégories produits"
 
 # Admin / Super / Dashboard
 admin.super.dashboard.title: "Tableau de bord"
@@ -208,6 +209,23 @@ admin.super.newsletter.report.subject:       "Objet"
 admin.super.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
 admin.super.newsletter.report.sent_at:       "Envoyée le"
 admin.super.newsletter.report.nb_recipients: "Destinataires"
+
+# Admin / Super / Category
+admin.super.category.list.title:            "Catégories de produits"
+admin.super.category.list.create:           "Nouvelle catégorie"
+admin.super.category.list.no_category:      "Aucune catégorie n'a été créée."
+admin.super.category.list.name:             "Nom"
+admin.super.category.list.edit:             "Modifier la catégorie"
+admin.super.category.list.delete:           "Supprimer la catégorie"
+admin.super.category.form.new_title:        "Nouvelle catégorie"
+admin.super.category.form.edit_title:       "Catégorie «%name%»"
+admin.super.category.form.name:             "Nom"
+admin.super.category.form.position:         "Position"
+admin.super.category.form.target:           "Cible"
+admin.super.category.message.created:       "La catégorie a bien été créée."
+admin.super.category.message.updated:       "La catégorie a bien été mise à jour."
+admin.super.category.message.deleted:       "La catégorie a bien été supprimée."
+admin.super.category.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cette catégorie ?"
 
 
 
@@ -591,6 +609,16 @@ pdf.products_to_prepare.name:       "Produit"
 pdf.products_to_prepare.quantity:   "Quantité"
 pdf.producer_sales_orders.title:    "Commandes"
 pdf.producer_sales_orders.producer: "Producteur :"
+
+
+
+# Arbre
+tree.position.first_child:      "Premier enfant"
+tree.position.last_child:       "Dernier enfant"
+tree.position.first_child_of:   "Premier enfant de"
+tree.position.last_child_of:    "Dernier enfant de"
+tree.position.prev_sibling_of:  "Frère précédent de"
+tree.position.next_sibling_of:  "Frère suivant de"
 
 
 

@@ -1,0 +1,11 @@
+Isics\Bundle\OpenMiamMiamBundle\Entity\Category:
+    properties:
+        name:
+            - NotNull: ~
+
+Isics\Bundle\OpenMiamMiamBundle\Model\Category\CategoryNode:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CategoryNode: ~
+    properties:
+        target:
+            - Valid: ~

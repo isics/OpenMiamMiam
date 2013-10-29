@@ -19,6 +19,62 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 class CategoryRepository extends NestedTreeRepository
 {
     /**
+     * Return next sibling
+     *
+     * @param Category $category
+     *
+     * @return Category
+     */
+    public function getNextSibling(Category $category)
+    {
+        return $this->getNextSiblingQueryBuilder($category)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Return next sibling QueryBuilder
+     *
+     * @param Category $category
+     *
+     * @return QueryBuilder
+     */
+    public function getNextSiblingQueryBuilder(Category $category)
+    {
+        return $this->getNextSiblingsQueryBuilder($category)
+            ->orderBy('node.lft')
+            ->setMaxResults(1);
+    }
+
+    /**
+     * Return prev sibling
+     *
+     * @param Category $category
+     *
+     * @return Category
+     */
+    public function getPrevSibling(Category $category)
+    {
+        return $this->getPrevSiblingQueryBuilder($category)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Return prev sibling QueryBuilder
+     *
+     * @param Category $category
+     *
+     * @return QueryBuilder
+     */
+    public function getPrevSiblingQueryBuilder(Category $category)
+    {
+        return $this->getPrevSiblingsQueryBuilder($category)
+            ->orderBy('node.lft', 'DESC')
+            ->setMaxResults(1);
+    }
+
+    /**
      * Finds categories available in a branch (categories with products)
      *
      * @param Branch $branch Branch

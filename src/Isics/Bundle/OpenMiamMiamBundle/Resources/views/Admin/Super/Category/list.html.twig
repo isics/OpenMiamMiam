@@ -1,0 +1,62 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ 'admin.super.category.list.title'|transchoice(categories|length, {'%nb%': categories|length}) }}</h1>
+        </div>
+        <div class="col-md-6">
+            <a href="{{ path('open_miam_miam.admin.super.category.create') }}" class="btn btn-primary btn-lg pull-right">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                {{ 'admin.super.category.list.create'|trans }}
+            </a>
+        </div>
+    </div>
+
+    {% if categories|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped table-categories">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.super.category.list.name'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>
+                                {% if category.lvl > 0 %}{% for i in 1..category.lvl %}<span class="indent"></span>{% endfor %}{% endif %}
+                                <a href="{{ path('open_miam_miam.admin.super.category.edit', {'categoryId': category.id}) }}">{{ category.name }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.super.category.edit', {'categoryId': category.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.super.category.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.super.category.delete', {'categoryId': category.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.super.category.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Super\\Category\\deleteDialog.html.twig' %}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.super.category.list.no_category'|trans} %}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.DeleteDialog;
+        });
+    </script>
+{% endblock %}
