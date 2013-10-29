@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Isics\OpenMiamMiamBundle\Entity\Newsletter
  *
  * @ORM\Table(name="newsletter")
- * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\NewsletterRepository")
+ * @ORM\Entity
  */
 class Newsletter
 {

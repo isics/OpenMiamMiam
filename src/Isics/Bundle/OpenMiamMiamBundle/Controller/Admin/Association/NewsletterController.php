@@ -167,7 +167,7 @@ class NewsletterController extends BaseController
         $this->secure($association);
         $this->secureNewsletter($association, $newsletter);
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\association\Newsletter:showReport.html.twig', array(
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:showReport.html.twig', array(
             'newsletter' => $newsletter,
             'activities' => $this->get('open_miam_miam.newsletter_manager')->getActivities($newsletter),
         ));
