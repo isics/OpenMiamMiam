@@ -3,8 +3,11 @@ Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct:
         producer:
             - NotNull: ~
         price:
+            - NotBlank: ~
             - Range:
                 min: 0
+        name:
+            - NotBlank: ~
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:

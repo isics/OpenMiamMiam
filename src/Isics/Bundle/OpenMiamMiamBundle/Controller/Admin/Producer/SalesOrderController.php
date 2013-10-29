@@ -273,7 +273,7 @@ class SalesOrderController extends BaseController
                 $user = $this->get('security.context')->getToken()->getUser();
 
                 $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
-                $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
+                $salesOrderManager->addProducts($order, $data['products']->toArray(), $data['artificialProduct']);
                 $salesOrderManager->save(
                     $order,
                     $producer,

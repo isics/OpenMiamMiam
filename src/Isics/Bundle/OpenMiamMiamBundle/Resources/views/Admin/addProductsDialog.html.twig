@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close pull-right" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+                {% block title %}
+                    {{ 'admin.association.sales_orders.add_products.title'|trans }}
+                {% endblock title %}
+            </h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                {% block content %}
+                {% endblock content %}
+            </p>
+        </div>
+    </div>
+</div>

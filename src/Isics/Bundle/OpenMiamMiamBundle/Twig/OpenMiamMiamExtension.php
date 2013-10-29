@@ -12,14 +12,16 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
-use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class OpenMiamMiamExtension extends \Twig_Extension
 {
@@ -49,26 +51,34 @@ class OpenMiamMiamExtension extends \Twig_Extension
     private $consumerManager;
 
     /**
+     * @var BranchOccurrenceManager $branchOccurrenceManager
+     */
+    private $branchOccurrenceManager;
+
+    /**
      * Constructor
      *
-     * @param string          $title           Title
-     * @param string          $currency        Currency
-     * @param ProductManager  $productManager  Product manager
-     * @param ProducerManager $producerManager Producer manager
-     * @param ConsumerManager $consumerManager Consumer manager
+     * @param string                  $title                   Title
+     * @param string                  $currency                Currency
+     * @param ProductManager          $productManager          Product manager
+     * @param ProducerManager         $producerManager         Producer manager
+     * @param ConsumerManager         $consumerManager         Consumer manager
+     * @param BranchOccurrenceManager $branchOccurrenceManager BranchOccurrence manager
      */
     public function __construct($title,
                                 $currency,
                                 ProductManager $productManager,
                                 ProducerManager $producerManager,
-                                ConsumerManager $consumerManager)
+                                ConsumerManager $consumerManager,
+                                BranchOccurrenceManager $branchOccurrenceManager)
     {
         // todo : decoupling extension
-        $this->title           = $title;
-        $this->currency        = $currency;
-        $this->productManager  = $productManager;
-        $this->producerManager = $producerManager;
-        $this->consumerManager = $consumerManager;
+        $this->title                   = $title;
+        $this->currency                = $currency;
+        $this->productManager          = $productManager;
+        $this->producerManager         = $producerManager;
+        $this->consumerManager         = $consumerManager;
+        $this->branchOccurrenceManager = $branchOccurrenceManager;
     }
 
     /**
@@ -94,7 +104,8 @@ class OpenMiamMiamExtension extends \Twig_Extension
             'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath'),
             'get_producer_profile_image_path' => new \Twig_Function_Method($this, 'getProfileImageProducerPath'),
             'get_producer_presentation_image_path' => new \Twig_Function_Method($this, 'getPresentationImageProducerPath'),
-            'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay')
+            'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay'),
+            'get_product_availability' => new \Twig_Function_Method($this, 'getProductAvailability'),
         );
     }
 
@@ -157,6 +168,19 @@ class OpenMiamMiamExtension extends \Twig_Extension
     public function getProductsToDisplay(Branch $branch, Category $category)
     {
         return $this->productManager->getProductsToDisplay($branch, $category);
+    }
+
+    /**
+     * Returns product availability
+     *
+     * @param BranchOccurrence $branchOccurrence
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function getProductAvailability(BranchOccurrence $branchOccurrence, Product $product)
+    {
+        return $this->branchOccurrenceManager->getProductAvailability($branchOccurrence, $product);
     }
 
     /**

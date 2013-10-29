@@ -138,21 +138,6 @@ class ProductRepository extends EntityRepository
     }
 
     /**
-     * Returns query builder for producer available products
-     *
-     * @param Producer $producer
-     * @param QueryBuilder $qb
-     *
-     * @return QueryBuilder
-     */
-    public function getAvailableForProducerQueryBuilder(Producer $producer, QueryBuilder $qb = null)
-    {
-        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
-
-        return $this->filterAvailable($this->getForProducerQueryBuilder($producer, $qb));
-    }
-
-    /**
      * Returns query builder for producer products
      *
      * @param Producer $producer
@@ -181,46 +166,6 @@ class ProductRepository extends EntityRepository
     public function findForProducer(Producer $producer)
     {
         return $this->getForProducerQueryBuilder($producer)->getQuery()->getResult();
-    }
-
-    /**
-     * Returns query builder for association available products
-     *
-     * @param Association $association
-     * @param QueryBuilder $qb
-     *
-     * @return QueryBuilder
-     */
-    public function getAvailableForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
-    {
-        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
-
-        return $this->filterAvailable($this->getForAssociationQueryBuilder($association, $qb));
-
-    }
-
-    /**
-     * Returns query builder for available products
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return QueryBuilder
-     */
-    public function filterAvailable(QueryBuilder $qb = null)
-    {
-        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
-
-        return $qb->andWhere(
-                    $qb->expr()->orx(
-                        $qb->expr()->eq('p.availability', ':available'),
-                        $qb->expr()->andx(
-                            $qb->expr()->eq('p.availability', ':accordingToStock'),
-                            $qb->expr()->gt('p.stock', 0)
-                        )
-                    )
-                )
-                ->setParameter('available', Product::AVAILABILITY_AVAILABLE)
-                ->setParameter('accordingToStock', Product::AVAILABILITY_ACCORDING_TO_STOCK);
     }
 
     /**
@@ -278,6 +223,18 @@ class ProductRepository extends EntityRepository
                 ->setParameter('associationId', $association->getId())
                 ->addOrderBy('p.name')
                 ->addGroupBy('p.id');
+    }
+
+    /**
+     * Returns products of an association
+     *
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function findForAssociation(Association $association)
+    {
+        return $this->getForAssociationQueryBuilder($association)->getQuery()->getResult();
     }
 
     /**

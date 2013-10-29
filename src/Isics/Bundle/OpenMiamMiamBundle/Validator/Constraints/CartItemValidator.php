@@ -42,7 +42,7 @@ class CartItemValidator extends ConstraintValidator
         }
 
         // Validates that product is available
-        if (!$this->branchOccurrenceManager->getProductAvailability($cartItem->getCart()->getBranch(), $cartItem->getProduct())->isAvailable()) {
+        if (!$this->branchOccurrenceManager->getProductAvailabilityForNext($cartItem->getCart()->getBranch(), $cartItem->getProduct())->isAvailable()) {
             $this->context->addViolationAt('product', 'error.cart.product_unavailable');
         }
 

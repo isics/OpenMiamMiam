@@ -16,11 +16,12 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
-use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SalesOrderController extends BaseController
@@ -160,6 +161,24 @@ class SalesOrderController extends BaseController
     }
 
     /**
+     * @return Form
+     */
+    protected function createEditionForm(Association $association, SalesOrder $order)
+    {
+         return $this->createForm(
+             $this->get('open_miam_miam.form.type.sales_order'),
+             $order,
+             array(
+                 'action' => $this->generateUrl(
+                     'open_miam_miam.admin.association.sales_order.edit',
+                     array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+                 ),
+                 'method' => 'POST'
+             )
+        );
+    }
+
+    /**
      * Update a sales order
      *
      * @param Request $request
@@ -184,33 +203,14 @@ class SalesOrderController extends BaseController
         $this->secureSalesOrder($association, $order);
         $this->securePaidSalesOrder($order);
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.sales_order'),
-            $order,
-            array(
-                'action' => $this->generateUrl(
-                    'open_miam_miam.admin.association.sales_order.edit',
-                    array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-                ),
-                'method' => 'POST'
-            )
-        );
+        $form = $this->createEditionForm($association, $order);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $user = $this->get('security.context')->getToken()->getUser();
-
-                $this->get('open_miam_miam.sales_order_manager')->save(
-                    $order,
-                    $association,
-                    $user
-                );
-
-                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $order->getUser(),
-                    $association
-                );
+                $this->get('open_miam_miam.sales_order_manager')->save($order, $association, $user);
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
 
@@ -219,6 +219,14 @@ class SalesOrderController extends BaseController
                     array('id' => $association->getId(), 'salesOrderId' => $order->getId())
                 ));
             }
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:editionFormFields.html.twig', array(
+                'association' => $association,
+                'order' => $order,
+                'form' => $form->createView()
+            ));
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:edit.html.twig', array(
@@ -249,16 +257,14 @@ class SalesOrderController extends BaseController
         $this->secureSalesOrderRow($association, $order, $row);
         $this->securePaidSalesOrder($order);
 
-        $user = $this->get('security.context')->getToken()->getUser();
-        $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
-            $row,
-            $user
-        );
+        if ($order->getBranchOccurrence()->getBranch()->getAssociation()->getId() != $association->getId()
+                || $order->getId() !== $row->getSalesOrder()->getId()) {
+            throw new $this->createNotFoundException('Invalid sales order row for association');
+        }
 
-        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-            $order->getUser(),
-            $association
-        );
+        $user = $this->get('security.context')->getToken()->getUser();
+        $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow($row, $user);
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
 
@@ -269,7 +275,53 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * Add rows for a sales order
+     * Add product to sales order
+     *
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
+     * @ParamConverter("product", class="IsicsOpenMiamMiamBundle:Product", options={"mapping": {"productId": "id"}})
+     *
+     * @param Request $request
+     * @param Association $association
+     * @param SalesOrder $order
+     * @param Product $product
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function addProductAction(Request $request, Association $association, SalesOrder $order, Product $product)
+    {
+        $this->secure($association);
+        $this->secureSalesOrder($association, $order);
+        $this->securePaidSalesOrder($order);
+
+        $availability = $this->get('open_miam_miam.branch_occurrence_manager')
+                ->getProductAvailability($order->getBranchOccurrence(), $product);
+
+        if (!$product->getProducer()->hasAssociation($association) || !$availability->isAvailable()) {
+            throw $this->createNotFoundException('Invalid product');
+        }
+
+        $this->get('open_miam_miam.sales_order_manager')
+                ->addProduct($order, $product, $association, $this->get('security.context')->getToken()->getUser());
+
+        // todo: use salesOrderManager to do that
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->addProductsAction($request, $association, $order);
+        }
+
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.association.sales_order.edit',
+            array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+        ));
+    }
+
+    /**
+     * Add products to sales order
      *
      * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      *
@@ -277,68 +329,90 @@ class SalesOrderController extends BaseController
      * @param Association $association
      * @param SalesOrder $order
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return Response
      */
-    public function addSalesOrderRowsAction(Request $request, Association $association, SalesOrder $order)
+    public function addProductsAction(Request $request, Association $association, SalesOrder $order)
     {
         $this->secure($association);
         $this->secureSalesOrder($association, $order);
-        $this->securePaidSalesOrder($order);
 
-        $productManager = $this->get('open_miam_miam.product_manager');
-        $artificialProduct = $productManager->createArtificialProduct();
-
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.add_rows_sales_order'),
-            array('artificialProduct' => $artificialProduct),
+        $filterForm = $this->createForm(
+            $this->get('open_miam_miam.form.type.products_filter'),
+            null,
             array(
-                'salesOrder' => $order,
                 'association' => $association,
                 'action' => $this->generateUrl(
-                    'open_miam_miam.admin.association.sales_order.add_rows',
+                    'open_miam_miam.admin.association.sales_order.add_products',
                     array('id' => $association->getId(), 'salesOrderId' => $order->getId())
                 ),
                 'method' => 'POST'
             )
         );
 
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $user = $this->get('security.context')->getToken()->getUser();
-
-                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
-                $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
-                $salesOrderManager->save(
-                    $order,
-                    $association,
-                    $user
-                );
-
-                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $order->getUser(),
-                    $association
-                );
-
-                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
-
-                return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.association.sales_order.edit',
+        $artificialProductForm = $this->createForm(
+            $this->get('open_miam_miam.form.type.artificial_product'),
+            $this->get('open_miam_miam.product_manager')->createArtificialProduct(),
+            array(
+                'association' => $association,
+                'action' => $this->generateUrl(
+                    'open_miam_miam.admin.association.sales_order.add_products',
                     array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-                ));
+                ),
+                'method' => 'POST'
+            )
+        );
+
+        $filters = null;
+        $response = new Response();
+        if ($request->isMethod('POST')) {
+            $artificialProductForm->handleRequest($request);
+            if ($artificialProductForm->isValid()) {
+                $this->get('open_miam_miam.sales_order_manager')->addArtificialProduct(
+                    $order,
+                    $artificialProductForm->getData(),
+                    $association,
+                    $this->get('security.context')->getToken()->getUser()
+                );
+
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
+
+                if (!$request->isXmlHttpRequest()) {
+                    $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
+
+                    return $this->redirect($this->generateUrl(
+                        'open_miam_miam.admin.association.sales_order.edit',
+                        array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+                    ));
+                }
+            } elseif ($artificialProductForm->isSubmitted() && $request->isXmlHttpRequest()) {
+                $response = new Response('Failed', 400);
+            }
+
+            $filterForm->handleRequest($request);
+            if ($filterForm->isValid()) {
+                $filters = $filterForm->getData();
             }
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRows.html.twig', array(
-            'association' => $association,
-            'salesOrder' => $order,
-            'form' => $form->createView()
-        ));
+        $products = $this->get('open_miam_miam.product_manager')->findForAssociation($association, $filters);
+
+        return $this->render(
+            'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addProducts.html.twig',
+            array(
+                'association' => $association,
+                'order' => $order,
+                'artificialProductForm' => $artificialProductForm->createView(),
+                'filterForm' => $filterForm->createView(),
+                'products' => $products
+            ),
+            $response
+        );
     }
 
     /**
-     * Update a sales order
+     * Pays a sales order
      *
      * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      *

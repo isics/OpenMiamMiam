@@ -193,7 +193,6 @@ OpenMiamMiam.ProducerProductForm = function() {
 
 
 OpenMiamMiam.DeleteDialog = function() {
-
     var object = function() {
         this.handleConfirmation();
 
@@ -204,6 +203,96 @@ OpenMiamMiam.DeleteDialog = function() {
                 e.preventDefault();
 
                 $('#delete-dialog .btn-danger').attr('href', $(this).data('url'));
+            });
+        }
+    };
+
+    return object;
+}();
+
+
+OpenMiamMiam.SalesOrderForm = function() {
+    var object = function() {
+        this.addProductsModal = $('#add-products-dialog');
+        this.editionFormFieldsContainer = $('#edition-form-fields-container');
+        this.addArtificialProductFormId = 'add-artificial-product-form';
+        this.filterProductsFormId = 'filter-products-form';
+        this.keyUpDelay = 400;
+
+        this.initialize();
+    };
+
+    object.prototype = {
+        initialize: function() {
+            var that = this;
+            this.addProductsModal.delegate('a.add-product-link', 'click', function(e){
+                $.ajax({
+                    url: this.href,
+                    success: function(html){
+                        that.addProductsModal.html(html);
+                        that.refreshEditionFormFieldsContainer();
+                    }
+                });
+
+                e.preventDefault();
+            });
+
+            this.addProductsModal.delegate('form', 'submit', function(e){
+                var promise = $.ajax({
+                    type: 'post',
+                    url: this.action,
+                    data: $(this).serialize()
+                });
+
+                promise.fail(function(xhr){
+                    that.addProductsModal.find('form:first').replaceWith($(xhr.responseText).find('form:first'));
+                });
+
+                if ($(this).attr('id') == that.addArtificialProductFormId) {
+                    promise.done(function() {
+                        that.refreshEditionFormFieldsContainer();
+                    });
+                }
+
+                if ($(this).attr('id') == that.filterProductsFormId) {
+                    promise.done(function(html) {
+                        that.addProductsModal.find('tbody:first').replaceWith($(html).find('tbody'));
+                    });
+                }
+                e.preventDefault();
+            });
+
+            this.addProductsModal.delegate('form#'+this.filterProductsFormId+' select', 'change', function(){
+                $('#'+that.filterProductsFormId).submit();
+            });
+
+            this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'keyup', function(){
+                if (that.keyUpTimer !== undefined) {
+                    clearTimeout(that.keyUpTimer);
+                }
+                that.keyUpTimer = setTimeout(function() {
+                        $('#'+that.filterProductsFormId).submit();
+                    },
+                    that.keyUpDelay
+                );
+            });
+
+            this.initializeControls();
+        },
+
+        initializeControls: function() {
+            new OpenMiamMiam.Quantity;
+            new OpenMiamMiam.DeleteDialog;
+        },
+
+        refreshEditionFormFieldsContainer: function(){
+            var that = this;
+            $.ajax({
+                url: this.editionFormFieldsContainer.data('refresh-url'),
+                success: function(html){
+                    that.editionFormFieldsContainer.html(html);
+                    that.initializeControls();
+                }
             });
         }
     };

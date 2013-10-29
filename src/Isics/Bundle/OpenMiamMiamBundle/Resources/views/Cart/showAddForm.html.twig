@@ -5,25 +5,10 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% import "IsicsOpenMiamMiamBundle:Macro:product.html.twig" as product_macro %}
 {% block availability %}
     {% if not cart.closed %}
-        {% if productAvailability.isAvailable %}
-            <span class="label label-success">
-                {% if productAvailability.reason is constant('REASON_IN_STOCK', productAvailability) %}
-                    {{ 'availability.in_stock'|trans({'%stock%': product.stock}) }}
-                {% else %}
-                    {{ 'availability.available'|trans }}
-                {% endif %}
-            </span>
-        {% else %}
-            {% if productAvailability.reason is constant('REASON_PRODUCER_ABSENT', productAvailability) %}
-                <span class="label label-default">{{ 'availability.producer_absent'|trans }}</span>
-            {% elseif productAvailability.reason is constant('REASON_OUT_OF_STOCK', productAvailability) %}
-                <span class="label label-danger">{{ 'availability.out_of_stock'|trans }}</span>
-            {% elseif productAvailability.reason is constant('REASON_AVAILABLE_AT', productAvailability) %}
-                <span class="label label-warning">{{ 'availability.available_at'|trans({'%date%': product.availableAt|format_date}) }}</span>
-            {% endif %}
-        {% endif %}
+        {{ product_macro.availability_tag(productAvailability) }}
     {% endif %}
 {% endblock %}
 

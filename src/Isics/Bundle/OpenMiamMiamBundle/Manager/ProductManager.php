@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
@@ -315,5 +316,28 @@ class ProductManager
         }
 
         return $product;
+    }
+
+    /**
+     * Returns products for association filtered by criteria
+     *
+     * @param Association $association
+     * @param array $filters
+     *
+     * @return array
+     */
+    public function findForAssociation(Association $association, array $filters = null)
+    {
+        $qb = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Product')
+                ->getForAssociationQueryBuilder($association);
+
+        if (isset($filters['name'])) {
+            $qb->andWhere($qb->expr()->like('p.name', $qb->expr()->literal('%'.$filters['name'].'%')));
+        }
+        if (isset($filters['producer'])) {
+            $qb->andWhere('p.producer = :producer')->setParameter('producer', $filters['producer']);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
