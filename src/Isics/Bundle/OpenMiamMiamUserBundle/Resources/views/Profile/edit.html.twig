@@ -5,11 +5,15 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
+{% extends 'IsicsOpenMiamMiamUserBundle:Profile:base.html.twig' %}
 
 {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
 {% block content %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{{ path('fos_user_profile_edit') }}">{{ 'user.edit.profile'|trans }}</a></li>
+        <li><a href="{{ path('fos_user_profile_showSalesOrder') }}">{{ 'user.order.show.order'|trans }}</a></li>
+    </ul>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">

@@ -1,0 +1,58 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamUserBundle:Profile:base.html.twig' %}
+
+
+
+{% block content %}
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="{{ path('fos_user_profile_edit') }}">{{ 'user.edit.profile'|trans }}</a>
+        </li>
+        <li class="active">
+            <a href="{{ path('fos_user_profile_showSalesOrder') }}">{{ 'user.order.show.order'|trans }}</a>
+        </li>
+    </ul>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>{{ 'user.order.show.branch'|trans }}</th>
+                <th>{{ 'user.order.show.reference'|trans }}</th>
+                <th>{{ 'user.order.show.order_date'|trans }}</th>
+                <th>{{ 'user.order.show.total'|trans }}</th>
+                <th>{{ 'user.order.show.withdrawal'|trans }}</th>
+                <th>{{ 'user.order.show.details'|trans }}</th>
+            </tr>
+        </thead>
+        {% for salesOrder in salesOrders %}
+            <tbody>
+                <tr>
+                    <td>
+                        {{ salesOrder.branchOccurrence.branch.name }}, 
+                        {{salesOrder.branchOccurrence.begin|date("m/d/Y") }}
+                    </td>
+                    <td>{{salesOrder.ref}}</td>
+                    <td>
+                        {{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                    </td>
+                    <td>
+                        {{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}
+                    </td>
+                    <td>   
+                        {{ salesOrder.branchOccurrence.branch.address1 }} 
+                        {{ salesOrder.branchOccurrence.branch.address2 }},
+                        {{ salesOrder.branchOccurrence.branch.zipcode }} 
+                        {{ salesOrder.branchOccurrence.branch.city }}
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        
+    {% endfor %}
+    </table>
+{% endblock %}

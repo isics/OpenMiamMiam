@@ -200,4 +200,50 @@ class SalesOrderRepository extends EntityRepository
         return $qb->andWhere('so.branchOccurrence = :branchOccurrence')
                 ->setParameter('branchOccurrence', $branchOccurrence);
     }
+
+    /**
+     * Returns query builder to find all sales order of user
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return QueryBuilder
+     */
+    public function getSalesOrderForUserQueryBuilder($user)
+    {
+        return $this->filterSalesOrderForUser($user);
+    }
+
+    /**
+     * Returns all sales order of user
+     *
+     * @param User $user
+     *
+     * @return array SalesOrder
+     */
+    public function findSalesOrderForUser($user)
+    {
+        return $this->getSalesOrderForUserQueryBuilder($user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Filters all sales order of user
+     *
+     * @param User          $user
+     * @param QueryBuilder  $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterSalesOrderForUser($user, QueryBuilder $qb = null)
+    {
+       $qb = null === $qb ? $this->createQueryBuilder('so') : $qb;
+
+       return $qb->join('so.branchOccurrence', 'bo')
+            ->join('bo.branch', 'b')
+            ->where('so.user = :userId')
+            ->setParameter('userId', $user->getId())
+            ->addOrderBy('bo.begin', 'DESC')
+            ->addOrderBy('so.date', 'DESC');
+    }
 }

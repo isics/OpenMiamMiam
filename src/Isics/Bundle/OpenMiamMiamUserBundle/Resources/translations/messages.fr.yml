@@ -39,6 +39,7 @@ user.edit.submit:                "Mettre à jour"
 user.edit.confirmed.title:       "Bienvenue %firstname% !"
 user.edit.confirmed.body_html:   |
     <p>Votre compte a bien été créé.<p>
+user.edit.profile:                "Mon compte"
 
 user.resetting.request:       "Mot de passe oublié ?"
 user.resetting.request.title: "Réinitialisez votre mot de passe"
@@ -46,3 +47,12 @@ user.resetting.reset.title:   "Réinitialisez votre mot de passe"
 
 user.change_password:       "Changer mon mot de passe"
 user.change_password.title: "Changer mon mot de passe"
+
+# User / order show
+user.order.show.branch:     "Comptoir"
+user.order.show.reference:  "Référence"
+user.order.show.order_date: "Date de la commande"
+user.order.show.total:      "Montant"
+user.order.show.withdrawal: "Retrait"
+user.order.show.details:    "Détails de ma commande"
+user.order.show.order:      "Suivre mes commandes"
