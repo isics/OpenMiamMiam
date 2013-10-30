@@ -58,4 +58,5 @@ user.order.show.details:    "Détails de ma commande"
 user.order.show.order:      "Mes commandes"
 user.order.show.recover:    "A récupérer entre"
 user.order.show.and:        "et"
+user.order.show.no_order:   "Vous n'avez réalisé aucune commande."
 

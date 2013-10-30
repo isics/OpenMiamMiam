@@ -16,51 +16,55 @@
             <a href="{{ path('fos_user_profile_showSalesOrder') }}">{{ 'user.order.show.order'|trans }}</a>
         </li>
     </ul>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>{{ 'user.order.show.branch'|trans }}</th>
-                <th>{{ 'user.order.show.reference'|trans }}</th>
-                <th>{{ 'user.order.show.order_date'|trans }}</th>
-                <th>{{ 'user.order.show.total'|trans }}</th>
-                <th>{{ 'user.order.show.withdrawal'|trans }}</th>
-                <th>{{ 'user.order.show.details'|trans }}</th>
-            </tr>
-        </thead>
-        {% for salesOrder in salesOrders %}
-            <tbody>
+    {% if salesOrders|length > 0 %}
+        <table class="table table-hover">
+            <thead>
                 <tr>
-                    <td>
-                        {{ salesOrder.branchOccurrence.branch.name }}, 
-                        {{ salesOrder.branchOccurrence.begin|date("m/d/Y") }}
-                    </td>
-                    <td>{{ salesOrder.ref }}</td>
-                    <td>
-                        {{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}
-                    </td>
-                    <td>
-                        {{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}
-                    </td>
-                    <td>   
-                        {% if "now"|date("m/d/Y H:i:s") > salesOrder.branchOccurrence.begin|date("m/d/Y H:i:s") %}
-                            -
-                        {% else %}
-                            {{ 'user.order.show.recover'|trans }}
-                            <b>{{ salesOrder.branchOccurrence.begin|date("H:i") }}</b>
-                            {{ 'user.order.show.and'|trans }}
-                            <b>{{ salesOrder.branchOccurrence.end|date("H:i") }}</b>
-                            <br>
-                            <b>
-                                {{ salesOrder.branchOccurrence.branch.address1 }} 
-                                {{ salesOrder.branchOccurrence.branch.address2 }},
-                                {{ salesOrder.branchOccurrence.branch.zipcode }} 
-                                {{ salesOrder.branchOccurrence.branch.city }}
-                            </b>
-                        {% endif %}
-                    </td>   
-                    <td></td>
+                    <th>{{ 'user.order.show.branch'|trans }}</th>
+                    <th>{{ 'user.order.show.reference'|trans }}</th>
+                    <th>{{ 'user.order.show.order_date'|trans }}</th>
+                    <th>{{ 'user.order.show.total'|trans }}</th>
+                    <th>{{ 'user.order.show.withdrawal'|trans }}</th>
+                    <th>{{ 'user.order.show.details'|trans }}</th>
                 </tr>
-            </tbody>
-        {% endfor %}
-    </table>
+            </thead>
+            {% for salesOrder in salesOrders %}
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ salesOrder.branchOccurrence.branch.name }}, 
+                            {{ salesOrder.branchOccurrence.begin|date("m/d/Y") }}
+                        </td>
+                        <td>{{ salesOrder.ref }}</td>
+                        <td>
+                            {{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                        </td>
+                        <td>
+                            {{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}
+                        </td>
+                        <td>   
+                            {% if "now"|date("m/d/Y H:i:s") > salesOrder.branchOccurrence.begin|date("m/d/Y H:i:s") %}
+                                -
+                            {% else %}
+                                {{ 'user.order.show.recover'|trans }}
+                                <b>{{ salesOrder.branchOccurrence.begin|date("H:i") }}</b>
+                                {{ 'user.order.show.and'|trans }}
+                                <b>{{ salesOrder.branchOccurrence.end|date("H:i") }}</b>
+                                <br>
+                                <b>
+                                    {{ salesOrder.branchOccurrence.branch.address1 }} 
+                                    {{ salesOrder.branchOccurrence.branch.address2 }},
+                                    {{ salesOrder.branchOccurrence.branch.zipcode }} 
+                                    {{ salesOrder.branchOccurrence.branch.city }}
+                                </b>
+                            {% endif %}
+                        </td>   
+                        <td></td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    {% else %}
+        {% include 'IsicsOpenMiamMiamUserBundle:Profile:empty.html.twig' with {'message': 'user.order.show.no_order'|trans} %}
+    {% endif %}
 {% endblock %}
