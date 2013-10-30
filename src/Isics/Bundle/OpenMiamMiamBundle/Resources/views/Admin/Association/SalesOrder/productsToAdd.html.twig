@@ -1,0 +1,9 @@
+{% for product in products %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin\\Association\\SalesOrder:productToAdd.html.twig' %}
+{% else %}
+    <tr>
+        <td colspan="5">
+            {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.sales_orders.add_products.no_product'|trans} %}
+        </td>
+    </tr>
+{% endfor %}

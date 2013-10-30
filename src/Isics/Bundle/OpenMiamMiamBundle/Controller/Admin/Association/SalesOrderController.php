@@ -309,7 +309,14 @@ class SalesOrderController extends BaseController
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
 
         if ($request->isXmlHttpRequest()) {
-            return $this->addProductsAction($request, $association, $order);
+            return $this->render(
+                'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:productToAdd.html.twig',
+                array(
+                    'association' => $association,
+                    'order' => $order,
+                    'product' => $product
+                )
+            );
         }
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
@@ -365,7 +372,6 @@ class SalesOrderController extends BaseController
         );
 
         $filters = null;
-        $response = new Response();
         if ($request->isMethod('POST')) {
             $artificialProductForm->handleRequest($request);
             if ($artificialProductForm->isValid()) {
@@ -378,16 +384,25 @@ class SalesOrderController extends BaseController
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
 
-                if (!$request->isXmlHttpRequest()) {
-                    $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
-
-                    return $this->redirect($this->generateUrl(
-                        'open_miam_miam.admin.association.sales_order.edit',
-                        array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-                    ));
+                if ($request->isXmlHttpRequest()) {
+                    return $this->render(
+                        'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:artificialProductFormFields.html.twig',
+                        array('artificialProductForm' => $artificialProductForm->createView())
+                    );
                 }
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.sales_order.edit',
+                    array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+                ));
             } elseif ($artificialProductForm->isSubmitted() && $request->isXmlHttpRequest()) {
-                $response = new Response('Failed', 400);
+                return $this->render(
+                    'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:artificialProductFormFields.html.twig',
+                    array('artificialProductForm' => $artificialProductForm->createView()),
+                    new Response('Failed', 400)
+                );
             }
 
             $filterForm->handleRequest($request);
@@ -398,6 +413,17 @@ class SalesOrderController extends BaseController
 
         $products = $this->get('open_miam_miam.product_manager')->findForAssociation($association, $filters);
 
+        if ($filterForm->isSubmitted() && $request->isXmlHttpRequest()) {
+            return $this->render(
+                'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:productsToAdd.html.twig',
+                array(
+                    'association' => $association,
+                    'order' => $order,
+                    'products' => $products
+                )
+            );
+        }
+
         return $this->render(
             'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addProducts.html.twig',
             array(
@@ -406,8 +432,7 @@ class SalesOrderController extends BaseController
                 'artificialProductForm' => $artificialProductForm->createView(),
                 'filterForm' => $filterForm->createView(),
                 'products' => $products
-            ),
-            $response
+            )
         );
     }
 

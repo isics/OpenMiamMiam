@@ -225,11 +225,12 @@ OpenMiamMiam.SalesOrderForm = function() {
     object.prototype = {
         initialize: function() {
             var that = this;
+
             this.addProductsModal.delegate('a.add-product-link', 'click', function(e){
                 $.ajax({
                     url: this.href,
-                    success: function(html){
-                        that.addProductsModal.html(html);
+                    success: function(html) {
+                        $('#'+$(html).attr('id')).replaceWith($(html));
                         that.refreshEditionFormFieldsContainer();
                     }
                 });
@@ -244,21 +245,22 @@ OpenMiamMiam.SalesOrderForm = function() {
                     data: $(this).serialize()
                 });
 
-                promise.fail(function(xhr){
-                    that.addProductsModal.find('form:first').replaceWith($(xhr.responseText).find('form:first'));
-                });
-
                 if ($(this).attr('id') == that.addArtificialProductFormId) {
-                    promise.done(function() {
+                    promise.done(function(html) {
+                        that.addProductsModal.find('form:first').html(html);
                         that.refreshEditionFormFieldsContainer();
+                    });
+                    promise.fail(function(xhr){
+                        that.addProductsModal.find('form:first').html(xhr.responseText);
                     });
                 }
 
                 if ($(this).attr('id') == that.filterProductsFormId) {
                     promise.done(function(html) {
-                        that.addProductsModal.find('tbody:first').replaceWith($(html).find('tbody'));
+                        that.addProductsModal.find('tbody').html(html);
                     });
                 }
+
                 e.preventDefault();
             });
 
