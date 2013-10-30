@@ -55,4 +55,7 @@ user.order.show.order_date: "Date de la commande"
 user.order.show.total:      "Montant"
 user.order.show.withdrawal: "Retrait"
 user.order.show.details:    "Détails de ma commande"
-user.order.show.order:      "Suivre mes commandes"
+user.order.show.order:      "Mes commandes"
+user.order.show.recover:    "A récupérer entre"
+user.order.show.and:        "et"
+

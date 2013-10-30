@@ -8,7 +8,7 @@ fos_user_profile_edit:
 
 fos_user_profile_showSalesOrder:
     pattern:  /profile/order/show
-    defaults: { _controller: IsicsOpenMiamMiamBundle:SalesOrder:ShowSalesOrder }
+    defaults: { _controller: IsicsOpenMiamMiamUserBundle:SalesOrder:ShowSalesOrder }
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"

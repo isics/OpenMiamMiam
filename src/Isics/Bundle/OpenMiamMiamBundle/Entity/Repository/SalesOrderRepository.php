@@ -204,7 +204,7 @@ class SalesOrderRepository extends EntityRepository
     /**
      * Returns query builder to find all sales order of user
      *
-     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param User $user
      *
      * @return QueryBuilder
      */

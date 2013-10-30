@@ -7,8 +7,6 @@
  #}
 {% extends 'IsicsOpenMiamMiamUserBundle:Profile:base.html.twig' %}
 
-
-
 {% block content %}
     <ul class="nav nav-tabs">
         <li>
@@ -34,9 +32,9 @@
                 <tr>
                     <td>
                         {{ salesOrder.branchOccurrence.branch.name }}, 
-                        {{salesOrder.branchOccurrence.begin|date("m/d/Y") }}
+                        {{ salesOrder.branchOccurrence.begin|date("m/d/Y") }}
                     </td>
-                    <td>{{salesOrder.ref}}</td>
+                    <td>{{ salesOrder.ref }}</td>
                     <td>
                         {{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}
                     </td>
@@ -44,15 +42,25 @@
                         {{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}
                     </td>
                     <td>   
-                        {{ salesOrder.branchOccurrence.branch.address1 }} 
-                        {{ salesOrder.branchOccurrence.branch.address2 }},
-                        {{ salesOrder.branchOccurrence.branch.zipcode }} 
-                        {{ salesOrder.branchOccurrence.branch.city }}
-                    </td>
+                        {% if "now"|date("m/d/Y H:i:s") > salesOrder.branchOccurrence.begin|date("m/d/Y H:i:s") %}
+                            -
+                        {% else %}
+                            {{ 'user.order.show.recover'|trans }}
+                            <b>{{ salesOrder.branchOccurrence.begin|date("H:i") }}</b>
+                            {{ 'user.order.show.and'|trans }}
+                            <b>{{ salesOrder.branchOccurrence.end|date("H:i") }}</b>
+                            <br>
+                            <b>
+                                {{ salesOrder.branchOccurrence.branch.address1 }} 
+                                {{ salesOrder.branchOccurrence.branch.address2 }},
+                                {{ salesOrder.branchOccurrence.branch.zipcode }} 
+                                {{ salesOrder.branchOccurrence.branch.city }}
+                            </b>
+                        {% endif %}
+                    </td>   
                     <td></td>
                 </tr>
             </tbody>
-        
-    {% endfor %}
+        {% endfor %}
     </table>
 {% endblock %}

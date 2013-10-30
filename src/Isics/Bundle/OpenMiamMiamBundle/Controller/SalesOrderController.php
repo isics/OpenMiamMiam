@@ -125,19 +125,4 @@ class SalesOrderController extends Controller
     {
         return $this->redirect($this->generateUrl('open_miam_miam.cart.show', array('branchSlug' => $cart->getBranch()->getSlug())));
     }
-
-    /**
-     * Show sales order
-     * 
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function showSalesOrderAction()
-    {
-        $user = $this->get('security.context')->getToken()->getUser();
-        $salesOrders = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findSalesOrderForUser($user);
-        return $this->render('IsicsOpenMiamMiamUserBundle:Profile:showSalesOrder.html.twig', array(
-            'salesOrders' => $salesOrders,
-            ));
-    }
-
 }
