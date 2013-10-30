@@ -65,6 +65,8 @@
             {% endfor %}
         </table>
     {% else %}
-        {% include 'IsicsOpenMiamMiamUserBundle:Profile:empty.html.twig' with {'message': 'user.order.show.no_order'|trans} %}
+        <p class="text-muted">
+            <span class="glyphicon glyphicon-ban-circle"></span> <em>{{ 'user.order.show.no_order'|trans }}</em>
+        </p>
     {% endif %}
 {% endblock %}
