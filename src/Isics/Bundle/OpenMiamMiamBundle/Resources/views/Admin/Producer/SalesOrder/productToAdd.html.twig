@@ -6,8 +6,8 @@
  # with this source code in the file LICENSE.
  #}
 {% import "IsicsOpenMiamMiamBundle:Macro:product.html.twig" as product_macro %}
+
 <tr id="product-{{ product.id }}">
-    <td>{{ product.producer.name }}</td>
     <td>{{ product.name }}</td>
     <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
     <td>
@@ -16,9 +16,9 @@
     </td>
     <td>
         {% if availabilityInfos.isAvailable %}
-            <a href="{{ path('open_miam_miam.admin.association.sales_order.add_product', {'id': association.id, 'salesOrderId': order.id, 'productId': product.id}) }}" class="add-product-link btn btn-primary">
+            <a href="{{ path('open_miam_miam.admin.producer.sales_order.add_product', {'id': producer.id, 'salesOrderId': order.id, 'productId': product.id}) }}" class="add-product-link btn btn-primary">
                 <span class="glyphicon glyphicon-plus-sign"></span>
-                {{ 'admin.association.sales_orders.add_products.add'|trans }}
+                {{ 'admin.producer.sales_orders.add_products.add'|trans }}
             </a>
         {% endif %}
     </td>

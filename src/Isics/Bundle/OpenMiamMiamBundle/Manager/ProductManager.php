@@ -340,4 +340,24 @@ class ProductManager
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Returns products for producer filtered by criteria
+     *
+     * @param Producer $producer
+     * @param array $filters
+     *
+     * @return array
+     */
+    public function findForProducer(Producer $producer, array $filters = null)
+    {
+        $qb = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Product')
+                ->getForProducerQueryBuilder($producer);
+
+        if (isset($filters['name'])) {
+            $qb->andWhere($qb->expr()->like('p.name', $qb->expr()->literal('%'.$filters['name'].'%')));
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
