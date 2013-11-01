@@ -146,6 +146,103 @@ h1 {
     }
 }
 
+
+//
+// Association / Products
+//
+#add-products-dialog {
+    h2 {
+        margin: 0;
+        padding: 10px 15px;
+        background-color: @panel-info-heading-bg;
+        border-top: 1px solid @table-border-color;
+        border-bottom: 1px solid @table-border-color;
+        color: @panel-info-text;
+        font-size: @font-size-medium;
+    }
+
+    .row:nth-child(1) {
+        margin: 15px 0;
+    }
+
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-dialog {
+        width: 800px;
+    }
+
+    .modal-body {
+        padding: 0;
+    }
+
+    table {
+        border: none;
+        margin-bottom: 0;
+    }
+
+    .unavailable {
+        color: @gray-light;
+    }
+
+    th,
+    td {
+        vertical-align: middle !important;
+    }
+
+    th:first-child,
+    td:first-child {
+        padding-left: 15px;
+    }
+
+    th:last-child,
+    td:last-child {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    th:nth-child(n+2),
+    td:nth-child(n+2) {
+        border-left: 1px solid @table-border-color;
+    }
+
+    th:nth-child(n+3),
+    td:nth-child(n+4) {
+        text-align: center;
+    }
+
+    td:nth-child(3) {
+        font-weight: bold;
+        line-height: 34px; // button height
+        text-align: right;
+    }
+
+    .label {
+        display: block;
+    }
+
+    tfoot {
+        td {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-top: 2px solid @table-border-color;
+        }
+    }
+
+    th {
+        input,
+        select {
+            display: block;
+            width: 150px;
+        }
+    }
+
+    p {
+        display: none;
+    }
+}
+
 //
 // Association / Branches
 //

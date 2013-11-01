@@ -12,33 +12,60 @@
         <h1>{{ 'admin.association.sales_orders.add_products.title'|trans }}</h1>
     {% endif %}
 
-    {{ form_start(artificialProductForm, {'attr': {'novalidate': '', 'id': 'add-artificial-product-form', 'class': 'form form-inline'}}) }}
-        {% include 'IsicsOpenMiamMiamBundle:Admin\\Association\\SalesOrder:artificialProductFormFields.html.twig' %}
+    <h2>{{ 'artificial_product'|trans }}</h2>
+    {{ form_start(artificialProductForm, {'attr': {'novalidate': '', 'id': 'add-artificial-product-form'}}) }}
+        {{ form_errors(artificialProductForm) }}
+
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_errors(artificialProductForm.producer) }}
+                {{ form_widget(artificialProductForm.producer, {'attr': {'class': 'form-control'} }) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form_errors(artificialProductForm.name) }}
+                {{ form_widget(artificialProductForm.name, {'attr': {'class': 'form-control', 'placeholder': 'admin.association.sales_orders.add_products.name'|trans} }) }}
+            </div>
+
+            <div class="col-md-3">
+                <div class="input-group">
+                    {{ form_errors(artificialProductForm.price) }}
+                    {{ form_widget(artificialProductForm.price, {'attr': {'class': 'form-control', 'placeholder': 'admin.association.sales_orders.add_products.price'|trans} }) }}
+                    <span class="input-group-addon">{{ open_miam_miam.currency }}</span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    {{ 'admin.add'|trans }}
+                </button>
+                {% do artificialProductForm.add.setRendered %}
+            </div>
+        </div>
+
+        {{ form_rest(artificialProductForm) }}
     {{ form_end(artificialProductForm) }}
 
+    <h2>{{ 'catalog'|trans }}</h2>
     {{ form_start(filterForm, {'attr': {'novalidate': '', 'id': 'filter-products-form', 'class': 'form form-inline'}}) }}
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-calendar">
+            <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th>{{ 'admin.association.sales_orders.add_products.producer'|trans }}</th>
-                        <th>{{ 'admin.association.sales_orders.add_products.name'|trans }}</th>
+                        <th>
+                            {{ 'admin.association.sales_orders.add_products.producer'|trans }}
+                            {{ form_errors(filterForm.producer) }}
+                            {{ form_widget(filterForm.producer, {'attr': {'class': 'form-control input-sm'}}) }}
+                        </th>
+                        <th>
+                            {{ 'admin.association.sales_orders.add_products.name'|trans }}
+                            {{ form_errors(filterForm.name) }}
+                            {{ form_widget(filterForm.name, {'attr': {'class': 'form-control input-sm'}}) }}
+                        </th>
                         <th>{{ 'admin.association.sales_orders.add_products.price'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.add_products.availability'|trans }}</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            {{ form_errors(filterForm.producer) }}
-                            {{ form_widget(filterForm.producer) }}
-                        </td>
-                        <td>
-                            {{ form_errors(filterForm.name) }}
-                            {{ form_widget(filterForm.name) }}
-                        </td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>{{ form_widget(filterForm.filter) }}</td>
+                        <th>&nbsp;{% do filterForm.filter.setRendered %}</th>
                     </tr>
                 </thead>
                 <tbody>

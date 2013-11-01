@@ -21,6 +21,7 @@ number:               "n°"
 no_price_statement:   "Le prix sera défini lors de la préparation de la commande."
 my_account:           "Mon compte"
 artificial_product:   "Produit divers"
+catalog:              "Catalogue"
 
 
 
@@ -128,12 +129,12 @@ availability.available_at:    "Dispo le %date%"
 
 # Availability for backend
 backend.availability:                 "Dispo"
-backend.availability.unavailable:     "Indisponible"
+backend.availability.unavailable:     "Pas de catalogue"
 backend.availability.available:       "Dispo"
 backend.availability.in_stock:        "%stock% en stock"
 backend.availability.out_of_stock:    "Plus de stock"
-backend.availability.producer_absent: "Producteur absent"
-backend.availability.available_at:    "Dispo le %date%"
+backend.availability.producer_absent: "Absent"
+backend.availability.available_at:    "Le %date%"
 
 
 
