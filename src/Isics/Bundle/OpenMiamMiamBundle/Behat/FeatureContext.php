@@ -67,9 +67,14 @@ class FeatureContext extends BehatContext
     {
         $entityManager = $this->getEntityManager();
 
+        $root = new Category();
+        $root->setName('root');
+        $entityManager->persist($root);
+
         foreach ($table->getHash() as $data) {
             $category = new Category();
             $category->setName($data['name']);
+            $category->setParent($root);
 
             $entityManager->persist($category);
         }
