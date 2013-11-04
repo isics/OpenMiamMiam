@@ -3,13 +3,17 @@ Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation:
         termsOfSaleChecked:
             - "True": ~
 
+Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder:
+    properties:
+        salesOrderRows:
+            - Valid: ~
+
 Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
     constraints:
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrder: ~
     properties:
         branchOccurrence:
             - NotNull: ~
-            - Valid: ~
         salesOrderRows:
             - Valid: ~
         ref:
@@ -23,8 +27,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
             - NotNull: ~
             - Type:
                 type: numeric
-        user:
-            - Valid: ~
         firstname:
             - Length:
                 max: 128
@@ -47,19 +49,12 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder:
             - Length:
                 max: 255
 
-Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder:
-    properties:
-        salesOrderRows:
-            - Valid: ~
-
 Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
     constraints:
             - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderRow: ~
     properties:
-        product:
-            - Valid: ~
         producer:
-            - Valid: ~
+            - NotNull: ~
         name:
             - NotNull: ~
             - Length:
@@ -72,13 +67,13 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow:
             - Type:
                 type: boolean
         unitPrice:
-            - GreaterThan:
-                value: 0
+            - Range:
+                min: 0
         quantity:
             - NotNull: ~
-            - GreaterThan:
-                value: 0
+            - Range:
+                min: 0
         total:
             - NotNull: ~
-            - GreaterThan:
-                value: 0
+            - Range:
+                min: 0

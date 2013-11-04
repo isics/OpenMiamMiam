@@ -2,9 +2,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence:
     constraints:
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BranchOccurrence: ~
     properties:
-        branch:
-            - NotNull: ~
-            - Valid: ~
         begin:
             - NotNull: ~
             - DateTime: ~

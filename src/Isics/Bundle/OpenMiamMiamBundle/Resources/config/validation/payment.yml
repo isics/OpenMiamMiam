@@ -4,20 +4,10 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Payment:
     properties:
         amount:
             - NotNull: ~
-            - GreaterThan:
-                value: 0
-        rest:
-            - NotNull: ~
-        date:
-            - NotNull: ~
-            - Date: ~
+            - Range:
+                min: 0
         type:
             - Choice: { callback: getTypes }
-        user:
-            - Valid: ~
-        association:
-            - NotNull: ~
-            - Valid: ~
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation:
     constraints:
@@ -25,14 +15,5 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation:
     properties:
         amount:
             - NotNull: ~
-            - GreaterThan:
-                value: 0
-        date:
-            - NotNull: ~
-            - Date: ~
-        salesOrder:
-            - NotNull: ~
-            - Valid: ~
-        payment:
-            - NotNull: ~
-            - Valid: ~
+            - Range:
+                min: 0

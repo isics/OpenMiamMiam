@@ -2,10 +2,7 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter:
     constraints:
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Newsletter: ~
     properties:
-        association:
-            - Valid: ~
         branches:
-            - Valid: ~
             - Count :
                 min: 1
         recipientType:

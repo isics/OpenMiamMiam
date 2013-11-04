@@ -2,10 +2,9 @@ Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct:
     properties:
         producer:
             - NotNull: ~
-            - Valid: ~
         price:
-            - GreaterThan:
-                value: 0
+            - Range:
+                min: 0
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
     constraints:
@@ -21,18 +20,16 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Product:
             - Length:
                 max: 16
         producer:
-            - Valid: ~
             - NotNull: ~
         category:
-            - Valid: ~
             - NotNull: ~
         isBio:
             - Type: bool
         isOfTheMoment:
             - Type: bool
         price:
-            - GreaterThan:
-                value: 0
+            - Range:
+                min: 0
         priceInfo:
             - Length:
                 max: 128

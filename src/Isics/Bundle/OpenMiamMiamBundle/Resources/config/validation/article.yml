@@ -5,6 +5,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Article:
             - Length:
                 max: 128
         body:
-            - NotNull: ~
+            - NotBlank: ~
         isPublished:
             - Type: bool

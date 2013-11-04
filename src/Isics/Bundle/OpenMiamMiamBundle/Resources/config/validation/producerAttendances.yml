@@ -1,19 +1,10 @@
 Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerAttendances:
     properties:
-        producer:
-            - Valid: ~
-            - NotNull: ~
         branchAttendances:
             - Valid: ~
 
 Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances:
     properties:
-        producer:
-            - Valid: ~
-            - NotNull: ~
-        branch:
-            - Valid: ~
-            - NotNull: ~
         branchOccurrenceAttendances:
             - Valid: ~
 
@@ -22,10 +13,8 @@ Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenc
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerBranchOccurrenceAttendance: ~
     properties:
         producer:
-            - Valid: ~
             - NotNull: ~
         branchOccurrence:
-            - Valid: ~
             - NotNull: ~
         attendance:
             - Choice: { callback: getAttendancesStatus}

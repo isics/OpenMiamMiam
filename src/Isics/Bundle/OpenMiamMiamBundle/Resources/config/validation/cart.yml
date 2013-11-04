@@ -10,5 +10,5 @@ Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem:
         product:
             - NotNull: ~
         quantity:
-            - GreaterThan:
-                value: 0
+            - Range:
+                min: 0
