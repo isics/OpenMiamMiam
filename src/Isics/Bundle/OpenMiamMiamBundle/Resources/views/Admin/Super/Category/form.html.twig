@@ -15,14 +15,16 @@
 
     {{ form_row(form.name, {'label': 'admin.super.category.form.name'|trans}) }}
 
-    <div class="row">
-        <div class="col-md-6">
-            {{ form_row(form.position, {'label': 'admin.super.category.form.position'|trans}) }}
+    {% if form.position is defined %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.position, {'label': 'admin.super.category.form.position'|trans}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.target, {'label': 'admin.super.category.form.target'|trans}) }}
+            </div>
         </div>
-        <div class="col-md-6">
-            {{ form_row(form.target, {'label': 'admin.super.category.form.target'|trans}) }}
-        </div>
-    </div>
+    {% endif %}
 
     <a href="{{ path('open_miam_miam.admin.super.category.list') }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 

@@ -30,7 +30,7 @@ class CatalogController extends Controller
     public function showCategoriesAction(Branch $branch)
     {
         $categories = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Category')
-            ->findAllAvailableInBranch($branch);
+            ->findLevel1WithProductsInBranch($branch);
 
         return $this->render('IsicsOpenMiamMiamBundle:Catalog:showCategories.html.twig', array(
             'branch'     => $branch,
@@ -53,6 +53,10 @@ class CatalogController extends Controller
      */
     public function showCategoryAction(Branch $branch, Category $category)
     {
+        if (0 === $category->getLvl()) {
+            throw $this->createNotFoundException('Root node is not visible.');
+        }
+
         if (!$this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Category')->hasProductAvailableInBranch($branch, $category)) {
             throw $this->createNotFoundException('No product was found in this category.');
         }

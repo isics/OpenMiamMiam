@@ -75,26 +75,28 @@ class CategoryRepository extends NestedTreeRepository
     }
 
     /**
-     * Finds categories available in a branch (categories with products)
+     * Finds first level categories available in a branch
      *
      * @param Branch $branch Branch
      *
      * @return array
      */
-    public function findAllAvailableInBranch(Branch $branch)
+    public function findLevel1WithProductsInBranch(Branch $branch)
     {
-        return $this->getRootNodesQueryBuilder()
-                ->add('from', 'IsicsOpenMiamMiamBundle:Category node, IsicsOpenMiamMiamBundle:Product p')
-                ->innerJoin('p.category', 'pc')
-                ->innerJoin('p.branches', 'b')
-                ->andWhere('p.availability != :availability')
-                ->andWhere('b = :branch')
-                ->andWhere('pc.lft >= node.lft')
-                ->andWhere('pc.rgt <= node.rgt')
-                ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
-                ->setParameter('branch', $branch)
-                ->getQuery()
-                ->getResult();
+        return $this->createQueryBuilder('node')
+            ->add('from', 'IsicsOpenMiamMiamBundle:Category node, IsicsOpenMiamMiamBundle:Product p')
+            ->innerJoin('p.category', 'pc')
+            ->innerJoin('p.branches', 'b')
+            ->andWhere('p.availability != :availability')
+            ->andWhere('b = :branch')
+            ->andWhere('pc.lft >= node.lft')
+            ->andWhere('pc.rgt <= node.rgt')
+            ->andWhere('node.lvl = 1')
+            ->addOrderBy('node.lft')
+            ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
+            ->setParameter('branch', $branch)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

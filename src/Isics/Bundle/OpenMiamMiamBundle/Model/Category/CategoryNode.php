@@ -114,4 +114,14 @@ class CategoryNode
     {
         return $this->target;
     }
+
+    /**
+     * Return true if node is root
+     *
+     * @return boolean
+     */
+    public function isRoot()
+    {
+        return self::POSITION_FIRST_CHILD === $this->position;
+    }
 }

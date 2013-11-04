@@ -82,7 +82,16 @@ class CategoryController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
+                try {
+                    $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
+                } catch (\UnexpectedValueException $e) {
+                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+
+                    return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Category:edit.html.twig', array(
+                        'form'       => $form->createView(),
+                        'activities' => $categoryManager->getActivities($category),
+                    ));
+                }
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.category.message.updated');
 

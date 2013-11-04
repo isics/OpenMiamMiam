@@ -26,7 +26,7 @@ class CategoryType extends AbstractType
     {
         $builder->add('name', 'text');
 
-        if (!$options['root_node']) {
+        if (!$options['data']->isRoot()) {
             $builder->add('position', 'choice', array(
                 'choices' => array(
                     CategoryNode::POSITION_FIRST_CHILD_OF  => 'tree.position.first_child_of',
@@ -54,8 +54,7 @@ class CategoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Category\CategoryNode',
-            'root_node'  => false,
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Category\CategoryNode'
         ));
     }
 

@@ -62,7 +62,16 @@ class CategoryManager
         $categoryNode = new CategoryNode($category);
 
         if (null === $category->getId()) {
-            $categoryNode->setPosition(CategoryNode::POSITION_LAST_CHILD);
+            $rootNodes = $this->entityManager
+                ->getRepository('IsicsOpenMiamMiamBundle:Category')
+                ->getRootNodes();
+
+            if (empty($rootNodes)) {
+                $categoryNode->setPosition(CategoryNode::POSITION_FIRST_CHILD);
+            } else {
+                $categoryNode->setPosition(CategoryNode::POSITION_LAST_CHILD_OF);
+                $categoryNode->setTarget($rootNodes[0]);
+            }
         } else {
             if (null !== $prev = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:Category')
@@ -74,8 +83,11 @@ class CategoryManager
                 ->getNextSibling($category)) {
                 $categoryNode->setPosition(CategoryNode::POSITION_PREV_SIBLING_OF);
                 $categoryNode->setTarget($next);
+            } else if (null !== $parent = $category->getParent()) {
+                $categoryNode->setPosition(CategoryNode::POSITION_FIRST_CHILD_OF);
+                $categoryNode->setTarget($parent);
             } else {
-                $categoryNode->setPosition(CategoryNode::POSITION_LAST_CHILD);
+                $categoryNode->setPosition(CategoryNode::POSITION_FIRST_CHILD);
             }
         }
 

@@ -41,10 +41,33 @@ class CategoryNodeValidator extends ConstraintValidator
      */
     public function validate($categoryNode, Constraint $constraint)
     {
+        $rootNodes = $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:Category')
+            ->getRootNodes();
+
+        $categoryId = $categoryNode->getCategory()->getId();
+
+        // If not yet a root node or node is root, only first child position is allowed
+        if ((empty($rootNodes) ||
+            !empty($rootNodes) && null !== $categoryId && $rootNodes[0]->getId() === $categoryId)
+            && _CategoryNode::POSITION_FIRST_CHILD !== $categoryNode->getPosition()) {
+
+            $this->context->addViolationAt('position', 'error.invalid');
+        }
+
+        // First child position is forbidden in other cases
+        if (!empty($rootNodes)
+            && (null === $categoryId || null !== $categoryId && $rootNodes[0]->getId() !== $categoryId)
+            && _CategoryNode::POSITION_FIRST_CHILD === $categoryNode->getPosition()) {
+
+            $this->context->addViolationAt('position', 'error.invalid');
+        }
+
         // Target required for 4 reference positions
-        if (_CategoryNode::POSITION_FIRST_CHILD !== $categoryNode->getPosition()
-            && _CategoryNode::POSITION_LAST_CHILD !== $categoryNode->getPosition()
-            && null === $categoryNode->getTarget()) {
+        if (in_array($categoryNode->getPosition(), array(
+                _CategoryNode::POSITION_FIRST_CHILD_OF, _CategoryNode::POSITION_LAST_CHILD_OF,
+                _CategoryNode::POSITION_PREV_SIBLING_OF, _CategoryNode::POSITION_NEXT_SIBLING_OF
+            )) && null === $categoryNode->getTarget()) {
 
             $this->context->addViolationAt('target', 'error.required');
         }
