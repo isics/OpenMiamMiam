@@ -3,6 +3,8 @@
 "User account is locked.":        "Compte bloqué"
 "User account has expired.":      "Compte expiré"
 
+change_password.cancel: "Annuler"
+
 registration_check_email_html: Un e-mail a été envoyé à l'adresse <strong>%email%</strong>. Il contient un lien d'activation sur lequel il vous faudra cliquer afin d'activer votre compte.
 
 registration.email.subject: "Confirmez votre compte."

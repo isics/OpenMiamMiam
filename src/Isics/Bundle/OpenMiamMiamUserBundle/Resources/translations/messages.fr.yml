@@ -26,7 +26,7 @@ user.register.confirmed.body_html:   |
 user.register.confirmed.next:        "Continuer"
 
 # User / edit
-user.edit.title:                 "Mettre à jour mes infos :"
+user.edit.title:                 "Mes infos"
 user.edit.firstname:             "Prénom"
 user.edit.lastname:              "Nom"
 user.edit.email:                 "Adresse e-mail"
@@ -39,7 +39,6 @@ user.edit.submit:                "Mettre à jour"
 user.edit.confirmed.title:       "Bienvenue %firstname% !"
 user.edit.confirmed.body_html:   |
     <p>Votre compte a bien été créé.<p>
-user.edit.profile:                "Mon compte"
 
 user.resetting.request:       "Mot de passe oublié ?"
 user.resetting.request.title: "Réinitialisez votre mot de passe"
@@ -49,14 +48,13 @@ user.change_password:       "Changer mon mot de passe"
 user.change_password.title: "Changer mon mot de passe"
 
 # User / order show
-user.order.show.branch:     "Comptoir"
-user.order.show.reference:  "Référence"
-user.order.show.order_date: "Date de la commande"
-user.order.show.total:      "Montant"
-user.order.show.withdrawal: "Retrait"
-user.order.show.details:    "Détails de ma commande"
-user.order.show.order:      "Mes commandes"
-user.order.show.recover:    "A récupérer entre"
-user.order.show.and:        "et"
-user.order.show.no_order:   "Vous n'avez réalisé aucune commande."
+user.orders.title:      "Mes commandes"
+user.orders.branch:     "Comptoir"
+user.orders.reference:  "Référence"
+user.orders.order_date: "Date de la commande"
+user.orders.total:      "Montant"
+user.orders.withdrawal: "Retrait"
+user.orders.details:    "Détail"
+user.orders.order:      "Mes commandes"
+user.orders.no_order:   "Vous n'avez encore passé aucune commande."
 

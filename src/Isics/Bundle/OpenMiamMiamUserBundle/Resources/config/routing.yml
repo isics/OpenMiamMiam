@@ -6,9 +6,13 @@ fos_user_profile_edit:
     pattern:  /profile/edit
     defaults: { _controller: FOSUserBundle:Profile:edit }
 
-fos_user_profile_showSalesOrder:
-    pattern:  /profile/order/show
-    defaults: { _controller: IsicsOpenMiamMiamUserBundle:SalesOrder:ShowSalesOrder }
+fos_user_profile_orders:
+    pattern:  /profile/orders
+    defaults: { _controller: IsicsOpenMiamMiamUserBundle:SalesOrder:Show }
+
+fos_user_profile_orders_pdf:
+    pattern:  /profile/orders/{id}/pdf
+    defaults: { _controller: IsicsOpenMiamMiamUserBundle:SalesOrder:getPdf }
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"

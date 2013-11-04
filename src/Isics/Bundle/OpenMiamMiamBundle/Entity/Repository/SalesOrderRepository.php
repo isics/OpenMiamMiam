@@ -208,9 +208,11 @@ class SalesOrderRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function getSalesOrderForUserQueryBuilder($user)
+    public function getForUserQueryBuilder($user)
     {
-        return $this->filterSalesOrderForUser($user);
+        return $this->filterUser($user)
+            ->addOrderBy('bo.begin', 'DESC')
+            ->addOrderBy('so.date', 'DESC');
     }
 
     /**
@@ -220,9 +222,9 @@ class SalesOrderRepository extends EntityRepository
      *
      * @return array SalesOrder
      */
-    public function findSalesOrderForUser($user)
+    public function findForUser($user)
     {
-        return $this->getSalesOrderForUserQueryBuilder($user)
+        return $this->getForUserQueryBuilder($user)
             ->getQuery()
             ->getResult();
     }
@@ -235,15 +237,13 @@ class SalesOrderRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function filterSalesOrderForUser($user, QueryBuilder $qb = null)
+    public function filterUser($user, QueryBuilder $qb = null)
     {
        $qb = null === $qb ? $this->createQueryBuilder('so') : $qb;
 
        return $qb->join('so.branchOccurrence', 'bo')
             ->join('bo.branch', 'b')
-            ->where('so.user = :userId')
-            ->setParameter('userId', $user->getId())
-            ->addOrderBy('bo.begin', 'DESC')
-            ->addOrderBy('so.date', 'DESC');
+            ->where('so.user = :user')
+            ->setParameter('user', $user);
     }
 }
