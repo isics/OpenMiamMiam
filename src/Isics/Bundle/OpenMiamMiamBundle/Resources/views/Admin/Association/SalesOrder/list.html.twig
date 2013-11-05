@@ -72,7 +72,11 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% if can_be_edit(salesOrder) %}
+                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% else %}
+                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.view', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% endif %}
                                 <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
                             </td>
                         </tr>

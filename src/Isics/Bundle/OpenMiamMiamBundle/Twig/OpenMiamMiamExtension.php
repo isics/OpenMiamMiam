@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
@@ -62,6 +63,7 @@ class OpenMiamMiamExtension extends \Twig_Extension
                                 ProducerManager $producerManager,
                                 ConsumerManager $consumerManager)
     {
+        // todo : decoupling extension
         $this->title           = $title;
         $this->currency        = $currency;
         $this->productManager  = $productManager;

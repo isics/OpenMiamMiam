@@ -63,7 +63,19 @@ class SalesOrderController extends BaseController
         if ($order->getBranchOccurrence()->getBranch()->getAssociation()->getId() != $association->getId()
                 || $order->getId() !== $row->getSalesOrder()->getId()) {
 
-            throw new $this->createNotFoundException('Invalid sales order row for association');
+            throw $this->createNotFoundException('Invalid sales order row for association');
+        }
+    }
+
+    /**
+     * @param SalesOrder $order
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function securePaidSalesOrder(SalesOrder $order)
+    {
+        if (!$this->get('open_miam_miam.sales_order_workflow')->canBeEdit($order)) {
+            throw $this->createNotFoundException('Sales order has already payment allocations');
         }
     }
 
@@ -126,6 +138,28 @@ class SalesOrderController extends BaseController
     }
 
     /**
+     * View a sales order
+     *
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
+     *
+     * @param Association $association
+     * @param SalesOrder $order
+     *
+     * @return Response
+     */
+    public function viewAction(Association $association, SalesOrder $order)
+    {
+        $this->secure($association);
+        $this->secureSalesOrder($association, $order);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:view.html.twig', array(
+            'association' => $association,
+            'order' => $order,
+            'activities' => $this->get('open_miam_miam.sales_order_manager')->getActivities($order)
+        ));
+    }
+
+    /**
      * Update a sales order
      *
      * @param Request $request
@@ -148,6 +182,7 @@ class SalesOrderController extends BaseController
         }
 
         $this->secureSalesOrder($association, $order);
+        $this->securePaidSalesOrder($order);
 
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.sales_order'),
@@ -212,6 +247,7 @@ class SalesOrderController extends BaseController
     {
         $this->secure($association);
         $this->secureSalesOrderRow($association, $order, $row);
+        $this->securePaidSalesOrder($order);
 
         $user = $this->get('security.context')->getToken()->getUser();
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
@@ -247,6 +283,7 @@ class SalesOrderController extends BaseController
     {
         $this->secure($association);
         $this->secureSalesOrder($association, $order);
+        $this->securePaidSalesOrder($order);
 
         $productManager = $this->get('open_miam_miam.product_manager');
         $artificialProduct = $productManager->createArtificialProduct();
