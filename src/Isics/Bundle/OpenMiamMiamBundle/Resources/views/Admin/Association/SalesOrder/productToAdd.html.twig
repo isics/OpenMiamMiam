@@ -6,7 +6,10 @@
  # with this source code in the file LICENSE.
  #}
 {% import "IsicsOpenMiamMiamBundle:Macro:product.html.twig" as product_macro %}
-<tr id="product-{{ product.id }}">
+
+{% set availabilityInfos = get_product_availability(order.branchOccurrence, product) %}
+
+<tr id="product-{{ product.id }}"{% if not availabilityInfos.isAvailable %} class="unavailable"{% endif %}>
     <td>{{ product.producer.name }}</td>
     <td>{{ product.name }}</td>
     <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
