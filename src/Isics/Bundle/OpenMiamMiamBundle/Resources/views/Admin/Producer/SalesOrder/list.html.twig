@@ -62,7 +62,11 @@
                                 <td>{{ producerSalesOrder.salesOrderRows|length }}</td>
                                 <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
-                                    <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    {% if can_be_edit(producerSalesOrder.salesOrder) %}
+                                        <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    {% else %}
+                                        <a href="{{ path('open_miam_miam.admin.producer.sales_order.view', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.view'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

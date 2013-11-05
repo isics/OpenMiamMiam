@@ -56,12 +56,16 @@ parameters:
     open_miam_miam.form.type.payment_allocation.class:                    'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentAllocationType'
     open_miam_miam.form.type.association_newsletter.class:                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationNewsletterType'
     open_miam_miam.form.type.super_newsletter.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperNewsletterType'
-    # Models
+
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.tcpdf.class:                     TCPDF
     open_miam_miam.sales_orders_pdf.class:          'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
     open_miam_miam.producer_sales_orders_pdf.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersPdf'
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
+
+    open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
+
+
 
 services:
     # Validators
@@ -116,10 +120,14 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam_payment_validator }
 
+
+
     # Mailer
     open_miam_miam.mailer:
         class: Isics\Bundle\OpenMiamMiamBundle\Service\Mailer
         arguments: [@mailer, @templating]
+
+
 
     # Form types
     open_miam_miam.form.type.association_article:
@@ -229,6 +237,8 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_super_newsletter }
 
+
+
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
@@ -238,6 +248,13 @@ services:
             - @open_miam_miam.product_manager
             - @open_miam_miam.producer_manager
             - @open_miam_miam.consumer_manager
+        tags:
+            - { name: twig.extension }
+
+    open_miam_miam.twig.sales_order_workflow_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\SalesOrderWorkflowExtension
+        arguments:
+            - @open_miam_miam.sales_order_workflow
         tags:
             - { name: twig.extension }
 
@@ -353,3 +370,9 @@ services:
         class:     %open_miam_miam.products_to_prepare_pdf.class%
         arguments: [%open_miam_miam.product%, @open_miam_miam.tcpdf, @templating]
         scope:     prototype
+
+
+
+    # Workflows
+    open_miam_miam.sales_order_workflow:
+        class: %open_miam_miam.sales_order_workflow.class%

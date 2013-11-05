@@ -1,0 +1,44 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.consumer'|trans }}</h2>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <strong>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</strong><br />
+                    {{ order.address1 }}<br />
+                    {% if order.address2 != null %}
+                        {{ order.address2 }}<br />
+                    {% endif %}
+                    {{ order.zipcode }} {{ order.city }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.withdrawal_title'|trans }}</h2>
+            </div>
+            <div class="panel-body">
+                <p>
+                    {% set branch=order.branchOccurrence.branch %}
+                    <strong>{{ branch.name }}</strong><br />
+                    {{ branch.address1 }}<br />
+                    {% if branch.address2 != null %}
+                        {{ branch.address2 }}<br />
+                    {% endif %}
+                    {{ branch.zipcode }} {{ branch.city }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
