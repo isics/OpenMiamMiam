@@ -51,9 +51,14 @@
                     </thead>
                     <tbody>
                         {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
+                            {% set canBeEdit = can_be_edit(producerSalesOrder.salesOrder) %}
                             <tr>
                                 <td>
-                                    <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}">
+                                    {% if canBeEdit %}
+                                        <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}">
+                                    {% else %}
+                                        <a href="{{ path('open_miam_miam.admin.producer.sales_order.view', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}">
+                                    {% endif %}
                                         {{ producerSalesOrder.salesOrder.ref }}
                                         </a>
                                     </td>
@@ -62,7 +67,7 @@
                                 <td>{{ producerSalesOrder.salesOrderRows|length }}</td>
                                 <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
-                                    {% if can_be_edit(producerSalesOrder.salesOrder) %}
+                                    {% if canBeEdit %}
                                         <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                                     {% else %}
                                         <a href="{{ path('open_miam_miam.admin.producer.sales_order.view', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.view'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>

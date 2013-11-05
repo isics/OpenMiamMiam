@@ -54,9 +54,14 @@
                 </thead>
                 <tbody>
                     {% for salesOrder in salesOrders %}
+                        {% set canBeEdit = can_be_edit(salesOrder) %}
                         <tr{% if salesOrder.leftToPay %} class="danger"{% endif %}>
                             <td>
-                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
+                                {% if canBeEdit %}
+                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
+                                {% else %}
+                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.view', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
+                                {% endif %}
                                     {{ salesOrder.ref }}
                                 </a>
                             </td>
@@ -72,7 +77,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if can_be_edit(salesOrder) %}
+                                {% if canBeEdit %}
                                     <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                                 {% else %}
                                     <a href="{{ path('open_miam_miam.admin.association.sales_order.view', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
