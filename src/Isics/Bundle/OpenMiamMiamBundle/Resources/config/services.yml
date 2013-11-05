@@ -7,6 +7,7 @@
 
 parameters:
     open_miam_miam.branch_occurrence_validator.class:            'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BranchOccurrenceValidator'
+    open_miam_miam.category_node_validator.class:                'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CategoryNodeValidator'
     open_miam_miam.cart_item_validator.class:                    'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\CartItemValidator'
     open_miam_miam.buying_unit_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\BuyingUnitValidator'
     open_miam_miam.product_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProductValidator'
@@ -20,6 +21,7 @@ parameters:
     open_miam_miam.branch_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchManager'
     open_miam_miam.branch_occurrence_manager.class:       'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
     open_miam_miam.cart_manager.class:                    'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
+    open_miam_miam.category_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\CategoryManager'
     open_miam_miam.consumer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
     open_miam_miam.admin_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
     open_miam_miam.acl_manager.class:                     'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
@@ -39,6 +41,7 @@ parameters:
     open_miam_miam.form.type.association_article.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationArticleType'
     open_miam_miam.form.type.branch.class:                                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\BranchType'
     open_miam_miam.form.type.branch_occurrence.class:                     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\BranchOccurrenceType'
+    open_miam_miam.form.type.category.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CategoryType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
     open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
@@ -86,6 +89,12 @@ services:
         class:     %open_miam_miam.newsletter_validator.class%
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam.newsletter_validator}
+
+    open_miam_miam.category_node_validator:
+        class:     %open_miam_miam.category_node_validator.class%
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam.category_node_validator }
 
     open_miam_miam.cart_item_validator:
         class:     %open_miam_miam.cart_item_validator.class%
@@ -145,6 +154,11 @@ services:
         class: %open_miam_miam.form.type.branch_occurrence.class%
         tags:
             - { name: form.type, alias: open_miam_miam_branch_occurrence }
+
+    open_miam_miam.form.type.category:
+        class: %open_miam_miam.form.type.category.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_category }
 
     open_miam_miam.form.type.cart:
         class: %open_miam_miam.form.type.cart.class%
@@ -292,6 +306,10 @@ services:
 
     open_miam_miam.branch_occurrence_manager:
         class:     %open_miam_miam.branch_occurrence_manager.class%
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
+
+    open_miam_miam.category_manager:
+        class:     %open_miam_miam.category_manager.class%
         arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
 
     open_miam_miam.cart_manager:

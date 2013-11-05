@@ -19,26 +19,84 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 class CategoryRepository extends NestedTreeRepository
 {
     /**
-     * Finds categories available in a branch (categories with products)
+     * Return next sibling
+     *
+     * @param Category $category
+     *
+     * @return Category
+     */
+    public function getNextSibling(Category $category)
+    {
+        return $this->getNextSiblingQueryBuilder($category)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Return next sibling QueryBuilder
+     *
+     * @param Category $category
+     *
+     * @return QueryBuilder
+     */
+    public function getNextSiblingQueryBuilder(Category $category)
+    {
+        return $this->getNextSiblingsQueryBuilder($category)
+            ->orderBy('node.lft')
+            ->setMaxResults(1);
+    }
+
+    /**
+     * Return prev sibling
+     *
+     * @param Category $category
+     *
+     * @return Category
+     */
+    public function getPrevSibling(Category $category)
+    {
+        return $this->getPrevSiblingQueryBuilder($category)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * Return prev sibling QueryBuilder
+     *
+     * @param Category $category
+     *
+     * @return QueryBuilder
+     */
+    public function getPrevSiblingQueryBuilder(Category $category)
+    {
+        return $this->getPrevSiblingsQueryBuilder($category)
+            ->orderBy('node.lft', 'DESC')
+            ->setMaxResults(1);
+    }
+
+    /**
+     * Finds first level categories available in a branch
      *
      * @param Branch $branch Branch
      *
      * @return array
      */
-    public function findAllAvailableInBranch(Branch $branch)
+    public function findLevel1WithProductsInBranch(Branch $branch)
     {
-        return $this->getRootNodesQueryBuilder()
-                ->add('from', 'IsicsOpenMiamMiamBundle:Category node, IsicsOpenMiamMiamBundle:Product p')
-                ->innerJoin('p.category', 'pc')
-                ->innerJoin('p.branches', 'b')
-                ->andWhere('p.availability != :availability')
-                ->andWhere('b = :branch')
-                ->andWhere('pc.lft >= node.lft')
-                ->andWhere('pc.rgt <= node.rgt')
-                ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
-                ->setParameter('branch', $branch)
-                ->getQuery()
-                ->getResult();
+        return $this->createQueryBuilder('node')
+            ->add('from', 'IsicsOpenMiamMiamBundle:Category node, IsicsOpenMiamMiamBundle:Product p')
+            ->innerJoin('p.category', 'pc')
+            ->innerJoin('p.branches', 'b')
+            ->andWhere('p.availability != :availability')
+            ->andWhere('b = :branch')
+            ->andWhere('pc.lft >= node.lft')
+            ->andWhere('pc.rgt <= node.rgt')
+            ->andWhere('node.lvl = 1')
+            ->addOrderBy('node.lft')
+            ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
+            ->setParameter('branch', $branch)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

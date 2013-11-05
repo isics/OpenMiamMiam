@@ -50,7 +50,7 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
                     'class' => 'IsicsOpenMiamMiamBundle:Category',
                     'property' => 'indentedName',
                     'query_builder' => function(EntityRepository $er) {
-                        return $er->getNodesHierarchyQueryBuilder();
+                        return $er->getNodesHierarchyQueryBuilder()->andWhere('node.lvl > 0');
                     },
                 ))
                 ->add('ref', 'text')

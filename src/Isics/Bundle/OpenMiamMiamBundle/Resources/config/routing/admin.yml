@@ -57,6 +57,24 @@ open_miam_miam.admin.super.newsletter.report:
     pattern:  /super/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:showReport }
 
+open_miam_miam.admin.super.category.list:
+    pattern:  /super/categories
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:list }
+
+open_miam_miam.admin.super.category.create:
+    pattern:  /super/categories/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:create }
+
+open_miam_miam.admin.super.category.edit:
+    pattern:  /super/categories/{categoryId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:edit }
+
+open_miam_miam.admin.super.category.delete:
+    pattern:  /super/categories/{categoryId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:delete }
+
+
+
 #
 # Admin Association
 #

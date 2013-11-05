@@ -23,16 +23,22 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
+        $root = new Category();
+        $root->setName('Root (invisible)');
+
         $fruitsAndVegetables = new Category();
         $fruitsAndVegetables->setName('Fruits and vegetables');
+        $fruitsAndVegetables->setParent($root);
         $this->addReference($fruitsAndVegetables->getName(), $fruitsAndVegetables);
 
         $dairyProduce = new Category();
         $dairyProduce->setName('Dairy produce');
+        $dairyProduce->setParent($root);
         $this->addReference($dairyProduce->getName(), $dairyProduce);
 
         $meat = new Category();
         $meat->setName('Meat');
+        $meat->setParent($root);
         $this->addReference($meat->getName(), $meat);
 
         $beef = new Category();
@@ -50,6 +56,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         $pork->setParent($meat);
         $this->addReference($pork->getName(), $pork);
 
+        $manager->persist($root);
         $manager->persist($fruitsAndVegetables);
         $manager->persist($dairyProduce);
         $manager->persist($meat);

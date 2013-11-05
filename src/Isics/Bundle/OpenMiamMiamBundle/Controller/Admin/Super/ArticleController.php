@@ -21,8 +21,6 @@ class ArticleController extends Controller
     /**
      * List articles
      *
-     * @param Super $super
-     *
      * @return Response
      */
     public function listAction()
