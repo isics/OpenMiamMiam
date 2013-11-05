@@ -8,6 +8,8 @@
 {% extends app.request.xmlHttpRequest ? 'IsicsOpenMiamMiamBundle:Admin:addProductsDialog.html.twig' : 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
+    {% form_theme filterForm _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
     {% if not app.request.xmlHttpRequest %}
         <h1>{{ 'admin.association.sales_orders.add_products.title'|trans }}</h1>
     {% endif %}

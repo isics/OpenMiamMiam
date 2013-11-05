@@ -455,7 +455,6 @@ admin.producer.sales_orders.list.no_order:                      "Il n'y a pas en
 admin.producer.sales_orders.list.ref:                           "Réf"
 admin.producer.sales_orders.list.date:                          "Date"
 admin.producer.sales_orders.list.consumer:                      "Consommateur"
-admin.producer.sales_orders.list.nb_articles:                   "Articles"
 admin.producer.sales_orders.list.producer_total:                "Montant producteur"
 admin.producer.sales_orders.list.edit:                          "Editer la commande"
 admin.producer.sales_orders.list.view:                          "Voir la commande"

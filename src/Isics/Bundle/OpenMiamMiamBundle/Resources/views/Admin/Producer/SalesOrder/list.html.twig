@@ -38,13 +38,12 @@
             </p>
 
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-producer-sales-orders">
+                <table class="table table-bordered table_condensed table-striped table-producer-sales-orders">
                     <thead>
                         <tr>
                             <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
                             <th>{{ 'admin.producer.sales_orders.list.date'|trans }}</th>
                             <th>{{ 'admin.producer.sales_orders.list.consumer'|trans }}</th>
-                            <th>{{ 'admin.producer.sales_orders.list.nb_articles'|trans }}</th>
                             <th>{{ 'admin.producer.sales_orders.list.producer_total'|trans }}</th>
                             <th>&nbsp;</th>
                         </tr>
@@ -62,9 +61,8 @@
                                         {{ producerSalesOrder.salesOrder.ref }}
                                         </a>
                                     </td>
-                                <td>{{ producerSalesOrder.salesOrder.date|format_datetime }}</td>
-                                <td>{{ producerSalesOrder.salesOrder.firstname }} {{ producerSalesOrder.salesOrder.lastname }} ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})</td>
-                                <td>{{ producerSalesOrder.salesOrderRows|length }}</td>
+                                <td>{{ producerSalesOrder.salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
+                                <td>{{ producerSalesOrder.salesOrder.firstname|first }}. {{ producerSalesOrder.salesOrder.lastname }} ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})</td>
                                 <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
                                     {% if canBeEdit %}
