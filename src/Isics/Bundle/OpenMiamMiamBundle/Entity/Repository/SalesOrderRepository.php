@@ -153,8 +153,10 @@ class SalesOrderRepository extends EntityRepository
                 ->addSelect('sor, p')
                 ->leftJoin('so.salesOrderRows', 'sor')
                 ->leftJoin('sor.producer', 'p')
-                ->addOrderBy('p.name', 'ASC')
-                ->addOrderBy('sor.name', 'ASC');
+                ->addOrderBy('so.lastname')
+                ->addOrderBy('so.firstname')
+                ->addOrderBy('p.name')
+                ->addOrderBy('sor.name');
     }
 
     /**
