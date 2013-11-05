@@ -1,0 +1,38 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{{ form_errors(artificialProductForm) }}
+
+<div class="row">
+    <div class="col-md-3">
+        {{ form_errors(artificialProductForm.producer) }}
+        {{ form_widget(artificialProductForm.producer, {'attr': {'class': 'form-control'} }) }}
+    </div>
+
+    <div class="col-md-4">
+        {{ form_errors(artificialProductForm.name) }}
+        {{ form_widget(artificialProductForm.name, {'attr': {'class': 'form-control', 'placeholder': 'admin.association.sales_orders.add_products.name'|trans} }) }}
+    </div>
+
+    <div class="col-md-3">
+        <div class="input-group">
+            {{ form_errors(artificialProductForm.price) }}
+            {{ form_widget(artificialProductForm.price, {'attr': {'class': 'form-control', 'placeholder': 'admin.association.sales_orders.add_products.price'|trans} }) }}
+            <span class="input-group-addon">{{ open_miam_miam.currency }}</span>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary btn-block">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+            {{ 'admin.add'|trans }}
+        </button>
+        {% do artificialProductForm.add.setRendered %}
+    </div>
+</div>
+
+{{ form_rest(artificialProductForm) }}

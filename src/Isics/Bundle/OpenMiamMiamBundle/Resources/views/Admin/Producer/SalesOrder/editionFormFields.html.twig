@@ -1,0 +1,64 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% set order=producerSalesOrder.salesOrder %}
+{% if form.children.salesOrderRows|length > 0 %}
+    <table class="table table-bordered table-striped table-producer-sales-order">
+        <thead>
+        <tr>
+            <th>{{ 'admin.producer.sales_orders.form.sales_order_row.ref'|trans }}</th>
+            <th>{{ 'admin.producer.sales_orders.form.sales_order_row.product'|trans }}</th>
+            <th>{{ 'admin.producer.sales_orders.form.sales_order_row.unit_price'|trans }}</th>
+            <th>{{ 'admin.producer.sales_orders.form.sales_order_row.quantity'|trans }}</th>
+            <th>{{ 'admin.producer.sales_orders.form.sales_order_row.total'|trans }}</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for child in form.children.salesOrderRows %}
+            {% set salesOrderRow = child.vars.data %}
+            <tr>
+                <td>{{ salesOrderRow.ref }}</td>
+                <td>{{ salesOrderRow.name }}</td>
+                <td>{{ salesOrderRow.unitPrice|number_format_currency(open_miam_miam.currency) }}</td>
+                <td>
+                    {{ form_errors(child.quantity) }}
+                    {{ form_widget(child.quantity, {'attr': {'class': 'form-control input-quantity'}}) }}
+                </td>
+                <td>
+                    {% if child.unitPrice is defined %}
+                        {{ form_errors(child.total) }}
+                        {{ form_widget(child.total) }}
+                    {% else %}
+                        {{ salesOrderRow.total|number_format_currency(open_miam_miam.currency) }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a data-url="{{ path('open_miam_miam.admin.producer.sales_order.delete_row', {'id': producer.id, 'salesOrderId': order.id, 'salesOrderRowId': salesOrderRow.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.producer.sales_orders.form.sales_order_row.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan="4">{{ 'admin.producer.sales_orders.form.total'|trans }}</th>
+            <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
+            <td>&nbsp;</td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <a href="{{ path('open_miam_miam.admin.producer.sales_order.list', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+
+    <button type="submit" class="btn btn-primary btn-lg">
+        <span class="glyphicon glyphicon-floppy-save"></span>
+        {{ 'admin.save'|trans }}
+    </button>
+{% else %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.form.sales_order_rows.no'|trans} %}
+{% endif %}
+

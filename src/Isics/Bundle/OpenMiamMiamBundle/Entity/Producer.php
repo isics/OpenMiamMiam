@@ -512,6 +512,24 @@ class Producer
     }
 
     /**
+     * Returns true if producer has association
+     *
+     * @param Association $association
+     *
+     * @return bool
+     */
+    public function hasAssociation(Association $association)
+    {
+        foreach ($this->getAssociations() as $_association) {
+            if ($association->getId() == $_association->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Set ProfileImage
      *
      * @param string $profileImage

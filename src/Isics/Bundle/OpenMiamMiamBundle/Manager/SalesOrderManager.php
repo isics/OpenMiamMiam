@@ -18,11 +18,10 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Mailer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class SalesOrderManager
@@ -46,58 +45,32 @@ class SalesOrderManager
     protected $activityManager;
 
     /**
-     * @var \Swift_mailer
+     * @var Mailer $mailer
      */
     protected $mailer;
 
-    /**
-     * @var array $mailerConfig
-     */
-    protected $mailerConfig;
-
-    /**
-     * @var EngineInterface
-     */
-    protected $engine;
-
-    /**
-     * @var TranslatorInterface $translator
-     */
-    protected $translator;
 
 
     /**
      * Constructs object
      *
-     * @param array               $orderConfig
-     * @param EntityManager       $entityManager
-     * @param ActivityManager     $activityManager
-     * @param \Swift_Mailer       $mailer
-     * @param array               $mailerConfig
-     * @param EngineInterface     $engine
-     * @param TranslatorInterface $translator
+     * @param array           $orderConfig
+     * @param EntityManager   $entityManager
+     * @param ActivityManager $activityManager
+     * @param Mailer          $mailer
      */
     public function __construct(array $orderConfig,
                                 EntityManager $entityManager,
                                 ActivityManager $activityManager,
-                                \Swift_Mailer $mailer,
-                                array $mailerConfig,
-                                EngineInterface $engine,
-                                TranslatorInterface $translator)
+                                Mailer $mailer)
     {
         $this->entityManager = $entityManager;
         $this->activityManager = $activityManager;
         $this->mailer = $mailer;
-        $this->engine = $engine;
-        $this->translator = $translator;
 
         $resolver = new OptionsResolver();
-        $this->setOrderConfigResolverDefaultOptions($resolver);
+        $this->setDefaultOptions($resolver);
         $this->orderConfig = $resolver->resolve($orderConfig);
-
-        $resolver = new OptionsResolver();
-        $this->setMailerConfigResolverDefaultOptions($resolver);
-        $this->mailerConfig = $resolver->resolve($mailerConfig);
     }
 
     /**
@@ -105,19 +78,9 @@ class SalesOrderManager
      *
      * @param OptionsResolverInterface $resolver
      */
-    protected function setOrderConfigResolverDefaultOptions(OptionsResolverInterface $resolver)
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('ref_prefix', 'ref_pad_length', 'artificial_product_ref'));
-    }
-
-    /**
-     * Set the defaults options
-     *
-     * @param OptionsResolverInterface $resolver
-     */
-    protected function setMailerConfigResolverDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setRequired(array('sender_name', 'sender_address'));
     }
 
     /**
@@ -204,22 +167,105 @@ class SalesOrderManager
     }
 
     /**
+     * Returns activities for sales order
+     *
+     * @param SalesOrder $order
+     * @param mixed $context
+     *
+     * @return array
+     */
+    protected function getActivitiesStack(SalesOrder $order, $context)
+    {
+        $activitiesStack = array();
+        if (null === $order->getId()) {
+            $activitiesStack[] = array(
+                'transKey' => 'activity_stream.sales_order.created',
+                'transParams' => array('%ref%' => $order->getRef()),
+                'context' => $context
+            );
+
+            return $activitiesStack;
+        }
+
+        $unitOfWork = $this->entityManager->getUnitOfWork();
+        $unitOfWork->computeChangeSets();
+        foreach ($order->getSalesOrderRows() as $row) {
+            // New row
+            if (null === $row->getId()) {
+                $activitiesStack[] = array(
+                    'transKey' => 'activity_stream.sales_order.row.added',
+                    'transParams' => array(
+                        '%order_ref%' => $order->getRef(),
+                        '%ref%' => $row->getRef(),
+                        '%name%' => $row->getName()
+                    ),
+                    'context' => $row->getProducer()
+                );
+                continue;
+            }
+
+            // Modified rows
+            $changeSet = $unitOfWork->getEntityChangeSet($row);
+            if (!empty($changeSet)) {
+                $transKey = null;
+                if (isset($changeSet['quantity']) && $changeSet['quantity'][0] != $changeSet['quantity'][1]
+                        && isset($changeSet['total']) && $changeSet['total'][0] != $changeSet['total'][1]) {
+                    $transKey = 'activity_stream.sales_order.row.quantity_total_updated';
+                    $transParams = array(
+                        '%order_ref%' => $order->getRef(),
+                        '%ref%' => $row->getRef(),
+                        '%name%' => $row->getName(),
+                        '%old_quantity%' => $this->activityManager->formatFloatNumber($changeSet['quantity'][0]),
+                        '%quantity%' => $this->activityManager->formatFloatNumber($row->getQuantity()),
+                        '%old_total%' => $this->activityManager->formatFloatNumber($changeSet['total'][0]),
+                        '%total%' => $this->activityManager->formatFloatNumber($row->getTotal())
+                    );
+                } elseif (isset($changeSet['quantity']) && $changeSet['quantity'][0] != $changeSet['quantity'][1]) {
+                    $transKey = 'activity_stream.sales_order.row.quantity_updated';
+                    $transParams = array(
+                        '%order_ref%' => $order->getRef(),
+                        '%ref%' => $row->getRef(),
+                        '%name%' => $row->getName(),
+                        '%old_quantity%' => $this->activityManager->formatFloatNumber($changeSet['quantity'][0]),
+                        '%quantity%' => $this->activityManager->formatFloatNumber($row->getQuantity())
+                    );
+                } elseif (isset($changeSet['total']) && $changeSet['total'][0] != $changeSet['total'][1]) {
+                    $transKey = 'activity_stream.sales_order.row.total_updated';
+                    $transParams = array(
+                        '%order_ref%' => $order->getRef(),
+                        '%ref%' => $row->getRef(),
+                        '%name%' => $row->getName(),
+                        '%old_total%' => $this->activityManager->formatFloatNumber($changeSet['total'][0]),
+                        '%total%' => $this->activityManager->formatFloatNumber($row->getTotal())
+                    );
+                }
+
+                if (null !== $transKey) {
+                    $activitiesStack[] = array(
+                        'transKey' => $transKey,
+                        'transParams' => $transParams,
+                        'context' => $row->getProducer()
+                    );
+                }
+            }
+        }
+
+        return $activitiesStack;
+    }
+
+    /**
      * Saves sales order
      *
      * @param SalesOrder $order
      * @param mixed $context
      * @param User $user
      */
-    public function save(SalesOrder $order, $context, User $user = null)
+    public function save(SalesOrder $order, $context, User $user)
     {
         // Compute order's data (total...)
         $this->compute($order);
 
-        $activitiesStack = array();
-
-        $isNewOrder = null === $order->getId();
-
-        if ($isNewOrder) {
+        if (null === $order->getId()) {
             // Increase reference for order
             $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
             $association->setOrderRefCounter($association->getOrderRefCounter()+1);
@@ -231,76 +277,10 @@ class SalesOrderManager
                 $this->orderConfig['ref_prefix'],
                 str_pad($association->getOrderRefCounter(), $this->orderConfig['ref_pad_length'], '0', STR_PAD_LEFT)
             ));
-
-            // Activity
-            $activitiesStack[] = array(
-                'transKey' => 'activity_stream.sales_order.created',
-                'transParams' => array('%ref%' => $order->getRef()),
-                'context' => $context
-            );
-
-        } else {
-            $unitOfWork = $this->entityManager->getUnitOfWork();
-            $unitOfWork->computeChangeSets();
-            foreach ($order->getSalesOrderRows() as $row) {
-                if (null === $row->getId()) {
-                    $activitiesStack[] = array(
-                        'transKey' => 'activity_stream.sales_order.row.added',
-                        'transParams' => array(
-                            '%order_ref%' => $order->getRef(),
-                            '%ref%' => $row->getRef(),
-                            '%name%' => $row->getName()
-                        ),
-                        'context' => $row->getProducer()
-                    );
-                    continue;
-                }
-
-                $changeSet = $unitOfWork->getEntityChangeSet($row);
-                if (!empty($changeSet)) {
-                    $transKey = null;
-                    if (isset($changeSet['quantity']) && $changeSet['quantity'][0] != $changeSet['quantity'][1]
-                            && isset($changeSet['total']) && $changeSet['total'][0] != $changeSet['total'][1]) {
-                        $transKey = 'activity_stream.sales_order.row.quantity_total_updated';
-                        $transParams = array(
-                            '%order_ref%' => $order->getRef(),
-                            '%ref%' => $row->getRef(),
-                            '%name%' => $row->getName(),
-                            '%old_quantity%' => $this->activityManager->formatFloatNumber($changeSet['quantity'][0]),
-                            '%quantity%' => $this->activityManager->formatFloatNumber($row->getQuantity()),
-                            '%old_total%' => $this->activityManager->formatFloatNumber($changeSet['total'][0]),
-                            '%total%' => $this->activityManager->formatFloatNumber($row->getTotal())
-                        );
-                    } elseif (isset($changeSet['quantity']) && $changeSet['quantity'][0] != $changeSet['quantity'][1]) {
-                        $transKey = 'activity_stream.sales_order.row.quantity_updated';
-                        $transParams = array(
-                            '%order_ref%' => $order->getRef(),
-                            '%ref%' => $row->getRef(),
-                            '%name%' => $row->getName(),
-                            '%old_quantity%' => $this->activityManager->formatFloatNumber($changeSet['quantity'][0]),
-                            '%quantity%' => $this->activityManager->formatFloatNumber($row->getQuantity())
-                        );
-                    } elseif (isset($changeSet['total']) && $changeSet['total'][0] != $changeSet['total'][1]) {
-                        $transKey = 'activity_stream.sales_order.row.total_updated';
-                        $transParams = array(
-                            '%order_ref%' => $order->getRef(),
-                            '%ref%' => $row->getRef(),
-                            '%name%' => $row->getName(),
-                            '%old_total%' => $this->activityManager->formatFloatNumber($changeSet['total'][0]),
-                            '%total%' => $this->activityManager->formatFloatNumber($row->getTotal())
-                        );
-                    }
-
-                    if (null !== $transKey) {
-                        $activitiesStack[] = array(
-                            'transKey' => $transKey,
-                            'transParams' => $transParams,
-                            'context' => $row->getProducer()
-                        );
-                    }
-                }
-            }
         }
+
+        // Gets activities to register before saving
+        $activitiesStack = $this->getActivitiesStack($order, $context);
 
         // Update product stocks
         foreach ($order->getSalesOrderRows() as $row) {
@@ -316,7 +296,7 @@ class SalesOrderManager
         $this->entityManager->flush();
 
         // Send mail to consumer
-        if ($isNewOrder) {
+        if (null === $order->getId()) {
             $this->sendMailToConsumer($order);
         }
 
@@ -331,7 +311,6 @@ class SalesOrderManager
             );
             $this->entityManager->persist($activity);
         }
-
         $this->entityManager->flush();
     }
 
@@ -341,11 +320,12 @@ class SalesOrderManager
      * @param SalesOrderRow $row
      * @param User $user
      */
-    public function deleteSalesOrderRow(SalesOrderRow $row, User $user = null)
+    public function deleteSalesOrderRow(SalesOrderRow $row, User $user)
     {
         $order = $row->getSalesOrder();
         $order->removeSalesOrderRow($row);
 
+        // todo : use save process
         $this->compute($order);
 
         // Update product stocks
@@ -371,49 +351,61 @@ class SalesOrderManager
     }
 
     /**
-     * Adds rows
+     * Adds product
      *
      * @param SalesOrder $order
-     * @param array $products
-     * @param ArtificialProduct $artificialProduct
+     * @param Product $product
+     * @param mixed $context
+     * @param User $user
      */
-    public function addRows(SalesOrder $order, array $products, ArtificialProduct $artificialProduct)
+    public function addProduct(SalesOrder $order, Product $product, $context, User $user)
     {
-        if (null !== $artificialProduct->getName() && null !== $artificialProduct->getPrice()) {
-            $salesOrderRow = new SalesOrderRow();
-            $salesOrderRow->setProducer($artificialProduct->getProducer());
-            $salesOrderRow->setName($artificialProduct->getName());
-            $salesOrderRow->setRef($artificialProduct->getRef());
-            $salesOrderRow->setIsBio(false);
+        $hasRow = false;
+        foreach ($order->getSalesOrderRows() as $row) {
+            if (null !== $row->getProduct() && $row->getProduct()->getId() == $product->getId()) {
+                $row->setQuantity($row->getQuantity()+1);
+                $hasRow = true;
+            }
+        }
 
-            $salesOrderRow->setUnitPrice($artificialProduct->getPrice());
+        if (!$hasRow) {
+            $salesOrderRow = new SalesOrderRow();
+            $salesOrderRow->setProduct($product);
+            $salesOrderRow->setProducer($product->getProducer());
+            $salesOrderRow->setName($product->getName());
+            $salesOrderRow->setRef($product->getRef());
+            $salesOrderRow->setIsBio($product->getIsBio());
+            $salesOrderRow->setUnitPrice($product->getPrice());
             $salesOrderRow->setQuantity(1);
 
             $order->addSalesOrderRow($salesOrderRow);
         }
 
-        foreach ($products as $product) {
-            $hasRow = false;
-            foreach ($order->getSalesOrderRows() as $row) {
-                if (null !== $row->getProduct() && $row->getProduct()->getId() == $product->getId()) {
-                    $row->setQuantity($row->getQuantity()+1);
-                    $hasRow = true;
-                }
-            }
+        $this->save($order, $context, $user);
+    }
 
-            if (!$hasRow) {
-                $salesOrderRow = new SalesOrderRow();
-                $salesOrderRow->setProduct($product);
-                $salesOrderRow->setProducer($product->getProducer());
-                $salesOrderRow->setName($product->getName());
-                $salesOrderRow->setRef($product->getRef());
-                $salesOrderRow->setIsBio($product->getIsBio());
-                $salesOrderRow->setUnitPrice($product->getPrice());
-                $salesOrderRow->setQuantity(1);
+    /**
+     * Adds artificial product
+     *
+     * @param SalesOrder $order
+     * @param ArtificialProduct $artificialProduct
+     * @param mixed $context
+     * @param User $user
+     */
+    public function addArtificialProduct(SalesOrder $order, ArtificialProduct $artificialProduct, $context, User $user)
+    {
+        $salesOrderRow = new SalesOrderRow();
+        $salesOrderRow->setProducer($artificialProduct->getProducer());
+        $salesOrderRow->setName($artificialProduct->getName());
+        $salesOrderRow->setRef($artificialProduct->getRef());
+        $salesOrderRow->setIsBio(false);
 
-                $order->addSalesOrderRow($salesOrderRow);
-            }
-        }
+        $salesOrderRow->setUnitPrice($artificialProduct->getPrice());
+        $salesOrderRow->setQuantity(1);
+
+        $order->addSalesOrderRow($salesOrderRow);
+
+        $this->save($order, $context, $user);
     }
 
     /**
@@ -460,7 +452,7 @@ class SalesOrderManager
     }
 
     /**
-     * Send email ton consumer
+     * Send email to consumer
      *
      * @param SalesOrder $order
      */
@@ -470,13 +462,21 @@ class SalesOrderManager
             return;
         }
 
-        $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:consumerNewSalesOrder.html.twig', array('order' => $order));
-
-        $message = \Swift_Message::newInstance()
-            ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
-            ->setTo($order->getUser()->getEmail())
-            ->setSubject($this->translator->trans('mail.consumer.new_order.subject', array('%ref%' => $order->getRef())))
-            ->setBody($body, 'text/html');
+        $message = $this->mailer->getNewMessage()
+                ->setTo($order->getUser()->getEmail())
+                ->setSubject(
+                    $this->mailer->translate(
+                        'mail.consumer.new_order.subject',
+                        array('%ref%' => $order->getRef())
+                    )
+                )
+                ->setBody(
+                    $this->mailer->render(
+                        'IsicsOpenMiamMiamBundle:Mail:consumerNewSalesOrder.html.twig',
+                        array('order' => $order)
+                    ),
+                    'text/html'
+                );
 
         $this->mailer->send($message);
     }

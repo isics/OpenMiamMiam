@@ -14,11 +14,13 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SalesOrderController extends BaseController
@@ -183,6 +185,14 @@ class SalesOrderController extends BaseController
             }
         }
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:editionFormFields.html.twig', array(
+                'producer' => $producer,
+                'producerSalesOrder' => $producerSalesOrder,
+                'form' => $form->createView()
+            ));
+        }
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit.html.twig', array(
             'producer' => $producer,
             'producerSalesOrder' => $producerSalesOrder,
@@ -233,7 +243,63 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * Add rows for a sales order
+     * Add product to sales order
+     *
+     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
+     * @ParamConverter("product", class="IsicsOpenMiamMiamBundle:Product", options={"mapping": {"productId": "id"}})
+     *
+     * @param Request $request
+     * @param Producer $producer
+     * @param SalesOrder $order
+     * @param Product $product
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function addProductAction(Request $request, Producer $producer, SalesOrder $order, Product $product)
+    {
+        $this->secure($producer);
+        $this->secureSalesOrder($producer, $order);
+        $this->securePaidSalesOrder($order);
+
+        $availability = $this->get('open_miam_miam.branch_occurrence_manager')
+                ->getProductAvailability($order->getBranchOccurrence(), $product);
+
+        if ($product->getProducer()->getId() != $producer->getId() || !$availability->isAvailable()) {
+            throw $this->createNotFoundException('Invalid product');
+        }
+
+        $this->get('open_miam_miam.sales_order_manager')
+                ->addProduct($order, $product, $producer, $this->get('security.context')->getToken()->getUser());
+
+        // todo: use salesOrderManager to do that
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
+            $order->getUser(),
+            $order->getBranchOccurrence()->getBranch()->getAssociation()
+        );
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render(
+                'IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:productToAdd.html.twig',
+                array(
+                    'producer' => $producer,
+                    'order' => $order,
+                    'product' => $product
+                )
+            );
+        }
+
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.producer.sales_order.edit',
+            array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+        ));
+    }
+
+    /**
+     * Add products to sales order
      *
      * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      *
@@ -241,43 +307,49 @@ class SalesOrderController extends BaseController
      * @param Producer $producer
      * @param SalesOrder $order
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return Response
      */
-    public function addSalesOrderRowsAction(Request $request, Producer $producer, SalesOrder $order)
+    public function addProductsAction(Request $request, Producer $producer, SalesOrder $order)
     {
         $this->secure($producer);
         $this->secureSalesOrder($producer, $order);
         $this->securePaidSalesOrder($order);
 
-        $productManager = $this->get('open_miam_miam.product_manager');
-        $artificialProduct = $productManager->createArtificialProduct($producer);
-
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.add_rows_sales_order'),
-            array('artificialProduct' => $artificialProduct),
+        $filterForm = $this->createForm(
+            $this->get('open_miam_miam.form.type.products_filter'),
+            null,
             array(
-                'salesOrder' => $order,
-                'producer' => $producer,
                 'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.sales_order.add_rows',
+                    'open_miam_miam.admin.producer.sales_order.add_products',
                     array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
                 ),
                 'method' => 'POST'
             )
         );
 
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $user = $this->get('security.context')->getToken()->getUser();
+        $artificialProductForm = $this->createForm(
+            $this->get('open_miam_miam.form.type.artificial_product'),
+            $this->get('open_miam_miam.product_manager')->createArtificialProduct($producer),
+            array(
+                'action' => $this->generateUrl(
+                    'open_miam_miam.admin.producer.sales_order.add_products',
+                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                ),
+                'method' => 'POST'
+            )
+        );
 
-                $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
-                $salesOrderManager->addRows($order, $data['products']->toArray(), $data['artificialProduct']);
-                $salesOrderManager->save(
+        $filters = null;
+        if ($request->isMethod('POST')) {
+            $artificialProductForm->handleRequest($request);
+            if ($artificialProductForm->isValid()) {
+                $this->get('open_miam_miam.sales_order_manager')->addArtificialProduct(
                     $order,
+                    $artificialProductForm->getData(),
                     $producer,
-                    $user
+                    $this->get('security.context')->getToken()->getUser()
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
@@ -285,20 +357,56 @@ class SalesOrderController extends BaseController
                     $order->getBranchOccurrence()->getBranch()->getAssociation()
                 );
 
-                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
+                if ($request->isXmlHttpRequest()) {
+                    return $this->render(
+                        'IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:artificialProductFormFields.html.twig',
+                        array('artificialProductForm' => $artificialProductForm->createView())
+                    );
+                }
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.producer.sales_order.edit',
                     array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
                 ));
+            } elseif ($artificialProductForm->isSubmitted() && $request->isXmlHttpRequest()) {
+                return $this->render(
+                    'IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:artificialProductFormFields.html.twig',
+                    array('artificialProductForm' => $artificialProductForm->createView()),
+                    new Response('Failed', 400)
+                );
+            }
+
+            $filterForm->handleRequest($request);
+            if ($filterForm->isValid()) {
+                $filters = $filterForm->getData();
             }
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addSalesOrderRows.html.twig', array(
-            'producer' => $producer,
-            'salesOrder' => $order,
-            'form' => $form->createView()
-        ));
+        $products = $this->get('open_miam_miam.product_manager')->findForProducer($producer, $filters);
+
+        if ($filterForm->isSubmitted() && $request->isXmlHttpRequest()) {
+            return $this->render(
+                'IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:productsToAdd.html.twig',
+                array(
+                    'producer' => $producer,
+                    'order' => $order,
+                    'products' => $products
+                )
+            );
+        }
+
+        return $this->render(
+            'IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProducts.html.twig',
+            array(
+                'producer' => $producer,
+                'order' => $order,
+                'artificialProductForm' => $artificialProductForm->createView(),
+                'filterForm' => $filterForm->createView(),
+                'products' => $products
+            )
+        );
     }
 
     /**

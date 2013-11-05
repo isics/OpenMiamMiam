@@ -1,0 +1,51 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends app.request.xmlHttpRequest ? 'IsicsOpenMiamMiamBundle:Admin:addProductsDialog.html.twig' : 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    {% if not app.request.xmlHttpRequest %}
+        <h1>{{ 'admin.association.sales_orders.add_products.title'|trans }}</h1>
+    {% endif %}
+
+    <h2>{{ 'artificial_product'|trans }}</h2>
+    {{ form_start(artificialProductForm, {'attr': {'novalidate': '', 'id': 'add-artificial-product-form'}}) }}
+        {% include 'IsicsOpenMiamMiamBundle:Admin\\Producer\\SalesOrder:artificialProductFormFields.html.twig' %}
+    {{ form_end(artificialProductForm) }}
+
+    <h2>{{ 'catalog'|trans }}</h2>
+    {{ form_start(filterForm, {'attr': {'novalidate': '', 'id': 'filter-products-form', 'class': 'form form-inline'}}) }}
+        <div class="table-responsive">
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'admin.association.sales_orders.add_products.producer'|trans }}
+                            {{ form_errors(filterForm.producer) }}
+                            {{ form_widget(filterForm.producer, {'attr': {'class': 'form-control input-sm'}}) }}
+                        </th>
+                        <th>
+                            {{ 'admin.association.sales_orders.add_products.name'|trans }}
+                            {{ form_errors(filterForm.name) }}
+                            {{ form_widget(filterForm.name, {'attr': {'class': 'form-control input-sm'}}) }}
+                        </th>
+                        <th>{{ 'admin.association.sales_orders.add_products.price'|trans }}</th>
+                        <th>{{ 'admin.association.sales_orders.add_products.availability'|trans }}</th>
+                        <th>&nbsp;{% do filterForm.filter.setRendered %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% include 'IsicsOpenMiamMiamBundle:Admin\\Association\\SalesOrder:productsToAdd.html.twig' %}
+                </tbody>
+            </table>
+        </div>
+    {{ form_end(filterForm) }}
+
+    {% if not app.request.xmlHttpRequest %}
+        <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': order.id}) }}" class="pull-right">{{ 'admin.association.sales_orders.add_products.return'|trans }}</a>
+    {% endif %}
+{% endblock content %}

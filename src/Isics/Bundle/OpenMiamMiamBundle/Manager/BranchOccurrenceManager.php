@@ -40,6 +40,7 @@ class BranchOccurrenceManager
      * Constructor
      *
      * @param EntityManager $entityManager Object Manager
+     * @param ActivityManager $activityManager
      */
     public function __construct(EntityManager $entityManager, ActivityManager $activityManager)
     {
@@ -278,20 +279,37 @@ class BranchOccurrenceManager
     }
 
     /**
-     * Returns infos about product availability
+     * Returns infos about product availability for next occurrence of a branch
      *
      * @param Branch  $branch
      * @param Product $product
      *
      * @return ProductAvailability
      */
-    public function getProductAvailability(Branch $branch, Product $product)
+    public function getProductAvailabilityForNext(Branch $branch, Product $product)
     {
-        $productAvailability = new ProductAvailability();
+        if ($this->hasNext($branch)) {
+            return $this->getProductAvailability($this->getNext($branch), $product);
+        }
 
-        if (!$this->hasNext($branch)) {
-            $productAvailability->setReason(ProductAvailability::REASON_NO_NEXT_BRANCH_OCCURRENCE);
-        } else if (true !== $this->getNext($branch)->isProducerAttendee($product->getProducer())) {
+        $productAvailability = new ProductAvailability($product);
+
+        return $productAvailability->setReason(ProductAvailability::REASON_NO_NEXT_BRANCH_OCCURRENCE);
+    }
+
+    /**
+     * Returns infos about product availability for a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     * @param Product $product
+     *
+     * @return ProductAvailability
+     */
+    public function getProductAvailability(BranchOccurrence $branchOccurrence, Product $product)
+    {
+        $productAvailability = new ProductAvailability($product);
+
+        if (true !== $branchOccurrence->isProducerAttendee($product->getProducer())) {
             $productAvailability->setReason(ProductAvailability::REASON_PRODUCER_ABSENT);
         } else {
             switch ($product->getAvailability()) {
@@ -308,7 +326,7 @@ class BranchOccurrenceManager
                     break;
 
                 case Product::AVAILABILITY_AVAILABLE_AT:
-                    if ($this->getNext($branch)->getBegin() >= $product->getAvailableAt()) {
+                    if ($branchOccurrence->getBegin() >= $product->getAvailableAt()) {
                         $productAvailability->setReason(ProductAvailability::REASON_AVAILABLE);
                     } else {
                         $productAvailability->setReason(ProductAvailability::REASON_AVAILABLE_AT);

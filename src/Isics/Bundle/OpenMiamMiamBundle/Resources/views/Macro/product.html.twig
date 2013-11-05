@@ -1,0 +1,21 @@
+{% macro availability_tag(productAvailability, trans_prefix) %}
+    {% if productAvailability.isAvailable %}
+        <span class="label label-success">
+            {% if productAvailability.reason is constant('REASON_IN_STOCK', productAvailability) %}
+                {{ (trans_prefix~'availability.in_stock')|trans({'%stock%': productAvailability.product.stock}) }}
+            {% else %}
+                {{ (trans_prefix~'availability.available')|trans }}
+            {% endif %}
+        </span>
+    {% else %}
+        {% if productAvailability.reason is constant('REASON_PRODUCER_ABSENT', productAvailability) %}
+            <span class="label label-default">{{ (trans_prefix~'availability.producer_absent')|trans }}</span>
+        {% elseif productAvailability.reason is constant('REASON_UNAVAILABLE', productAvailability) %}
+            <span class="label label-danger">{{ (trans_prefix~'availability.unavailable')|trans }}</span>
+        {% elseif productAvailability.reason is constant('REASON_OUT_OF_STOCK', productAvailability) %}
+            <span class="label label-danger">{{ (trans_prefix~'availability.out_of_stock')|trans }}</span>
+        {% elseif productAvailability.reason is constant('REASON_AVAILABLE_AT', productAvailability) %}
+            <span class="label label-warning">{{ (trans_prefix~'availability.available_at')|trans({'%date%': productAvailability.product.availableAt|format_date}) }}</span>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

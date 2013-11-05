@@ -11,6 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Product;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+
 class ProductAvailability
 {
     const REASON_AVAILABLE                 = 0;
@@ -25,6 +27,23 @@ class ProductAvailability
      * @var integer $reason
      */
     protected $reason;
+
+    /**
+     * @var Product $product
+     */
+    protected $product;
+
+
+
+    /**
+     * Constructs object
+     *
+     * @param Product $product
+     */
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
 
     /**
      * Gets reason
@@ -44,6 +63,16 @@ class ProductAvailability
     public function setReason($reason)
     {
         $this->reason = $reason;
+    }
+
+    /**
+     * Gets product
+     *
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 
     /**

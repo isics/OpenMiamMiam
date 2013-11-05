@@ -88,9 +88,17 @@ open_miam_miam.admin.association.sales_order.delete_row:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:deleteSalesOrderRow }
 
-open_miam_miam.admin.association.sales_order.add_rows:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/add
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRows }
+open_miam_miam.admin.association.sales_order.add_products:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/add_products
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addProducts }
+
+open_miam_miam.admin.association.sales_order.add_product:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/add_product/{productId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addProduct }
+
+open_miam_miam.admin.association.sales_order.add_artificial_product:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/add/{productId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRow }
 
 open_miam_miam.admin.association.sales_order.pay:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/pay
@@ -239,11 +247,16 @@ open_miam_miam.admin.producer.sales_order.edit:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
 
-open_miam_miam.admin.producer.sales_order.add_rows:
-    pattern:  /producers/{id}/sales_orders/{salesOrderId}/rows/add
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addSalesOrderRows }
-
 open_miam_miam.admin.producer.sales_order.delete_row:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:deleteSalesOrderRow }
+
+open_miam_miam.admin.producer.sales_order.add_products:
+    pattern:  /producers/{id}/sales_orders/{salesOrderId}/add_products
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProducts }
+
+open_miam_miam.admin.producer.sales_order.add_product:
+    pattern:  /producers/{id}/sales_orders/{salesOrderId}/add_product/{productId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProduct }
+
 

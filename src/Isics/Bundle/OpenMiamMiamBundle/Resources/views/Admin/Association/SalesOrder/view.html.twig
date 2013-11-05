@@ -67,7 +67,7 @@
 
         <a href="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': order.branchOccurrence.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
     {% else %}
-        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.sales_orders.view.sales_order_rows.no'|trans} %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.sales_orders.sales_order_rows.no'|trans} %}
     {% endif %}
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}

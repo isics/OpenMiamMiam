@@ -107,7 +107,7 @@ class CartController extends Controller
 
         if (!$cart->isClosed()) {
             $branchOccurrenceManager = $this->container->get('open_miam_miam.branch_occurrence_manager');
-            $productAvailability     = $branchOccurrenceManager->getProductAvailability($branch, $product);
+            $productAvailability     = $branchOccurrenceManager->getProductAvailabilityForNext($branch, $product);
             $renderParameters['productAvailability'] = $productAvailability;
 
             if ($productAvailability->isAvailable()) {
