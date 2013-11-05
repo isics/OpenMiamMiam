@@ -72,12 +72,31 @@ class CategoryNodeValidator extends ConstraintValidator
             $this->context->addViolationAt('target', 'error.required');
         }
 
-        // Limit
+        // Not a sibling of root
+        if (in_array($categoryNode->getPosition(), array(
+                _CategoryNode::POSITION_PREV_SIBLING_OF, _CategoryNode::POSITION_NEXT_SIBLING_OF
+            )) && 0 === $categoryNode->getTarget()->getLvl()) {
+
+            $this->context->addViolationAt('target', 'error.tree.invalid_position');
+        }
+
+        // Depth limit
         if (in_array($categoryNode->getPosition(), array(
                 _CategoryNode::POSITION_FIRST_CHILD_OF, _CategoryNode::POSITION_LAST_CHILD_OF
             )) && 1 < $categoryNode->getTarget()->getLvl()) {
 
-            $this->context->addViolationAt('target', 'error.tree.todeep');
+            $this->context->addViolationAt('target', 'error.tree.too_deep');
+        }
+
+        // Category is not a parent of target
+        if (null !== $categoryId && null !== $categoryNode->getTarget()) {
+            $path = $this->entityManager
+                ->getRepository('IsicsOpenMiamMiamBundle:Category')
+                ->getPath($categoryNode->getTarget());
+
+            if (in_array($categoryNode->getCategory(), $path)) {
+                $this->context->addViolationAt('target', 'error.tree.invalid_position');
+            }
         }
     }
 }

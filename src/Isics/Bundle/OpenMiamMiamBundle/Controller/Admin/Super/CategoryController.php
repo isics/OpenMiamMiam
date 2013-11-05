@@ -49,16 +49,7 @@ class CategoryController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                try {
-                    $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
-                } catch (\UnexpectedValueException $e) {
-                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
-
-                    return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Category:create.html.twig', array(
-                        'form' => $form->createView(),
-                    ));
-                }
-
+                $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.category.message.created');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.category.list'));
@@ -90,17 +81,7 @@ class CategoryController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                try {
-                    $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
-                } catch (\UnexpectedValueException $e) {
-                    $this->get('session')->getFlashBag()->add('error', $e->getMessage());
-
-                    return $this->render('IsicsOpenMiamMiamBundle:Admin\Super\Category:edit.html.twig', array(
-                        'form'       => $form->createView(),
-                        'activities' => $categoryManager->getActivities($category),
-                    ));
-                }
-
+                $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.category.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.category.list'));
@@ -156,7 +137,7 @@ class CategoryController extends Controller
         try {
             $categoryManager->delete($category);
             $this->get('session')->getFlashBag()->add('notice', 'admin.super.category.message.deleted');
-        } catch (\Doctrine\DBAL\DBALException $e) {
+        } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', 'admin.super.category.message.unable_to_delete');
         }
 

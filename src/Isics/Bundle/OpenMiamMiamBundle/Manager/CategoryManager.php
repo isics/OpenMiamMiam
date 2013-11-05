@@ -158,10 +158,16 @@ class CategoryManager
     /**
      * Deletes a category
      *
+     * @throws \Exception
+     *
      * @param Category $category
      */
     public function delete(Category $category)
     {
+        if (0 < count($category->getChildren()) || 0 < count($category->getProducts())) {
+            throw new \Exception('Unable to remove a category with subcategories or products.');
+        }
+
         $this->entityManager->remove($category);
         $this->entityManager->flush();
     }
