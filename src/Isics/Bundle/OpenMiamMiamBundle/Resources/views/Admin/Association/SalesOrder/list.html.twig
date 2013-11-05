@@ -40,13 +40,12 @@
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-association-sales-orders">
+            <table class="table table-bordered table-condensed table-striped table-association-sales-orders">
                 <thead>
                     <tr>
                         <th>{{ 'admin.association.sales_orders.list.ref'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.list.date'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.list.consumer'|trans }}</th>
-                        <th>{{ 'admin.association.sales_orders.list.nb_articles'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.list.total'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.list.left_to_pay'|trans }}</th>
                         <th>&nbsp;</th>
@@ -60,9 +59,8 @@
                                     {{ salesOrder.ref }}
                                 </a>
                             </td>
-                            <td>{{ salesOrder.date|format_datetime }}</td>
-                            <td>{{ salesOrder.firstname }} {{ salesOrder.lastname }} ({{ salesOrder.user|format_consumer_ref }})</td>
-                            <td>{{ salesOrder.salesOrderRows|length }}</td>
+                            <td>{{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
+                            <td>{{ salesOrder.firstname|first }}. {{ salesOrder.lastname }} ({{ salesOrder.user|format_consumer_ref }})</td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>
                                 {% if salesOrder.leftToPay %}
