@@ -315,6 +315,7 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrder($producer, $order);
+        $this->securePaidSalesOrder($order);
 
         $filterForm = $this->createForm(
             $this->get('open_miam_miam.form.type.products_filter'),
