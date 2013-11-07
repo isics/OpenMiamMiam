@@ -8,12 +8,15 @@
 {{ form_errors(artificialProductForm) }}
 
 <div class="row">
-    <div class="col-md-3">
-        {{ form_errors(artificialProductForm.producer) }}
-        {{ form_widget(artificialProductForm.producer, {'attr': {'class': 'form-control'} }) }}
-    </div>
+    {% if artificialProductForm.producer is defined %}
+        <div class="col-md-3">
+            {{ form_errors(artificialProductForm.producer) }}
+            {{ form_widget(artificialProductForm.producer, {'attr': {'class': 'form-control'} }) }}
+        </div>
+    {% endif %}
 
-    <div class="col-md-4">
+
+    <div class="{% if artificialProductForm.producer is defined %}col-md-4{% else %}col-md-7{% endif %}">
         {{ form_errors(artificialProductForm.name) }}
         {{ form_widget(artificialProductForm.name, {'attr': {'class': 'form-control', 'placeholder': 'admin.association.sales_orders.add_products.name'|trans} }) }}
     </div>
