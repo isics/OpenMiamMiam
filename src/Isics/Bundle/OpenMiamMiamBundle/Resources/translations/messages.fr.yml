@@ -678,3 +678,12 @@ mail.newsletter_test.send:               "OUI"
 mail.newsletter_test.edit:               "NON"
 mail.newsletter_test.send_help:          "Envoyer à tous les destinataires"
 mail.newsletter_test.edit_help:          "Corriger et envoyer un nouveau test"
+
+mail.branch.open_order.subject:       "Ouverture des commandes pour le comptoir %branch_name%"
+mail.branch.open_order.message_html:  |
+    <p>Bonjour %firstname%,</p>
+    <p>Les commandes pour le comptoir %branch_name% sont ouvertes du %order_open_date% au %order_closed_date%.</p>
+mail.branch.order_reminder.subject:       "Rappel de votre commande %ref% pour le comptoir %branch_name%"
+mail.branch.order_reminder.message_html:  |
+    <p>Bonjour %firstname%,</p>
+    <p>Pensez à venir récuperer votre commande %ref% au comptoir %branch_name%, ouvert du %branch_occurrence_open_date% au %branch_occurrence_closed_date%.</p>

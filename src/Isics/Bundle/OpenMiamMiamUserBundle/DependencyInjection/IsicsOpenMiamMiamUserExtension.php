@@ -25,6 +25,13 @@ class IsicsOpenMiamMiamUserExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        if(0 >= (int)$config['last_order_nb_days_considering_customer']) throw new \InvalidArgumentException('Argument open_miam_miam_user.last_order_nb_days_considering_customer must be an integer');
+
+        $container->setParameter('open_miam_miam_user.last_order_nb_days_considering_customer', $config['last_order_nb_days_considering_customer']);
     }
 
     /**

@@ -1,0 +1,20 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Mail:base.html.twig' %}
+
+{% block content %}
+
+    {{ 'mail.branch.order_reminder.message_html'|trans({
+        'username': salesOrder.user.firstname,
+        '%ref%': salesOrder.ref,
+        '%branch_name%':branchOccurrence.branch.name,
+        '%branch_occurrence_open_date%': branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')),
+        '%branch_occurrence_closed_date%': branchOccurrence.end|format_datetime(null, null, null, constant('IntlDateFormatter::LONG'))
+    })|raw }}
+
+{% endblock %}

@@ -28,12 +28,7 @@ assetic:
     use_controller: false
 
 swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
-
+    delivery_address: anthony.moutte@isics.fr
 # Services
 services:
     twig.extension.debug:

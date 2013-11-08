@@ -43,6 +43,27 @@ class BranchOccurrenceRepository extends EntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
     }
+    /**
+     * Finds previous occurrence for a branch which is not closed
+     *
+     * @param Branch $branch Branch
+     *
+     * @return BranchOccurrence|null
+     */
+    public function findOnePreviousForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        $date = $branchOccurrence->getBegin();
+
+        if (null === $date) return null;
+
+        return $this->createQueryBuilder('bo')
+            ->where('bo.begin <= :date')
+            ->orderBy('bo.begin', 'DESC')
+            ->setMaxResults(1)
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
     /**
      * Finds next occurrence for a branch

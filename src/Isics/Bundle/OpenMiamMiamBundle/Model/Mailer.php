@@ -129,4 +129,13 @@ class Mailer
     {
         return $this->mailer->send($message);
     }
+
+    /**
+     * @return \Symfony\Component\Translation\TranslatorInterface
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
 }

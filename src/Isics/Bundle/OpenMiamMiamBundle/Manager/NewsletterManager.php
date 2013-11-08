@@ -52,6 +52,11 @@ class NewsletterManager
     protected $engine;
 
     /**
+     * @var int $lastOrderNbDaysConsideringCustomer
+     */
+    protected $lastOrderNbDaysConsideringCustomer;
+
+    /**
      * Constructs object
      *
      * @param EntityManager     $entityManager
@@ -64,7 +69,8 @@ class NewsletterManager
                                 ActivityManager $activityManager,
                                 \Swift_Mailer $mailer,
                                 array $mailerConfig,
-                                EngineInterface $engine)
+                                EngineInterface $engine,
+                                $lastOrderNbDaysConsideringCustomer)
     {
         $this->entityManager = $entityManager;
         $this->activityManager = $activityManager;
@@ -74,6 +80,7 @@ class NewsletterManager
         $resolver = new OptionsResolver();
         $this->setMailerConfigResolverDefaultOptions($resolver);
         $this->mailerConfig = $resolver->resolve($mailerConfig);
+        $this->lastOrderNbDaysConsideringCustomer = $lastOrderNbDaysConsideringCustomer;
     }
 
     /**
@@ -181,7 +188,7 @@ class NewsletterManager
         if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
             $consumers = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamUserBundle:User')
-                ->findConsumersForBranches($newsletter->getBranches());
+                ->findConsumersForBranches($newsletter->getBranches(), $this->lastOrderNbDaysConsideringCustomer);
 
             $recipients = array_merge($recipients, $consumers);
         }

@@ -202,6 +202,20 @@ class BranchOccurrenceManager
     }
 
     /**
+     * Returns previous branch occurrence
+     *
+     * @param Branch $branch
+     *
+     * @return BranchOccurrence|null
+     */
+    public function getPreviousBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        return $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+            ->findOnePreviousForBranchOccurrence($branchOccurrence);
+    }
+
+    /**
      * Returns next branch occurrence not closed for an association
      *
      * @param Association $association Association
@@ -230,6 +244,41 @@ class BranchOccurrenceManager
     public function isInProgress(Branch $branch)
     {
         return null !== $this->getInProgress($branch);
+    }
+
+    /*
+     * Returns Branch occurrence opening date orders
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return \DateTime|null
+     */
+    public function getOrdersOpeningDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+
+    }
+
+    /*
+     * Returns Branch occurrence closing date orders
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return \DateTime|null
+     */
+    public function getOrdersClosingDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        if (!$branchOccurrence->getBranch()->getAssociation()->getClosingDelay()) {
+            return null;
+        }
+
+        $closingDelay = new \DateInterval(sprintf(
+            'PT%sS',
+            $branchOccurrence->getBranch()->getAssociation()->getClosingDelay()
+        ));
+
+        $closingDate = clone $branchOccurrence->getBegin();
+
+        return $closingDate->sub($closingDelay);
     }
 
     /*
