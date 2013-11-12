@@ -62,11 +62,11 @@ class User extends BaseUser
     private $city;
 
     /**
-     * @var string $phone
+     * @var string $phoneNumber
      *
-     * @ORM\Column(name="phone", type="string", length=16, nullable=true)
+     * @ORM\Column(name="phone_number", type="string", length=16, nullable=true)
      */
-    private $phone;
+    private $phoneNumber;
 
     /**
      * @var Doctrine\Common\Collections\Collection $salesOrders
@@ -145,26 +145,26 @@ class User extends BaseUser
     }
 
     /**
-     * Set phone
+     * Set phoneNumber
      *
-     * @param string $phone
+     * @param string $phoneNumber
      * @return User
      */
-    public function setPhone($phone)
+    public function setPhoneNumber($phoneNumber)
     {
-        $this->phone = $phone;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
 
     /**
-     * Get phone
+     * Get phoneNumber
      *
      * @return string
      */
-    public function getPhone()
+    public function getPhoneNumber()
     {
-        return $this->phone;
+        return $this->phoneNumber;
     }
 
     /**
