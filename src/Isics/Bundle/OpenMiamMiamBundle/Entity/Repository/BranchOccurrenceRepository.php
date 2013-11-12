@@ -53,13 +53,16 @@ class BranchOccurrenceRepository extends EntityRepository
     public function findOnePreviousForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
         $date = $branchOccurrence->getBegin();
+        $branch = $branchOccurrence->getBranch();
 
-        if (null === $date) return null;
+        if (null === $date || null === $branch) return null;
 
         return $this->createQueryBuilder('bo')
-            ->where('bo.begin <= :date')
+            ->where('bo.branch = :branch')
+            ->andWhere('bo.begin < :date')
             ->orderBy('bo.begin', 'DESC')
             ->setMaxResults(1)
+            ->setParameter('branch', $branch)
             ->setParameter('date', $date)
             ->getQuery()
             ->getOneOrNullResult();

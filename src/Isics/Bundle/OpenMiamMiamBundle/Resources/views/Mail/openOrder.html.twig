@@ -10,10 +10,10 @@
 {% block content %}
 
     {{ 'mail.branch.open_order.message_html'|trans({
-        '%firstname%': salesOrder.user.firstname,
-        '%branch_name%':branchOccurrence.branch.name,
-        '%order_open_date%': branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')),
-        '%order_closed_date%': branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG'))
+        '%firstname%': customer.firstname,
+        '%branch_name%': branchOccurrence.branch.name,
+        '%order_open_date%': salesOrderOpeningDateTime|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')),
+        '%order_closed_date%': salesOrderClosingDateTime|format_datetime(null, null, null, constant('IntlDateFormatter::LONG'))
     })|raw }}
 
 {% endblock %}

@@ -149,6 +149,7 @@ QUERY;
      * Returns consumers of branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
+     * @param mixed $last_order_nb_days_considering_customer
      *
      * @return array Consumers
      */

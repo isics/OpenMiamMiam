@@ -41,10 +41,12 @@ class OrdersOpenCommand extends ContainerAwareCommand
         if(0 >= (int)$period) throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
 
         $now = new \DateTime();
-        $closingDate = clone $now;
-        $closingDate->sub(new \DateInterval(
-                sprintf('PT%sM', $period)
-            ));
+        $openingDateTime = clone $now;
+        $openingDateTime->sub(new \DateInterval(
+            sprintf('PT%sM', $period)
+        ));
+
+        $userManager = $this->getContainer()->get('open_miam_miam_user.manager.user');
 
         $branches = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
@@ -52,60 +54,80 @@ class OrdersOpenCommand extends ContainerAwareCommand
             ->findAll();
 
         $branchOccurrenceManager = $this->getContainer()->get('open_miam_miam.branch_occurrence_manager');
+
         $branchOccurrenceRepository = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
-
-        $salesOrderRepository = $this->getContainer()
-            ->get('doctrine.orm.entity_manager')
-            ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
 
         $mailer = $this->getContainer()->get('open_miam_miam.mailer');
         $mailer->getTranslator()->setLocale($this->getContainer()->getParameter('locale'));
 
         foreach($branches as $branch) {
+            $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextForBranch($branch);
+            if (null === $nextBranchOccurrence) {
+                continue;
+            }
 
-            $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             $previousBranchOccurence = $branchOccurrenceManager->getPreviousBranchOccurrence($nextBranchOccurrence);
+            if (null === $previousBranchOccurence) {
+                continue;
+            }
 
-            if (null === $previousBranchOccurence) continue;
+            $salesOrderClosingDateTime = clone $nextBranchOccurrence->getEnd();
+            $salesOrderClosingDateTime->sub(new \DateInterval(
+                sprintf(
+                    'PT%sS',
+                    $branch->getAssociation()->getOpeningDelay()
+                )
+            ));
 
-            $previousBranchOccurence = $branchOccurrenceManager->getOrdersClosingDateTimeForBranchOccurrence($nextBranchOccurrence);
+            $salesOrderOpeningDateTime = clone $previousBranchOccurence->getEnd();
+            $salesOrderOpeningDateTime->add(new \DateInterval(
+                sprintf(
+                    'PT%sS',
+                    $branch->getAssociation()->getClosingDelay()
+                )
+            ));
 
-            $previousBranchOccurrenceClosingDateTime = $previousBranchOccurence->getEnd();
+            if ($salesOrderOpeningDateTime > $openingDateTime && $salesOrderOpeningDateTime < $now){
+                $customers = $userManager->findConsumersForBranches(array($branch));
 
-            if ($previousBranchOccurrenceClosingDateTime > $closingDate && $previousBranchOccurrenceClosingDateTime < $now){
+                if(0 === count($customers)) {
+                    continue;
+                }
 
-                $salesOrders = $salesOrderRepository->findBy(array('branchOccurrence' => $nextBranchOccurrence));
-                foreach($salesOrders as $salesOrder) {
-
-                    $recipient = $salesOrder->getUser()->getEmail();
-                    if ($recipient) {
-                        $message = $mailer->getNewMessage();
-                        $message
-                            ->setTo($recipient)
-                            ->setSubject(
-                                $mailer->translate(
-                                    'mail.branch.open_order.subject',
-                                    array(
-                                        '%ref%' => $salesOrder->getRef(),
-                                        '%branch_name%' => $branch->getName()
-                                    )
+                foreach($customers as $customer) {
+                    $message = $mailer->getNewMessage();
+                    $message
+                        ->setTo($customer->getEmail())
+                        ->setSubject(
+                            $mailer->translate(
+                                'mail.branch.open_order.subject',
+                                array(
+                                    '%branch_name%' => $branch->getName()
                                 )
                             )
-                            ->setBody(
-                                $mailer->render(
-                                    'IsicsOpenMiamMiamBundle:Mail:openOrder.html.twig',
-                                    array(
-                                        'salesOrder' => $salesOrder,
-                                        'branchOccurrence' => $nextBranchOccurrence
-                                    )
-                                ),
-                                'text/html'
-                            );
-                        $mailer->send($message);
-                        $output->writeln(sprintf('<info>%s sales order was open from %s to %s. Mail send to %s</info>', '$branch->getName()', 'date debut','date fin',  $recipient));
-                    }
+                        )
+                        ->setBody(
+                            $mailer->render(
+                                'IsicsOpenMiamMiamBundle:Mail:openOrder.html.twig',
+                                array(
+                                    'customer' => $customer,
+                                    'branchOccurrence' => $nextBranchOccurrence,
+                                    'salesOrderOpeningDateTime' => $salesOrderOpeningDateTime,
+                                    'salesOrderClosingDateTime' => $salesOrderClosingDateTime
+                                )
+                            ),
+                            'text/html'
+                        );
+                    $mailer->send($message);
+                    $output->writeln(sprintf(
+                        '<info>%s sales order was open from %s to %s. Mail send to %s</info>',
+                        $branch->getName(),
+                        $salesOrderOpeningDateTime->format('Y/m/d'),
+                        $salesOrderClosingDateTime->format('Y/m/d'),
+                        $customer
+                    ));
                 }
             }
         }

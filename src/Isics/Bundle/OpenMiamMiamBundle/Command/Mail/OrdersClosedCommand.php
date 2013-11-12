@@ -19,8 +19,8 @@ use Symfony\Component\Console\Input\InputArgument;
 class OrdersClosedCommand extends ContainerAwareCommand
 {
     /**
-    * @see ContainerAwareCommand
-    */
+     * @see ContainerAwareCommand
+     */
     protected function configure()
     {
         $this->setName('openmiammiam:mail:orders-closed')
@@ -33,16 +33,16 @@ class OrdersClosedCommand extends ContainerAwareCommand
     }
 
     /**
-    * @see ContainerAwareCommand
-    */
+     * @see ContainerAwareCommand
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $period = $input->getArgument('period');
         if(0 >= (int)$period) throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
 
         $now = new \DateTime();
-        $closingDate = clone $now;
-        $closingDate->sub(new \DateInterval(
+        $closingDateTime = clone $now;
+        $closingDateTime->sub(new \DateInterval(
             sprintf('PT%sM', $period)
         ));
 
@@ -67,42 +67,45 @@ class OrdersClosedCommand extends ContainerAwareCommand
         foreach($branches as $branch) {
 
             $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
-
-            if (null === $nextBranchOccurrence) continue;
+            if (null === $nextBranchOccurrence) {
+                continue;
+            }
 
             $nextBranchOccurrenceClosingDateTime = $branchOccurrenceManager->getOrdersClosingDateTimeForBranchOccurrence($nextBranchOccurrence);
-            if ($nextBranchOccurrenceClosingDateTime > $closingDate && $nextBranchOccurrenceClosingDateTime < $now){
-
+            if ($nextBranchOccurrenceClosingDateTime > $closingDateTime && $nextBranchOccurrenceClosingDateTime < $now){
                 $salesOrders = $salesOrderRepository->findBy(array('branchOccurrence' => $nextBranchOccurrence));
-                foreach($salesOrders as $salesOrder) {
 
+                foreach($salesOrders as $salesOrder) {
                     $recipient = $salesOrder->getUser()->getEmail();
-                    if ($recipient) {
-                        $message = $mailer->getNewMessage();
-                        $message
-                            ->setTo($recipient)
-                            ->setSubject(
-                                $mailer->translate(
-                                    'mail.branch.order_reminder.subject',
-                                    array(
-                                        '%ref%' => $salesOrder->getRef(),
-                                        '%branch_name%' => $branch->getName()
-                                    )
+                    $message = $mailer->getNewMessage();
+                    $message
+                        ->setTo($recipient)
+                        ->setSubject(
+                            $mailer->translate(
+                                'mail.branch.order_reminder.subject',
+                                array(
+                                    '%ref%' => $salesOrder->getRef(),
+                                    '%branch_name%' => $branch->getName()
                                 )
                             )
-                            ->setBody(
-                                $mailer->render(
-                                    'IsicsOpenMiamMiamBundle:Mail:closedOrder.html.twig',
-                                    array(
-                                        'salesOrder' => $salesOrder,
-                                        'branchOccurrence' => $nextBranchOccurrence
-                                    )
-                                ),
-                                'text/html'
-                            );
-                        $mailer->send($message);
-                        $output->writeln(sprintf('<info>Sales order %s on %s Reminder mail send to %s</info>', $salesOrder->getRef(), $branch->getName(), $recipient));
-                    }
+                        )
+                        ->setBody(
+                            $mailer->render(
+                                'IsicsOpenMiamMiamBundle:Mail:closedOrder.html.twig',
+                                array(
+                                    'salesOrder' => $salesOrder,
+                                    'branchOccurrence' => $nextBranchOccurrence
+                                )
+                            ),
+                            'text/html'
+                        );
+                    $mailer->send($message);
+                    $output->writeln(sprintf(
+                        '<info>Sales order %s on %s Reminder mail send to %s</info>',
+                        $salesOrder->getRef(),
+                        $branch->getName(),
+                        $recipient
+                    ));
                 }
             }
         }

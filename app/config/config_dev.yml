@@ -11,6 +11,10 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+# Swiftmailer Configuration
+swiftmailer:
+    spool:     { type: memory }
+
 monolog:
     handlers:
         main:
@@ -27,8 +31,6 @@ monolog:
 assetic:
     use_controller: false
 
-swiftmailer:
-    delivery_address: anthony.moutte@isics.fr
 # Services
 services:
     twig.extension.debug:
