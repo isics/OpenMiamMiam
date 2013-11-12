@@ -319,7 +319,7 @@ class SalesOrderController extends BaseController
             );
         }
 
-        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
+        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.product_added');
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.association.sales_order.edit',
@@ -392,7 +392,7 @@ class SalesOrderController extends BaseController
                     );
                 }
 
-                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.product_added');
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.product_added');
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.association.sales_order.edit',
@@ -476,7 +476,7 @@ class SalesOrderController extends BaseController
                     $this->get('security.context')->getToken()->getUser()
                 );
 
-                $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.payment_added');
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_added');
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.association.sales_order.list_for_branch_occurrence',
@@ -521,7 +521,7 @@ class SalesOrderController extends BaseController
             $this->get('security.context')->getToken()->getUser()
         );
 
-        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.payment_allocation_deleted');
+        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocation_deleted');
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.association.sales_order.pay',
@@ -561,7 +561,7 @@ class SalesOrderController extends BaseController
             $this->get('security.context')->getToken()->getUser()
         );
 
-        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.payment_allocated');
+        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocated');
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.association.sales_order.pay',
