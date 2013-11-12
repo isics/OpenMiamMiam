@@ -62,7 +62,7 @@
                                         </a>
                                     </td>
                                 <td>{{ producerSalesOrder.salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
-                                <td>{{ producerSalesOrder.salesOrder.firstname|first }}. {{ producerSalesOrder.salesOrder.lastname }} ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})</td>
+                                <td>{{ producerSalesOrder.salesOrder.lastname }} {{ producerSalesOrder.salesOrder.firstname|first }}. ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})</td>
                                 <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                                 <td>
                                     {% if canBeEdit %}

@@ -65,7 +65,7 @@
                                 </a>
                             </td>
                             <td>{{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
-                            <td>{{ salesOrder.firstname|first }}. {{ salesOrder.lastname }} ({{ salesOrder.user|format_consumer_ref }})</td>
+                            <td>{{ salesOrder.lastname }} {{ salesOrder.firstname|first }}. ({{ salesOrder.user|format_consumer_ref }})</td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>
                                 {% if salesOrder.leftToPay %}
