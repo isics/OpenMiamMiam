@@ -1,6 +1,6 @@
 <?php
 
-    /*
+/*
  * This file is part of the OpenMiamMiam project.
  *
  * (c) Isics <contact@isics.fr>

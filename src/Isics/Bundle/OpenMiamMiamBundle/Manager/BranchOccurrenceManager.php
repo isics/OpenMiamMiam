@@ -270,7 +270,7 @@ class BranchOccurrenceManager
      *
      * @return \DateTime|null
      */
-        public function getOrdersClosingDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    public function getOrdersClosingDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
         if (!$branchOccurrence->getBranch()->getAssociation()->getClosingDelay()) {
             return null;
