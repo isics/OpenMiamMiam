@@ -1,0 +1,35 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'admin.association.producers.list.title'|trans }}</h1>
+
+    {% if producers|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sales-orders">
+                <thead>
+                <tr>
+                    <th>{{ 'admin.association.producers.list.name'|trans }}</th>
+                    <th>{{ 'admin.association.producers.list.commission'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for producer in producers %}
+                    <tr>
+                        <td>{{ producer.name }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.producers.list.no_producer'|trans} %}
+    {% endif %}
+{% endblock %}
