@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class OrdersOpenCommand extends ContainerAwareCommand
+class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
 {
     /**
      * @see ContainerAwareCommand
@@ -24,11 +24,11 @@ class OrdersOpenCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('openmiammiam:mail:orders-open')
-            ->setDescription('Send reminder order mail to customer who has and active order')
+            ->setDescription('Send a notification to branch\'s customer when orders open')
             ->addArgument(
                 'period',
                 InputArgument::REQUIRED,
-                'desc todo'
+                'Interval of time before "now" to consider branch occurrence open'
             );
     }
 
@@ -63,33 +63,15 @@ class OrdersOpenCommand extends ContainerAwareCommand
         $mailer->getTranslator()->setLocale($this->getContainer()->getParameter('locale'));
 
         foreach($branches as $branch) {
-            $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextForBranch($branch);
+            $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             if (null === $nextBranchOccurrence) {
                 continue;
             }
 
-            $previousBranchOccurence = $branchOccurrenceManager->getPreviousBranchOccurrence($nextBranchOccurrence);
-            if (null === $previousBranchOccurence) {
-                continue;
-            }
+            $ordersOpeningDateTime = $branchOccurrenceManager->getOrdersOpeningDateTimeForBranchOccurrence($nextBranchOccurrence);
+            $ordersClosingDateTime = $branchOccurrenceManager->getOrdersClosingDateTimeForBranchOccurrence($nextBranchOccurrence);
 
-            $salesOrderClosingDateTime = clone $nextBranchOccurrence->getEnd();
-            $salesOrderClosingDateTime->sub(new \DateInterval(
-                sprintf(
-                    'PT%sS',
-                    $branch->getAssociation()->getOpeningDelay()
-                )
-            ));
-
-            $salesOrderOpeningDateTime = clone $previousBranchOccurence->getEnd();
-            $salesOrderOpeningDateTime->add(new \DateInterval(
-                sprintf(
-                    'PT%sS',
-                    $branch->getAssociation()->getClosingDelay()
-                )
-            ));
-
-            if ($salesOrderOpeningDateTime > $openingDateTime && $salesOrderOpeningDateTime < $now){
+            if ($ordersOpeningDateTime > $openingDateTime && $ordersOpeningDateTime <= $now){
                 $customers = $userManager->findConsumersForBranches(array($branch));
 
                 if(0 === count($customers)) {
@@ -114,8 +96,8 @@ class OrdersOpenCommand extends ContainerAwareCommand
                                 array(
                                     'customer' => $customer,
                                     'branchOccurrence' => $nextBranchOccurrence,
-                                    'salesOrderOpeningDateTime' => $salesOrderOpeningDateTime,
-                                    'salesOrderClosingDateTime' => $salesOrderClosingDateTime
+                                    'ordersOpeningDateTime' => $ordersOpeningDateTime,
+                                    'ordersClosingDateTime' => $ordersClosingDateTime
                                 )
                             ),
                             'text/html'
@@ -124,8 +106,8 @@ class OrdersOpenCommand extends ContainerAwareCommand
                     $output->writeln(sprintf(
                         '<info>%s sales order was open from %s to %s. Mail send to %s</info>',
                         $branch->getName(),
-                        $salesOrderOpeningDateTime->format('Y/m/d'),
-                        $salesOrderClosingDateTime->format('Y/m/d'),
+                        $ordersOpeningDateTime->format('Y/m/d'),
+                        $ordersClosingDateTime->format('Y/m/d'),
                         $customer
                     ));
                 }

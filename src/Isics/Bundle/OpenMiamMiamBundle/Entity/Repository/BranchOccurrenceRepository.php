@@ -44,9 +44,9 @@ class BranchOccurrenceRepository extends EntityRepository
                 ->getOneOrNullResult();
     }
     /**
-     * Finds previous occurrence for a branch which is not closed
+     * Finds the previous occurrence for a branch occurrence which is not closed
      *
-     * @param Branch $branch Branch
+     * @param BranchOccurrence $branchOccurrence BranchOccurrence
      *
      * @return BranchOccurrence|null
      */
@@ -55,7 +55,9 @@ class BranchOccurrenceRepository extends EntityRepository
         $date = $branchOccurrence->getBegin();
         $branch = $branchOccurrence->getBranch();
 
-        if (null === $date || null === $branch) return null;
+        if (null === $date || null === $branch) {
+            return null;
+        }
 
         return $this->createQueryBuilder('bo')
             ->where('bo.branch = :branch')

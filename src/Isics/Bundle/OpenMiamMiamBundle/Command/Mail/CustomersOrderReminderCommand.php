@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class OrdersClosedCommand extends ContainerAwareCommand
+class CustomersOrderReminderCommand extends ContainerAwareCommand
 {
     /**
      * @see ContainerAwareCommand
@@ -24,12 +24,12 @@ class OrdersClosedCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('openmiammiam:mail:orders-closed')
-            ->setDescription('Send reminder order mail to customer who has and active order')
+            ->setDescription('Send reminder order mail to customer who has and active order when order is close')
             ->addArgument(
-            'period',
-            InputArgument::REQUIRED,
-            'desc todo'
-        );
+                'period',
+                InputArgument::REQUIRED,
+                'Interval of time before "now" to consider branch occurrence closed'
+            );
     }
 
     /**
@@ -65,14 +65,14 @@ class OrdersClosedCommand extends ContainerAwareCommand
         $mailer->getTranslator()->setLocale($this->getContainer()->getParameter('locale'));
 
         foreach($branches as $branch) {
-
             $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             if (null === $nextBranchOccurrence) {
                 continue;
             }
 
             $nextBranchOccurrenceClosingDateTime = $branchOccurrenceManager->getOrdersClosingDateTimeForBranchOccurrence($nextBranchOccurrence);
-            if ($nextBranchOccurrenceClosingDateTime > $closingDateTime && $nextBranchOccurrenceClosingDateTime < $now){
+
+            if ($nextBranchOccurrenceClosingDateTime > $closingDateTime && $nextBranchOccurrenceClosingDateTime <= $now){
                 $salesOrders = $salesOrderRepository->findBy(array('branchOccurrence' => $nextBranchOccurrence));
 
                 foreach($salesOrders as $salesOrder) {

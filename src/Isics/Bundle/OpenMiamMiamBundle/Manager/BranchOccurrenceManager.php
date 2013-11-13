@@ -202,20 +202,6 @@ class BranchOccurrenceManager
     }
 
     /**
-     * Returns previous branch occurrence
-     *
-     * @param Branch $branch
-     *
-     * @return BranchOccurrence|null
-     */
-    public function getPreviousBranchOccurrence(BranchOccurrence $branchOccurrence)
-    {
-        return $this->entityManager
-            ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
-            ->findOnePreviousForBranchOccurrence($branchOccurrence);
-    }
-
-    /**
      * Returns next branch occurrence not closed for an association
      *
      * @param Association $association Association
@@ -255,7 +241,26 @@ class BranchOccurrenceManager
      */
     public function getOrdersOpeningDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
+        if (!$branchOccurrence->getBranch()->getAssociation()->getOpeningDelay()) {
+            return null;
+        }
 
+        $previousBranchOccurrence = $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+            ->findOnePreviousForBranchOccurrence($branchOccurrence);
+
+        if (null === $previousBranchOccurrence) {
+            return null;
+        }
+
+        $openingDelay = new \DateInterval(sprintf(
+            'PT%sS',
+            $branchOccurrence->getBranch()->getAssociation()->getOpeningDelay()
+        ));
+
+        $openingDate = clone $previousBranchOccurrence->getEnd();
+
+        return $openingDate->add($openingDelay);
     }
 
     /*
@@ -265,7 +270,7 @@ class BranchOccurrenceManager
      *
      * @return \DateTime|null
      */
-    public function getOrdersClosingDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
+        public function getOrdersClosingDateTimeForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
         if (!$branchOccurrence->getBranch()->getAssociation()->getClosingDelay()) {
             return null;

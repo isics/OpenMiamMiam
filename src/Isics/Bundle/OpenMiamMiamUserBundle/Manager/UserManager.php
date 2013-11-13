@@ -17,9 +17,9 @@ use Doctrine\ORM\EntityManager;
 class UserManager
 {
     /**
-     * Number of day considering customer
+     * Number of days after his last order, a user is considered as a customer
      *
-     * @var mixed $lastOrderNbDaysConsideringCustomer
+     * @var int $lastOrderNbDaysConsideringCustomer
      */
     private $lastOrderNbDaysConsideringCustomer;
 
@@ -33,7 +33,7 @@ class UserManager
     /**
      * Constructor
      *
-     * @param $last_order_nb_days_considering_customer
+     * @param int $last_order_nb_days_considering_customer
      */
     public function __construct(EntityManager $em, $lastOrderNbDaysConsideringCustomer)
     {
@@ -42,7 +42,7 @@ class UserManager
     }
 
     /**
-     * Find consumer for branches
+     * Find consumers for branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
      *
