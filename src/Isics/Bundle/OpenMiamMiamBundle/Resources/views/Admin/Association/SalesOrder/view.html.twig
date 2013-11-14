@@ -14,7 +14,7 @@
         {{ 'admin.association.sales_orders.view.notice'|trans }}
     </div>
 
-    {% include 'IsicsOpenMiamMiamBundle:Admin:salesOrderHeader.html.twig' %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:salesOrderHeader.html.twig' with { 'order': order, 'showPhone': true } %}
 
     <p class="text-right">
         <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg">

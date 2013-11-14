@@ -10,7 +10,7 @@
 {% block content %}
     <h1>{{ 'admin.association.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} <small>- {{ order.date|format_datetime }}</small></h1>
 
-    {% include 'IsicsOpenMiamMiamBundle:Admin:salesOrderHeader.html.twig' %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:salesOrderHeader.html.twig' with { 'order': order, 'showPhone': true } %}
 
     <p class="text-right">
         <a href="{{ path('open_miam_miam.admin.association.sales_order.add_products', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg" id="add-products-link" data-toggle="modal" data-target="#add-products-dialog">
