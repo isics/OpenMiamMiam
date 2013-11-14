@@ -43,8 +43,9 @@ class BranchOccurrenceRepository extends EntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
     }
+
     /**
-     * Finds the previous occurrence for a branch occurrence which is not closed
+     * Finds the previous occurrence for a branch occurrence
      *
      * @param BranchOccurrence $branchOccurrence BranchOccurrence
      *

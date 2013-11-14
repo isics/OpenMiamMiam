@@ -29,8 +29,8 @@ class IsicsOpenMiamMiamUserExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        if(0 >= (int)$config['last_order_nb_days_considering_customer']) {
-            throw new \InvalidArgumentException('Argument open_miam_miam_user.last_order_nb_days_considering_customer must be an integer');
+        if (0 >= (int)$config['last_order_nb_days_considering_customer']) {
+            throw new \InvalidArgumentException('Argument open_miam_miam_user.last_order_nb_days_considering_customer must be greater than 0');
         }
 
         $container->setParameter('open_miam_miam_user.last_order_nb_days_considering_customer', $config['last_order_nb_days_considering_customer']);

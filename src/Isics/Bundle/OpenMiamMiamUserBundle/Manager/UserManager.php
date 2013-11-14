@@ -52,4 +52,4 @@ class UserManager
     {
         return $this->em->getRepository('IsicsOpenMiamMiamUserBundle:User')->findConsumersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
     }
-} 
+}

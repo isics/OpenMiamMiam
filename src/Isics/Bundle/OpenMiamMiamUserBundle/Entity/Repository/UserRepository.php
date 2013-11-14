@@ -149,15 +149,15 @@ QUERY;
      * Returns consumers of branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
-     * @param int $last_order_nb_days_considering_customer
+     * @param int $lastOrderNbDaysConsideringCustomer
      *
      * @return array Consumers
      */
-    public function findConsumersForBranches($branches, $last_order_nb_days_considering_customer)
+    public function findConsumersForBranches($branches, $lastOrderNbDaysConsideringCustomer)
     {
 
         $now = new \DateTime();
-        $begin = new \DateTime("-".$last_order_nb_days_considering_customer." day");
+        $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
 
         return $this->getConsumersForBranchesQueryBuilder($branches)
               ->where('s.date > :from')

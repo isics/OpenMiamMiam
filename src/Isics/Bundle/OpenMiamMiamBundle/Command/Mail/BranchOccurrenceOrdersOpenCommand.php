@@ -28,7 +28,7 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
             ->addArgument(
                 'period',
                 InputArgument::REQUIRED,
-                'Interval of time before "now" to consider branch occurrence open'
+                'Check orders open between (now) and (now - %period% minutes) for branch occurrences. Notify previous customers if true.'
             );
     }
 
@@ -38,7 +38,9 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $period = $input->getArgument('period');
-        if(0 >= (int)$period) throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
+        if (0 >= (int)$period) {
+            throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
+        }
 
         $now = new \DateTime();
         $openingDateTime = clone $now;
@@ -62,7 +64,7 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
         $mailer = $this->getContainer()->get('open_miam_miam.mailer');
         $mailer->getTranslator()->setLocale($this->getContainer()->getParameter('locale'));
 
-        foreach($branches as $branch) {
+        foreach ($branches as $branch) {
             $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             if (null === $nextBranchOccurrence) {
                 continue;
@@ -74,11 +76,11 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
             if ($ordersOpeningDateTime > $openingDateTime && $ordersOpeningDateTime <= $now){
                 $customers = $userManager->findConsumersForBranches(array($branch));
 
-                if(0 === count($customers)) {
+                if (0 === count($customers)) {
                     continue;
                 }
 
-                foreach($customers as $customer) {
+                foreach ($customers as $customer) {
                     $message = $mailer->getNewMessage();
                     $message
                         ->setTo($customer->getEmail())

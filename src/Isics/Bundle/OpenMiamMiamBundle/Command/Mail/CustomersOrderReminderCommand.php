@@ -24,11 +24,11 @@ class CustomersOrderReminderCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('openmiammiam:mail:orders-closed')
-            ->setDescription('Send reminder order mail to customer who has and active order when order is close')
+            ->setDescription('Send order reminder mail to customers when orders close')
             ->addArgument(
                 'period',
                 InputArgument::REQUIRED,
-                'Interval of time before "now" to consider branch occurrence closed'
+                'Check orders close between (now) and (now - %period% minutes) for branch occurrences. Remind customers for their orders if true.'
             );
     }
 
@@ -38,7 +38,9 @@ class CustomersOrderReminderCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $period = $input->getArgument('period');
-        if(0 >= (int)$period) throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
+        if (0 >= (int)$period) {
+            throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
+        }
 
         $now = new \DateTime();
         $closingDateTime = clone $now;
@@ -64,7 +66,7 @@ class CustomersOrderReminderCommand extends ContainerAwareCommand
         $mailer = $this->getContainer()->get('open_miam_miam.mailer');
         $mailer->getTranslator()->setLocale($this->getContainer()->getParameter('locale'));
 
-        foreach($branches as $branch) {
+        foreach ($branches as $branch) {
             $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
             if (null === $nextBranchOccurrence) {
                 continue;
@@ -75,11 +77,10 @@ class CustomersOrderReminderCommand extends ContainerAwareCommand
             if ($nextBranchOccurrenceClosingDateTime > $closingDateTime && $nextBranchOccurrenceClosingDateTime <= $now){
                 $salesOrders = $salesOrderRepository->findBy(array('branchOccurrence' => $nextBranchOccurrence));
 
-                foreach($salesOrders as $salesOrder) {
-                    $recipient = $salesOrder->getUser()->getEmail();
+                foreach ($salesOrders as $salesOrder) {
                     $message = $mailer->getNewMessage();
                     $message
-                        ->setTo($recipient)
+                        ->setTo($salesOrder->getUser()->getEmail())
                         ->setSubject(
                             $mailer->translate(
                                 'mail.branch.order_reminder.subject',
@@ -110,5 +111,4 @@ class CustomersOrderReminderCommand extends ContainerAwareCommand
             }
         }
     }
-
 }
