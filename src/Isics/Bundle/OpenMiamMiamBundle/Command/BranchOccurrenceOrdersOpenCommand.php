@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Command\Mail;
+namespace Isics\Bundle\OpenMiamMiamBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +23,7 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this->setName('openmiammiam:mail:orders-open')
+        $this->setName('openmiammiam:send-mail-orders-open')
             ->setDescription('Send a notification to branch\'s customer when orders open')
             ->addArgument(
                 'period',
@@ -37,6 +37,9 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $startMicroTime = microtime(true);
+        $mailNumber = 0;
+
         $period = $input->getArgument('period');
         if (0 >= (int)$period) {
             throw new \InvalidArgumentException('Period argument must be a integer great than 0. Input was: '.$period);
@@ -104,9 +107,13 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
                             ),
                             'text/html'
                         );
-                    $mailer->send($message);
+
+                    $mailNumber += $mailer->send($message);
+
                     $output->writeln(sprintf(
-                        '<info>%s sales order was open from %s to %s. Mail send to %s</info>',
+                        '<info>[%.1fMB/%.2fs]</info> %s sales order was open from %s to %s. Mail send to %s',
+                        memory_get_peak_usage(true)/1024/1024,
+                        microtime(true)-$startMicroTime,
                         $branch->getName(),
                         $ordersOpeningDateTime->format('Y/m/d'),
                         $ordersClosingDateTime->format('Y/m/d'),
@@ -115,6 +122,24 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
                 }
             }
         }
-    }
 
+        /**
+         * Flush queue if spool memory because swiftmailer flush on kernel.terminate
+         */
+        $transport = $mailer->getMailer()->getTransport();
+        if ($transport instanceof \Swift_Transport_SpoolTransport) {
+            $spool = $transport->getSpool();
+            if ($spool instanceof \Swift_MemorySpool) {
+                $mailNumber = $spool->flushQueue($this->getContainer()->get('swiftmailer.transport.real'));
+            }
+        }
+
+        $output->writeln(sprintf(
+            '<info>[%.1fMB/%.2fs] End at %s. Email send %s</info>',
+            memory_get_peak_usage(true)/1024/1024,
+            microtime(true)-$startMicroTime,
+            date('Y m d H:i:s'),
+            $mailNumber
+        ));
+    }
 }

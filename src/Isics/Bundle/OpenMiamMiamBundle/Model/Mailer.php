@@ -138,4 +138,11 @@ class Mailer
         return $this->translator;
     }
 
+    /**
+     * @return \Swift_mailer
+     */
+    public function getMailer()
+    {
+        return $this->mailer;
+    }
 }

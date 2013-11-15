@@ -153,19 +153,21 @@ QUERY;
      *
      * @return array Consumers
      */
-    public function findConsumersForBranches($branches, $lastOrderNbDaysConsideringCustomer)
+    public function findConsumersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
+        $consumersForBranchesQueryBuilder = $this->getConsumersForBranchesQueryBuilder($branches);
 
-        $now = new \DateTime();
-        $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
+        if (null !== $lastOrderNbDaysConsideringCustomer) {
+            $now = new \DateTime();
+            $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
+            $consumersForBranchesQueryBuilder
+                ->where('s.date > :from')
+                ->andWhere('s.date < :to')
+                ->setParameter('from', $begin)
+                ->setParameter('to', $now);
+        }
 
-        return $this->getConsumersForBranchesQueryBuilder($branches)
-              ->where('s.date > :from')
-              ->andWhere('s.date < :to')
-              ->setParameter('from', $begin)
-              ->setParameter('to', $now)
-              ->getQuery()
-              ->getResult();
+        return $consumersForBranchesQueryBuilder->getQuery()->getResult();
     }
 
     /**

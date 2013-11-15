@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamUserBundle\Manager\UserManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -52,6 +53,11 @@ class NewsletterManager
     protected $engine;
 
     /**
+     * @var $userManager
+     */
+    protected $userManager;
+
+    /**
      * Constructs object
      *
      * @param EntityManager     $entityManager
@@ -64,12 +70,14 @@ class NewsletterManager
                                 ActivityManager $activityManager,
                                 \Swift_Mailer $mailer,
                                 array $mailerConfig,
-                                EngineInterface $engine)
+                                EngineInterface $engine,
+                                UserManager $userManager)
     {
         $this->entityManager = $entityManager;
         $this->activityManager = $activityManager;
         $this->mailer = $mailer;
         $this->engine = $engine;
+        $this->userManager = $userManager;
 
         $resolver = new OptionsResolver();
         $this->setMailerConfigResolverDefaultOptions($resolver);
@@ -179,9 +187,7 @@ class NewsletterManager
         $recipientType = $newsletter->getRecipientType();
 
         if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
-            $consumers = $this->entityManager
-                ->getRepository('IsicsOpenMiamMiamUserBundle:User')
-                ->findConsumersForBranches($newsletter->getBranches());
+            $consumers = $this->userManager->findConsumersForBranches($newsletter->getBranches());
 
             $recipients = array_merge($recipients, $consumers);
         }
