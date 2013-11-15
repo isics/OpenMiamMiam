@@ -63,10 +63,12 @@ header {
         }
     }
 }
+@media screen and (min-width: 992px) {
 
-#header-branch-occurrence {
-    border-right: 1px solid @panel-default-border;
-    border-left: 1px solid @panel-default-border;
+    #header-branch-occurrence {
+        border-right: 1px solid @panel-default-border;
+        border-left: 1px solid @panel-default-border;
+    }
 }
 
 #header-branch-change-link {
@@ -308,7 +310,7 @@ header {
         text-align: center;
     }
 
-    td:nth-child(4) {
+    .total {
         font-weight: bold;
         text-align: right;
     }

@@ -20,29 +20,29 @@
                     {{ form_start(form) }}
                         <div class="row">
                             <div class="col-md-6">
-                                {{ form_row(form.firstname, {'label': 'user.register.firstname'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.firstname, {'label': 'user.register.firstname'|trans, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.lastname, {'label': 'user.register.lastname'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.lastname, {'label': 'user.register.lastname'|trans, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                         </div>
-                        {{ form_row(form.email, {'label': 'user.register.email'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                        {{ form_row(form.email, {'label': 'user.register.email'|trans, 'attr': {'class': 'input-lg'}}) }}
                         <div class="row">
                             <div class="col-md-6">
-                                {{ form_row(form.plainPassword.first, {'label': 'user.register.password'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.plainPassword.first, {'label': 'user.register.password'|trans, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.plainPassword.second, {'label': 'user.register.password_confirmation'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.plainPassword.second, {'label': 'user.register.password_confirmation'|trans, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                         </div>
-                        {{ form_row(form.address1, {'label': 'user.register.address1'|trans, 'label_as_placeholder': true}) }}
-                        {{ form_row(form.address2, {'label': 'user.register.address2'|trans, 'label_as_placeholder': true}) }}
+                        {{ form_row(form.address1, {'label': 'user.register.address1'|trans}) }}
+                        {{ form_row(form.address2, {'label': 'user.register.address2'|trans}) }}
                         <div class="row">
                             <div class="col-md-4">
-                                {{ form_row(form.zipcode, {'label': 'user.register.zipcode'|trans, 'label_as_placeholder': true}) }}
+                                {{ form_row(form.zipcode, {'label': 'user.register.zipcode'|trans}) }}
                             </div>
                             <div class="col-md-8">
-                                {{ form_row(form.city, {'label': 'user.register.city'|trans, 'label_as_placeholder': true}) }}
+                                {{ form_row(form.city, {'label': 'user.register.city'|trans}) }}
                             </div>
                         </div>
                     </div>

@@ -283,8 +283,8 @@ OpenMiamMiam.SalesOrderForm = function() {
         },
 
         initializeControls: function() {
-            new OpenMiamMiam.Quantity;
-            new OpenMiamMiam.DeleteDialog;
+            new OpenMiamMiam.Quantity();
+            new OpenMiamMiam.DeleteDialog();
         },
 
         refreshEditionFormFieldsContainer: function(){
