@@ -70,7 +70,7 @@
                                 {% if salesOrder.user is not null and salesOrder.user.phoneNumber is not null %}
                                     <br />
                                     {{ 'admin.association.sales_orders.list.phoneNumber'|trans }} 
-                                    {{ salesOrder.user.phoneNumber }}
+                                    {{ salesOrder.user.phone_number }}
                                 {% endif %}
                             </td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>

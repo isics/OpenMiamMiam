@@ -21,7 +21,7 @@
                     {{ order.zipcode }} {{ order.city }}
                     {% if order.user is not null and order.user.phoneNumber is not null %}
                         <br />
-                        {{ 'admin.association.sales_orders.list.phoneNumber'|trans }}
+                        {{ 'admin.association.sales_orders.list.phone_number'|trans }}
                         {{ order.user.phoneNumber }}
                     {% endif %}
                 </p>

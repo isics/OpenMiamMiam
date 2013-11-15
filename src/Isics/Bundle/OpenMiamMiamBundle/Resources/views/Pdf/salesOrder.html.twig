@@ -42,7 +42,7 @@
                         {{ order.zipcode }} {{ order.city }}
                         {% if order.user is not null and order.user.phoneNumber is not null %}
                             <br />
-                            {{ 'pdf.sales_order.consumer.phoneNumber'|trans }} {{ order.user.phoneNumber }}
+                            {{ 'pdf.sales_order.consumer.phone_number'|trans }} {{ order.user.phoneNumber }}
                         {% endif %}
                     </p>
                 </td>
