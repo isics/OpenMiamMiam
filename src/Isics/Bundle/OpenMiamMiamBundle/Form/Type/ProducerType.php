@@ -46,10 +46,10 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
                 ->add('city', 'text', array(
                     'required' => false
                 ))
-                ->add('phone1', 'text', array(
+                ->add('phoneNumber1', 'text', array(
                     'required' => false
                 ))
-                ->add('phone2', 'text', array(
+                ->add('phoneNumber2', 'text', array(
                     'required' => false
                 ))
                 ->add('website', 'url', array(

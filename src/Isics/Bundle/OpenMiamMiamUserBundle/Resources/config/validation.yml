@@ -29,7 +29,7 @@ Isics\Bundle\OpenMiamMiamUserBundle\Entity\User:
             - Length:
                 max: 64
                 groups: [Registration, Profile]
-        phone:
+        phoneNumber:
             - Length:
                 max: 16
                 groups: [Registration, Profile]

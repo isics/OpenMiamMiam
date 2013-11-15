@@ -83,18 +83,18 @@ class Association
     private $city;
 
     /**
-     * @var string $phone1
+     * @var string $phoneNumber1
      *
-     * @ORM\Column(name="phone1", type="string", length=16, nullable=true)
+     * @ORM\Column(name="phone_number1", type="string", length=16, nullable=true)
      */
-    private $phone1;
+    private $phoneNumber1;
 
     /**
-     * @var string $phone2
+     * @var string $phoneNumber2
      *
-     * @ORM\Column(name="phone2", type="string", length=16, nullable=true)
+     * @ORM\Column(name="phone_number2", type="string", length=16, nullable=true)
      */
-    private $phone2;
+    private $phoneNumber2;
 
     /**
      * @var string $website
@@ -345,49 +345,49 @@ class Association
     }
 
     /**
-     * Set phone1
+     * Set phoneNumber1
      *
-     * @param string $phone1
+     * @param string $phoneNumber1
      * @return Association
      */
-    public function setPhone1($phone1)
+    public function setPhoneNumber1($phoneNumber1)
     {
-        $this->phone1 = $phone1;
+        $this->phoneNumber1 = $phoneNumber1;
 
         return $this;
     }
 
     /**
-     * Get phone1
+     * Get phoneNumber1
      *
      * @return string
      */
-    public function getPhone1()
+    public function getPhoneNumber1()
     {
-        return $this->phone1;
+        return $this->phoneNumber1;
     }
 
     /**
-     * Set phone2
+     * Set phoneNumber2
      *
-     * @param string $phone2
+     * @param string $phoneNumber2
      * @return Association
      */
-    public function setPhone2($phone2)
+    public function setPhoneNumber2($phoneNumber2)
     {
-        $this->phone2 = $phone2;
+        $this->phoneNumber2 = $phoneNumber2;
 
         return $this;
     }
 
     /**
-     * Get phone2
+     * Get phoneNumber2
      *
      * @return string
      */
-    public function getPhone2()
+    public function getPhoneNumber2()
     {
-        return $this->phone2;
+        return $this->phoneNumber2;
     }
 
     /**

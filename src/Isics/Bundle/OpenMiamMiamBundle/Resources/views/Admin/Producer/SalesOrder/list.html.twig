@@ -64,10 +64,10 @@
                                 <td>{{ producerSalesOrder.salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
                                 <td>
                                     {{ producerSalesOrder.salesOrder.lastname }} {{ producerSalesOrder.salesOrder.firstname|first }}. ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})
-                                    {% if producerSalesOrder.salesOrder.user is not null and producerSalesOrder.salesOrder.user.phone is not null %}
+                                    {% if producerSalesOrder.salesOrder.user is not null and producerSalesOrder.salesOrder.user.phoneNumber is not null %}
                                         <br />
-                                        {{ 'admin.producer.sales_orders.list.phone'|trans }} 
-                                        {{ producerSalesOrder.salesOrder.user.phone }}
+                                        {{ 'admin.producer.sales_orders.list.phoneNumber'|trans }} 
+                                        {{ producerSalesOrder.salesOrder.user.phoneNumber }}
                                     {% endif %}
                                 </td>
                                 <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>

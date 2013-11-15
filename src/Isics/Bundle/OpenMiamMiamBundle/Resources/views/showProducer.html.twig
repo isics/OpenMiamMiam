@@ -37,14 +37,14 @@
                     </address>
                 </p>
                 <dl>
-                    {% if producer.phone1 is not null %}
-                        <dt>{{ 'producer.phone1'|trans }}</dt>
-                        <dd>{{ producer.phone1 }}</dd>
+                    {% if producer.phoneNumber1 is not null %}
+                        <dt>{{ 'producer.phoneNumber1'|trans }}</dt>
+                        <dd>{{ producer.phoneNumber1 }}</dd>
                     {% endif %}
 
-                    {% if producer.phone2 is not null %}
-                        <dt>{{ 'producer.phone2'|trans }}</dt>
-                        <dd>{{ producer.phone2 }}</dd>
+                    {% if producer.phoneNumber2 is not null %}
+                        <dt>{{ 'producer.phoneNumber2'|trans }}</dt>
+                        <dd>{{ producer.phoneNumber2 }}</dd>
                     {% endif %}
 
                     {% if producer.website is not null %}

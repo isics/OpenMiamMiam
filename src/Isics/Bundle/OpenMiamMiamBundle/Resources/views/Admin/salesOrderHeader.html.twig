@@ -19,10 +19,10 @@
                         {{ order.address2 }}<br />
                     {% endif %}
                     {{ order.zipcode }} {{ order.city }}
-                    {% if order.user is not null and order.user.phone is not null %}
+                    {% if order.user is not null and order.user.phoneNumber is not null %}
                         <br />
-                        {{ 'admin.association.sales_orders.list.phone'|trans }}
-                        {{ order.user.phone }}
+                        {{ 'admin.association.sales_orders.list.phoneNumber'|trans }}
+                        {{ order.user.phoneNumber }}
                     {% endif %}
                 </p>
             </div>

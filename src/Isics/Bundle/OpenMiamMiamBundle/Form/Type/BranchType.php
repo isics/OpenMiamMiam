@@ -31,8 +31,8 @@ class BranchType extends AbstractType
             ->add('address2', 'text', array('required' => false))
             ->add('zipcode', 'text', array('required' => false))
             ->add('city', 'text', array('required' => false))
-            ->add('phone1', 'text', array('required' => false))
-            ->add('phone2', 'text', array('required' => false))
+            ->add('phoneNumber1', 'text', array('required' => false))
+            ->add('phoneNumber2', 'text', array('required' => false))
             ->add('website', 'url', array('required' => false))
             ->add('facebook', 'url', array('required' => false))
             ->add('save', 'submit');
