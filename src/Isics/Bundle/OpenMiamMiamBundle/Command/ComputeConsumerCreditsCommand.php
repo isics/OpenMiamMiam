@@ -38,7 +38,7 @@ class ComputeConsumerCreditsCommand extends ContainerAwareCommand
     $paymentManager = $this->getContainer()->get('open_miam_miam.payment_manager');
 
     foreach ($subscriptions as $subscription) {
-        $paymentManager->computeConsumerCredit($subscription->getUser(), $subscription->getAssociation());
+        $paymentManager->computeConsumerCredit($subscription->getAssociation(), $subscription->getUser());
 
         $output->writeln(sprintf(
             'Processed consumer <info>%s %s</info> : credit = <info>%s</info>',

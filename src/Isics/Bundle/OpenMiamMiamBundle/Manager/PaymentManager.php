@@ -98,12 +98,13 @@ class PaymentManager
     /**
      * Compute consumer credit
      *
-     * @param User $user
      * @param Association $association
+     * @param User $user
      */
-    public function computeConsumerCredit(User $user, Association $association)
+    public function computeConsumerCredit(Association $association, User $user = null)
     {
-        $subscription = $user->getSubscriptionForAssociation($association);
+        $subscription = $association->getSubscriptionForUser($user);
+
         if (null === $subscription) {
             $subscription = new Subscription();
             $subscription->setAssociation($association);
@@ -112,10 +113,10 @@ class PaymentManager
 
         $salesOrderTotal = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
-                ->getTotalForUserAndAssociation($user, $association);
+                ->getTotalForUserAndAssociation($association, $user);
         $paymentsAmount = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:Payment')
-                ->getAmountForUserAndAssociation($user, $association);
+                ->getAmountForUserAndAssociation($association, $user);
 
         $subscription->setCredit($paymentsAmount-$salesOrderTotal);
 
@@ -143,7 +144,7 @@ class PaymentManager
 
         // Subscription
         if (null !== $order->getUser()) {
-            $this->computeConsumerCredit($order->getUser(), $payment->getAssociation());
+            $this->computeConsumerCredit($payment->getAssociation(), $order->getUser());
         }
 
         // Activity
@@ -247,7 +248,7 @@ class PaymentManager
         $this->entityManager->flush();
 
         // Subscription
-        $this->computeConsumerCredit($payment->getUser(), $payment->getAssociation());
+        $this->computeConsumerCredit($payment->getAssociation(), $payment->getUser());
     }
 
     /**
@@ -261,6 +262,6 @@ class PaymentManager
         $this->entityManager->flush();
 
         // Subscription
-        $this->computeConsumerCredit($payment->getUser(), $payment->getAssociation());
+        $this->computeConsumerCredit($payment->getAssociation(), $payment->getUser());
     }
 }

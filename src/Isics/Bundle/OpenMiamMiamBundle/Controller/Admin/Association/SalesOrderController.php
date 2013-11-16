@@ -139,6 +139,34 @@ class SalesOrderController extends BaseController
     }
 
     /**
+     * Create sales order for branch occurrence
+     *
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Association $association
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function createAction(Association $association, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($association);
+        $this->secureBranchOccurrence($association, $branchOccurrence);
+
+        $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
+
+        $order = $salesOrderManager->createForBranchOccurrence($branchOccurrence);
+        $salesOrderManager->save($order, $association, $this->get('security.context')->getToken()->getUser());
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.association.sales_order.edit',
+            array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+        ));
+    }
+
+    /**
      * View a sales order
      *
      * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
@@ -210,7 +238,7 @@ class SalesOrderController extends BaseController
             if ($form->isValid()) {
                 $user = $this->get('security.context')->getToken()->getUser();
                 $this->get('open_miam_miam.sales_order_manager')->save($order, $association, $user);
-                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
 
@@ -264,7 +292,7 @@ class SalesOrderController extends BaseController
 
         $user = $this->get('security.context')->getToken()->getUser();
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow($row, $user);
-        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
 
@@ -306,7 +334,7 @@ class SalesOrderController extends BaseController
                 ->addProduct($order, $product, $association, $this->get('security.context')->getToken()->getUser());
 
         // todo: use salesOrderManager to do that
-        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
+        $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
         if ($request->isXmlHttpRequest()) {
             return $this->render(
@@ -383,7 +411,7 @@ class SalesOrderController extends BaseController
                     $this->get('security.context')->getToken()->getUser()
                 );
 
-                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($order->getUser(), $association);
+                $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
                 if ($request->isXmlHttpRequest()) {
                     return $this->render(

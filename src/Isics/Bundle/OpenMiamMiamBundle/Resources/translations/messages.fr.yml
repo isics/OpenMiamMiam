@@ -294,6 +294,8 @@ admin.producer.consumers.message.sales_order_allocated:      "Le règlement a bi
 admin.association.consumers.payments.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer ce règlement ?"
 
 # Admin / Association / Sales orders
+admin.association.sales_orders.new:                                   "Nouvelle commande"
+admin.association.sales_orders.anonymous:                             "Anonyme"
 admin.association.sales_orders.list.title:                            "Caisse"
 admin.association.sales_orders.list.no_order:                         "Il n'y a pas encore de commande pour ce comptoir."
 admin.association.sales_orders.list.no_branch_occurrence:             "Il n'y a pas de prochain comptoir."
@@ -586,6 +588,7 @@ activity_stream.branch.updated:                         "a mis à jour le compto
 activity_stream.product.created:                        "a créé le produit %name%."
 activity_stream.product.updated:                        "a mis à jour le produit %name%."
 activity_stream.sales_order.created:                    "a passé la commande %ref%."
+activity_stream.sales_order.anonymous.created:          "a créé la commande %ref%."
 activity_stream.sales_order.updated:                    "a modifié la commande %ref%."
 activity_stream.sales_order.row.quantity_total_updated: "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%, total %old_total% -> %total%)."
 activity_stream.sales_order.row.quantity_updated:       "a modifié le produit %name% (%ref%) de la commande %order_ref% (quantité : %old_quantity% -> %quantity%)."
