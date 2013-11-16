@@ -40,21 +40,26 @@ class PaymentRepository extends EntityRepository
     /**
      * Returns amount of payments for a user and association
      *
-     * @param User $user
      * @param Association $association
+     * @param User $user
      *
      * @return float
      */
-    public function getAmountForUserAndAssociation(User $user, Association $association)
+    public function getAmountForUserAndAssociation(Association $association, User $user = null)
     {
-        $result = $this->createQueryBuilder('p')
+        $qb = $this->createQueryBuilder('p')
                 ->select('SUM(p.amount) AS amountSum')
                 ->andWhere('p.association = :association')
-                ->setParameter('association', $association)
-                ->andWhere('p.user = :user')
-                ->setParameter('user', $user)
-                ->getQuery()
-                ->getSingleResult();
+                ->setParameter('association', $association);
+
+        if (null === $user) {
+            $qb->andWhere('p.user IS NULL');
+        } else {
+            $qb->andWhere('p.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        $result = $qb->getQuery()->getSingleResult();
 
         return $result['amountSum'];
     }

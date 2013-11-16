@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -131,7 +132,7 @@ class Association
      */
     private $openingDelay;
 
-   /**
+    /**
      * @var decimal $defaultCommission
      *
      * @ORM\Column(name="default_commission", type="decimal", precision=5, scale=2, nullable=true)
@@ -143,7 +144,7 @@ class Association
      *
      * @ORM\OneToMany(targetEntity="Branch", mappedBy="association")
      */
-    private $branches;
+     private $branches;
 
     /**
      * @var Doctrine\Common\Collections\Collection $producers
@@ -159,6 +160,13 @@ class Association
      * )
      */
     private $producers;
+
+    /**
+     * @var Doctrine\Common\Collections\Collection $subscriptions
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription", mappedBy="association")
+     */
+    private $subscriptions;
 
 
 
@@ -610,5 +618,32 @@ class Association
         }
 
         return $this;
+    }
+
+    /**
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * Return subscription for association
+     *
+     * @param User $user
+     *
+     * @return Subscription
+     */
+    public function getSubscriptionForUser(User $user = null)
+    {
+        foreach ($this->subscriptions as $subcription) {
+            if ((null === $user && null === $subcription->getUser())
+                || (null !== $user && null !== $subcription->getUser() && $subcription->getUser()->getId() == $user->getId())) {
+                return $subcription;
+            }
+        }
+
+        return null;
     }
 }
