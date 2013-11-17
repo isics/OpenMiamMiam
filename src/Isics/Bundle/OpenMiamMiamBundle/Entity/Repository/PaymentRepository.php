@@ -26,15 +26,17 @@ class PaymentRepository extends EntityRepository
      *
      * @return array
      */
-    public function findToAllocatedForUser(User $user)
+    public function findToAllocatedForUser(User $user = null)
     {
-        return $this->createQueryBuilder('p')
-                ->andWhere('p.rest > 0')
-                ->andWhere('p.user = :user')
-                ->setParameter('user', $user)
-                ->addOrderBy('p.date', 'ASC')
-                ->getQuery()
-                ->getResult();
+        $qb = $this->createQueryBuilder('p')->andWhere('p.rest > 0');
+
+        if (null === $user) {
+            $qb->andWhere($qb->expr()->isNull('p.user'));
+        } else {
+            $qb->andWhere('p.user = :user')->setParameter('user', $user);
+        }
+
+        return $qb->addOrderBy('p.date', 'ASC')->getQuery()->getResult();
     }
 
     /**
@@ -53,7 +55,7 @@ class PaymentRepository extends EntityRepository
                 ->setParameter('association', $association);
 
         if (null === $user) {
-            $qb->andWhere('p.user IS NULL');
+            $qb->andWhere($qb->expr()->isNull('p.user'));
         } else {
             $qb->andWhere('p.user = :user')
                 ->setParameter('user', $user);
@@ -67,21 +69,25 @@ class PaymentRepository extends EntityRepository
     /**
      * Returns query builder to find payments for a user and association
      *
-     * @param User $user
      * @param Association $association
+     * @param User $user
      * @param QueryBuilder $qb
      *
      * @return QueryBuilder
      */
-    public function getForConsumerAndAssociationQueryBuilder(User $user, Association $association, QueryBuilder $qb = null)
+    public function getForConsumerAndAssociationQueryBuilder(Association $association, User $user = null, QueryBuilder $qb = null)
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
-        return $qb->andWhere('p.user = :user')
-                ->andWhere('p.association = :association')
-                ->setParameter('user', $user)
-                ->setParameter('association', $association)
-               ->addOrderBy('p.date', 'DESC');
+        $qb->andWhere('p.association = :association')->setParameter('association', $association);
+
+        if (null === $user) {
+            $qb->andWhere($qb->expr()->isNull('p.user'));
+        } else {
+            $qb->andWhere('p.user = :user')->setParameter('user', $user);
+        }
+
+        return $qb->addOrderBy('p.date', 'DESC');
     }
 
     /**

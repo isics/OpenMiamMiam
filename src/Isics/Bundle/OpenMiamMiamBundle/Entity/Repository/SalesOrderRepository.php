@@ -112,7 +112,7 @@ class SalesOrderRepository extends EntityRepository
                 ->setParameter('association', $association);
 
         if (null === $user) {
-            $qb->andWhere('so.user IS NULL');
+            $qb->andWhere($qb->expr()->isNull('so.user'));
         } else {
             $qb->andWhere('so.user = :user')
                 ->setParameter('user', $user);

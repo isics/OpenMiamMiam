@@ -143,9 +143,7 @@ class PaymentManager
         $this->entityManager->flush();
 
         // Subscription
-        if (null !== $order->getUser()) {
-            $this->computeConsumerCredit($payment->getAssociation(), $order->getUser());
-        }
+        $this->computeConsumerCredit($payment->getAssociation(), $order->getUser());
 
         // Activity
         $activity = $this->activityManager->createFromEntities(
