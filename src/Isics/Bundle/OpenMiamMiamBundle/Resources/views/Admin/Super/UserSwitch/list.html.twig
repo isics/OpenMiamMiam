@@ -29,7 +29,7 @@
                                 <td>{{ user.firstname }}</td>
                                 <td>?</td>
                                 <td>
-                                    <a href="{{ path('open_miam_miam.admin', {'_switch_user': user.username }) }}" class="btn btn-danger" title="{{ 'admin.super.user_switch.list.switch'|trans }}">
+                                    <a href="{{ path('open_miam_miam.admin', {'_switch_user': user.email }) }}" class="btn btn-danger" title="{{ 'admin.super.user_switch.list.switch'|trans }}">
                                         <span class="glyphicon glyphicon-transfer"></span> {{ 'admin.super.user_switch.list.switch'|trans }}
                                     </a>
                                 </td>

@@ -20,31 +20,32 @@
                     {{ form_start(form) }}
                         <div class="row">
                             <div class="col-md-6">
-                                {{ form_row(form.firstname, {'label': 'user.register.firstname'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.firstname, {'label': 'user.register.firstname', 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.lastname, {'label': 'user.register.lastname'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.lastname, {'label': 'user.register.lastname', 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                         </div>
-                        {{ form_row(form.email, {'label': 'user.register.email'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                        {{ form_row(form.email, {'label': 'user.register.email', 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
                         <div class="row">
                             <div class="col-md-6">
-                                {{ form_row(form.plainPassword.first, {'label': 'user.register.password'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.plainPassword.first, {'label': 'user.register.password', 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                             <div class="col-md-6">
-                                {{ form_row(form.plainPassword.second, {'label': 'user.register.password_confirmation'|trans, 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
+                                {{ form_row(form.plainPassword.second, {'label': 'user.register.password_confirmation', 'label_as_placeholder': true, 'attr': {'class': 'input-lg'}}) }}
                             </div>
                         </div>
-                        {{ form_row(form.address1, {'label': 'user.register.address1'|trans, 'label_as_placeholder': true}) }}
-                        {{ form_row(form.address2, {'label': 'user.register.address2'|trans, 'label_as_placeholder': true}) }}
+                        {{ form_row(form.address1, {'label': 'user.register.address1', 'label_as_placeholder': true}) }}
+                        {{ form_row(form.address2, {'label': 'user.register.address2', 'label_as_placeholder': true}) }}
                         <div class="row">
                             <div class="col-md-4">
-                                {{ form_row(form.zipcode, {'label': 'user.register.zipcode'|trans, 'label_as_placeholder': true}) }}
+                                {{ form_row(form.zipcode, {'label': 'user.register.zipcode', 'label_as_placeholder': true}) }}
                             </div>
                             <div class="col-md-8">
-                                {{ form_row(form.city, {'label': 'user.register.city'|trans, 'label_as_placeholder': true}) }}
+                                {{ form_row(form.city, {'label': 'user.register.city', 'label_as_placeholder': true}) }}
                             </div>
                         </div>
+                        {{ form_row(form.phone, {'label': 'user.register.phone', 'label_as_placeholder': true}) }}
                     </div>
                     <div class="panel-footer text-right">
                         <a href="{{ path('open_miam_miam.homepage') }}" class="btn btn-default btn-lg">

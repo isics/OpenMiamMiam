@@ -25,3 +25,7 @@ resetting.email.message: |
         Pour réinitialiser votre mot de passe, cliquez sur le lien suivant :<br />
         <strong><a href="%confirmationUrl%">%confirmationUrl%</a></strong><br />
     </p>
+
+user.register.email:                    "Adresse e-mail"
+user.register.password:                 "Mot de passe"
+user.register.password_confirmation:    "Vérification"

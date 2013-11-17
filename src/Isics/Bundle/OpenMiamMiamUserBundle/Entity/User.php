@@ -62,6 +62,13 @@ class User extends BaseUser
     private $city;
 
     /**
+     * @var string $phone
+     *
+     * @ORM\Column(name="phone", type="string", length=16, nullable=true)
+     */
+    private $phone;
+
+    /**
      * @var Doctrine\Common\Collections\Collection $salesOrders
      *
      * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder", mappedBy="user")
@@ -135,6 +142,29 @@ class User extends BaseUser
     public function getCity()
     {
         return $this->city;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     /**
