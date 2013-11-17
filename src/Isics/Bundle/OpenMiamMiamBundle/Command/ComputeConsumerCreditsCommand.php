@@ -41,9 +41,8 @@ class ComputeConsumerCreditsCommand extends ContainerAwareCommand
         $paymentManager->computeConsumerCredit($subscription->getAssociation(), $subscription->getUser());
 
         $output->writeln(sprintf(
-            'Processed consumer <info>%s %s</info> : credit = <info>%s</info>',
-            $subscription->getUser()->getFirstname(),
-            $subscription->getUser()->getLastname(),
+            'Processed subscription <info>%s</info> : credit = <info>%s</info>',
+            $subscription->getId(),
             $subscription->getCredit()
         ));
     }
