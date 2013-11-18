@@ -97,23 +97,28 @@ class SalesOrderRepository extends EntityRepository
     /**
      * Returns credit for user and association
      *
-     * @param User $user
      * @param Association $association
+     * @param User $user
      *
      * @return float
      */
-    public function getTotalForUserAndAssociation(User $user, Association $association)
+    public function getTotalForUserAndAssociation(Association $association, User $user = null)
     {
-        $result = $this->createQueryBuilder('so')
+         $qb = $this->createQueryBuilder('so')
                 ->select('SUM(so.total) AS totalSum')
                 ->innerJoin('so.branchOccurrence', 'bo')
                 ->innerJoin('bo.branch', 'b')
                 ->andWhere('b.association = :association')
-                ->setParameter('association', $association)
-                ->andWhere('so.user = :user')
-                ->setParameter('user', $user)
-                ->getQuery()
-                ->getSingleResult();
+                ->setParameter('association', $association);
+
+        if (null === $user) {
+            $qb->andWhere($qb->expr()->isNull('so.user'));
+        } else {
+            $qb->andWhere('so.user = :user')
+                ->setParameter('user', $user);
+        }
+
+        $result = $qb->getQuery()->getSingleResult();
 
         return $result['totalSum'];
     }

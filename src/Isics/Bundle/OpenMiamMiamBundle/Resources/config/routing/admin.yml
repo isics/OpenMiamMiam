@@ -94,6 +94,10 @@ open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_oc
     pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
 
+open_miam_miam.admin.association.sales_order.create:
+    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/create
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:create }
+
 open_miam_miam.admin.association.sales_order.view:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:view }
@@ -157,6 +161,10 @@ open_miam_miam.admin.association.branch.delete:
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }
+
+open_miam_miam.admin.association.consumer.list_anonymous_payments:
+    pattern:  /associations/{id}/consumers/anonymous/payments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listAnonymousPayments }
 
 open_miam_miam.admin.association.consumer.list_payments:
     pattern:  /associations/{id}/consumers/{consumerId}/payments

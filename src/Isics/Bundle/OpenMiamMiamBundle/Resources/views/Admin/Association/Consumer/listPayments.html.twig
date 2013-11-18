@@ -10,16 +10,24 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ 'admin.association.consumers.payments.list.title'|trans({'%consumer%': consumer.fullName}) }}</h1>
+            <h1>
+                {% if consumer is defined %}
+                    {{ 'admin.association.consumers.payments.list.title'|trans({'%consumer%': consumer.fullName}) }}
+                {% else %}
+                    {{ 'admin.association.consumers.payments.list.anonymous_title'|trans }}
+                {% endif %}
+            </h1>
         </div>
     </div>
 
-    <div class="col-md-12">
-        <a href="{{ path('open_miam_miam.admin.association.consumer.create_payment', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-lg pull-right">
-            <span class="glyphicon glyphicon-plus-sign"></span>
-            {{ 'admin.association.consumers.payments.list.create'|trans }}
-        </a>
-    </div>
+    {% if consumer is defined %}
+        <div class="col-md-12">
+            <a href="{{ path('open_miam_miam.admin.association.consumer.create_payment', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-lg pull-right">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                {{ 'admin.association.consumers.payments.list.create'|trans }}
+            </a>
+        </div>
+    {% endif %}
 
     {% if payments|length > 0 %}
         <div class="table-responsive">
@@ -30,7 +38,9 @@
                     <th>{{ 'admin.association.consumers.payments.list.type'|trans }}</th>
                     <th>{{ 'admin.association.consumers.payments.list.amount'|trans }}</th>
                     <th>{{ 'admin.association.consumers.payments.list.rest'|trans }}</th>
-                    <th>&nbsp;</th>
+                    {% if consumer is defined %}
+                        <th>&nbsp;</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -40,12 +50,14 @@
                         <td>{{ ('admin.association.sales_orders.payment.type_'~payment.type)|trans }}</td>
                         <td>{{ payment.amount|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>{{ payment.rest|number_format_currency(open_miam_miam.currency) }}</td>
-                        <td>
-                            <a href="{{ path('open_miam_miam.admin.association.consumer.edit_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.consumers.payments.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                            {% if payment.rest == payment.amount %}
-                                <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.consumers.payments.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
-                            {% endif  %}
-                        </td>
+                        {% if consumer is defined %}
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.association.consumer.edit_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.consumers.payments.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                {% if payment.rest == payment.amount %}
+                                    <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.consumers.payments.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                                {% endif  %}
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>

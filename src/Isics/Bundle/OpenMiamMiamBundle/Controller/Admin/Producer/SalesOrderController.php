@@ -172,8 +172,8 @@ class SalesOrderController extends BaseController
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $order->getUser(),
-                    $order->getBranchOccurrence()->getBranch()->getAssociation()
+                    $order->getBranchOccurrence()->getBranch()->getAssociation(),
+                    $order->getUser()
                 );
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -230,8 +230,8 @@ class SalesOrderController extends BaseController
         );
 
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-            $order->getUser(),
-            $order->getBranchOccurrence()->getBranch()->getAssociation()
+            $order->getBranchOccurrence()->getBranch()->getAssociation(),
+            $order->getUser()
         );
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.producer.sales_orders.message.updated');
@@ -275,8 +275,8 @@ class SalesOrderController extends BaseController
 
         // todo: use salesOrderManager to do that
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-            $order->getUser(),
-            $order->getBranchOccurrence()->getBranch()->getAssociation()
+            $order->getBranchOccurrence()->getBranch()->getAssociation(),
+            $order->getUser()
         );
 
         if ($request->isXmlHttpRequest()) {
@@ -353,8 +353,8 @@ class SalesOrderController extends BaseController
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $order->getUser(),
-                    $order->getBranchOccurrence()->getBranch()->getAssociation()
+                    $order->getBranchOccurrence()->getBranch()->getAssociation(),
+                    $order->getUser()
                 );
 
                 if ($request->isXmlHttpRequest()) {
