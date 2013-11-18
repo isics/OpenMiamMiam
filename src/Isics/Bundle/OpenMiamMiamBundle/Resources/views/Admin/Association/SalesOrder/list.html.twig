@@ -78,10 +78,10 @@
                             <td>
                                 {% if salesOrder.user %}
                                     {{ salesOrder.lastname }} {{ salesOrder.firstname|first }}. ({{ salesOrder.user|format_consumer_ref }})
-                                    {% if salesOrder.user.phone is not null %}
+                                    {% if salesOrder.user.phoneNumber is not null %}
                                         <br />
-                                        {{ 'admin.association.sales_orders.list.phone'|trans }}
-                                        {{ salesOrder.user.phone }}
+                                        {{ 'admin.association.sales_orders.list.phone_number'|trans }}
+                                        {{ salesOrder.user.phoneNumber }}
                                     {% endif %}
                                 {% else %}
                                     {{ 'admin.association.sales_orders.anonymous'|trans }}

@@ -20,10 +20,10 @@
                             {{ order.address2 }}<br />
                         {% endif %}
                         {{ order.zipcode }} {{ order.city }}
-                        {% if order.user.phone is not null %}
+                        {% if order.user.phoneNumber is not null %}
                             <br />
-                            {{ 'admin.association.sales_orders.list.phone'|trans }}
-                            {{ order.user.phone }}
+                            {{ 'admin.association.sales_orders.list.phone_number'|trans }}
+                            {{ order.user.phoneNumber }}
                         {% endif %}
                     {% else %}
                         {{ 'admin.association.sales_orders.anonymous'|trans }}

@@ -95,6 +95,23 @@ class SalesOrderRepository extends EntityRepository
     }
 
     /**
+     * Returns sales orders for a branch occurrence excluding anonymous
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return array
+     */
+    public function findForBranchOccurrenceExcludingAnonymous(BranchOccurrence $branchOccurrence)
+    {
+        return $this->createQueryBuilder('so')
+            ->where('so.user IS NOT NULL')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Returns credit for user and association
      *
      * @param Association $association
