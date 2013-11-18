@@ -67,10 +67,10 @@
                             <td>{{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
                             <td>
                                 {{ salesOrder.lastname }} {{ salesOrder.firstname|first }}. ({{ salesOrder.user|format_consumer_ref }}) 
-                                {% if salesOrder.user is not null and salesOrder.user.phone is not null %}
+                                {% if salesOrder.user is not null and salesOrder.user.phoneNumber is not null %}
                                     <br />
-                                    {{ 'admin.association.sales_orders.list.phone'|trans }} 
-                                    {{ salesOrder.user.phone }}
+                                    {{ 'admin.association.sales_orders.list.phone_number'|trans }} 
+                                    {{ salesOrder.user.phone_number }}
                                 {% endif %}
                             </td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
