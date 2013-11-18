@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    {{ 'mail.branch.open_order.message_html'|trans({
+    {{ 'mail.branch.orders_open.message_html'|trans({
         '%firstname%': customer.firstname,
         '%branch_name%': branchOccurrence.branch.name,
         '%order_open_date%': ordersOpeningDateTime|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')),

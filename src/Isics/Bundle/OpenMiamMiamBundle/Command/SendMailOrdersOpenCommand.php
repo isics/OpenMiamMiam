@@ -12,11 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
-class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
+class SendMailOrdersOpenCommand extends ContainerAwareCommand
 {
     /**
      * @see ContainerAwareCommand
@@ -65,7 +65,8 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
             ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
 
         $mailer = $this->getContainer()->get('open_miam_miam.mailer');
-        $mailer->getTranslator()->setLocale($this->getContainer()->getParameter('locale'));
+        $translator = $mailer->getTranslator();
+        $translator->setLocale($this->getContainer()->getParameter('locale'));
 
         foreach ($branches as $branch) {
             $nextBranchOccurrence = $branchOccurrenceRepository->findOneNextNotClosedForBranch($branch);
@@ -83,13 +84,17 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
                     continue;
                 }
 
+                $output->writeln($translator->trans('mail.branch.orders_open.log.branch_name', array(
+                    '%branch_name%' => $branch->getName()
+                )));
+
                 foreach ($customers as $customer) {
                     $message = $mailer->getNewMessage();
                     $message
                         ->setTo($customer->getEmail())
                         ->setSubject(
                             $mailer->translate(
-                                'mail.branch.open_order.subject',
+                                'mail.branch.orders_open.subject',
                                 array(
                                     '%branch_name%' => $branch->getName()
                                 )
@@ -97,7 +102,7 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
                         )
                         ->setBody(
                             $mailer->render(
-                                'IsicsOpenMiamMiamBundle:Mail:openOrder.html.twig',
+                                'IsicsOpenMiamMiamBundle:Mail:ordersOpen.html.twig',
                                 array(
                                     'customer' => $customer,
                                     'branchOccurrence' => $nextBranchOccurrence,
@@ -108,18 +113,14 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
                             'text/html'
                         );
 
-                    $mailNumber += $mailer->send($message);
+                    $mailer->send($message);
 
-                    $output->writeln(sprintf(
-                        '<info>[%.1fMB/%.2fs]</info> %s sales order was open from %s to %s. Mail send to %s',
-                        memory_get_peak_usage(true)/1024/1024,
-                        microtime(true)-$startMicroTime,
-                        $branch->getName(),
-                        $ordersOpeningDateTime->format('Y/m/d'),
-                        $ordersClosingDateTime->format('Y/m/d'),
-                        $customer
-                    ));
+                    ++$mailNumber;
+
+                    $output->writeln(sprintf('<info>- %s</info>', $customer->getEmail()));
                 }
+
+                $output->writeln('');
             }
         }
 
@@ -134,12 +135,10 @@ class BranchOccurrenceOrdersOpenCommand extends ContainerAwareCommand
             }
         }
 
-        $output->writeln(sprintf(
-            '<info>[%.1fMB/%.2fs] End at %s. Email send %s</info>',
-            memory_get_peak_usage(true)/1024/1024,
-            microtime(true)-$startMicroTime,
-            date('Y m d H:i:s'),
-            $mailNumber
-        ));
+        $output->writeln($translator->trans('mail.branch.orders_open.log.task_end', array(
+            '%email_sent%' => $mailNumber,
+            '%time%' => round(microtime(true) - $startMicroTime, 2),
+            '%memory%' => round(memory_get_usage() / 1024 / 1024, 2)
+        )));
     }
 }
