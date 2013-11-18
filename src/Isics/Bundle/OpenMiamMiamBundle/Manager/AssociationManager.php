@@ -58,42 +58,17 @@ class AssociationManager
             ->addGroupBy('bo')
             ->addGroupBy('p');
 
+
+        $producerTransfert = array();
+
+        foreach ($producerForTransfertExportQueryBuilder->getQuery()->getResult() as $producerAndTransfert) {
+            $producerTransfert[] = $producerAndTransfert[0];
+        }
         var_dump(
             array_map(function($o){return$o->getId();}, $branchOccurrences),
             $producerForTransfertExportQueryBuilder->getQuery()->getResult()
         );
         die;
-
-        // ask the service for a Excel5
-        $xls = $this->get('xls.service_xls5');
-        // or $this->get('xls.service_pdf');
-        // or create your own is easy just modify services.yml
-
-        // create the object see http://phpexcel.codeplex.com documentation
-        $xls->excelObj->getProperties()->setCreator("OpenMiamMiam")
-            ->setTitle("Producer transfert for ".$fromDate->format('d M Y'))
-            ->setSubject("Producer transfert for ".$fromDate->format('d M Y'));
-        $xls->excelObj->setActiveSheetIndex(0);
-        for($i=0; $i<count($branchOccurrences);$i++) {
-            $xls->excelObj->setActiveSheetIndex(0)->setCellValue('A'.$i, $branchOccurrences[$i]->getBranch()->getName().$branchOccurrences[$i].getEnd());
-        }
-        $xls->excelObj->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Hello')
-            ->setCellValue('B2', 'world!');
-        $xls->excelObj->getActiveSheet()->setTitle('Simple');
-        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
-        $xls->excelObj->setActiveSheetIndex(0);
-
-        //create the response
-        $response = $xls->getResponse();
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=stdream2.xls');
-
-        // If you are using a https connection, you have to set those two headers and use sendHeaders() for compatibility with IE <9
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-
-        return $response;
 
     }
 } 
