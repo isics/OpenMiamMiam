@@ -104,8 +104,8 @@ class SendMailOrdersOpenCommand extends ContainerAwareCommand
                             $mailer->render(
                                 'IsicsOpenMiamMiamBundle:Mail:ordersOpen.html.twig',
                                 array(
-                                    'customer' => $customer,
-                                    'branchOccurrence' => $nextBranchOccurrence,
+                                    'customer'              => $customer,
+                                    'branchOccurrence'      => $nextBranchOccurrence,
                                     'ordersOpeningDateTime' => $ordersOpeningDateTime,
                                     'ordersClosingDateTime' => $ordersClosingDateTime
                                 )
