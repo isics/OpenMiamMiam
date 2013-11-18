@@ -65,11 +65,11 @@
                                 <td>
                                     {% if producerSalesOrder.salesOrder.user %}
                                         {{ producerSalesOrder.salesOrder.lastname }} {{ producerSalesOrder.salesOrder.firstname|first }}. ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})
-                                        {% producerSalesOrder.salesOrder.user.phone is not null %}
+                                        {% if producerSalesOrder.salesOrder.user.phone is not null %}
                                             <br />
                                             {{ 'admin.producer.sales_orders.list.phone'|trans }}
                                             {{ producerSalesOrder.salesOrder.user.phone }}
-                                        {% endif }
+                                        {% endif %}
                                     {% else %}
                                         {{ 'admin.association.sales_orders.anonymous'|trans }}
                                     {% endif %}
