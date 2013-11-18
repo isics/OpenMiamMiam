@@ -29,6 +29,10 @@ class RegistrationType extends BaseType
                 ->add('address2', 'text', array('required' => false))
                 ->add('zipcode', 'text')
                 ->add('city', 'text')
+                ->add("terms", "checkbox", array(
+                    "mapped" => false,
+                    )
+                )
                 ->remove('username');
     }
 

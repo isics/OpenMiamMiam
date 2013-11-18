@@ -29,3 +29,5 @@ Isics\Bundle\OpenMiamMiamUserBundle\Entity\User:
             - Length:
                 max: 64
                 groups: [Registration, Profile]
+        terms:
+            - NotNull: { groups: [Registration, Profile] }
