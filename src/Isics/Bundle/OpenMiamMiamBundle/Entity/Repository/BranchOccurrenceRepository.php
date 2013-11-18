@@ -56,10 +56,6 @@ class BranchOccurrenceRepository extends EntityRepository
         $date = $branchOccurrence->getBegin();
         $branch = $branchOccurrence->getBranch();
 
-        if (null === $date || null === $branch) {
-            return null;
-        }
-
         return $this->createQueryBuilder('bo')
             ->where('bo.branch = :branch')
             ->andWhere('bo.begin < :date')
