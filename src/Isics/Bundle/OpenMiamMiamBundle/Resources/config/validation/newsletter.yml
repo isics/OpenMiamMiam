@@ -2,9 +2,10 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter:
     constraints:
         - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\Newsletter: ~
     properties:
-        branches:
-            - Count :
-                min: 1
+        withoutBranch:
+            - NotNull: ~
+            - Type:
+                type: bool
         recipientType:
             - NotNull: ~
         subject:
