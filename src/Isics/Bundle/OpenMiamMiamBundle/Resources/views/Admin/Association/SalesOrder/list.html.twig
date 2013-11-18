@@ -38,14 +38,15 @@
                 </button>
             </form>
         </div>
-        <div class="col-md-6 text-right">
-            <a href="{{ path('open_miam_miam.admin.association.sales_order.create', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-primary btn-md">
-                <span class="glyphicon glyphicon-plus-sign"></span>
-                {{ 'admin.association.sales_orders.new'|trans }}
-            </a>
+        <div class="col-md-6">
+            <p class="text-right">
+                <a href="{{ path('open_miam_miam.admin.association.sales_order.create', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-primary btn-md">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    {{ 'admin.association.sales_orders.new'|trans }}
+                </a>
+            </p>
         </div>
     </div>
-
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
