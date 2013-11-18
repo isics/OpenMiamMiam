@@ -34,5 +34,10 @@ class NewsletterValidator extends ConstraintValidator
                 }
             }
         }
+
+        // Branches (included without_branch) not empty
+        if (0 === count($newsletter->getBranches()) + ($newsletter->isWithoutBranch() ? 1 : 0)) {
+            $this->context->addViolationAt('branches', 'error.invalid');
+        }
     }
 }

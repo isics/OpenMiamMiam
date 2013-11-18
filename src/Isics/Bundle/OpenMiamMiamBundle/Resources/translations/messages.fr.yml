@@ -209,6 +209,7 @@ admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de voul
 admin.super.newsletter.form.new_title:       "Envoyer une lettre d'information"
 admin.super.newsletter.form.edit_title:      "Envoyer une lettre d'information (correction)"
 admin.super.newsletter.form.recipients:      "Destinataires"
+admin.super.newsletter.form.without_branch:  "Sans comptoir"
 admin.super.newsletter.form.subject:         "Objet"
 admin.super.newsletter.form.body:            "Message"
 admin.super.newsletter.form.send_test:       "Envoyer une lettre test"

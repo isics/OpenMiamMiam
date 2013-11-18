@@ -51,21 +51,22 @@ class SuperNewsletterType extends AbstractType
                         ->addOrderBy('b.name');
                 },
             ))
+            ->add('withoutBranch', 'checkbox', array('required' => false))
             ->add('subject', 'text')
             ->add('body', 'textarea')
             ->add('send', 'submit');
     }
-    
+
     /**
      * @see AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter',
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter',
         ));
     }
-    
+
     /**
      * @see AbstractType
      */
