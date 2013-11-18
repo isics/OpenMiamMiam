@@ -13,16 +13,20 @@
             </div>
             <div class="panel-body">
                 <p>
-                    <strong>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</strong><br />
-                    {{ order.address1 }}<br />
-                    {% if order.address2 != null %}
-                        {{ order.address2 }}<br />
-                    {% endif %}
-                    {{ order.zipcode }} {{ order.city }}
-                    {% if order.user is not null and order.user.phoneNumber is not null %}
-                        <br />
-                        {{ 'admin.association.sales_orders.list.phone_number'|trans }}
-                        {{ order.user.phoneNumber }}
+                    {% if order.user %}
+                        <strong>{{ order.firstname }} {{ order.lastname }} ({{ order.user|format_consumer_ref }})</strong><br />
+                        {{ order.address1 }}<br />
+                        {% if order.address2 != null %}
+                            {{ order.address2 }}<br />
+                        {% endif %}
+                        {{ order.zipcode }} {{ order.city }}
+                        {% if order.user.phone is not null %}
+                            <br />
+                            {{ 'admin.association.sales_orders.list.phone'|trans }}
+                            {{ order.user.phone }}
+                        {% endif %}
+                    {% else %}
+                        {{ 'admin.association.sales_orders.anonymous'|trans }}
                     {% endif %}
                 </p>
             </div>

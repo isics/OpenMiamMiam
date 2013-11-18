@@ -53,6 +53,13 @@ class Newsletter
     private $recipientType;
 
     /**
+     * @var boolean $withoutBranch
+     *
+     * @ORM\Column(name="without_branch", type="boolean", nullable=false)
+     */
+    private $withoutBranch;
+
+    /**
      * @var string $subject
      *
      * @ORM\Column(name="subject", type="string", length=128, nullable=false)
@@ -100,6 +107,7 @@ class Newsletter
      */
     public function __construct()
     {
+        $this->withoutBranch = true;
         $this->branches = new ArrayCollection();
     }
 
@@ -171,6 +179,29 @@ class Newsletter
         return $this->recipientType;
     }
 
+    /**
+     * Set withoutBranch
+     *
+     * @param boolean $withoutBranch
+     *
+     * @return Newsletter
+     */
+    public function setWithoutBranch($withoutBranch)
+    {
+        $this->withoutBranch = $withoutBranch;
+
+        return $this;
+    }
+
+    /**
+     * Get withoutBranch
+     *
+     * @return boolean
+     */
+    public function isWithoutBranch()
+    {
+        return $this->withoutBranch;
+    }
     /**
      * Set subject
      *
@@ -308,6 +339,16 @@ class Newsletter
         foreach ($branches as $branch) {
             $this->addBranch($branch);
         }
+    }
+
+    /**
+     * Returns true if newsletter has at least 1 branch
+     *
+     * @return boolean
+     */
+    public function hasBranches()
+    {
+        return 0 < count($this->branches);
     }
 
     /**

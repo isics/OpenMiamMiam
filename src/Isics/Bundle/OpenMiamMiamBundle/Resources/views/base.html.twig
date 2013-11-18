@@ -27,7 +27,7 @@
         <![endif]-->
         <link rel="icon" type="image/png" href="/favicon.png" />
     </head>
-    <body>
+    <body{% block body_attributes %}{% endblock %}>
         <div class="container">
             {% block header_nav %}
                 <ul id="header-nav" class="nav nav-pills pull-right">

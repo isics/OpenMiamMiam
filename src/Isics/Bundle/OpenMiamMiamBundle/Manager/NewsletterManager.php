@@ -178,24 +178,46 @@ class NewsletterManager
         $recipients    = array();
         $recipientType = $newsletter->getRecipientType();
 
-        if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
-            $consumers = $this->entityManager
-                ->getRepository('IsicsOpenMiamMiamUserBundle:User')
-                ->findConsumersForBranches($newsletter->getBranches());
+        $userRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User');
 
-            $recipients = array_merge($recipients, $consumers);
+        if ($recipientType === Newsletter::RECIPIENT_TYPE_CONSUMER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
+            if ($newsletter->hasBranches()) {
+                $recipients = array_merge(
+                    $recipients,
+                    $userRepository->findConsumersForBranches($newsletter->getBranches())
+                );
+            }
+
+            if ($newsletter->isWithoutBranch()) {
+                $recipients = array_merge(
+                    $recipients,
+                    $userRepository->findConsumersWithoutBranch()
+                );
+            }
         }
 
         if ($recipientType === Newsletter::RECIPIENT_TYPE_PRODUCER || $recipientType === Newsletter::RECIPIENT_TYPE_ALL) {
-            $producers = $this->entityManager
-                ->getRepository('IsicsOpenMiamMiamUserBundle:User')
-                ->findManagingProducer(
-                    $this->entityManager
-                        ->getRepository('IsicsOpenMiamMiamBundle:Producer')
-                        ->findIdsForBranch($newsletter->getBranches())
+            if ($newsletter->hasBranches()) {
+                $recipients = array_merge(
+                    $recipients,
+                    $userRepository->findManagingProducer(
+                        $this->entityManager
+                            ->getRepository('IsicsOpenMiamMiamBundle:Producer')
+                            ->findIdsForBranch($newsletter->getBranches())
+                    )
                 );
+            }
 
-            $recipients = array_merge($recipients, $producers);
+            if ($newsletter->isWithoutBranch()) {
+                $recipients = array_merge(
+                    $recipients,
+                    $userRepository->findManagingProducer(
+                        $this->entityManager
+                            ->getRepository('IsicsOpenMiamMiamBundle:Producer')
+                            ->findIdsWithoutBranch()
+                    )
+                );
+            }
         }
 
         $recipients = array_unique($recipients);
