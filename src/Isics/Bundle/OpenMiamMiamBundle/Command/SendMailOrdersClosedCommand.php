@@ -115,6 +115,8 @@ class SendMailOrdersClosedCommand extends ContainerAwareCommand
 
                     $output->writeln(sprintf('<info>- %s</info>', $salesOrder->getUser()->getEmail()));
                 }
+
+                $output->writeln('');
             }
         }
 

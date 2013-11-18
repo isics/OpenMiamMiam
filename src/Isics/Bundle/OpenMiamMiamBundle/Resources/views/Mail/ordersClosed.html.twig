@@ -17,4 +17,6 @@
         '%branch_occurrence_closed_date%': branchOccurrence.end|format_datetime(null, null, null, constant('IntlDateFormatter::LONG'))
     })|raw }}
 
+    {% include 'IsicsOpenMiamMiamBundle:Mail:customerSalesOrder.html.twig' with {'order': salesOrder} %}
+
 {% endblock %}

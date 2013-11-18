@@ -691,4 +691,4 @@ mail.branch.orders_closed.log.task_end:    "<info>%email_sent%</info> email(s) e
 mail.branch.orders_closed.subject:       "Rappel de votre commande %ref% pour le comptoir %branch_name%"
 mail.branch.orders_closed.message_html:  |
     <p>Bonjour %firstname%,</p>
-    <p>Pensez à venir récuperer votre commande %ref% au comptoir %branch_name%, ouvert du %branch_occurrence_open_date% au %branch_occurrence_closed_date%.</p>
+    <p><strong>N'oubliez pas votre commande %ref%.</strong></p>
