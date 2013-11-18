@@ -11,17 +11,12 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
-use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\NotValidCurrentPageException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 class ProducerController extends BaseController
 {
@@ -37,9 +32,51 @@ class ProducerController extends BaseController
      */
     public function listAction(Request $request, Association $association)
     {
+        $this->secure($association);
+
+        $associationHasProducers = $this->get('open_miam_miam.association_has_producer_manager')->findForAssociation($association);
+
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Producer:list.html.twig', array(
-            'branches' => $association->getBranches(),
-            'producers' => $association->getProducers()
+            'branches' =>  $association->getBranches(),
+            'associationHasProducers' => $associationHasProducers
+        ));
+    }
+
+    /**
+     * Edit producers branch
+     *
+     * @ParamConverter("producer", class="IsicsOpenMiamMiamBundle:Producer", options={"mapping": {"producerId": "id"}})
+     *
+     * @param Request $request
+     * @param Association $association
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, AssociationHasProducer $associationHasProducer)
+    {
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.association_has_producer'),
+            $associationHasProducer
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.producer.list',
+                    array('id' => $associationHasProducer->getAssociation()->getId())
+                ));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Producer:edit.html.twig', array(
+            'associationHasProducer' => $associationHasProducer,
+            'form' => $form->createView(),
         ));
     }
 }

@@ -158,6 +158,10 @@ open_miam_miam.admin.association.producer.list:
     pattern:  /associations/{id}/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:list }
 
+open_miam_miam.admin.association.producer.edit:
+    pattern:  /associations/{associationId}/producers/{producerId}/edit
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:edit }
+
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }

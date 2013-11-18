@@ -28,7 +28,7 @@ class Association
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -146,21 +146,11 @@ class Association
     private $branches;
 
     /**
-     * @var Doctrine\Common\Collections\Collection $producers
+     * @var Doctrine\Common\Collections\Collection $associationHasProducer
      *
-     * @ORM\ManyToMany(targetEntity="Producer", inversedBy="associations")
-     * @ORM\JoinTable(name="association_has_producer",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="association_id", referencedColumnName="id", onDelete="CASCADE")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="producer_id", referencedColumnName="id", onDelete="CASCADE")
-     *   }
-     * )
+     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="association")
      */
-    private $producers;
-
-
+    private $associationHasProducer;
 
     /**
      * Constructor
@@ -169,6 +159,7 @@ class Association
     {
         $this->orderRefCounter = 0;
 
+        $this->associationHasProducer = new ArrayCollection();
         $this->producers = new ArrayCollection();
         $this->branches = new ArrayCollection();
     }
@@ -558,7 +549,29 @@ class Association
      */
     public function getProducers()
     {
-        return $this->producers;
+        $producers = new ArrayCollection();
+        foreach($this->getAssociationHasProducer() as $associationHasProducer) {
+            $producers->add($associationHasProducer->getProducer());
+        }
+        return $producers;
+    }
+
+    /**
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection $associationHasProducer
+     */
+    public function setAssociationHasProducer($associationHasProducer)
+    {
+        $this->associationHasProducer = $associationHasProducer;
+
+        return $this;
+    }
+
+    /**
+     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection
+     */
+    public function getAssociationHasProducer()
+    {
+        return $this->associationHasProducer;
     }
 
     /**

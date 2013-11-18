@@ -9,21 +9,28 @@
 
 {% block content %}
     <h1>{{ 'admin.association.producers.list.title'|trans }}</h1>
-
-    {% if producers|length > 0 %}
+    {% if associationHasProducers|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sales-orders">
+            <table class="table table-bordered table-striped table-association-producers">
                 <thead>
-                <tr>
-                    <th>{{ 'admin.association.producers.list.name'|trans }}</th>
-                    <th>{{ 'admin.association.producers.list.commission'|trans }}</th>
-                </tr>
+                    <tr>
+                        <th>{{ 'admin.association.producers.list.name'|trans }}</th>
+                        <th>{{ 'admin.association.producers.list.commission'|trans }}</th>
+                        {% for branch in branches %}
+                            <th>{{ branch.name }}</th>
+                        {% endfor %}
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
-                {% for producer in producers %}
+                {% for associationHasProducer in associationHasProducers %}
                     <tr>
-                        <td>{{ producer.name }}</td>
-                        <td></td>
+                        <td>{{ associationHasProducer.producer.name }}</td>
+                        <td>{% if associationHasProducer.commission %}{{ associationHasProducer.commission }}{% else %}{{ 'admin.association.producers.list.commission.empty'|trans }}{% endif %}</td>
+                        {% for branch in branches %}
+                            <td>{% if branch in associationHasProducer.producer.branches %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</td>
+                        {% endfor %}
+                        <td><a href="{{ path('open_miam_miam.admin.association.producer.edit', {'associationId': associationHasProducer.association.id, 'producerId': associationHasProducer.producer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.producer.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

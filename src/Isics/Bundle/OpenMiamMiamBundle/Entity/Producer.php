@@ -119,11 +119,11 @@ class Producer
     private $productRefCounter;
 
     /**
-     * @var Doctrine\Common\Collections\Collection $associations
+     * @var Doctrine\Common\Collections\Collection $associationHasProducer
      *
-     * @ORM\ManyToMany(targetEntity="Association", mappedBy="producers")
+     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="producer")
      */
-    private $associations;
+    private $associationHasProducer;
 
     /**
      * @var Doctrine\Common\Collections\Collection $branches
@@ -751,5 +751,23 @@ class Producer
     public function getProducerAttendances()
     {
         return $this->producerAttendances;
+    }
+
+    /**
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection $associationHasProducer
+     */
+    public function setAssociationHasProducer($associationHasProducer)
+    {
+        $this->associationHasProducer = $associationHasProducer;
+
+        return $this;
+    }
+
+    /**
+     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection
+     */
+    public function getAssociationHasProducer()
+    {
+        return $this->associationHasProducer;
     }
 }
