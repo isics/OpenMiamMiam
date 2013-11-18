@@ -8,33 +8,32 @@
 {% extends app.request.xmlHttpRequest ? 'IsicsOpenMiamMiamBundle:Admin:addProductsDialog.html.twig' : 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
+    {% form_theme filterForm _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
     {% if not app.request.xmlHttpRequest %}
         <h1>{{ 'admin.producer.sales_orders.add_products.title'|trans }}</h1>
     {% endif %}
 
+    <h2>{{ 'artificial_product'|trans }}</h2>
     {{ form_start(artificialProductForm, {'attr': {'novalidate': '', 'id': 'add-artificial-product-form', 'class': 'form form-inline'}}) }}
         {% include 'IsicsOpenMiamMiamBundle:Admin\\Producer\\SalesOrder:artificialProductFormFields.html.twig' %}
     {{ form_end(artificialProductForm) }}
 
+    <h2>{{ 'catalog'|trans }}</h2>
     {{ form_start(filterForm, {'attr': {'novalidate': '', 'id': 'filter-products-form', 'class': 'form form-inline'}}) }}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-calendar">
                 <thead>
-                <tr>
-                    <th>{{ 'admin.producer.sales_orders.add_products.name'|trans }}</th>
-                    <th>{{ 'admin.producer.sales_orders.add_products.price'|trans }}</th>
-                    <th>{{ 'admin.producer.sales_orders.add_products.availability'|trans }}</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form_errors(filterForm.name) }}
-                        {{ form_widget(filterForm.name) }}
-                    </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>{{ form_widget(filterForm.filter) }}</td>
-                </tr>
+                    <tr>
+                        <th>
+                            {{ 'admin.producer.sales_orders.add_products.name'|trans }}
+                            {{ form_errors(filterForm.name) }}
+                            {{ form_widget(filterForm.name) }}
+                        </th>
+                        <th>{{ 'admin.producer.sales_orders.add_products.price'|trans }}</th>
+                        <th>{{ 'admin.producer.sales_orders.add_products.availability'|trans }}</th>
+                        <th>&nbsp;{% do filterForm.filter.setRendered %}</th>
+                    </tr>
                 </thead>
                 <tbody>
                    {% include 'IsicsOpenMiamMiamBundle:Admin\\Producer\\SalesOrder:productsToAdd.html.twig' %}

@@ -17,8 +17,8 @@
                         <th>{{ 'branch.producers.name'|trans }}</th>
                         <th>{{ 'branch.producers.zipcode'|trans }}</th>
                         <th>{{ 'branch.producers.city'|trans }}</th>
-                        <th>{{ 'branch.producers.phone1'|trans }}</th>
-                        <th>{{ 'branch.producers.phone2'|trans }}</th>
+                        <th>{{ 'branch.producers.phoneNumber1'|trans }}</th>
+                        <th>{{ 'branch.producers.phoneNumber2'|trans }}</th>
                         <td>&nbsp;</td>
                     </tr>
                 </thead>
@@ -40,10 +40,10 @@
                                 {{ producer.city }}
                             </td>
                             <td>
-                                {{ producer.phone1 }}
+                                {{ producer.phoneNumber1 }}
                             </td>
                             <td>
-                                {{ producer.phone2 }}
+                                {{ producer.phoneNumber2 }}
                             </td>
                             <td>
                                 <a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">

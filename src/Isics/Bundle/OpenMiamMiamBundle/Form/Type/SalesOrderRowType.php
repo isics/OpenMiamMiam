@@ -44,7 +44,7 @@ class SalesOrderRowType extends AbstractType implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (null !== $data && null === $data->getUnitPrice()) {
+        if (null !== $data && (null === $data->getUnitPrice() || .0 === (float)$data->getUnitPrice())) {
             $form->add('total', 'text');
         }
     }

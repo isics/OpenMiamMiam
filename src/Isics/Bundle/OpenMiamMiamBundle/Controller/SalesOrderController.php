@@ -70,8 +70,8 @@ class SalesOrderController extends Controller
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
-                    $order->getUser(),
-                    $order->getBranchOccurrence()->getBranch()->getAssociation()
+                    $order->getBranchOccurrence()->getBranch()->getAssociation(),
+                    $order->getUser()
                 );
 
                 return $this->redirect($this->generateUrl(

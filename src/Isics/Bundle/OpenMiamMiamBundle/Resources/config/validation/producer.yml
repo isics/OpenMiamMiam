@@ -16,10 +16,10 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:
         city:
             - Length:
                 max:  64
-        phone1:
+        phoneNumber1:
             - Length:
                 max: 16
-        phone2:
+        phoneNumber2:
             - Length:
                 max: 16
         website:

@@ -124,6 +124,23 @@ class SalesOrderManager
     }
 
     /**
+     * Creates sales order for branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return SalesOrder
+     */
+    public function createForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        $order = new SalesOrder();
+
+        $order->setDate(new \DateTime());
+        $order->setBranchOccurrence($branchOccurrence);
+
+        return $order;
+    }
+
+    /**
      * Creates sales order from a cart
      *
      * @param Cart $cart
@@ -179,7 +196,7 @@ class SalesOrderManager
         $activitiesStack = array();
         if (null === $order->getId()) {
             $activitiesStack[] = array(
-                'transKey' => 'activity_stream.sales_order.created',
+                'transKey' => $order->getUser() === null ? 'activity_stream.sales_order.anonymous.created' : 'activity_stream.sales_order.created',
                 'transParams' => array('%ref%' => $order->getRef()),
                 'context' => $context
             );
@@ -291,14 +308,14 @@ class SalesOrderManager
             }
         }
 
-        // Save
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-
         // Send mail to consumer
         if (null === $order->getId()) {
             $this->sendMailToConsumer($order);
         }
+
+        // Save
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
 
         // Activity
         foreach ($activitiesStack as $activityParams) {

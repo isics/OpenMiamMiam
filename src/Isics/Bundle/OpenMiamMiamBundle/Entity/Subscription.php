@@ -19,7 +19,7 @@ use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
  * Isics\OpenMiamMiamBundle\Entity\Subscription
  *
  * @ORM\Table(name="subscription")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository")
  */
 class Subscription
 {
@@ -67,6 +67,14 @@ class Subscription
     public function __construct()
     {
         $this->credit = 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

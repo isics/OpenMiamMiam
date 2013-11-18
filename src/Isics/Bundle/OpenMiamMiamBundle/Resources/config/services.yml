@@ -354,7 +354,7 @@ services:
 
     open_miam_miam.newsletter_manager:
         class: %open_miam_miam.newsletter_manager.class%
-        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating, @open_miam_miam_user.manager.user]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating]
 
 
 

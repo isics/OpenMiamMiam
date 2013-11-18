@@ -103,6 +103,10 @@ QUERY;
             $producersIds[] = $producer->getId();
         }
 
+        if (empty($producersIds)) {
+            return array();
+        }
+
         $query = <<<QUERY
             SELECT DISTINCT u.*
             FROM %s u
@@ -146,6 +150,16 @@ QUERY;
     }
 
     /**
+     * Returns query builder to find consumers without branch
+     *
+     * @return QueryBuilder
+     */
+    public function getConsumersWithoutBranchQueryBuilder()
+    {
+        return $this->filterConsumersWithoutOrder();
+    }
+
+    /**
      * Returns consumers of branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
@@ -171,6 +185,20 @@ QUERY;
     }
 
     /**
+     * Returns consumers without branch
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return array Consumers
+     */
+    public function findConsumersWithoutBranch()
+    {
+        return $this->getConsumersWithoutBranchQueryBuilder()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Filters consumers of branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
@@ -190,5 +218,20 @@ QUERY;
         return $qb->join('u.salesOrders', 's')
             ->join('s.branchOccurrence', 'bo')
             ->join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->in('b.id', $branchesIds));
+    }
+
+    /**
+     * Filters consumers without order/branch
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterConsumersWithoutOrder(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        return $qb->leftJoin('u.salesOrders', 's')
+            ->andWhere('s.id IS NULL');
     }
 }

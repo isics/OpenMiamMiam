@@ -69,7 +69,7 @@ class ConsumerController extends BaseController
         $this->secure($association);
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
-            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User')
+            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
                     ->getForAssociationQueryBuilder($association)
                     ->getQuery()
         ));
@@ -83,7 +83,39 @@ class ConsumerController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list.html.twig', array(
             'association'=> $association,
-            'consumers' => $pagerfanta
+            'subscriptions' => $pagerfanta
+        ));
+    }
+
+    /**
+     * List anonymous payments
+     *
+     * @param Request $request
+     * @param Association $association
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return Response
+     */
+    public function listAnonymousPaymentsAction(Request $request, Association $association)
+    {
+        $this->secure($association);
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
+            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
+                    ->getForConsumerAndAssociationQueryBuilder($association)
+                    ->getQuery()
+        ));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch(NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments.html.twig', array(
+            'association'=> $association,
+            'payments' => $pagerfanta
         ));
     }
 
@@ -106,7 +138,7 @@ class ConsumerController extends BaseController
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
-                    ->getForConsumerAndAssociationQueryBuilder($consumer, $association)
+                    ->getForConsumerAndAssociationQueryBuilder($association, $consumer)
                     ->getQuery()
         ));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));

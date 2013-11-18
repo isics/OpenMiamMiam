@@ -46,6 +46,10 @@
                         <td><strong>{{ order.firstname }} {{ order.lastname }} {% if order.user is defined %}({{ order.user|format_consumer_ref }}){% endif %}</strong>
                             {% if order.user is defined %}
                                 <br />{{ order.user.zipcode }} {{ order.user.city }}
+                                {% if order.user.phoneNumber is not null %}
+                                    <br />
+                                    {{ 'pdf.sales_order.consumer.phone_number'|trans }} {{ order.user.phoneNumber }}
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td align="right">

@@ -26,18 +26,18 @@ class UserManager
     /**
      * Entity manager
      *
-     * @var EntityManager $em
+     * @var EntityManager $entityManager
      */
-    private $em;
+    private $entityManager;
 
     /**
      * Constructor
      *
      * @param int $last_order_nb_days_considering_customer
      */
-    public function __construct(EntityManager $em, $lastOrderNbDaysConsideringCustomer)
+    public function __construct(EntityManager $entityManager, $lastOrderNbDaysConsideringCustomer)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
         $this->lastOrderNbDaysConsideringCustomer = $lastOrderNbDaysConsideringCustomer;
     }
 
@@ -50,6 +50,7 @@ class UserManager
      */
     public function findConsumersForBranches($branches)
     {
-        return $this->em->getRepository('IsicsOpenMiamMiamUserBundle:User')->findConsumersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')
+            ->findConsumersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
     }
 }

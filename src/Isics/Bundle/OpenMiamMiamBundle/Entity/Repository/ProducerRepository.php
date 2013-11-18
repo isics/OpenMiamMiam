@@ -127,6 +127,21 @@ class ProducerRepository extends EntityRepository
     }
 
     /**
+     * Finds ids of producers without branch
+     *
+     * @return array
+     */
+    public function findIdsWithoutBranch()
+    {
+        $flattenIds = array();
+        foreach ($this->getIdsWithoutBranchQueryBuilder()->getQuery()->getResult() as $id) {
+            $flattenIds[] = $id['id'];
+        }
+
+        return $flattenIds;
+    }
+
+    /**
      * Filter for branch
      *
      * @param mixed        $branch Branch or array of branches
@@ -149,10 +164,26 @@ class ProducerRepository extends EntityRepository
                 ->setParameter('branchesIds', $branchesIds);
 
         } else {
-            die('teest');
             $qb->innerJoin('p.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
                 ->setParameter('branch', $branch);
         }
+
+        return $qb;
+    }
+
+    /**
+     * Filter without branch
+     *
+     * @param QueryBuilder $qb Query builder
+     *
+     * @return QueryBuilder
+     */
+    public function filterWithoutBranch(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
+
+        $qb->leftJoin('p.branches', 'b')
+            ->andWhere('b.id IS NULL');
 
         return $qb;
     }
@@ -168,6 +199,17 @@ class ProducerRepository extends EntityRepository
     {
         return $this->filterBranch($branch)
             ->select('DISTINCT p.id');
+    }
+
+    /**
+     * Returns query builder to find all producers without branch
+     *
+     * @return QueryBuilder
+     */
+    public function getIdsWithoutBranchQueryBuilder()
+    {
+        return $this->filterWithoutBranch()
+            ->select('p.id');
     }
 
     /**

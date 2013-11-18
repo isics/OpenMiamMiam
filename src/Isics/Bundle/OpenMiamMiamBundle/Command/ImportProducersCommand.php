@@ -57,8 +57,8 @@ class ImportProducersCommand extends ContainerAwareCommand
                             $address2,
                             $zipcode,
                             $city,
-                            $phone1,
-                            $phone2,
+                            $phoneNumber1,
+                            $phoneNumber2,
                             $website,
                             $facebook,
                             $users
@@ -90,12 +90,12 @@ class ImportProducersCommand extends ContainerAwareCommand
                                 $producer->setCity($city);
                             }
 
-                            if ('' !== $phone1) {
-                                $producer->setPhone1($phone1);
+                            if ('' !== $phoneNumber1) {
+                                $producer->setPhoneNumber1($phoneNumber1);
                             }
 
-                            if ('' !== $phone2) {
-                                $producer->setPhone2($phone2);
+                            if ('' !== $phoneNumber2) {
+                                $producer->setPhoneNumber2($phoneNumber2);
                             }
 
                             if ('' !== $website) {
@@ -147,7 +147,7 @@ class ImportProducersCommand extends ContainerAwareCommand
                         return 1;
                     }
                 } else {
-                    $output->writeln(sprintf('<error>The producer CSV file must contains 10 columns: name|address1|address2|zipcode|city|phone1|phone2|website|facebook|producers|users</error>', $file));
+                    $output->writeln(sprintf('<error>The producer CSV file must contains 10 columns: name|address1|address2|zipcode|city|phoneNumber1|phoneNumber2|website|facebook|producers|users</error>', $file));
 
                     return 1;
                 }

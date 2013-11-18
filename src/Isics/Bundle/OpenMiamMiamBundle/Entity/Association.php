@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -83,18 +84,18 @@ class Association
     private $city;
 
     /**
-     * @var string $phone1
+     * @var string $phoneNumber1
      *
-     * @ORM\Column(name="phone1", type="string", length=16, nullable=true)
+     * @ORM\Column(name="phone_number1", type="string", length=16, nullable=true)
      */
-    private $phone1;
+    private $phoneNumber1;
 
     /**
-     * @var string $phone2
+     * @var string $phoneNumber2
      *
-     * @ORM\Column(name="phone2", type="string", length=16, nullable=true)
+     * @ORM\Column(name="phone_number2", type="string", length=16, nullable=true)
      */
-    private $phone2;
+    private $phoneNumber2;
 
     /**
      * @var string $website
@@ -131,7 +132,7 @@ class Association
      */
     private $openingDelay;
 
-   /**
+    /**
      * @var decimal $defaultCommission
      *
      * @ORM\Column(name="default_commission", type="decimal", precision=5, scale=2, nullable=true)
@@ -143,7 +144,7 @@ class Association
      *
      * @ORM\OneToMany(targetEntity="Branch", mappedBy="association")
      */
-    private $branches;
+     private $branches;
 
     /**
      * @var Doctrine\Common\Collections\Collection $producers
@@ -159,6 +160,13 @@ class Association
      * )
      */
     private $producers;
+
+    /**
+     * @var Doctrine\Common\Collections\Collection $subscriptions
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription", mappedBy="association")
+     */
+    private $subscriptions;
 
 
 
@@ -345,49 +353,49 @@ class Association
     }
 
     /**
-     * Set phone1
+     * Set phoneNumber1
      *
-     * @param string $phone1
+     * @param string $phoneNumber1
      * @return Association
      */
-    public function setPhone1($phone1)
+    public function setPhoneNumber1($phoneNumber1)
     {
-        $this->phone1 = $phone1;
+        $this->phoneNumber1 = $phoneNumber1;
 
         return $this;
     }
 
     /**
-     * Get phone1
+     * Get phoneNumber1
      *
      * @return string
      */
-    public function getPhone1()
+    public function getPhoneNumber1()
     {
-        return $this->phone1;
+        return $this->phoneNumber1;
     }
 
     /**
-     * Set phone2
+     * Set phoneNumber2
      *
-     * @param string $phone2
+     * @param string $phoneNumber2
      * @return Association
      */
-    public function setPhone2($phone2)
+    public function setPhoneNumber2($phoneNumber2)
     {
-        $this->phone2 = $phone2;
+        $this->phoneNumber2 = $phoneNumber2;
 
         return $this;
     }
 
     /**
-     * Get phone2
+     * Get phoneNumber2
      *
      * @return string
      */
-    public function getPhone2()
+    public function getPhoneNumber2()
     {
-        return $this->phone2;
+        return $this->phoneNumber2;
     }
 
     /**
@@ -610,5 +618,32 @@ class Association
         }
 
         return $this;
+    }
+
+    /**
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * Return subscription for association
+     *
+     * @param User $user
+     *
+     * @return Subscription
+     */
+    public function getSubscriptionForUser(User $user = null)
+    {
+        foreach ($this->subscriptions as $subcription) {
+            if ((null === $user && null === $subcription->getUser())
+                || (null !== $user && null !== $subcription->getUser() && $subcription->getUser()->getId() == $user->getId())) {
+                return $subcription;
+            }
+        }
+
+        return null;
     }
 }

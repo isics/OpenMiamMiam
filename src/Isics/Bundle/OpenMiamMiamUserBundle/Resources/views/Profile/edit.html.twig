@@ -22,23 +22,23 @@
             {{ form_start(form) }}
                 <div class="row">
                     <div class="col-md-6">
-                        {{ form_row(form.firstname, {'label': 'user.edit.firstname'|trans, 'attr': {'class': 'input-lg'}}) }}
+                        {{ form_row(form.firstname, {'label': 'user.edit.firstname', 'attr': {'class': 'input-lg'}}) }}
                     </div>
                     <div class="col-md-6">
-                        {{ form_row(form.lastname, {'label': 'user.edit.lastname'|trans, 'attr': {'class': 'input-lg'}}) }}
+                        {{ form_row(form.lastname, {'label': 'user.edit.lastname', 'attr': {'class': 'input-lg'}}) }}
                     </div>
                 </div>
-                {{ form_row(form.address1, {'label': 'user.edit.address1'|trans}) }}
-                {{ form_row(form.address2, {'label': 'user.edit.address2'|trans}) }}
+                {{ form_row(form.address1, {'label': 'user.edit.address1'}) }}
+                {{ form_row(form.address2, {'label': 'user.edit.address2'}) }}
                 <div class="row">
                     <div class="col-md-4">
-                        {{ form_row(form.zipcode, {'label': 'user.edit.zipcode'|trans}) }}
+                        {{ form_row(form.zipcode, {'label': 'user.edit.zipcode'}) }}
                     </div>
                     <div class="col-md-8">
-                        {{ form_row(form.city, {'label': 'user.edit.city'|trans}) }}
+                        {{ form_row(form.city, {'label': 'user.edit.city'}) }}
                     </div>
                 </div>
-
+                {{ form_row(form.phoneNumber, {'label': 'user.edit.phone_number'}) }}
                 <div class="well">
                     <button type="submit" class="btn btn-primary btn-lg">
                         <span class="glyphicon glyphicon-floppy-disk"></span>
