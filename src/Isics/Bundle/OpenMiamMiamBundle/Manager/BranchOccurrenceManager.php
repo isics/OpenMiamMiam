@@ -232,8 +232,8 @@ class BranchOccurrenceManager
         return null !== $this->getInProgress($branch);
     }
 
-    /*
-     * Returns Branch occurrence opening date orders
+    /**
+     * Returns Branch occurrence orders opening date
      *
      * @param BranchOccurrence $branchOccurrence
      *
@@ -263,8 +263,8 @@ class BranchOccurrenceManager
         return $openingDate->add($openingDelay);
     }
 
-    /*
-     * Returns Branch occurrence closing date orders
+    /**
+     * Returns Branch occurrence orders closing date
      *
      * @param BranchOccurrence $branchOccurrence
      *
@@ -286,7 +286,7 @@ class BranchOccurrenceManager
         return $closingDate->sub($closingDelay);
     }
 
-    /*
+    /**
      * Returns closing date
      *
      * @param Branch $branch
