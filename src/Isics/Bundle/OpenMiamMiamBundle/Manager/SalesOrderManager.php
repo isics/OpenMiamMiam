@@ -308,14 +308,14 @@ class SalesOrderManager
             }
         }
 
-        // Save
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-
         // Send mail to consumer
         if (null === $order->getId()) {
             $this->sendMailToConsumer($order);
         }
+
+        // Save
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
 
         // Activity
         foreach ($activitiesStack as $activityParams) {
