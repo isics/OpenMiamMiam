@@ -9,6 +9,7 @@
 
 {% block content %}
     <h1>{{ 'admin.association.producers.list.title'|trans }}</h1>
+    {{ form(form) }}
     {% if associationHasProducers|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-association-producers">

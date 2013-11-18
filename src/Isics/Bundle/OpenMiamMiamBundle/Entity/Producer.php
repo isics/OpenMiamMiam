@@ -173,6 +173,13 @@ class Producer
      */
     private $deletePresentationImage;
 
+    /**
+     * @var Doctrine\Common\Collections\Collection $salesOrderRows
+     *
+     * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="producer")
+     */
+    private $salesOrderRows;
+
 
     /**
      * Constructor
@@ -181,6 +188,7 @@ class Producer
     {
         $this->productRefCounter = 0;
 
+        $this->salesOrderRows = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->branches = new ArrayCollection();
         $this->deleteProfileImage = false;
@@ -770,4 +778,21 @@ class Producer
     {
         return $this->associationHasProducer;
     }
+
+    /**
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection $salesOrderRows
+     */
+    public function setSalesOrderRows($salesOrderRows)
+    {
+        $this->salesOrderRows = $salesOrderRows;
+    }
+
+    /**
+     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection
+     */
+    public function getSalesOrderRows()
+    {
+        return $this->salesOrderRows;
+    }
+
 }

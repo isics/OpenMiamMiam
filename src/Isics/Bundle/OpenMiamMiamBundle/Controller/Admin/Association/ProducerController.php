@@ -36,8 +36,17 @@ class ProducerController extends BaseController
 
         $associationHasProducers = $this->get('open_miam_miam.association_has_producer_manager')->findForAssociation($association);
 
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.association_producer_export_transfer'),
+            null,
+            array(
+                'action' => $this->generateUrl('open_miam_miam.admin.association.producer.export', array('id' => $association->getId())),
+                'method' => 'POST'
+            )
+        );
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Producer:list.html.twig', array(
+            'form' => $form->createView(),
             'branches' =>  $association->getBranches(),
             'associationHasProducers' => $associationHasProducers
         ));
@@ -78,5 +87,20 @@ class ProducerController extends BaseController
             'associationHasProducer' => $associationHasProducer,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Export association transfert for producer
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function exportAction(Request $request, Association $association)
+    {
+        $date = $request->get('open_miam_miam_association_producer_export_transfert');
+        $monthDate = new \DateTime($date['month']);
+
+        $associationManager = $this->get('open_miam_miam.association_manager');
+        $associationManager->exportProducerTransferForMonth($association, $monthDate);
     }
 }
