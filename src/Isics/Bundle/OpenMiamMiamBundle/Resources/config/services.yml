@@ -436,6 +436,7 @@ services:
         arguments:
             - @open_miam_miam.phpexcel
             - @translator
+            - %open_miam_miam.currency%
         scope: prototype
 
     # Workflows

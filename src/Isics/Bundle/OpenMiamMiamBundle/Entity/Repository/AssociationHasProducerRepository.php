@@ -29,7 +29,7 @@ class AssociationHasProducerRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('ahp') : $qb;
 
-        return $qb->where('ahp.association = :association')
+        return $qb->andWhere('ahp.association = :association')
             ->setParameter('association', $association);
     }
 }

@@ -26,8 +26,7 @@ class AssociationManager
     /**
      * Constructs object
      *
-     * @param EntityManager   $entityManager
-     * @param ActivityManager $activityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -89,7 +88,6 @@ class AssociationManager
                 ->select('p.id AS producer_id')
                 ->addSelect('p.name AS producer_name')
                 ->addSelect('bo.id AS branch_occurrence_id')
-//                ->addSelect('null AS amount')
                 ->from('IsicsOpenMiamMiamBundle:Producer', 'p')
                 ->leftJoin('p.producerAttendances', 'pa')
                 ->leftJoin('pa.branchOccurrence', 'bo')
@@ -141,6 +139,6 @@ class AssociationManager
 
 
 
-        return new ProducersTransfer($branchOccurrences, $producers, $producersData);
+        return new ProducersTransfer($branchOccurrences, $producers, $producersData, $fromDate);
     }
 } 
