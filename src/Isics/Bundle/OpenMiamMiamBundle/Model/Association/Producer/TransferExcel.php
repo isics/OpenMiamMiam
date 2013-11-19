@@ -150,7 +150,7 @@ class TransferExcel
             $branchOccurrenceNumber = 1;
 
             foreach ($producersTransfer->getBranchOccurrences() as $branchOccurrence) {
-                $value = $producersTransfer->getData($producer->getId(), $branchOccurrence->getId());
+                $value = $producersTransfer->getAmount($producer->getId(), $branchOccurrence->getId());
 
                 if ($value == 0.0) {
                     $value = null;

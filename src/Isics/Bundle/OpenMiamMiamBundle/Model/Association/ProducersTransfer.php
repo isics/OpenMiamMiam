@@ -173,7 +173,7 @@ class ProducersTransfer
      *
      * @return float|null
      */
-    public function getData($producerId, $branchOccurrenceId)
+    public function getAmount($producerId, $branchOccurrenceId)
     {
         if (isset($this->producersData[$producerId][$branchOccurrenceId])) {
             return $this->producersData[$producerId][$branchOccurrenceId];

@@ -13,8 +13,8 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Doctrine\ORM\EntityManager;
 
 class AssociationHasProducerManager {
 
@@ -26,8 +26,7 @@ class AssociationHasProducerManager {
     /**
      * Constructs object
      *
-     * @param EntityManager   $entityManager
-     * @param ActivityManager $activityManager
+     * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -43,13 +42,13 @@ class AssociationHasProducerManager {
      */
     public function findForAssociation(Association $association)
     {
-        $qb = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer')
-            ->getForAssociationQueryBuilder($association);
-        $qb->innerjoin('ahp.producer', 'p')
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer')
+            ->getForAssociationQueryBuilder($association)
+            ->innerjoin('ahp.producer', 'p')
             ->addSelect('p')
             ->innerJoin('p.branches', 'b')
             ->addSelect('b')
-            ->addOrderBy('p.name', 'ASC');
-        return $qb->getQuery()->getResult();
+            ->addOrderBy('p.name', 'ASC')
+            ->getQuery()->getResult();
     }
 }
