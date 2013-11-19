@@ -73,6 +73,8 @@ parameters:
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
     open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
 
+    open_miam_miam.association.producer.transfer.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
+
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
 
@@ -429,7 +431,11 @@ services:
         class:     %open_miam_miam.mailer.class%
         arguments: [@mailer, %open_miam_miam.mailer%, @templating, @translator]
 
-
+    open_miam_miam.association.producer.transfer:
+        class:     %open_miam_miam.association.producer.transfer.class%
+        arguments:
+            - @open_miam_miam.phpexcel
+        scope: prototype
 
     # Workflows
     open_miam_miam.sales_order_workflow:

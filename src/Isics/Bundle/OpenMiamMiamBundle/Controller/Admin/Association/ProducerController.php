@@ -16,6 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 class ProducerController extends BaseController
@@ -104,7 +105,14 @@ class ProducerController extends BaseController
         $date = $request->get('open_miam_miam_association_producer_export_transfert');
         $monthDate = new \DateTime($date['month']);
 
-        $associationManager = $this->get('open_miam_miam.association_manager');
-        $associationManager->exportProducerTransferForMonth($association, $monthDate);
+        $producerTransfer = $this->get('open_miam_miam.association_manager')
+            ->getProducerTransferForMonth($association, $monthDate);
+
+        $excel = $this->get('open_miam_miam.association.producer.transfer');
+        $excel->setProducerTransfer($producerTransfer);
+
+        return new StreamedResponse(function() use ($excel) {
+            echo $excel->render('test');
+        });
     }
 }
