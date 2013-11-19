@@ -12,9 +12,8 @@
     {{ 'mail.branch.orders_closed.message_html'|trans({
         '%firstname%': salesOrder.user.firstname,
         '%ref%': salesOrder.ref,
-        '%branch_name%':branchOccurrence.branch.name,
-        '%branch_occurrence_open_date%': branchOccurrence.begin|format_datetime(null, null, null, constant('IntlDateFormatter::LONG')),
-        '%branch_occurrence_closed_date%': branchOccurrence.end|format_datetime(null, null, null, constant('IntlDateFormatter::LONG'))
+        '%branch_name%': branchOccurrence.branch.name,
+        '%branch_url%': url('open_miam_miam.branch.homepage', {'branchSlug': branchOccurrence.branch.slug}),
     })|raw }}
 
     {% include 'IsicsOpenMiamMiamBundle:Mail:customerSalesOrder.html.twig' with {'order': salesOrder} %}
