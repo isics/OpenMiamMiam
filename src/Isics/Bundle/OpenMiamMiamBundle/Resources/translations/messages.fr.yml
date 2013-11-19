@@ -93,7 +93,10 @@ cart.unable_to_update:      "Impossible de mettre à jour le panier !"
 
 
 # Order process
-order.confirm.title:                 "Confirmez votre commande"
+order.process.stage1:                "Mon panier"
+order.process.stage2:                "Vérification"
+order.process.stage3:                "Commande enregistrée !"
+order.confirm.title:                 "Vérifiez votre commande"
 order.confirm.consumer.title:        "Consommateur"
 order.confirm.consumer.update:       "Mettre à jour mes coordonnées"
 order.confirm.withdrawal.title:      "Retrait des produits"

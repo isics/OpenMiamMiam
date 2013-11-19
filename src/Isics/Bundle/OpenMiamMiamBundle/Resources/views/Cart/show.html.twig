@@ -9,10 +9,11 @@
     {% block title %}{{ 'cart.title'|trans }} - {{ parent() }}{% endblock %}
 
     {% block content %}
-        <ol class="breadcrumb">
-            <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
-            <li class="active">{{ 'cart.title'|trans }}</li>
-        </ol>
+        <div id="order-progress"  class="btn-group btn-group-justified">
+            <a href="#" class="btn btn-success active"><strong><span class="badge">1</span> {{ 'order.process.stage1'|trans }}</strong></a>
+            <a href="#" class="btn btn-default" disabled="disabled"><strong><span class="badge">2</span> {{ 'order.process.stage2'|trans }}</strong></a>
+            <a href="#" class="btn btn-default" disabled="disabled"><strong><span class="badge">3</span> {{ 'order.process.stage3'|trans }}</strong></a>
+        </div>
 
         <h1>{{ 'cart.title'|trans }}</h1>
 
