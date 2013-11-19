@@ -9,12 +9,12 @@ before_script:
   - composer install -n
   # Parameters
   - cp -a app/config/parameters.yml{.dist,}
-  - sed 's/your_base_url/http:\/\/localhost:8000\/app_test.php/' behat.yml-dist > behat.yml
+  - sed 's/your_base_url/http:\/\/localhost\/app_test.php/' behat.yml-dist > behat.yml
   # Database
   - app/console --env=test --force doctrine:database:drop || true
   - app/console --env=test doctrine:database:create
   # Web server
-  - php -S localhost:8000 --docroot web &
+  - php -S localhost:80 --docroot web &
   - sleep 3
 
 script:
