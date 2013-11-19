@@ -13,9 +13,8 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
@@ -47,8 +46,8 @@ class ProducerController extends BaseController
         );
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Producer:list.html.twig', array(
-            'form' => $form->createView(),
-            'branches' =>  $association->getBranches(),
+            'form'                    => $form->createView(),
+            'branches'                => $association->getBranches(),
             'associationHasProducers' => $associationHasProducers
         ));
     }
@@ -58,8 +57,8 @@ class ProducerController extends BaseController
      *
      * @ParamConverter("producer", class="IsicsOpenMiamMiamBundle:Producer", options={"mapping": {"producerId": "id"}})
      *
-     * @param Request $request
-     * @param Association $association
+     * @param Request                $request
+     * @param AssociationHasProducer $associationHasProducer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
@@ -90,15 +89,17 @@ class ProducerController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Producer:edit.html.twig', array(
             'associationHasProducer' => $associationHasProducer,
-            'form' => $form->createView(),
+            'form'                   => $form->createView(),
         ));
     }
 
     /**
      * Export association transfert for producer
      *
-     * @param Request $request
-     * @return mixed
+     * @param Request     $request
+     * @param Association $association
+     *
+     * @return Response
      */
     public function exportAction(Request $request, Association $association)
     {
@@ -110,19 +111,21 @@ class ProducerController extends BaseController
 
         $document = $this->get('open_miam_miam.association.producer.transfer');
 
+        $filename = $this->get('translator')->trans('excel.association.producer.transfer.filename', array(
+            '%year%'  => $monthDate->format('Y'),
+            '%month%' => $monthDate->format('m')
+        ));
+
         $response = new StreamedResponse();
+        $response->headers->set('Content-type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $filename));
 
         $response->setCallback(function() use ($document, $producerTransfer) {
             $document->generate($producerTransfer);
 
-            $filename = 'test.xslx';
-
-            header('Content-type: application/vnd.ms-excel');
-            header(sprintf('Content-Disposition:attachment;filename="%s"', $filename));
-
             $writer = new \PHPExcel_Writer_Excel2007($document->getExcel());
 
-            echo $writer->save('php://output');
+            $writer->save('php://output');
         });
 
         return $response;
