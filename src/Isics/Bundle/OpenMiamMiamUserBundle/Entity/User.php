@@ -75,7 +75,6 @@ class User extends BaseUser
      */
     private $subscriptions;
 
-
     /**
      * Sets address line 1
      *
