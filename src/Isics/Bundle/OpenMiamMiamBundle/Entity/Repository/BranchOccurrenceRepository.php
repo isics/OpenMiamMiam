@@ -59,6 +59,7 @@ class BranchOccurrenceRepository extends EntityRepository
             ->orderBy('bo.begin', 'DESC')
             ->setParameter('branch', $branchOccurrence->getBranch())
             ->setParameter('date', $branchOccurrence->getBegin())
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }
