@@ -45,12 +45,18 @@
                                 {{ form_row(form.city, {'label': 'user.register.city'|trans, 'label_as_placeholder': true}) }}
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                            {% if has_terms_of_service() %}
+                                {{ form_errors(form.termsOfService) }}
+                                {{ form_widget(form.termsOfService) }}
+                                {{ form_label(form.termsOfService, 'user.register.read_agree'|trans) }}
+                                <a href="{{ terms_of_service_url() }}" target="blank">{{"user.register.terms_of_service"|trans}}</a>
+                            {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    {% if {{ has_terms_url() }} %}
-                        <a href="{{ terms_url() }}" target="blank">{{ form_label(form.terms, {'label': 'user.register.terms'}) }}</a>
-                        {{ form_errors(form.terms) }}
-                        {{ form_widget(form.terms) }}
-                    {% endif %}
+
                     <div class="panel-footer text-right">
                         <a href="{{ path('open_miam_miam.homepage') }}" class="btn btn-default btn-lg">
                             {{ 'user.register.cancel'|trans }}

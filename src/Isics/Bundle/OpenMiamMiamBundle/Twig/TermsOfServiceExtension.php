@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the OpenMiamMiam project.
  *
@@ -13,20 +14,20 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 class TermsOfServiceExtension extends \Twig_Extension
 {
     /**
-     * @var string $termsUrl
+     * @var string $termsOfServiceUrl
      */
-    private $termsUrl;
+    private $termsOfServiceUrl;
 
     /**
      * Constructor
      *
-     * @param string $termsUrl
+     * @param string $termsOfServiceUrl
      * 
      */
-    public function __construct($termsUrl)
+    public function __construct($termsOfServiceUrl)
     {
 
-        $this->termsUrl = $termsUrl;
+        $this->termsOfServiceUrl = $termsOfServiceUrl;
     }
 
     /**
@@ -37,34 +38,42 @@ class TermsOfServiceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'terms_url' => new \Twig_Function_Method($this, 'getTermsUrl')/*,
-            'has_terms_url' => new \Twig_Function_Method($this, 'hasTermsUrl')*/
+            'terms_of_service_url' => new \Twig_Function_Method($this, 'getTermsOfServiceUrl'),
+            'has_terms_of_service' => new \Twig_Function_Method($this, 'hasTermsOfService')
         );
     }
 
     /**
-     * Returns if terms url is null or not
+     * Returns if terms of service is null or not
      *
      * @return boolean
      */
-   /* public function hasTermsUrl()
+    public function hasTermsOfService()
     {
-        if($this->termsUrl != null){
+        if($this->termsOfServiceUrl != null){
             return true;
         }   
-        else {
+        else{
             return false;
         }    
-    }*/
+    }
 
     /**
-     * Returns terms url
+     * Returns terms of service url
      *
      * @return string
      */
-    public function getTermsUrl()
+    public function getTermsOfServiceUrl()
     {
-        return $this->termsUrl;
+        return $this->termsOfServiceUrl;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return 'terms_of_service_extension';
     }
 
 }

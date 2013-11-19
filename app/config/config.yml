@@ -146,4 +146,4 @@ services:
 
 #OpenMiamMiam
 isics_open_miam_miam:
-    terms_url: "%terms_url%"
+    terms_of_service_url: "%terms_of_service_url%"

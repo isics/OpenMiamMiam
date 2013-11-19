@@ -11,11 +11,32 @@
 
 namespace Isics\Bundle\OpenMiamMiamUserBundle\Form\Type;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\True;
 
-class RegistrationType extends BaseType
+class RegistrationType extends BaseType implements EventSubscriberInterface
 {
+
+    private $class;
+
+    private $termsOfService;
+
+    /**
+     * @param string $class The User class name
+     * @param string $terms TermsOfServiceExtension service name
+     */
+    public function __construct($class, $termsOfService)
+    {
+        parent::__construct($class);
+
+        $this->termsOfService = $termsOfService;
+    }
+
     /**
      * @see AbstractType
      */
@@ -29,11 +50,32 @@ class RegistrationType extends BaseType
                 ->add('address2', 'text', array('required' => false))
                 ->add('zipcode', 'text')
                 ->add('city', 'text')
-                ->add("terms", "checkbox", array(
-                    "mapped" => false,
-                    )
-                )
-                ->remove('username');
+                ->remove('username')
+                ->addEventSubscriber($this);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+
+        if($this->termsOfService->hasTermsOfService()) {
+            $form->add("termsOfService", "checkbox", array(
+                'mapped' => false,
+                'constraints' => array(
+                    new True(array('message' => 'user.register.error.terms_of_service' )
+                ))  
+            )); 
+        } 
     }
 
     /**

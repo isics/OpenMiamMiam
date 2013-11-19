@@ -277,7 +277,7 @@ services:
     open_miam_miam.twig.terms_of_service_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension
         arguments:
-            - %open_miam_miam.terms_url%    
+            - %open_miam_miam.terms_of_service_url%    
         tags:
             - { name: twig.extension }
 

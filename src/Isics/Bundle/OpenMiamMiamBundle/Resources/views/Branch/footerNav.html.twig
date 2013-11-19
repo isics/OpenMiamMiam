@@ -9,8 +9,8 @@
     <ul id="footer-nav" class="list-inline">
         <li><a href="#">Comment ça marche ?</a></li>
         <li><a href="#">Qui sommes-nous ?</a></li>
-        {% if {{ has_terms_url() }} %}
-            <li><a href="{{ terms_url() }}" target="blank">Conditions Générales d'Utilisation</a></li>
+        {% if has_terms_of_service() %}
+            <li><a href="{{ terms_of_service_url() }}" target="blank">Conditions Générales d'Utilisation</a></li>
         {% endif %}
         <li><a href="#">Mentions légales</a></li>
         <li><a href="mailto:cbio.ardennes@comptoirspaysans.org">Contact</a></li>
