@@ -7,8 +7,31 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
 {% block content %}
-    <h1>{{ 'admin.association.producers.edit.title'|trans }} {{ associationHasProducer.producer.name }}</h1>
-    {{ form(form) }}
+    <h1>{{ 'admin.association.producers.edit.title'|trans({'%producer_name%': associationHasProducer.producer.name}) }}</h1>
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+        <div class="row-fluid control-group">
+            {{ form_errors(form.commission) }}
+            {{ form_label(form.commission) }}
+            {{ form_widget(form.commission) }}
+        </div>
+
+        <div class="row-fluid control-group">
+            {{ form_errors(form.producer.branches) }}
+            {{ form_label(form.producer.branches) }}
+            {{ form_widget(form.producer.branches) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" />
+            <span class="glyphicon glyphicon-floppy-save"></span>
+            {{ 'admin.save'|trans }}
+        </button>
+        {% do form.save.setRendered %}
+
+    {{ form_end(form) }}
 
 {% endblock %}

@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
 class ProducerHasBranchType extends AbstractType implements EventSubscriberInterface
 {
@@ -34,11 +33,21 @@ class ProducerHasBranchType extends AbstractType implements EventSubscriberInter
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => Producer::class));
+        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer'));
     }
 
     /**
+     * Get subscribe events
      *
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'onPreSetData');
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function onPreSetData(FormEvent $event)
     {
@@ -51,12 +60,12 @@ class ProducerHasBranchType extends AbstractType implements EventSubscriberInter
             'branches',
             'entity',
             array(
-                'multiple' => true,
-                'expanded' => true,
-                'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                'choices' => $associationHasProducer->getAssociation()->getBranches(),
-                'property' => 'name',
-                'by_reference' => true
+                'multiple'     => true,
+                'expanded'     => true,
+                'class'        => 'IsicsOpenMiamMiamBundle:Branch',
+                'choices'      => $associationHasProducer->getAssociation()->getBranches(),
+                'property'     => 'name',
+                'by_reference' => false
             )
         );
     }
@@ -67,15 +76,5 @@ class ProducerHasBranchType extends AbstractType implements EventSubscriberInter
     public function getName()
     {
         return 'open_miam_miam_producer_has_branch';
-    }
-
-    /**
-     * Get subscribe events
-     *
-     * @return array
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(FormEvents::PRE_SET_DATA => 'onPreSetData');
     }
 }

@@ -113,6 +113,12 @@ class SalesOrderRow
      */
     private $total;
 
+    /**
+     * @var float $commission
+     *
+     * @ORM\Column(name="commission", type="decimal", precision=10, scale=2, nullable=false)
+     */
+    private $commission;
 
 
     /**
@@ -290,6 +296,22 @@ class SalesOrderRow
     public function getRef()
     {
         return $this->ref;
+    }
+
+    /**
+     * @param float $commission
+     */
+    public function setCommission($commission)
+    {
+        $this->commission = $commission;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCommission()
+    {
+        return $this->commission;
     }
 
     /**

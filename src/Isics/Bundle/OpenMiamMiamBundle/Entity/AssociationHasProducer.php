@@ -53,7 +53,7 @@ class AssociationHasProducer
     /**
      * @var float $commission
      *
-     * @ORM\Column(name="commission", type="float", nullable=true)
+     * @ORM\Column(name="commission", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $commission;
 

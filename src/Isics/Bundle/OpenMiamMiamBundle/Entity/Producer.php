@@ -128,7 +128,7 @@ class Producer
     /**
      * @var Doctrine\Common\Collections\Collection $branches
      *
-     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="producers")
+     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="producers", cascade={"all"})
      */
     private $branches;
 
@@ -686,6 +686,7 @@ class Producer
     public function addBranch(Branch $branch)
     {
         $this->branches[] = $branch;
+        $branch->addProducer($this);
 
         return $this;
     }
@@ -716,6 +717,7 @@ class Producer
     public function removeBranch(Branch $branch)
     {
         $this->branches->removeElement($branch);
+        $branch->removeProducer($this);
     }
 
     /**
@@ -794,5 +796,4 @@ class Producer
     {
         return $this->salesOrderRows;
     }
-
 }

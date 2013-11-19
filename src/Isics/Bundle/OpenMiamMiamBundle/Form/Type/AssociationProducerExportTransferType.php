@@ -29,10 +29,15 @@ class AssociationProducerExportTransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array();
-        for ($i=0; $i<12; $i++) {
-            // TODO localize
-            $date = new \DateTime('now -'.$i.' month');
+
+        // Start at last month
+        $date = new \DateTime('first day of previous month midnight');
+
+        // Store last 12 previous months
+        for ($i = 0 ; $i < 12 ; $i++) {
             $choices[$date->format('Y-m')] = $date->format('F Y');
+
+            $date->modify('first day of previous month midnight');
         }
 
         $builder->add('month', 'choice', array(
