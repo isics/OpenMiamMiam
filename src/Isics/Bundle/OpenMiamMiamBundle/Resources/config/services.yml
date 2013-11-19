@@ -131,14 +131,6 @@ services:
             - { name: validator.constraint_validator, alias: open_miam_miam_payment_validator }
 
 
-
-    # Mailer
-    open_miam_miam.mailer:
-        class: Isics\Bundle\OpenMiamMiamBundle\Service\Mailer
-        arguments: [@mailer, @templating]
-
-
-
     # Form types
     open_miam_miam.form.type.association_article:
         class: %open_miam_miam.form.type.association_article.class%
@@ -394,7 +386,6 @@ services:
     open_miam_miam.mailer:
         class:     %open_miam_miam.mailer.class%
         arguments: [@mailer, %open_miam_miam.mailer%, @templating, @translator]
-
 
 
     # Workflows

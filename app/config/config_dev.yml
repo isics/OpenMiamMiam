@@ -11,6 +11,10 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+# Swiftmailer Configuration
+swiftmailer:
+    spool:     { type: memory }
+
 monolog:
     handlers:
         main:
@@ -26,13 +30,6 @@ monolog:
 
 assetic:
     use_controller: false
-
-swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
 
 # Services
 services:

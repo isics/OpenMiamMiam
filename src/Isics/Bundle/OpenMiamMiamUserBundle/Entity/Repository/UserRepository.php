@@ -23,6 +23,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 
 class UserRepository extends EntityRepository
 {
+
     /**
      * Returns consumers for association
      *
@@ -162,14 +163,25 @@ QUERY;
      * Returns consumers of branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
+     * @param int $lastOrderNbDaysConsideringCustomer
      *
      * @return array Consumers
      */
-    public function findConsumersForBranches($branches)
+    public function findConsumersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
-        return $this->getConsumersForBranchesQueryBuilder($branches)
-            ->getQuery()
-            ->getResult();
+        $consumersForBranchesQueryBuilder = $this->getConsumersForBranchesQueryBuilder($branches);
+
+        if (null !== $lastOrderNbDaysConsideringCustomer) {
+            $now = new \DateTime();
+            $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
+            $consumersForBranchesQueryBuilder
+                ->where('s.date > :from')
+                ->andWhere('s.date < :to')
+                ->setParameter('from', $begin)
+                ->setParameter('to', $now);
+        }
+
+        return $consumersForBranchesQueryBuilder->getQuery()->getResult();
     }
 
     /**

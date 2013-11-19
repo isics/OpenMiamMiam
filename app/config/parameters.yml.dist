@@ -20,3 +20,6 @@ parameters:
     node_modules_path: /usr/local/bin/node_modules
     node_uglifycss_bin: /usr/local/bin/node_modules/uglifycss/uglifycss
     node_uglifyjs_bin: /usr/local/bin/node_modules/uglifyjs/uglifyjs
+
+    # Usefull for generating URLs in CLI
+    router.request_context.host: www.open-miam-miam.fr

@@ -45,6 +45,25 @@ class BranchOccurrenceRepository extends EntityRepository
     }
 
     /**
+     * Finds the previous occurrence for a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence BranchOccurrence
+     *
+     * @return BranchOccurrence|null
+     */
+    public function findOnePreviousForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        return $this->createQueryBuilder('bo')
+            ->where('bo.branch = :branch')
+            ->andWhere('bo.begin < :date')
+            ->orderBy('bo.begin', 'DESC')
+            ->setParameter('branch', $branchOccurrence->getBranch())
+            ->setParameter('date', $branchOccurrence->getBegin())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Finds next occurrence for a branch
      *
      * @param Branch  $branch Branch

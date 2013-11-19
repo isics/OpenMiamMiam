@@ -1,3 +1,6 @@
+parameters:
+    open_miam_miam_user.manager.user.class:            'Isics\Bundle\OpenMiamMiamUserBundle\Manager\UserManager'
+
 services:
     open_miam_miam.form.type.user_registration:
         class: Isics\Bundle\OpenMiamMiamUserBundle\Form\Type\RegistrationType
@@ -16,3 +19,9 @@ services:
         arguments: [@router]
         tags:
             - { name: kernel.event_subscriber }
+
+    open_miam_miam_user.manager.user:
+        class: %open_miam_miam_user.manager.user.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %open_miam_miam_user.last_order_nb_days_considering_customer%

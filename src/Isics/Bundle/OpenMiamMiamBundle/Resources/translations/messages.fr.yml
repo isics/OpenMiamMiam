@@ -688,3 +688,18 @@ mail.newsletter_test.send:               "OUI"
 mail.newsletter_test.edit:               "NON"
 mail.newsletter_test.send_help:          "Envoyer à tous les destinataires"
 mail.newsletter_test.edit_help:          "Corriger et envoyer un nouveau test"
+
+mail.branch.orders_open.log.branch_name: "<info>Les commandes pour le comptoir \"%branch_name%\" sont ouvertes. Notification envoyée par email à :</info>"
+mail.branch.orders_open.log.task_end:    "<info>%email_sent%</info> email(s) envoyé(s) en <info>%time%</info> secondes. Consommation mémoire : <info>%memory%</info> Mo"
+mail.branch.orders_open.subject:         "Les commandes sont ouvertes pour le comptoir %branch_name% !"
+mail.branch.orders_open.message_html:    |
+    <p>Bonjour %firstname%,</p>
+    <p>Les commandes pour le comptoir <a href="%branch_url%">%branch_name%</a> sont ouvertes <strong>du %order_open_date% au %order_closed_date%</strong>.</p>
+    <p><strong>Rendez-vous sur <a href="%branch_url%">%branch_url%</a> pour commander !</strong></p>
+
+mail.branch.orders_closed.log.branch_name: "<info>Les commandes pour le comptoir \"%branch_name%\" sont fermées. Email de rappel de commande envoyé à :</info>"
+mail.branch.orders_closed.log.task_end:    "<info>%email_sent%</info> email(s) envoyé(s) en <info>%time%</info> secondes. Consommation mémoire : <info>%memory%</info> Mo"
+mail.branch.orders_closed.subject:         "N'oubliez pas votre commande %ref% pour le comptoir %branch_name% !"
+mail.branch.orders_closed.message_html:    |
+    <p>Bonjour %firstname%,</p>
+    <p><strong>N'oubliez pas de venir chercher votre commande %ref% !</strong></p>
