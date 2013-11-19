@@ -435,6 +435,7 @@ services:
         class:     %open_miam_miam.association.producer.transfer.class%
         arguments:
             - @open_miam_miam.phpexcel
+            - @translator
         scope: prototype
 
     # Workflows

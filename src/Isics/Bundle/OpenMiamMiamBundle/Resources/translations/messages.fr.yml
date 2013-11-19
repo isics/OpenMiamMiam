@@ -687,3 +687,7 @@ mail.newsletter_test.send:               "OUI"
 mail.newsletter_test.edit:               "NON"
 mail.newsletter_test.send_help:          "Envoyer à tous les destinataires"
 mail.newsletter_test.edit_help:          "Corriger et envoyer un nouveau test"
+
+
+# Excel
+excel.association.producer.transfer.total: "TOTAL"

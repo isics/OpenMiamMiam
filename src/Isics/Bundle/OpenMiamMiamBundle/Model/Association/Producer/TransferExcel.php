@@ -11,7 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducerTransfer;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducersTransfer;
+use Symfony\Component\Translation\Translator;
 
 class TransferExcel
 {
@@ -21,34 +22,28 @@ class TransferExcel
     protected $excel;
 
     /**
-     * @var ProducerTransfer
+     * @var \Symfony\Component\Translation\Translator
      */
-    protected $producerTransfer;
+    protected $translator;
 
     /**
      * Constructor
      *
-     * @param \PHPExcel $excel
+     * @param \PHPExcel                                 $excel
+     * @param \Symfony\Component\Translation\Translator $translator
      */
-    public function __construct(\PHPExcel $excel)
+    public function __construct(\PHPExcel $excel, Translator $translator)
     {
-        $this->excel = $excel;
-    }
-
-    /**
-     * Set data for Excel generation
-     *
-     * @param $producerTransferData
-     */
-    public function setProducerTransfer(ProducerTransfer $producerTransfer)
-    {
-        $this->producerTransfer = $producerTransfer;
+        $this->excel      = $excel;
+        $this->translator = $translator;
     }
 
     /**
      * Build document
+     *
+     * @param ProducersTransfer $producersTransfer
      */
-    protected function build()
+    public function generate(ProducersTransfer $producersTransfer)
     {
         $this->excel->setActiveSheetIndex(0);
         $sheet = $this->excel->getActiveSheet();
@@ -56,7 +51,7 @@ class TransferExcel
         // Branch occurrence name and date
         $branchOccurrenceNumber = 1;
 
-        foreach ($this->producerTransfer->getBranchOccurrences() as $branchOccurrence) {
+        foreach ($producersTransfer->getBranchOccurrences() as $branchOccurrence) {
             $sheet->setCellValue(
                 $this->getColumnNameForNumber($branchOccurrenceNumber).'1',
                 $branchOccurrence->getBranch()->getName()
@@ -69,9 +64,15 @@ class TransferExcel
             ++$branchOccurrenceNumber;
         }
 
+        // producer total
+        $sheet->setCellValue(
+            $this->getColumnNameForNumber($branchOccurrenceNumber).'1',
+            $this->translator->trans('excel.association.producer.transfer.total')
+        );
+
         $currentLine = 3;
 
-        foreach ($this->producerTransfer->getProducers() as $producer) {
+        foreach ($producersTransfer->getProducers() as $producer) {
             $sheet->setCellValue(
                 'A'.(string)$currentLine,
                 $producer->getName()
@@ -79,8 +80,8 @@ class TransferExcel
 
             $branchOccurrenceNumber = 1;
 
-            foreach ($this->producerTransfer->getBranchOccurrences() as $branchOccurrence) {
-                $value = $this->producerTransfer->getData($producer->getId(), $branchOccurrence->getId());
+            foreach ($producersTransfer->getBranchOccurrences() as $branchOccurrence) {
+                $value = $producersTransfer->getData($producer->getId(), $branchOccurrence->getId());
 
                 if ($value == 0.0) {
                     $value = null;
@@ -97,19 +98,24 @@ class TransferExcel
             // Total for producer
             $sheet->setCellValue(
                 $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
-                $this->producerTransfer->getTotalForProducerId($producer->getId())
+                $producersTransfer->getTotalForProducerId($producer->getId())
             );
 
             ++$currentLine;
         }
 
+        $sheet->setCellValue(
+            'A'.(string)$currentLine,
+            $this->translator->trans('excel.association.producer.transfer.total')
+        );
+
         // Branch occurrence total
         $branchOccurrenceNumber = 1;
 
-        foreach ($this->producerTransfer->getBranchOccurrences() as $branchOccurrence) {
+        foreach ($producersTransfer->getBranchOccurrences() as $branchOccurrence) {
             $sheet->setCellValue(
                 $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
-                $this->producerTransfer->getTotalForBranchOccurrenceId($branchOccurrence->getId())
+                $producersTransfer->getTotalForBranchOccurrenceId($branchOccurrence->getId())
             );
 
             ++$branchOccurrenceNumber;
@@ -134,18 +140,13 @@ class TransferExcel
     }
 
     /**
-     * Render document
+     * Get excel
      *
-     * @param string $filename
+     * @return \PHPExcel
      */
-    public function render($filename)
+    public function getExcel()
     {
-        $this->build();
-
-        ob_start();
-        $writer = new \PHPExcel_Writer_Excel2007($this->excel);
-        $writer->save('php://output');
-        return ob_get_clean();
+        return $this->excel;
     }
 
 }

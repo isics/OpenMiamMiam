@@ -108,11 +108,23 @@ class ProducerController extends BaseController
         $producerTransfer = $this->get('open_miam_miam.association_manager')
             ->getProducerTransferForMonth($association, $monthDate);
 
-        $excel = $this->get('open_miam_miam.association.producer.transfer');
-        $excel->setProducerTransfer($producerTransfer);
+        $document = $this->get('open_miam_miam.association.producer.transfer');
 
-        return new StreamedResponse(function() use ($excel) {
-            echo $excel->render('test');
+        $response = new StreamedResponse();
+
+        $response->setCallback(function() use ($document, $producerTransfer) {
+            $document->generate($producerTransfer);
+
+            $filename = 'test.xslx';
+
+            header('Content-type: application/vnd.ms-excel');
+            header(sprintf('Content-Disposition:attachment;filename="%s"', $filename));
+
+            $writer = new \PHPExcel_Writer_Excel2007($document->getExcel());
+
+            echo $writer->save('php://output');
         });
+
+        return $response;
     }
 }

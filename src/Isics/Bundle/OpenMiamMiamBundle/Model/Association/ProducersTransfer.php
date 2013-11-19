@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association;
 
-class ProducerTransfer
+class ProducersTransfer
 {
     /**
      * @var array
@@ -59,7 +59,7 @@ class ProducerTransfer
                 $this->producersData[$producersDatum['producer_id']][$producersDatum['branch_occurrence_id']] = 0.0;
             }
 
-            $this->producersData[$producersDatum['producer_id']][$producersDatum['branch_occurrence_id']] += (float)$producersDatum['amount'];
+            $this->producersData[$producersDatum['producer_id']][$producersDatum['branch_occurrence_id']] += isset($producersDatum['amount']) ? (float)$producersDatum['amount'] : 0.0;
         }
     }
 
