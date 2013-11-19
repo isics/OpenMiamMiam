@@ -14,7 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Isics\OpenMiamMiamBundle\Entity\ProducerAttendance
+ * Isics\OpenMiamMiamBundle\Entity\AssociationHasProducer
  *
  * @ORM\Table(name="association_has_producer")
  * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\AssociationHasProducerRepository")
@@ -75,7 +75,7 @@ class AssociationHasProducer
      *
      * @return AssociationHasProducer
      */
-    public function setProducer($producer)
+    public function setProducer(Producer $producer)
     {
         $this->producer = $producer;
 
@@ -99,7 +99,7 @@ class AssociationHasProducer
      *
      * @return AssociationHasProducer
      */
-    public function setAssociation($association)
+    public function setAssociation(Association $association)
     {
         $this->association = $association;
 

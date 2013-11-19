@@ -11,10 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 
 class AssociationHasProducerManager {
 
@@ -49,6 +47,7 @@ class AssociationHasProducerManager {
             ->innerJoin('p.branches', 'b')
             ->addSelect('b')
             ->addOrderBy('p.name', 'ASC')
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 }

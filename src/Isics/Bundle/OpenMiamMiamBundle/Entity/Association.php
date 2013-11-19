@@ -28,7 +28,7 @@ class Association
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -132,21 +132,21 @@ class Association
     private $openingDelay;
 
    /**
-     * @var decimal $defaultCommission
+     * @var float $defaultCommission
      *
      * @ORM\Column(name="default_commission", type="decimal", precision=5, scale=2, nullable=true)
      */
     private $defaultCommission;
 
     /**
-     * @var Doctrine\Common\Collections\Collection $branches
+     * @var \Doctrine\Common\Collections\Collection $branches
      *
      * @ORM\OneToMany(targetEntity="Branch", mappedBy="association")
      */
     private $branches;
 
     /**
-     * @var Doctrine\Common\Collections\Collection $associationHasProducer
+     * @var \Doctrine\Common\Collections\Collection $associationHasProducer
      *
      * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="association")
      */
@@ -160,7 +160,6 @@ class Association
         $this->orderRefCounter = 0;
 
         $this->associationHasProducer = new ArrayCollection();
-        $this->producers = new ArrayCollection();
         $this->branches = new ArrayCollection();
     }
 
@@ -178,6 +177,7 @@ class Association
      * Set name
      *
      * @param string $name
+     *
      * @return Association
      */
     public function setName($name)
@@ -201,6 +201,7 @@ class Association
      * Set slug
      *
      * @param string $slug
+     *
      * @return Association
      */
     public function setSlug($slug)
@@ -224,6 +225,7 @@ class Association
      * Set presentation
      *
      * @param string $presentation
+     *
      * @return Association
      */
     public function setPresentation($presentation)
@@ -247,6 +249,7 @@ class Association
      * Set address1
      *
      * @param string $address1
+     *
      * @return Association
      */
     public function setAddress1($address1)
@@ -270,6 +273,7 @@ class Association
      * Set address2
      *
      * @param string $address2
+     *
      * @return Association
      */
     public function setAddress2($address2)
@@ -293,6 +297,7 @@ class Association
      * Set zipcode
      *
      * @param string $zipcode
+     *
      * @return Association
      */
     public function setZipcode($zipcode)
@@ -316,6 +321,7 @@ class Association
      * Set city
      *
      * @param string $city
+     *
      * @return Association
      */
     public function setCity($city)
@@ -339,6 +345,7 @@ class Association
      * Set phone1
      *
      * @param string $phone1
+     *
      * @return Association
      */
     public function setPhone1($phone1)
@@ -362,6 +369,7 @@ class Association
      * Set phone2
      *
      * @param string $phone2
+     *
      * @return Association
      */
     public function setPhone2($phone2)
@@ -385,6 +393,7 @@ class Association
      * Set website
      *
      * @param string $website
+     *
      * @return Association
      */
     public function setWebsite($website)
@@ -408,6 +417,7 @@ class Association
      * Set facebook
      *
      * @param string $facebook
+     *
      * @return Association
      */
     public function setFacebook($facebook)
@@ -431,6 +441,7 @@ class Association
      * Set orderRefCounter
      *
      * @param integer $orderRefCounter
+     *
      * @return Association
      */
     public function setOrderRefCounter($orderRefCounter)
@@ -454,6 +465,7 @@ class Association
      * Set closingDelay
      *
      * @param integer $closingDelay
+     *
      * @return Association
      */
     public function setClosingDelay($closingDelay)
@@ -477,6 +489,7 @@ class Association
      * Set openingDelay
      *
      * @param integer $openingDelay
+     *
      * @return Association
      */
     public function setOpeningDelay($openingDelay)
@@ -500,6 +513,7 @@ class Association
      * Set defaultCommission
      *
      * @param float $defaultCommission
+     *
      * @return Association
      */
     public function setDefaultCommission($defaultCommission)
@@ -550,14 +564,18 @@ class Association
     public function getProducers()
     {
         $producers = new ArrayCollection();
+
         foreach($this->getAssociationHasProducer() as $associationHasProducer) {
             $producers->add($associationHasProducer->getProducer());
         }
+
         return $producers;
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection $associationHasProducer
+     * Set association_has_producer
+     *
+     * @param \Doctrine\Common\Collections\Collection $associationHasProducer
      */
     public function setAssociationHasProducer($associationHasProducer)
     {
@@ -567,7 +585,9 @@ class Association
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection
+     * Get association_has_producer
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAssociationHasProducer()
     {

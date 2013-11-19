@@ -12,13 +12,13 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Doctrine\ORM\QueryBuilder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 
 class AssociationHasProducerRepository extends EntityRepository
 {
     /**
-     * Returns query builder to find all producer of association
+     * Returns query builder to find all producers of an association
      *
      * @param Association  $association
      * @param QueryBuilder $qb

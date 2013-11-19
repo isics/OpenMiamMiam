@@ -34,8 +34,11 @@ class AssociationManager
     }
 
     /**
+     * Get producers transfer object for association and month
+     *
      * @param Association $association
-     * @param \DateTime $fromDate
+     * @param \DateTime   $fromDate
+     *
      * @return ProducersTransfer
      */
     public function getProducerTransferForMonth(Association $association, \DateTime $fromDate)
@@ -136,8 +139,6 @@ class AssociationManager
                     ->getResult();
             }
         }
-
-
 
         return new ProducersTransfer($branchOccurrences, $producers, $producersData, $fromDate);
     }

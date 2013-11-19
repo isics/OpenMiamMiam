@@ -128,7 +128,7 @@ class Producer
     /**
      * @var Doctrine\Common\Collections\Collection $branches
      *
-     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="producers", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="producers")
      */
     private $branches;
 
@@ -189,7 +189,7 @@ class Producer
         $this->productRefCounter = 0;
 
         $this->salesOrderRows = new ArrayCollection();
-        $this->associations = new ArrayCollection();
+        $this->associationHasProducer = new ArrayCollection();
         $this->branches = new ArrayCollection();
         $this->deleteProfileImage = false;
         $this->deletePresentationImage = false;
@@ -764,7 +764,9 @@ class Producer
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection $associationHasProducer
+     * Set association_has_producer
+     *
+     * @param \Doctrine\Common\Collections\Collection $associationHasProducer
      */
     public function setAssociationHasProducer($associationHasProducer)
     {
@@ -774,7 +776,9 @@ class Producer
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection
+     * Get association_has_producer
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAssociationHasProducer()
     {
@@ -782,7 +786,9 @@ class Producer
     }
 
     /**
-     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection $salesOrderRows
+     * Set sales_order_rows
+     *
+     * @param \Doctrine\Common\Collections\Collection $salesOrderRows
      */
     public function setSalesOrderRows($salesOrderRows)
     {
@@ -790,7 +796,9 @@ class Producer
     }
 
     /**
-     * @return \Isics\Bundle\OpenMiamMiamBundle\Entity\Doctrine\Common\Collections\Collection
+     * Get sales_order_rows
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSalesOrderRows()
     {
