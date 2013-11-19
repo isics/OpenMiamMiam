@@ -29,6 +29,11 @@ class ProducersTransfer
     protected $producersData;
 
     /**
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
      * @var array
      */
     protected $totalByProducers;
@@ -44,11 +49,12 @@ class ProducersTransfer
      * @param array $branchOccurrences
      * @param array $producersData
      */
-    public function __construct(array $branchOccurrences, array $producers, array $producersData)
+    public function __construct(array $branchOccurrences, array $producers, array $producersData, \DateTime $date)
     {
         $this->branchOccurrences = $branchOccurrences;
         $this->producers = $producers;
         $this->producersData = array();
+        $this->date = $date;
 
         foreach ($producersData as $producersDatum) {
             if (!array_key_exists($producersDatum['producer_id'], $this->producersData)) {
@@ -174,5 +180,15 @@ class ProducersTransfer
         }
 
         return null;
+    }
+
+    /**
+     * Returns Export DateTime
+     *
+     * @return DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

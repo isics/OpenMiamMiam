@@ -141,6 +141,6 @@ class AssociationManager
 
 
 
-        return new ProducersTransfer($branchOccurrences, $producers, $producersData);
+        return new ProducersTransfer($branchOccurrences, $producers, $producersData, $fromDate);
     }
 } 
