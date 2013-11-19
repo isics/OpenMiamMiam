@@ -79,7 +79,7 @@ class SendMailOrdersClosedCommand extends ContainerAwareCommand
             $nextBranchOccurrenceClosingDateTime = $branchOccurrenceManager->getOrdersClosingDateTimeForBranchOccurrence($nextBranchOccurrence);
 
             if ($nextBranchOccurrenceClosingDateTime > $closingDateTime && $nextBranchOccurrenceClosingDateTime <= $now){
-                $salesOrders = $salesOrderRepository->findBy(array('branchOccurrence' => $nextBranchOccurrence));
+                $salesOrders = $salesOrderRepository->findForBranchOccurrenceExcludingAnonymous($nextBranchOccurrence);
 
                 $output->writeln($translator->trans('mail.branch.orders_closed.log.branch_name', array(
                     '%branch_name%' => $branch->getName()
