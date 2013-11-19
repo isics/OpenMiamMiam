@@ -148,8 +148,17 @@ class SalesOrderManager
         $order->setZipcode($user->getZipcode());
         $order->setCity($user->getCity());
 
+        $associationHasProducerQueryBuilder = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer')
+            ->getForAssociationQueryBuilder($branchOccurrence->getBranch()->getAssociation());
+
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
+
+            $associationHasProducer = $associationHasProducerQueryBuilder
+                ->andWhere('ahp.producer = :producer')
+                ->setParameter('producer', $product->getProducer())
+                ->getQuery()
+                ->getOneOrNullResult();
 
             $orderRow = new SalesOrderRow();
             $orderRow->setProduct($product);
@@ -159,6 +168,7 @@ class SalesOrderManager
             $orderRow->setIsBio($product->getIsBio());
             $orderRow->setUnitPrice($product->getPrice());
             $orderRow->setQuantity($item->getQuantity());
+            $orderRow->setCommission($associationHasProducer->getCommission());
 
             $order->addSalesOrderRow($orderRow);
         }
