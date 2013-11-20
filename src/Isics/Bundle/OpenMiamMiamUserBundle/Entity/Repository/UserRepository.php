@@ -173,6 +173,8 @@ QUERY;
     /**
      * Returns query builder to find consumers without branch
      *
+     *  @param QueryBuilder $qb
+     * 
      * @return QueryBuilder
      */
     public function getConsumersWithoutBranchQueryBuilder(QueryBuilder $qb = null)
