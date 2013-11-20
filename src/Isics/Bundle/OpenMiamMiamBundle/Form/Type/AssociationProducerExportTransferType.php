@@ -17,9 +17,25 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AssociationProducerExportTransferType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    /**
+     * Constructor
+     *
+     * @param TranslatorInterface $translator Translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Builds the form
      *
@@ -33,9 +49,21 @@ class AssociationProducerExportTransferType extends AbstractType
         // Start at last month
         $date = new \DateTime('first day of previous month midnight');
 
+        $formatter = new \IntlDateFormatter(
+            \Locale::getDefault(),
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::NONE,
+            null,
+            null,
+            'MMMM Y'
+        );
+
         // Store last 12 previous months
         for ($i = 0 ; $i < 12 ; $i++) {
-            $choices[$date->format('Y-m')] = $date->format('F Y');
+            $choices[$date->format('Y-m')] = $this->translator->trans(
+                'admin.association.producers.list.export.choice',
+                array('%month%' => $formatter->format($date))
+            );
 
             $date->modify('first day of previous month midnight');
         }

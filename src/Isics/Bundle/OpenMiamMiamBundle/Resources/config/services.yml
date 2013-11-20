@@ -160,6 +160,7 @@ services:
 
     open_miam_miam.form.type.association_producer_export_transfer:
         class: %open_miam_miam.form.type.association_producer_export_transfer.class%
+        arguments: [@translator]
         tags:
             - { name: form.type, alias: open_miam_miam_association_producer_export_transfer }
 
