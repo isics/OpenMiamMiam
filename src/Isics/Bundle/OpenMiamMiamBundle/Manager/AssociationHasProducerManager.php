@@ -32,7 +32,7 @@ class AssociationHasProducerManager {
     }
 
     /**
-     * Returns products for association
+     * Returns producers for association
      *
      * @param Association $association
      *
@@ -44,7 +44,7 @@ class AssociationHasProducerManager {
             ->getForAssociationQueryBuilder($association)
             ->innerjoin('ahp.producer', 'p')
             ->addSelect('p')
-            ->innerJoin('p.branches', 'b')
+            ->leftJoin('p.branches', 'b')
             ->addSelect('b')
             ->addOrderBy('p.name', 'ASC')
             ->getQuery()
