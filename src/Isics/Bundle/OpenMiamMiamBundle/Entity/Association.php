@@ -542,7 +542,13 @@ class Association
      */
     public function addProducer(Producer $producer)
     {
-        $this->producers[] = $producer;
+        if (!$this->hasProducer($producer)) {
+            $associationHasProducer = new AssociationHasProducer();
+            $associationHasProducer->setAssociation($this);
+            $associationHasProducer->setProducer($producer);
+            $this->associationHasProducer->add($associationHasProducer);
+            $producer->getAssociationHasProducer()->add($associationHasProducer);
+        }
 
         return $this;
     }
@@ -554,7 +560,11 @@ class Association
      */
     public function removeProducer(Producer $producer)
     {
-        $this->producers->removeElement($producer);
+        if ($this->hasProducer($producer)) {
+            $this->getAssociationHasProducer()->removeElement(
+                $this->getAssociationHasProducerByProducer($producer)
+            );
+        }
     }
 
     /**
@@ -571,6 +581,39 @@ class Association
         }
 
         return $producers;
+    }
+
+    /**
+     * Get association has producer by producer
+     *
+     * @param Producer $producer
+     * @return null
+     */
+    public function getAssociationHasProducerByProducer(Producer $producer)
+    {
+        foreach($this->getAssociationHasProducer() as $associationHasProducer) {
+            if (null !==  $producer->getId()) {
+                if ($associationHasProducer->getProducer()->getId() === $producer->getId()) {
+                    return $associationHasProducer;
+                }
+            }
+            elseif ($associationHasProducer->getProducer() === $producer) {
+                return $associationHasProducer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns true if association has producer
+     *
+     * @param Producer $producer
+     * @return bool
+     */
+    public function hasProducer(Producer $producer)
+    {
+        return null !== $this->getAssociationHasProducerByProducer($producer);
     }
 
     /**

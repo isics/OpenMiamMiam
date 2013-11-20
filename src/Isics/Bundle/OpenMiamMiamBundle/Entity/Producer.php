@@ -467,6 +467,7 @@ class Producer
      * Set productRefCounter
      *
      * @param integer $productRefCounter
+     * 
      * @return Producer
      */
     public function setProductRefCounter($productRefCounter)
@@ -490,11 +491,18 @@ class Producer
      * Add association
      *
      * @param Association $association
+     *
      * @return Producer
      */
     public function addAssociation(Association $association)
     {
-        $this->associations[] = $association;
+        if (!$this->hasAssociation($association)) {
+            $associationHasProducer = new AssociationHasProducer();
+            $associationHasProducer->setAssociation($association);
+            $associationHasProducer->setProducer($this);
+            $this->getAssociationHasProducer()->add($associationHasProducer);
+            $association->getAssociationHasProducer()->add($associationHasProducer);
+        }
 
         return $this;
     }
@@ -506,7 +514,11 @@ class Producer
      */
     public function removeAssociation(Association $association)
     {
-        $this->associations->removeElement($association);
+        if ($this->hasAssociation($association)) {
+            $this->getAssociationHasProducer()->removeElement(
+                $this->getAssociationHasProducerByAssociation($association)
+            );
+        }
     }
 
     /**
@@ -526,21 +538,37 @@ class Producer
     }
 
     /**
-     * Returns true if producer has association
+     * Get association has producer by association
      *
      * @param Association $association
      *
+     * @return associationHasProducer|null
+     */
+    public function getAssociationHasProducerByAssociation(Association $association)
+    {
+        foreach($this->getAssociationHasProducer() as $associationHasProducer) {
+            if (null !==  $association->getId()) {
+                if ($associationHasProducer->getAssociation()->getId() === $association->getId()) {
+                    return $associationHasProducer;
+                }
+            }
+            elseif ($associationHasProducer->getAssociation() === $association) {
+                return $associationHasProducer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns true if producer has association
+     *
+     * @param Association $association
      * @return bool
      */
     public function hasAssociation(Association $association)
     {
-        foreach ($this->getAssociations() as $_association) {
-            if ($association->getId() == $_association->getId()) {
-                return true;
-            }
-        }
-
-        return false;
+        return null !== $this->getAssociationHasProducerByAssociation($association);
     }
 
     /**

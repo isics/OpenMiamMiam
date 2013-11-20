@@ -16,7 +16,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Isics\OpenMiamMiamBundle\Entity\AssociationHasProducer
  *
- * @ORM\Table(name="association_has_producer")
+ * @ORM\Table(
+ *     name="association_has_producer",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(columns={"producer_id", "association_id"})
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\AssociationHasProducerRepository")
  */
 class AssociationHasProducer
