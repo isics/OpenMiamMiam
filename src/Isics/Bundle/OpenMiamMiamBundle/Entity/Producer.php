@@ -516,7 +516,13 @@ class Producer
      */
     public function getAssociations()
     {
-        return $this->associations;
+        $associations = new ArrayCollection();
+
+        foreach($this->getAssociationHasProducer() as $associationHasProducer) {
+            $associations->add($associationHasProducer->getAssociation());
+        }
+
+        return $associations;
     }
 
     /**
