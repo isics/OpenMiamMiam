@@ -31,13 +31,13 @@ class RegistrationType extends BaseType
                 ->add('city', 'text')
                 ->add('phoneNumber', 'text', array('required' => false))
                 ->add('isOrdersOpenNotificationSubscriber', 'checkbox',
-                     array(
+                    array(
                         'required'  => false,
                         'data' => true
                     )
                 )
-                ->add('isNewsletterSubscriber', 'checkbox',
-                     array(
+                ->add('isNewsletterSubscriber', 'checkbox', 
+                    array(
                         'required'  => false,
                         'data' => true
                     )

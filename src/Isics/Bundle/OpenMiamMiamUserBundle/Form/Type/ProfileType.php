@@ -30,16 +30,8 @@ class ProfileType extends BaseType
                 ->add('zipcode', 'text')
                 ->add('city', 'text')
                 ->add('phoneNumber', 'text', array('required' => false))
-                ->add('isOrdersOpenNotificationSubscriber', 'checkbox',
-                     array(
-                        'required'  => false
-                    )
-                )
-                ->add('isNewsletterSubscriber', 'checkbox',
-                     array(
-                        'required'  => false
-                    )
-                )
+                ->add('isOrdersOpenNotificationSubscriber', 'checkbox', array('required'  => false))
+                ->add('isNewsletterSubscriber', 'checkbox', array('required'  => false))
                 ->remove('current_password')
                 ->remove('username')
                 ->remove('email');
