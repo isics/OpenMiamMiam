@@ -70,6 +70,15 @@ class LoadProductData extends AbstractFixture implements OrderedFixtureInterface
         $productManager->save($product);
 
         $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
+        $product->setName('Sugar');
+        $product->setCategory($this->getReference('Dairy produce'));
+        $product->setAllowDecimalQuantity(true);
+        $product->setPrice(1);
+        $product->setAvailability(Product::AVAILABILITY_ACCORDING_TO_STOCK);
+        $product->setStock(14);
+        $productManager->save($product);
+
+        $product = $productManager->createForProducer($this->getReference('Romeo Frigo'));
         $product->setName('Plain yoghurt ');
         $product->setCategory($this->getReference('Dairy produce'));
         $product->setPrice(.5);
