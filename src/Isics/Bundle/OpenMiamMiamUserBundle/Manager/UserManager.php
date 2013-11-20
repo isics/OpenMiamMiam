@@ -53,4 +53,17 @@ class UserManager
         return $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')
             ->findConsumersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
     }
+
+    /**
+     * Find mail orders open subscribers for branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return array Subscribers
+     */
+    public function findMailOrdersOpenSubscribersForBranches($branches)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')
+            ->findMailOrdersOpenSubscribersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
+    }
 }

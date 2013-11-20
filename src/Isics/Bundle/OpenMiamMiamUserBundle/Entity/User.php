@@ -82,7 +82,19 @@ class User extends BaseUser
      */
     private $subscriptions;
 
+    /**
+     * @var boolean $isOrdersOpenNotificationSubscriber
+     *
+     * @ORM\Column(name="isOrdersOpenNotificationSubscriber", type="boolean", nullable=true)
+     */
+    private $isOrdersOpenNotificationSubscriber;
 
+    /**
+     * @var boolean $isNewsletterSubscriber
+     *
+     * @ORM\Column(name="isNewsletterSubscriber", type="boolean", nullable=true)
+     */
+    private $isNewsletterSubscriber;
 
     /**
      * Sets address line 1
@@ -233,6 +245,46 @@ class User extends BaseUser
     public function getSubscriptions()
     {
         return $this->subscriptions;
+    }
+
+    /**
+     * Sets isOrdersOpenNotificationSubscriber
+     *
+     * @param boolean $isOrdersOpenNotificationSubscriber
+     */
+    public function setIsOrdersOpenNotificationSubscriber($isOrdersOpenNotificationSubscriber)
+    {
+        $this->isOrdersOpenNotificationSubscriber = $isOrdersOpenNotificationSubscriber;
+    }
+
+    /**
+     * Returns isOrdersOpenNotificationSubscriber
+     *
+     * @return boolean
+     */
+    public function getIsOrdersOpenNotificationSubscriber()
+    {
+        return $this->isOrdersOpenNotificationSubscriber;
+    }
+
+    /**
+     * Sets isNewsletterSubscriber
+     *
+     * @param boolean $isNewsletterSubscriber
+     */
+    public function setIsNewsletterSubscriber($isNewsletterSubscriber)
+    {
+        $this->isNewsletterSubscriber = $isNewsletterSubscriber;
+    }
+
+    /**
+     * Returns isNewsletterSubscriber
+     *
+     * @return boolean
+     */
+    public function getIsNewsletterSubscriber()
+    {
+        return $this->isNewsletterSubscriber;
     }
 
     /**

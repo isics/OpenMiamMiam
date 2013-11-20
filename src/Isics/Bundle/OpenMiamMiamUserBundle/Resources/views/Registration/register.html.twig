@@ -46,6 +46,9 @@
                             </div>
                         </div>
                         {{ form_row(form.phoneNumber, {'label': 'user.register.phone_number', 'label_as_placeholder': true}) }}
+
+                        {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'user.register.is_orders_open_notification_subscriber'}) }}
+                        {{ form_row(form.isNewsletterSubscriber, {'label': 'user.register.is_newsletter_subscriber'}) }}
                     </div>
                     <div class="panel-footer text-right">
                         <a href="{{ path('open_miam_miam.homepage') }}" class="btn btn-default btn-lg">

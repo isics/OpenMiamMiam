@@ -150,6 +150,30 @@ QUERY;
     }
 
     /**
+     * Returns query builder to find mail orders open subscribers for branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return QueryBuilder
+     */
+    public function getMailOrdersOpenSubscribersForBranchesQueryBuilder($branches)
+    {
+        return $this->filterMailOrdersOpenSubscribersForBranches($branches);
+    }
+
+    /**
+     * Returns query builder to find newsletter subscribers of branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return QueryBuilder
+     */
+    public function getNewsletterSubscribersForBranchesQueryBuilder($branches)
+    {
+        return $this->filterNewsletterSubscribersForBranches($branches);
+    }
+
+    /**
      * Returns query builder to find consumers without branch
      *
      * @return QueryBuilder
@@ -157,6 +181,16 @@ QUERY;
     public function getConsumersWithoutBranchQueryBuilder()
     {
         return $this->filterConsumersWithoutOrder();
+    }
+
+    /**
+     * Returns query builder to find newsletter subscribers without branch
+     *
+     * @return QueryBuilder
+     */
+    public function getNewsletterSubscribersWithoutBranchQueryBuilder()
+    {
+        return $this->filterNewsletterSubscribersWithoutOrder();
     }
 
     /**
@@ -185,6 +219,56 @@ QUERY;
     }
 
     /**
+     * Returns mail orders open subscribers for branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param int $lastOrderNbDaysConsideringCustomer
+     *
+     * @return array Subscribers
+     */
+    public function findMailOrdersOpenSubscribersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
+    {
+        $mailOrdersOpenSubscribersForBranchesQueryBuilder = $this->getMailOrdersOpenSubscribersForBranchesQueryBuilder($branches);
+
+        if (null !== $lastOrderNbDaysConsideringCustomer) {
+            $now = new \DateTime();
+            $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
+            $mailOrdersOpenSubscribersForBranchesQueryBuilder
+                ->where('s.date > :from')
+                ->andWhere('s.date < :to')
+                ->setParameter('from', $begin)
+                ->setParameter('to', $now);
+        }
+
+        return $mailOrdersOpenSubscribersForBranchesQueryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * Returns newsletter subscribers for branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param int $lastOrderNbDaysConsideringCustomer
+     *
+     * @return array Subscribers
+     */
+    public function findNewsletterSubscribersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
+    {
+        $newsletterSubscribersForBranchesQueryBuilder = $this->getNewsletterSubscribersForBranchesQueryBuilder($branches);
+
+        if (null !== $lastOrderNbDaysConsideringCustomer) {
+            $now = new \DateTime();
+            $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
+            $newsletterSubscribersForBranchesQueryBuilder
+                ->where('s.date > :from')
+                ->andWhere('s.date < :to')
+                ->setParameter('from', $begin)
+                ->setParameter('to', $now);
+        }
+
+        return $newsletterSubscribersForBranchesQueryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * Returns consumers without branch
      *
      * @param \Doctrine\Common\Collections\Collection $branches
@@ -194,6 +278,20 @@ QUERY;
     public function findConsumersWithoutBranch()
     {
         return $this->getConsumersWithoutBranchQueryBuilder()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns newsletter subscribers without branch
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     *
+     * @return array Consumers
+     */
+    public function findNewsletterSubscribersWithoutBranch()
+    {
+        return $this->getNewsletterSubscribersWithoutBranchQueryBuilder()
             ->getQuery()
             ->getResult();
     }
@@ -221,6 +319,52 @@ QUERY;
     }
 
     /**
+     * Filters mail order open subscribers of branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param QueryBuilder                            $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterMailOrdersOpenSubscribersForBranches($branches, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        $branchesIds = array();
+        foreach ($branches as $branch) {
+            $branchesIds[] = $branch->getId();
+        }
+
+        return $qb->join('u.salesOrders', 's')
+            ->join('s.branchOccurrence', 'bo')
+            ->join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->in('b.id', $branchesIds))
+            ->where('u.isOrdersOpenNotificationSubscriber = true');
+    }
+
+    /**
+     * Filters newsletter subscribers of branches
+     *
+     * @param \Doctrine\Common\Collections\Collection $branches
+     * @param QueryBuilder                            $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterNewsletterSubscribersForBranches($branches, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        $branchesIds = array();
+        foreach ($branches as $branch) {
+            $branchesIds[] = $branch->getId();
+        }
+
+        return $qb->join('u.salesOrders', 's')
+            ->join('s.branchOccurrence', 'bo')
+            ->join('bo.branch', 'b', Expr\Join::WITH, $qb->expr()->in('b.id', $branchesIds))
+            ->where('u.isNewsletterSubscriber = true');
+    }
+
+    /**
      * Filters consumers without order/branch
      *
      * @param QueryBuilder $qb
@@ -233,5 +377,21 @@ QUERY;
 
         return $qb->leftJoin('u.salesOrders', 's')
             ->andWhere('s.id IS NULL');
+    }
+
+    /**
+     * Filters newsletter subscribers without order/branch
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    public function filterNewsletterSubscribersWithoutOrder(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        return $qb->leftJoin('u.salesOrders', 's')
+            ->andWhere('s.id IS NULL')
+            ->andWhere('u.isNewsletterSubscriber = true');
     }
 }
