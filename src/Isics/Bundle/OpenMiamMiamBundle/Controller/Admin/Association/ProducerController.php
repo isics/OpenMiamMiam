@@ -79,7 +79,7 @@ class ProducerController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add('notice', 'admin.association.producer.message.updated');
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.producers.message.updated');
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.association.producer.list',

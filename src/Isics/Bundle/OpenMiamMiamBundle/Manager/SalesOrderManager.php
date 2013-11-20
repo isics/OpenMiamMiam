@@ -168,7 +168,7 @@ class SalesOrderManager
             $orderRow->setIsBio($product->getIsBio());
             $orderRow->setUnitPrice($product->getPrice());
             $orderRow->setQuantity($item->getQuantity());
-            $orderRow->setCommission($associationHasProducer->getCommission());
+            $orderRow->setCommission($associationHasProducer->getInheritedOrDefinedCommission());
 
             $order->addSalesOrderRow($orderRow);
         }

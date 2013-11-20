@@ -23,7 +23,7 @@ class AssociationHasProducerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('commission', 'number', array('precision' => 2))
+        $builder->add('commission', 'number', array('precision' => 2, 'required' => false))
             ->add('producer', new ProducerHasBranchType())
             ->add('save', 'submit');
     }

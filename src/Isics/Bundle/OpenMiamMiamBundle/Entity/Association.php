@@ -134,7 +134,7 @@ class Association
    /**
      * @var float $defaultCommission
      *
-     * @ORM\Column(name="default_commission", type="decimal", precision=5, scale=2, nullable=true)
+     * @ORM\Column(name="default_commission", type="decimal", precision=5, scale=2, nullable=false)
      */
     private $defaultCommission;
 

@@ -53,7 +53,7 @@ class AssociationHasProducer
     /**
      * @var float $commission
      *
-     * @ORM\Column(name="commission", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="commission", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $commission;
 
@@ -138,5 +138,19 @@ class AssociationHasProducer
     public function getCommission()
     {
         return $this->commission;
+    }
+
+    /**
+     * Get commission on relation or default association commission if null
+     *
+     * @return int
+     */
+    public function getInheritedOrDefinedCommission()
+    {
+        if (null === $this->getCommission()) {
+            return $this->getAssociation()->getDefaultCommission();
+        }
+
+        return $this->getCommission();
     }
 }

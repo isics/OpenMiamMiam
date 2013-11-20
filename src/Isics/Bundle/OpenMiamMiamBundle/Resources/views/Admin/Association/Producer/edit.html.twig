@@ -18,6 +18,11 @@
             {{ form_errors(form.commission) }}
             {{ form_label(form.commission) }}
             {{ form_widget(form.commission) }}
+            <p class="help-block">
+                {{ 'admin.association.producers.form.commission.helper'|trans({
+                    '%default_commission%': associationHasProducer.association.defaultCommission
+                }) }}
+            </p>
         </div>
 
         <div class="row-fluid control-group">

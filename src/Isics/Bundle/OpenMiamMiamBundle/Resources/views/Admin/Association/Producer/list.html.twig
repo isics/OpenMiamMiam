@@ -39,8 +39,12 @@
                 <tbody>
                 {% for associationHasProducer in associationHasProducers %}
                     <tr>
-                        <td>{{ associationHasProducer.producer.name }}</td>
-                        <td>{{ associationHasProducer.commission }} %</td>
+                        <td>
+                            <a href="{{ path('open_miam_miam.admin.association.producer.edit', {'associationId': associationHasProducer.association.id, 'producerId': associationHasProducer.producer.id}) }}" title="{{ 'admin.association.producers.list.edit'|trans }}">
+                                {{ associationHasProducer.producer.name }}
+                            </a>
+                        </td>
+                        <td>{{ associationHasProducer.getInheritedOrDefinedCommission }} %</td>
                         {% for branch in branches %}
                             <td>
                                 {% if branch in associationHasProducer.producer.branches %}
@@ -49,7 +53,7 @@
                             </td>
                         {% endfor %}
                         <td>
-                            <a href="{{ path('open_miam_miam.admin.association.producer.edit', {'associationId': associationHasProducer.association.id, 'producerId': associationHasProducer.producer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.producer.list.edit'|trans }}">
+                            <a href="{{ path('open_miam_miam.admin.association.producer.edit', {'associationId': associationHasProducer.association.id, 'producerId': associationHasProducer.producer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.producers.list.edit'|trans }}">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a>
                         </td>
