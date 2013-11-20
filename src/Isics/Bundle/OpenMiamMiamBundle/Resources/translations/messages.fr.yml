@@ -263,6 +263,7 @@ admin.association.producers.list.name:              "Nom"
 admin.association.producers.list.commission:        "Commission"
 admin.association.producers.edit.title:             "Editer le producteur %producer_name%"
 admin.association.producers.message.updated:        "Le producteur a bien été mis à jour."
+admin.association.producers.form.branches:          "Comptoirs"
 admin.association.producers.form.commission.helper: "Laissez ce champ vide pour garder la commission par défaut (%default_commission% %)"
 
 # Admin / Association / Consumer
