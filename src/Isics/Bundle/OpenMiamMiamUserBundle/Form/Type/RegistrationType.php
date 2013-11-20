@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamUserBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,19 +23,20 @@ use Symfony\Component\Validator\Constraints\True;
 class RegistrationType extends BaseType implements EventSubscriberInterface
 {
 
-    private $class;
-
-    private $termsOfService;
+    /**
+     * @var $termsOfServiceExtension
+     */
+    private $termsOfServiceExtension;
 
     /**
-     * @param string $class          The User class name
-     * @param string $termsOfService TermsOfServiceExtension service name
+     * @param string $class
+     * @param TermsOfServiceExtension $termsOfServiceExtension
      */
-    public function __construct($class, $termsOfService)
+    public function __construct($class, TermsOfServiceExtension $termsOfServiceExtension)
     {
         parent::__construct($class);
 
-        $this->termsOfService = $termsOfService;
+        $this->termsOfServiceExtension = $termsOfServiceExtension;
     }
 
     /**
@@ -68,12 +70,12 @@ class RegistrationType extends BaseType implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        if($this->termsOfService->hasTermsOfService()) {
+        if($this->termsOfServiceExtension->hasTermsOfService()) {
             $form->add("termsOfService", "checkbox", array(
                 'mapped' => false,
                 'constraints' => array(
-                    new True(array('message' => 'user.register.error.terms_of_service' )
-                ))  
+                    new True(array('message' => 'user.register.error.terms_of_service'))
+                )  
             )); 
         } 
     }

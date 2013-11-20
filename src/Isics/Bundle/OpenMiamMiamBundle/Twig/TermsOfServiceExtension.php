@@ -22,11 +22,9 @@ class TermsOfServiceExtension extends \Twig_Extension
      * Constructor
      *
      * @param string $termsOfServiceUrl
-     * 
      */
     public function __construct($termsOfServiceUrl)
     {
-
         $this->termsOfServiceUrl = $termsOfServiceUrl;
     }
 
@@ -44,18 +42,13 @@ class TermsOfServiceExtension extends \Twig_Extension
     }
 
     /**
-     * Returns if terms of service is null or not
+     * Return true if terms of service are enabled
      *
      * @return boolean
      */
     public function hasTermsOfService()
     {
-        if($this->termsOfServiceUrl != null){
-            return true;
-        }   
-        else{
-            return false;
-        }    
+        return null !== $this->termsOfServiceUrl; 
     }
 
     /**
