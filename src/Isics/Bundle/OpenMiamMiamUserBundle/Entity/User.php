@@ -85,14 +85,14 @@ class User extends BaseUser
     /**
      * @var boolean $isOrdersOpenNotificationSubscriber
      *
-     * @ORM\Column(name="isOrdersOpenNotificationSubscriber", type="boolean", nullable=true)
+     * @ORM\Column(name="isOrdersOpenNotificationSubscriber", type="boolean", nullable=false, options={"default":1})
      */
     private $isOrdersOpenNotificationSubscriber;
 
     /**
      * @var boolean $isNewsletterSubscriber
      *
-     * @ORM\Column(name="isNewsletterSubscriber", type="boolean", nullable=true)
+     * @ORM\Column(name="isNewsletterSubscriber", type="boolean", nullable=false, options={"default":1})
      */
     private $isNewsletterSubscriber;
 
