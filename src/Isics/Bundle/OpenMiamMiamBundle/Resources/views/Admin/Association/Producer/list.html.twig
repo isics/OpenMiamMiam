@@ -10,16 +10,22 @@
 {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
 {% block content %}
-    <div class="pull-right association-producer-export-form">
-        {{ form_start(form) }}
-            {{ form_errors(form.month) }}
-            {{ form_widget(form.month) }}
-
-            {{ form_widget(form.export, {'attr': {'class': 'btn btn-primary'}}) }}
-        {{ form_end(form) }}
-    </div>
-
     <h1>{{ 'admin.association.producers.list.title'|trans }}</h1>
+
+    <p>
+        {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            <div class="form-group">
+                {{ form_errors(form.month) }}
+                {{ form_widget(form.month) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary" />
+                <span class="glyphicon glyphicon-open"></span>
+                {{ 'admin.association.producers.list.export'|trans }}
+            </button>
+            {% do form.export.setRendered %}
+        {{ form_end(form) }}
+    </p>
 
     {% if associationHasProducers|length == 0 %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.producers.list.no_producer'|trans} %}
