@@ -119,11 +119,11 @@ class Producer
     private $productRefCounter;
 
     /**
-     * @var Doctrine\Common\Collections\Collection $associations
+     * @var Doctrine\Common\Collections\Collection $associationHasProducer
      *
-     * @ORM\ManyToMany(targetEntity="Association", mappedBy="producers")
+     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="producer")
      */
-    private $associations;
+    private $associationHasProducer;
 
     /**
      * @var Doctrine\Common\Collections\Collection $branches
@@ -173,6 +173,13 @@ class Producer
      */
     private $deletePresentationImage;
 
+    /**
+     * @var Doctrine\Common\Collections\Collection $salesOrderRows
+     *
+     * @ORM\OneToMany(targetEntity="SalesOrderRow", mappedBy="producer")
+     */
+    private $salesOrderRows;
+
 
     /**
      * Constructor
@@ -181,7 +188,8 @@ class Producer
     {
         $this->productRefCounter = 0;
 
-        $this->associations = new ArrayCollection();
+        $this->salesOrderRows = new ArrayCollection();
+        $this->associationHasProducer = new ArrayCollection();
         $this->branches = new ArrayCollection();
         $this->deleteProfileImage = false;
         $this->deletePresentationImage = false;
@@ -678,6 +686,7 @@ class Producer
     public function addBranch(Branch $branch)
     {
         $this->branches[] = $branch;
+        $branch->addProducer($this);
 
         return $this;
     }
@@ -708,6 +717,7 @@ class Producer
     public function removeBranch(Branch $branch)
     {
         $this->branches->removeElement($branch);
+        $branch->removeProducer($this);
     }
 
     /**
@@ -751,5 +761,47 @@ class Producer
     public function getProducerAttendances()
     {
         return $this->producerAttendances;
+    }
+
+    /**
+     * Set association_has_producer
+     *
+     * @param \Doctrine\Common\Collections\Collection $associationHasProducer
+     */
+    public function setAssociationHasProducer($associationHasProducer)
+    {
+        $this->associationHasProducer = $associationHasProducer;
+
+        return $this;
+    }
+
+    /**
+     * Get association_has_producer
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAssociationHasProducer()
+    {
+        return $this->associationHasProducer;
+    }
+
+    /**
+     * Set sales_order_rows
+     *
+     * @param \Doctrine\Common\Collections\Collection $salesOrderRows
+     */
+    public function setSalesOrderRows($salesOrderRows)
+    {
+        $this->salesOrderRows = $salesOrderRows;
+    }
+
+    /**
+     * Get sales_order_rows
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSalesOrderRows()
+    {
+        return $this->salesOrderRows;
     }
 }

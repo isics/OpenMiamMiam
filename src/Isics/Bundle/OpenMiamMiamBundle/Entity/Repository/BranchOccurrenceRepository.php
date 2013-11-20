@@ -20,6 +20,34 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 class BranchOccurrenceRepository extends EntityRepository
 {
     /**
+     * Return branch occurrences between $fromDate and $toDate for association $association
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Association $association
+     * @param \DateTime                                           $fromDate
+     * @param \DateTime                                           $toDate
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return array
+     */
+    public function findForAssociationByDateRange(Association $association, \DateTime $fromDate, \DateTime $toDate)
+    {
+        if ($fromDate > $toDate) {
+            throw new \InvalidArgumentException('$fromDate must be smaller than $toDate.');
+        }
+
+        return $this->createQueryBuilder('bo')
+            ->innerJoin('bo.branch', 'b')
+            ->where('bo.end BETWEEN :from AND :to')
+            ->andWhere('b.association = :association')
+            ->setParameter('from', $fromDate)
+            ->setParameter('to', $toDate)
+            ->setParameter('association', $association)
+            ->orderBy('bo.end')
+            ->getQuery()
+            ->getResult();
+    }
+    /**
      * Finds next occurrence for a branch which is not closed
      *
      * @param Branch $branch Branch

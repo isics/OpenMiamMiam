@@ -158,6 +158,19 @@ open_miam_miam.admin.association.branch.delete:
     pattern:  /associations/{id}/branches/{branchId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:delete }
 
+open_miam_miam.admin.association.producer.list:
+    pattern:  /associations/{id}/producers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:list }
+
+open_miam_miam.admin.association.producer.edit:
+    pattern:  /associations/{associationId}/producers/{producerId}/edit
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:edit }
+
+open_miam_miam.admin.association.producer.export:
+    pattern:  /associations/{id}/producers/export
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:export }
+    #methods: [POST]
+
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }

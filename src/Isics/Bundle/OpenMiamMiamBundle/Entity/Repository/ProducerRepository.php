@@ -229,4 +229,17 @@ class ProducerRepository extends EntityRepository
                 ->setParameter('associationId', $association->getId())
                 ->addOrderBy('p.name', 'ASC');
     }
+
+    /**
+     * Return query builder to find all sales order row
+     *
+     * @return QueryBuilder
+     */
+    public function getForTransferExportQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('p');
+        return $qb->innerJoin('p.salesOrderRows', 'sor')
+            ->innerJoin('sor.salesOrder', 'so')
+            ->innerJoin('so.branchOccurrence', 'bo');
+    }
 }

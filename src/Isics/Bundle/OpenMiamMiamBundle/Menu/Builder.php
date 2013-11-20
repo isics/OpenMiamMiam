@@ -154,6 +154,11 @@ class Builder
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.association.menu.consumers')),
         ));
+        $menu[$menuName]->addChild('Producers', array(
+            'route'           => 'open_miam_miam.admin.association.producer.list',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.association.menu.producers')),
+        ));
         $menu[$menuName]->addChild('News', array(
             'route'           => 'open_miam_miam.admin.association.article.list',
             'routeParameters' => array('id' => $association->getId()),

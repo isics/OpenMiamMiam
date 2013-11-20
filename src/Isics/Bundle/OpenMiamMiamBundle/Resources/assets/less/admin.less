@@ -22,6 +22,12 @@ h1 {
     font-style: italic;
 }
 
+.form-horizontal {
+    .control-group {
+        margin-bottom: 20px;
+    }
+}
+
 //
 // Total
 //
@@ -179,6 +185,34 @@ h1 {
     }
 }
 
+//
+// Association / Producer
+//
+.table-association-producers {
+    td {
+        vertical-align: middle !important;
+    }
+
+    th:nth-child(n+2),
+    td:nth-child(n+2) {
+        text-align: center;
+    }
+}
+
+.association-producer-export-form {
+    select,
+    button {
+        float: left;
+    }
+
+    select {
+        width: auto;
+    }
+
+    button {
+        margin-left: 1em;
+    }
+}
 
 //
 // Association / Products

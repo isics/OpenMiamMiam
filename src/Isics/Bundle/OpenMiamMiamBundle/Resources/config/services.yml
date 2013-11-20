@@ -17,33 +17,38 @@ parameters:
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
     open_miam_miam.payment_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentValidator'
 
-    open_miam_miam.activity_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
-    open_miam_miam.branch_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchManager'
-    open_miam_miam.branch_occurrence_manager.class:       'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
-    open_miam_miam.cart_manager.class:                    'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
-    open_miam_miam.category_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\CategoryManager'
-    open_miam_miam.consumer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
-    open_miam_miam.admin_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
-    open_miam_miam.acl_manager.class:                     'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
-    open_miam_miam.article_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ArticleManager'
-    open_miam_miam.product_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
-    open_miam_miam.producer_manager.class:                'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager'
-    open_miam_miam.producer_attendances_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
-    open_miam_miam.sales_order_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
-    open_miam_miam.producer_sales_order_manager.class:    'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
-    open_miam_miam.payment_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager'
-    open_miam_miam.newsletter_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
+    open_miam_miam.activity_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
+    open_miam_miam.branch_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchManager'
+    open_miam_miam.branch_occurrence_manager.class:        'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager'
+    open_miam_miam.cart_manager.class:                     'Isics\Bundle\OpenMiamMiamBundle\Manager\CartManager'
+    open_miam_miam.category_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\CategoryManager'
+    open_miam_miam.consumer_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager'
+    open_miam_miam.admin_manager.class:                    'Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager'
+    open_miam_miam.acl_manager.class:                      'Isics\Bundle\OpenMiamMiamBundle\Manager\AclManager'
+    open_miam_miam.article_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\ArticleManager'
+    open_miam_miam.product_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager'
+    open_miam_miam.association_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\AssociationManager'
+    open_miam_miam.association_has_producer_manager.class: 'Isics\Bundle\OpenMiamMiamBundle\Manager\AssociationHasProducerManager'
+    open_miam_miam.producer_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager'
+    open_miam_miam.producer_attendances_manager.class:     'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerAttendancesManager'
+    open_miam_miam.sales_order_manager.class:              'Isics\Bundle\OpenMiamMiamBundle\Manager\SalesOrderManager'
+    open_miam_miam.producer_sales_order_manager.class:     'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
+    open_miam_miam.payment_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager'
+    open_miam_miam.newsletter_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
     open_miam_miam.form.type.hidden_product.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
     open_miam_miam.form.type.association_article.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationArticleType'
+    open_miam_miam.form.type.association_has_producer.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationHasProducerType'
+    open_miam_miam.form.type.association_producer_export_transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationProducerExportTransferType'
     open_miam_miam.form.type.branch.class:                                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\BranchType'
     open_miam_miam.form.type.branch_occurrence.class:                     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\BranchOccurrenceType'
     open_miam_miam.form.type.category.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CategoryType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
+    open_miam_miam.form.type.producer_has_branch.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerHasBranchType'
     open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
     open_miam_miam.form.type.producer_branch_attendances.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchAttendancesType'
     open_miam_miam.form.type.producer_branch_occurrence_attendance.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchOccurrenceAttendanceType'
@@ -61,11 +66,14 @@ parameters:
     open_miam_miam.form.type.products_filter.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductsFilterType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
+    open_miam_miam.phpexcel.class:                  PHPExcel
     open_miam_miam.tcpdf.class:                     TCPDF
     open_miam_miam.sales_orders_pdf.class:          'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
     open_miam_miam.producer_sales_orders_pdf.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersPdf'
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
     open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
+
+    open_miam_miam.association.producer.transfer.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
 
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
@@ -137,6 +145,17 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_association_article }
 
+    open_miam_miam.form.type.association_has_producer:
+        class: %open_miam_miam.form.type.association_has_producer.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_association_has_producer }
+
+    open_miam_miam.form.type.association_producer_export_transfer:
+        class: %open_miam_miam.form.type.association_producer_export_transfer.class%
+        arguments: [@translator]
+        tags:
+            - { name: form.type, alias: open_miam_miam_association_producer_export_transfer }
+
     open_miam_miam.form.type.branch:
         class: %open_miam_miam.form.type.branch.class%
         tags:
@@ -178,6 +197,11 @@ services:
         class: %open_miam_miam.form.type.producer.class%
         tags:
             - { name: form.type, alias: open_miam_miam_producer }
+
+    open_miam_miam.form.type.producer_has_branch:
+        class: %open_miam_miam.form.type.producer_has_branch.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_producer_has_branch }
 
     open_miam_miam.form.type.producer_attendances:
         class: %open_miam_miam.form.type.producer_attendances.class%
@@ -325,6 +349,14 @@ services:
         class: %open_miam_miam.product_manager.class%
         arguments: [%open_miam_miam.product%, @doctrine.orm.entity_manager, @kernel, @open_miam_miam.activity_manager]
 
+    open_miam_miam.association_manager:
+        class: %open_miam_miam.association_manager.class%
+        arguments: [@doctrine.orm.entity_manager]
+
+    open_miam_miam.association_has_producer_manager:
+        class: %open_miam_miam.association_has_producer_manager.class%
+        arguments: [@doctrine.orm.entity_manager]
+
     open_miam_miam.producer_manager:
         class: %open_miam_miam.producer_manager.class%
         arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel]
@@ -363,6 +395,11 @@ services:
         class:     %open_miam_miam.sales_order_statistics.class%
         arguments: [@doctrine.orm.entity_manager]
 
+    open_miam_miam.phpexcel:
+        class: %open_miam_miam.phpexcel.class%
+        scope: prototype
+        public: false
+
     open_miam_miam.tcpdf:
         class: %open_miam_miam.tcpdf.class%
         scope: prototype
@@ -387,6 +424,13 @@ services:
         class:     %open_miam_miam.mailer.class%
         arguments: [@mailer, %open_miam_miam.mailer%, @templating, @translator]
 
+    open_miam_miam.association.producer.transfer:
+        class:     %open_miam_miam.association.producer.transfer.class%
+        arguments:
+            - @open_miam_miam.phpexcel
+            - @translator
+            - %open_miam_miam.currency%
+        scope: prototype
 
     # Workflows
     open_miam_miam.sales_order_workflow:

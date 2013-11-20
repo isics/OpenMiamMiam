@@ -33,7 +33,8 @@
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/symfony": "2.3.*",
         "twig/extensions": "1.0.*",
-        "tecnick.com/tcpdf": "dev-master"
+        "tecnick.com/tcpdf": "dev-master",
+        "phpoffice/phpexcel": "1.7.9"
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable",

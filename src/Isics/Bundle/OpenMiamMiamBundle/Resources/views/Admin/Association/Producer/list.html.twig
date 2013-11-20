@@ -1,0 +1,74 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
+{% block content %}
+    <h1>
+        {{ 'admin.association.producers.list.title'|transchoice(associationHasProducers|length, {'%nb%': associationHasProducers|length}) }}
+    </h1>
+
+    <p>
+        {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            <div class="form-group">
+                {{ form_errors(form.month) }}
+                {{ form_widget(form.month) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary" />
+                <span class="glyphicon glyphicon-open"></span>
+                {{ 'admin.association.producers.list.export'|trans }}
+            </button>
+            {% do form.export.setRendered %}
+        {{ form_end(form) }}
+    </p>
+
+    {% if associationHasProducers|length == 0 %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.producers.list.no_producer'|trans} %}
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-association-producers">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.association.producers.list.name'|trans }}</th>
+                        <th>{{ 'admin.association.producers.list.commission'|trans }}</th>
+                        {% for branch in branches %}
+                            <th>{{ branch.name }}</th>
+                        {% endfor %}
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for associationHasProducer in associationHasProducers %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('open_miam_miam.admin.association.producer.edit', {'associationId': associationHasProducer.association.id, 'producerId': associationHasProducer.producer.id}) }}" title="{{ 'admin.association.producers.list.edit'|trans }}">
+                                {{ associationHasProducer.producer.name }}
+                            </a>
+                        </td>
+                        <td>{{ associationHasProducer.getInheritedOrDefinedCommission }} %</td>
+                        {% for branch in branches %}
+                            <td>
+                                {% if branch in associationHasProducer.producer.branches %}
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                        <td>
+                            <a href="{{ path('open_miam_miam.admin.association.producer.edit', {'associationId': associationHasProducer.association.id, 'producerId': associationHasProducer.producer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.producers.list.edit'|trans }}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
