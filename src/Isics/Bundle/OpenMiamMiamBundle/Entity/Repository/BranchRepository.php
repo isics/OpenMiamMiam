@@ -30,7 +30,7 @@ class BranchRepository extends EntityRepository
     {
         return $this->filterAssociation($association)
             ->addSelect('COUNT(p.id) AS nbProducers')
-            ->join('b.producers', 'p')
+            ->leftJoin('b.producers', 'p')
             ->groupBy('b.id')
             ->orderBy('b.name');
     }
