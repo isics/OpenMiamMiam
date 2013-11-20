@@ -287,7 +287,7 @@ QUERY;
      *
      * @param \Doctrine\Common\Collections\Collection $branches
      *
-     * @return array Consumers
+     * @return array Subscriber
      */
     public function findNewsletterSubscribersWithoutBranch()
     {
