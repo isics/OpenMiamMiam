@@ -194,7 +194,7 @@ class TransferExcel
             'A'.(string)$currentLine
         )->applyFromArray(array_merge($borderStyle, $boldStyle));
 
-        // Branch occurrence total
+        // Current column number of branch occurence
         $branchOccurrenceNumber = 1;
 
         foreach ($producersTransfer->getBranchOccurrences() as $branchOccurrence) {
@@ -217,9 +217,9 @@ class TransferExcel
             ++$branchOccurrenceNumber;
         }
 
-        // total
+        // producer total
         $sheet->setCellValue(
-            $this->getColumnNameForNumber($branchOccurrenceNumber).(string)($columnNumber+1),
+            $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
             $formatter->formatCurrency(array_sum($producersTransfer->getTotalByProducers()),$this->currency)
         );
 
