@@ -167,7 +167,6 @@ QUERY;
                 ->setParameter('from', $begin)
                 ->setParameter('to', $now);
         }
-
         return $qb;
     }
 
