@@ -10,7 +10,9 @@
 {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
 {% block content %}
-    <h1>{{ 'admin.association.producers.list.title'|trans }}</h1>
+    <h1>
+        {{ 'admin.association.producers.list.title'|transchoice(associationHasProducers|length, {'%nb%': associationHasProducers|length}) }}
+    </h1>
 
     <p>
         {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
