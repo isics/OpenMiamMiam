@@ -26,20 +26,20 @@ user.register.confirmed.body_html:   |
 user.register.confirmed.next:                         "Continuer"
 
 # User / edit
-user.edit.title:                 "Mes infos"
-user.edit.firstname:             "Prénom"
-user.edit.lastname:              "Nom"
-user.edit.email:                 "Adresse e-mail"
-user.edit.address1:              "Adresse"
-user.edit.address2:              "Complément"
-user.edit.zipcode:               "Code postal"
-user.edit.city:                  "Ville"
-user.edit.phone_number:          "Téléphone"
-user.edit.is_orders_open_notification_subscriber:          "Je souhaite recevoir un rappel à l'ouverture d'un comptoir"
+user.edit.title:                                   "Mes infos"
+user.edit.firstname:                               "Prénom"
+user.edit.lastname:                                "Nom"
+user.edit.email:                                   "Adresse e-mail"
+user.edit.address1:                                "Adresse"
+user.edit.address2:                                "Complément"
+user.edit.zipcode:                                 "Code postal"
+user.edit.city:                                    "Ville"
+user.edit.phone_number:                            "Téléphone"
+user.edit.is_orders_open_notification_subscriber:  "Je souhaite recevoir un rappel à l'ouverture d'un comptoir"
 user.edit.is_newsletter_subscriber:                "Je souhaite recevoir la newsletter"
-user.edit.cancel:                "Annuler"
-user.edit.submit:                "Mettre à jour"
-user.edit.confirmed.title:       "Bienvenue %firstname% !"
+user.edit.cancel:                                  "Annuler"
+user.edit.submit:                                  "Mettre à jour"
+user.edit.confirmed.title:                         "Bienvenue %firstname% !"
 user.edit.confirmed.body_html:   |
     <p>Votre compte a bien été créé.<p>
 
