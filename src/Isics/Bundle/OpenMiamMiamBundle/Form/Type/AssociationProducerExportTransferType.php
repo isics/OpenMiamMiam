@@ -47,7 +47,7 @@ class AssociationProducerExportTransferType extends AbstractType
         $choices = array();
 
         // Start at last month
-        $date = new \DateTime('first day of previous month midnight');
+        $date = new \DateTime('first day of this month midnight');
 
         $formatter = new \IntlDateFormatter(
             \Locale::getDefault(),
@@ -72,16 +72,6 @@ class AssociationProducerExportTransferType extends AbstractType
                 'choices' => $choices
             ))
             ->add('export', 'submit');
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter',
-        ));
     }
 
     /**
