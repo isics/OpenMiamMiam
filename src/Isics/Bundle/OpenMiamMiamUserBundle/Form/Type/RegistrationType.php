@@ -29,7 +29,7 @@ class RegistrationType extends BaseType implements EventSubscriberInterface
     private $termsOfServiceExtension;
 
     /**
-     * @param string $class
+     * @param string $class The User class name
      * @param TermsOfServiceExtension $termsOfServiceExtension
      */
     public function __construct($class, TermsOfServiceExtension $termsOfServiceExtension)
