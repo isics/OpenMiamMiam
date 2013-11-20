@@ -143,7 +143,3 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
-
-#OpenMiamMiam
-isics_open_miam_miam:
-    terms_of_service_url: /tot/ff
