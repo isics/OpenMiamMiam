@@ -189,7 +189,7 @@ QUERY;
      * Returns consumers of branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
-     * @param int $lastOrderNbDaysConsideringCustomer
+     * @param int                                     $lastOrderNbDaysConsideringCustomer
      *
      * @return array Consumers
      */
@@ -206,7 +206,7 @@ QUERY;
      * Returns mail orders open subscribers for branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
-     * @param int $lastOrderNbDaysConsideringCustomer
+     * @param int                                     $lastOrderNbDaysConsideringCustomer
      *
      * @return array Subscribers
      */
@@ -224,7 +224,7 @@ QUERY;
      * Returns newsletter subscribers for branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
-     * @param int $lastOrderNbDaysConsideringCustomer
+     * @param int                                     $lastOrderNbDaysConsideringCustomer
      *
      * @return array Subscribers
      */
