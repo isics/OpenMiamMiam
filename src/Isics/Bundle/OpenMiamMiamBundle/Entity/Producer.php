@@ -121,7 +121,7 @@ class Producer
     /**
      * @var Doctrine\Common\Collections\Collection $associationHasProducer
      *
-     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="producer")
+     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="producer", cascade={"persist"})
      */
     private $associationHasProducer;
 

@@ -149,7 +149,7 @@ class Association
     /**
      * @var \Doctrine\Common\Collections\Collection $associationHasProducer
      *
-     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="association")
+     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="association", cascade={"persist"})
      */
     private $associationHasProducer;
 
