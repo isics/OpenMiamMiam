@@ -97,6 +97,15 @@ class User extends BaseUser
     private $isNewsletterSubscriber;
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->isOrdersOpenNotificationSubscriber = true;
+        $this->isNewsletterSubscriber = true;
+    }
+
+    /**
      * Sets address line 1
      *
      * @param string $address1
