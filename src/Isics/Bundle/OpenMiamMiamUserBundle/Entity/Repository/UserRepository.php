@@ -230,7 +230,7 @@ QUERY;
     {
 
         return $this
-                ->getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer);
+                ->getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer)
                 ->andWhere('u.isNewsletterSubscriber = true')
                 ->getQuery()
                 ->getResult();
