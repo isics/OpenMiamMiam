@@ -244,8 +244,8 @@ QUERY;
     public function findConsumersWithoutBranch()
     {
         return $this->getConsumersWithoutBranchQueryBuilder()
-            ->getQuery()
-            ->getResult();
+                    ->getQuery()
+                    ->getResult();
     }
 
     /**
@@ -256,8 +256,8 @@ QUERY;
     public function findNewsletterSubscribersWithoutBranch()
     {
         return $this->getConsumersWithoutBranchQueryBuilder()
-            ->andWhere('u.isNewsletterSubscriber = true')
-            ->getQuery()
-            ->getResult();
+                    ->andWhere('u.isNewsletterSubscriber = true')
+                    ->getQuery()
+                    ->getResult();
     }
 }
