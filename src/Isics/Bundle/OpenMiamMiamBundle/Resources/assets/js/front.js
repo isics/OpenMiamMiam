@@ -213,8 +213,8 @@ OpenMiamMiam.CartUpdateForm = function() {
                         $('#header-cart').html(data.headerCart);
                         $('#cart').html(data.cart);
 
-                        new OpenMiamMiam.Quantity();
-                        new OpenMiamMiam.CartUpdateForm();
+                        new OpenMiamMiam.Quantity;
+                        new OpenMiamMiam.CartUpdateForm;
                     },
                     error: function(jqXHR) {
                         alert(jqXHR.responseText);
