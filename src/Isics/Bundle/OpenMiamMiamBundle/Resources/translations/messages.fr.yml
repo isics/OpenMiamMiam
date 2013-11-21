@@ -156,8 +156,8 @@ admin.close:                 "Fermer"
 
 # Admin login
 admin.login.title:                "Accès gestionnaire"
-admin.login.email.placeholder:    "Adresse e-mail"
-admin.login.password.placeholder: "Mot de passe"
+admin.login.email.label:          "Adresse e-mail"
+admin.login.password.label:       "Mot de passe"
 admin.login.submit:               "Connexion"
 
 # Admin index
