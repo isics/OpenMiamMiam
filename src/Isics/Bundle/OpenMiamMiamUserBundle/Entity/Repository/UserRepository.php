@@ -210,7 +210,6 @@ QUERY;
      */
     public function findMailOrdersOpenSubscribersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
-        $consumersForBranchesQueryBuilder = $this->getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer);
 
         return $this
                 ->getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer)
@@ -229,9 +228,9 @@ QUERY;
      */
     public function findNewsletterSubscribersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
-        $consumersForBranchesQueryBuilder = $this->getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer);
 
-        return $consumersForBranchesQueryBuilder
+        return $this
+                ->getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer);
                 ->andWhere('u.isNewsletterSubscriber = true')
                 ->getQuery()
                 ->getResult();
