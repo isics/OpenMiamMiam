@@ -251,7 +251,7 @@ QUERY;
     /**
      * Returns newsletter subscribers without branch
      *
-     * @return array subscribers
+     * @return array Subscribers
      */
     public function findNewsletterSubscribersWithoutBranch()
     {
