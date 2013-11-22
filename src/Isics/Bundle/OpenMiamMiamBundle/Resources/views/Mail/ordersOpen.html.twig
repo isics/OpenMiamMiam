@@ -10,7 +10,7 @@
 {% block content %}
 
     {{ 'mail.branch.orders_open.message_html'|trans({
-        '%firstname%': customer.firstname,
+        '%firstname%': format_identity(customer.firstname, customer.lastname, '%firstname%'),
         '%branch_name%': branchOccurrence.branch.name,
         '%branch_url%': url('open_miam_miam.branch.homepage', {'branchSlug': branchOccurrence.branch.slug}),
         '%order_open_date%': ordersOpeningDateTime|format_datetime(null, null, null, constant('IntlDateFormatter::FULL')),

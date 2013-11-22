@@ -27,7 +27,7 @@
                     <tr>
                         {% if user %}
                             <td>{{ user|format_consumer_ref }}</td>
-                            <td>{{ user.firstname }} {{ user.lastname }}</td>
+                            <td>{{ format_user_identity(user) }}</td>
                         {% else %}
                             <td>-</td>
                             <td>{{ 'admin.association.consumers.list.anonymous'|trans }}</td>

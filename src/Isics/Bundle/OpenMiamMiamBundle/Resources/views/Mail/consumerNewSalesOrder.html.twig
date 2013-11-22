@@ -8,7 +8,7 @@
 {% extends 'IsicsOpenMiamMiamBundle:Mail:base.html.twig' %}
 
 {% block content %}
-    {{ 'mail.consumer.new_order.message_html'|trans({'%ref%': order.ref, '%firstname%': order.user.firstname, '%lastname%': order.user.lastname})|raw }}
+    {{ 'mail.consumer.new_order.message_html'|trans({'%ref%': order.ref, '%firstname%': format_user_identity(order.user, '%firstname%'), '%lastname%': format_user_identity(order.user, '%lastname%')})|raw }}
 
     {% include 'IsicsOpenMiamMiamBundle:Mail:customerSalesOrder.html.twig' with {'order': order} %}
 {% endblock %}
