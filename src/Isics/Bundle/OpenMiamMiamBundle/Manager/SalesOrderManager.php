@@ -165,17 +165,17 @@ class SalesOrderManager
         $order->setZipcode($user->getZipcode());
         $order->setCity($user->getCity());
 
-        $associationHasProducerQueryBuilder = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer')
-            ->getForAssociationQueryBuilder($branchOccurrence->getBranch()->getAssociation());
+        $associationHasProducerRepository = $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer');
+        $association = $branchOccurrence->getBranch()->getAssociation();
 
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
-            $associationHasProducer = $associationHasProducerQueryBuilder
-                ->andWhere('ahp.producer = :producer')
-                ->setParameter('producer', $product->getProducer())
-                ->getQuery()
-                ->getOneOrNullResult();
+            $associationHasProducer = $associationHasProducerRepository->findOneBy(array(
+                'association' => $association,
+                'producer'    => $product->getProducer()
+            ));
 
             $orderRow = new SalesOrderRow();
             $orderRow->setProduct($product);
@@ -396,6 +396,13 @@ class SalesOrderManager
         }
 
         if (!$hasRow) {
+            $associationHasProducer = $this->entityManager
+                ->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer')
+                ->findOneBy(array(
+                    'association' => $order->getBranchOccurrence()->getBranch()->getAssociation(),
+                    'producer'    => $product->getProducer()
+                ));
+
             $salesOrderRow = new SalesOrderRow();
             $salesOrderRow->setProduct($product);
             $salesOrderRow->setProducer($product->getProducer());
@@ -404,6 +411,7 @@ class SalesOrderManager
             $salesOrderRow->setIsBio($product->getIsBio());
             $salesOrderRow->setUnitPrice($product->getPrice());
             $salesOrderRow->setQuantity(1);
+            $salesOrderRow->setCommission($associationHasProducer->getInheritedOrDefinedCommission());
 
             $order->addSalesOrderRow($salesOrderRow);
         }
@@ -421,6 +429,13 @@ class SalesOrderManager
      */
     public function addArtificialProduct(SalesOrder $order, ArtificialProduct $artificialProduct, $context, User $user)
     {
+        $associationHasProducer = $this->entityManager
+            ->getRepository('IsicsOpenMiamMiamBundle:AssociationHasProducer')
+            ->findOneBy(array(
+                'association' => $order->getBranchOccurrence()->getBranch()->getAssociation(),
+                'producer'    => $artificialProduct->getProducer()
+            ));
+
         $salesOrderRow = new SalesOrderRow();
         $salesOrderRow->setProducer($artificialProduct->getProducer());
         $salesOrderRow->setName($artificialProduct->getName());
@@ -429,6 +444,7 @@ class SalesOrderManager
 
         $salesOrderRow->setUnitPrice($artificialProduct->getPrice());
         $salesOrderRow->setQuantity(1);
+        $salesOrderRow->setCommission($associationHasProducer->getInheritedOrDefinedCommission());
 
         $order->addSalesOrderRow($salesOrderRow);
 
