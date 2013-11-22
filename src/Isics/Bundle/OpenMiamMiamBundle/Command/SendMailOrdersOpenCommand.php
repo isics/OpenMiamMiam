@@ -78,7 +78,7 @@ class SendMailOrdersOpenCommand extends ContainerAwareCommand
             $ordersClosingDateTime = $branchOccurrenceManager->getOrdersClosingDateTimeForBranchOccurrence($nextBranchOccurrence);
 
             if ($ordersOpeningDateTime > $openingDateTime && $ordersOpeningDateTime <= $now){
-                $customers = $userManager->findMailOrdersOpenSubscribersForBranches(array($branch));
+                $customers = $userManager->findOrdersOpenNotificationSubscribersForBranches(array($branch));
 
                 if (0 === count($customers)) {
                     continue;
