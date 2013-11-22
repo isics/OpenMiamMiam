@@ -62,7 +62,7 @@ class ActivityManager
 
         if (null !== $user) {
             $activity->setUser($user);
-            $activity->setUserName($user->getFirstname().' '.$user->getLastname());
+            $activity->setUserName($this->mb_ucfirst($user->getFirstname()).' '.mb_strtoupper($user->getLastname(), 'UTF-8'));
         }
         if (null !== $object) {
             $metadata = $this->entityManager->getClassMetadata(get_class($object));
@@ -95,5 +95,19 @@ class ActivityManager
         }
 
         return $number;
+    }
+
+    /**
+     * Returns format firstname
+     * 
+     * @param string $fristname
+     *
+     * @return string
+     */
+    private function mb_ucfirst($firstname, $encoding='UTF-8')
+    {
+        $first = mb_substr(mb_strtoupper($firstname, "utf-8"),0,1,'utf-8');
+
+        return $first.mb_substr(mb_strtolower($firstname,"utf-8"),1,mb_strlen($firstname),'utf-8');
     }
 }

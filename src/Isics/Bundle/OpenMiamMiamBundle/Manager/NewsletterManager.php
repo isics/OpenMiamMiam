@@ -229,7 +229,7 @@ class NewsletterManager
             foreach ($recipients as $recipient) {
                 $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletter.html.twig', array('newsletter' => $newsletter));
 
-                $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($recipient->getFirstName(), $recipient->getLastName()), $body);
+                $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->mb_ucfirst($recipient->getFirstname()), mb_strtoupper($recipient->getLastname(), 'UTF-8')), $body);
 
                 $message = \Swift_Message::newInstance()
                     ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -256,7 +256,7 @@ class NewsletterManager
     {
         $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTest.html.twig', array('newsletter' => $newsletter));
 
-        $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($user->getFirstName(), $user->getLastName()), $body);
+        $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->mb_ucfirst($user->getFirstname()), mb_strtoupper($user->getLastname(), 'UTF-8')), $body);
 
         $message = \Swift_Message::newInstance()
             ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -291,5 +291,19 @@ class NewsletterManager
         return $this->entityManager
             ->getRepository('IsicsOpenMiamMiamBundle:Activity')
             ->findByEntities($newsletter, $newsletter->getAssociation());
+    }
+
+    /**
+     * Returns format firstname
+     * 
+     * @param string $fristname
+     *
+     * @return string
+     */
+    private function mb_ucfirst($firstname, $encoding='UTF-8')
+    {
+        $first = mb_substr(mb_strtoupper($firstname, "utf-8"),0,1,'utf-8');
+
+        return $first.mb_substr(mb_strtolower($firstname,"utf-8"),1,mb_strlen($firstname),'utf-8');
     }
 }
