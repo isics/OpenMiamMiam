@@ -295,7 +295,7 @@ services:
     # Managers
     open_miam_miam.activity_manager:
         class: %open_miam_miam.activity_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.twig.user_extension]
 
     open_miam_miam.branch_manager:
         class: %open_miam_miam.branch_manager.class%
@@ -359,7 +359,7 @@ services:
 
     open_miam_miam.newsletter_manager:
         class: %open_miam_miam.newsletter_manager.class%
-        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating, @open_miam_miam.twig.user_extension]
 
 
 

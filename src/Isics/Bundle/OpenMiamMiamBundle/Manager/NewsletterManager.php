@@ -17,6 +17,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamUserBundle\Manager\UserManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -53,6 +54,11 @@ class NewsletterManager
     protected $engine;
 
     /**
+     * @var $userExtension
+     */
+    private $userExtension;
+
+    /**
      * Constructs object
      *
      * @param EntityManager     $entityManager
@@ -60,17 +66,20 @@ class NewsletterManager
      * @param \Swift_Mailer     $mailer
      * @param array             $mailerConfig
      * @param EngineInterface   $engine
+     * @param UserExtension     $userExtension
      */
     public function __construct(EntityManager $entityManager,
                                 ActivityManager $activityManager,
                                 \Swift_Mailer $mailer,
                                 array $mailerConfig,
-                                EngineInterface $engine)
+                                EngineInterface $engine,
+                                UserExtension $userExtension)
     {
         $this->entityManager = $entityManager;
         $this->activityManager = $activityManager;
         $this->mailer = $mailer;
         $this->engine = $engine;
+        $this->userExtension = $userExtension;
 
         $resolver = new OptionsResolver();
         $this->setMailerConfigResolverDefaultOptions($resolver);
@@ -229,7 +238,7 @@ class NewsletterManager
             foreach ($recipients as $recipient) {
                 $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletter.html.twig', array('newsletter' => $newsletter));
 
-                $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->mb_ucfirst($recipient->getFirstname()), mb_strtoupper($recipient->getLastname(), 'UTF-8')), $body);
+                $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($recipient)), $body);
 
                 $message = \Swift_Message::newInstance()
                     ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -256,7 +265,7 @@ class NewsletterManager
     {
         $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTest.html.twig', array('newsletter' => $newsletter));
 
-        $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->mb_ucfirst($user->getFirstname()), mb_strtoupper($user->getLastname(), 'UTF-8')), $body);
+        $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($user)), $body);
 
         $message = \Swift_Message::newInstance()
             ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -291,17 +300,5 @@ class NewsletterManager
         return $this->entityManager
             ->getRepository('IsicsOpenMiamMiamBundle:Activity')
             ->findByEntities($newsletter, $newsletter->getAssociation());
-    }
-
-    /**
-     * Return format firstname
-     * 
-     * @param string $fristname
-     *
-     * @return string
-     */
-    private function mb_ucfirst($firstname, $encoding='UTF-8')
-    {
-        return mb_substr(mb_strtoupper($firstname, $encoding), 0, 1, $encoding).mb_substr(mb_strtolower($firstname, $encoding), 1, mb_strlen($firstname), $encoding);
     }
 }

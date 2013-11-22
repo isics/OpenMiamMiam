@@ -44,7 +44,7 @@
     /**
      * Return format identity
      * 
-     * @param string $firstname
+     * @param string $firstname_first_letter
      * @param string $lastname
      * @param string $pattern  
      *
@@ -62,7 +62,7 @@
         return strtr($pattern, array(
             '%firstname%' => $firstname,
             '%lastname%' => $lastname,
-            '%firstname_first_letter%' => substr($firstname, 0, 1)
+            '%firstname_first_letter%' => mb_substr($firstname, 0, 1)
         ));
     }
 
@@ -82,8 +82,8 @@
      *
      * @return string
      */
-    private function mb_ucfirst($firstname, $encoding='UTF-8')
+    private function mb_ucfirst($string, $encoding='UTF-8')
     {
-        return mb_substr(mb_strtoupper($firstname, $encoding), 0, 1, $encoding).mb_substr(mb_strtolower($firstname, $encoding), 1, mb_strlen($firstname), $encoding);
+        return mb_substr(mb_strtoupper($string, $encoding), 0, 1, $encoding).mb_substr(mb_strtolower($string, $encoding), 1, mb_strlen($string), $encoding);
     }
 }

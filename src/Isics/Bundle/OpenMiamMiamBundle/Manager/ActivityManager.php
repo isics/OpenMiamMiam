@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Activity;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -29,16 +30,22 @@ class ActivityManager
      */
     protected $entityManager;
 
+    /**
+     * @var $userExtension
+     */
+    private $userExtension;
 
 
     /**
      * Constructs object
      *
      * @param EntityManager $entityManager
+     * @param UserExtension $userExtension
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, UserExtension $userExtension)
     {
         $this->entityManager = $entityManager;
+        $this->userExtension = $userExtension;
     }
 
     /**
@@ -62,7 +69,7 @@ class ActivityManager
 
         if (null !== $user) {
             $activity->setUser($user);
-            $activity->setUserName($this->mb_ucfirst($user->getFirstname()).' '.mb_strtoupper($user->getLastname(), 'UTF-8'));
+            $activity->setUserName($this->userExtension->formatUserIdentity($user));
         }
         if (null !== $object) {
             $metadata = $this->entityManager->getClassMetadata(get_class($object));
@@ -95,17 +102,5 @@ class ActivityManager
         }
 
         return $number;
-    }
-
-    /**
-     * Return format firstname
-     * 
-     * @param string $fristname
-     *
-     * @return string
-     */
-    private function mb_ucfirst($firstname, $encoding='UTF-8')
-    {
-        return mb_substr(mb_strtoupper($firstname, $encoding), 0, 1, $encoding).mb_substr(mb_strtolower($firstname, $encoding), 1, mb_strlen($firstname), $encoding);
     }
 }
