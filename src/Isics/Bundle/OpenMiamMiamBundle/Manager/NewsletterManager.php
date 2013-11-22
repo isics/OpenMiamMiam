@@ -238,7 +238,7 @@ class NewsletterManager
             foreach ($recipients as $recipient) {
                 $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletter.html.twig', array('newsletter' => $newsletter));
 
-                $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($recipient)), $body);
+                $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($recipient, '%firstname%'), $this->userExtension->formatUserIdentity($recipient, '%lastname%')), $body);
 
                 $message = \Swift_Message::newInstance()
                     ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
@@ -265,7 +265,7 @@ class NewsletterManager
     {
         $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTest.html.twig', array('newsletter' => $newsletter));
 
-        $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($user)), $body);
+        $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($user, '%firstname%'), $this->userExtension->formatUserIdentity($user, '%lastname%')), $body);
 
         $message = \Swift_Message::newInstance()
             ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))

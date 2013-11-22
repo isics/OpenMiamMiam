@@ -16,6 +16,21 @@
  {
 
     /**
+     * @var string $pattern
+     */
+    private $pattern;
+
+    /**
+     * Constructor
+     *
+     * @param string $pattern
+     */
+    public function __construct($pattern)
+    {
+        $this->pattern = $pattern;
+    }
+
+    /**
      * Returns available functions
      *
      * @return array
@@ -53,7 +68,7 @@
     public function formatIdentity($lastname = null, $firstname = null, $pattern = null) 
     {
         if (null === $pattern || !is_string($pattern)) {
-            $pattern = '%firstname% %lastname%';
+            $pattern = $this->pattern;
         }
 
         $lastname = mb_strtoupper($lastname, 'UTF-8');
