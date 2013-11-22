@@ -154,6 +154,13 @@ class Association
     private $associationHasProducer;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection $subscriptions
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription", mappedBy="association")
+     */
+    private $subscriptions;
+
+    /**
      * Constructor
      */
     public function __construct()
