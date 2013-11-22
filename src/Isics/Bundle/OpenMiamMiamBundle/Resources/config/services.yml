@@ -266,8 +266,8 @@ services:
         tags:
             - { name: twig.extension }
 
-    open_miam_miam.twig.normalization_extension:
-        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\NormalizationExtension
+    open_miam_miam.twig.user_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension
         tags:
             - { name: twig.extension }
 
