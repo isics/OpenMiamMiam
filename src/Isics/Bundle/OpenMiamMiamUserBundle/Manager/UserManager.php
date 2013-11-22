@@ -61,9 +61,9 @@ class UserManager
      *
      * @return array Subscribers
      */
-    public function findMailOrdersOpenSubscribersForBranches($branches)
+    public function findOrdersOpenNotificationSubscribersForBranches($branches)
     {
         return $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')
-            ->findMailOrdersOpenSubscribersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
+            ->findOrdersOpenNotificationSubscribersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
     }
 }

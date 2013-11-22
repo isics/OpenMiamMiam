@@ -201,14 +201,14 @@ QUERY;
     }
 
     /**
-     * Returns mail orders open subscribers for branches
+     * Returns orders open subscribers for branches
      *
      * @param \Doctrine\Common\Collections\Collection $branches
      * @param int                                     $lastOrderNbDaysConsideringCustomer
      *
      * @return array Subscribers
      */
-    public function findMailOrdersOpenSubscribersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
+    public function findOrdersOpenNotificationSubscribersForBranches($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
 
         return $this
