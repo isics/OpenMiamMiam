@@ -25,7 +25,6 @@
         return array(
             'format_user_identity' => new \Twig_Function_Method($this, 'formatUserIdentity'),
             'format_identity' => new \Twig_Function_Method($this, 'formatIdentity'),
-            'format_name_identity' => new \Twig_Function_Method($this, 'formatNameIdentity')
         );
     }
 
@@ -35,7 +34,7 @@
      * @param User $user
      * @param $pattern 
      *
-     * @return string
+     * @return array
      */
     public function formatUserIdentity(User $user, $pattern = null)
     {
@@ -43,13 +42,13 @@
     }
 
     /**
-     * Return format name identity
+     * Return format identity
      * 
      * @param string $firstname
      * @param string $lastname
-     * @param $pattern  
+     * @param string $pattern  
      *
-     * @return string
+     * @return array
      */
     public function formatIdentity($lastname = null, $firstname = null, $pattern = null) 
     {
@@ -77,7 +76,8 @@
     /**
      * Return format firstname
      * 
-     * @param string $fristname
+     * @param string $firstname
+     * @param string $encoding
      *
      * @return string
      */
