@@ -224,7 +224,8 @@ class ProducerRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
-        return $qb->innerjoin('p.associations', 'a')
+        return $qb->innerjoin('p.associationHasProducer', 'ahp')
+                ->innerjoin('ahp.association', 'a')
                 ->andWhere('a.id = :associationId')
                 ->setParameter('associationId', $association->getId())
                 ->addOrderBy('p.name', 'ASC');

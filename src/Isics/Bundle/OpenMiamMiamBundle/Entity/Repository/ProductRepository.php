@@ -217,7 +217,8 @@ class ProductRepository extends EntityRepository
 
         return $qb->addSelect('b')
                 ->innerJoin('p.producer', 'pr')
-                ->innerJoin('pr.associations', 'a')
+                ->innerJoin('pr.associationHasProducer', 'ahp')
+                ->innerJoin('ahp.association', 'a')
                 ->leftJoin('p.branches', 'b')
                 ->andWhere('a.id = :associationId')
                 ->setParameter('associationId', $association->getId())
