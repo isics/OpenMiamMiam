@@ -30,7 +30,7 @@
     }
 
     /**
-     * Returns format user identity
+     * Return format user identity
      * 
      * @param User $user
      * @param $pattern 
@@ -43,11 +43,11 @@
     }
 
     /**
-     * Returns format name identity
+     * Return format name identity
      * 
      * @param string $firstname
      * @param string $lastname
-     * @param $pattern 
+     * @param $pattern  
      *
      * @return string
      */
@@ -75,7 +75,7 @@
     }
 
     /**
-     * Returns format firstname
+     * Return format firstname
      * 
      * @param string $fristname
      *
@@ -83,8 +83,6 @@
      */
     private function mb_ucfirst($firstname, $encoding='UTF-8')
     {
-        $first = mb_substr(mb_strtoupper($firstname, "utf-8"),0,1,'utf-8');
-
-        return $first.mb_substr(mb_strtolower($firstname,"utf-8"),1,mb_strlen($firstname),'utf-8');
+        return mb_substr(mb_strtoupper($firstname, "utf-8"),0,1,'utf-8').mb_substr(mb_strtolower($firstname,"utf-8"),1,mb_strlen($firstname),'utf-8');
     }
 }

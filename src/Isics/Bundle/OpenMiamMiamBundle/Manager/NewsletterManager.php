@@ -294,7 +294,7 @@ class NewsletterManager
     }
 
     /**
-     * Returns format firstname
+     * Return format firstname
      * 
      * @param string $fristname
      *
@@ -302,8 +302,6 @@ class NewsletterManager
      */
     private function mb_ucfirst($firstname, $encoding='UTF-8')
     {
-        $first = mb_substr(mb_strtoupper($firstname, "utf-8"),0,1,'utf-8');
-
-        return $first.mb_substr(mb_strtolower($firstname,"utf-8"),1,mb_strlen($firstname),'utf-8');
+        return mb_substr(mb_strtoupper($firstname, "utf-8"),0,1,'utf-8').mb_substr(mb_strtolower($firstname,"utf-8"),1,mb_strlen($firstname),'utf-8');
     }
 }
