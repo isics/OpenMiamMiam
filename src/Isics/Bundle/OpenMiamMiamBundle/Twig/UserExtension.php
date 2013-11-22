@@ -84,6 +84,6 @@
      */
     private function mb_ucfirst($firstname, $encoding='UTF-8')
     {
-        return mb_substr(mb_strtoupper($firstname, $encoding),0,1,$encoding).mb_substr(mb_strtolower($firstname,$encoding),1,mb_strlen($firstname),$encoding);
+        return mb_substr(mb_strtoupper($firstname, $encoding), 0, 1, $encoding).mb_substr(mb_strtolower($firstname, $encoding), 1, mb_strlen($firstname), $encoding);
     }
 }
