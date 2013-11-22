@@ -62,7 +62,7 @@
         return strtr($pattern, array(
             '%firstname%' => $firstname,
             '%lastname%' => $lastname,
-            '%firstnameFirstLetter%' => substr($firstname, 0, 1)
+            '%firstname_first_letter%' => substr($firstname, 0, 1)
         ));
     }
 
