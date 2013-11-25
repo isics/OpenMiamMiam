@@ -8,29 +8,40 @@
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
 {% block content %}
-    <h1>{{ 'admin.association.consumers.list.title'|trans }}</h1>
+    <h1>
+        {{ 'admin.association.consumers.list.title'|transchoice(subscriptions|length, {'%nb%': subscriptions|length}) }}
+    </h1>
 
     {% if subscriptions|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sales-orders">
+            <table class="table table-bordered table-condensed table-striped table-association-consumers">
                 <thead>
-                <tr>
-                    <th>{{ 'admin.association.consumers.list.ref'|trans }}</th>
-                    <th>{{ 'admin.association.consumers.list.name'|trans }}</th>
-                    <th>{{ 'admin.association.consumers.list.credit'|trans }}</th>
-                    <th>&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th>{{ 'admin.association.consumers.list.ref'|trans }}</th>
+                        <th>{{ 'admin.association.consumers.list.name'|trans }}</th>
+                        <th>{{ 'admin.association.consumers.list.city'|trans }}</th>
+                        <th>{{ 'admin.association.consumers.list.email'|trans }}</th>
+                        <th>{{ 'admin.association.consumers.list.phone_number'|trans }}</th>
+                        <th>{{ 'admin.association.consumers.list.credit'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for subscription in subscriptions %}
                     {% set user = subscription.user %}
-                    <tr>
+                    <tr{% if association.getSubscriptionForUser(user).credit > 0 %} class="success"{% elseif association.getSubscriptionForUser(user).credit < 0 %} class="danger"{% endif %}>
                         {% if user %}
                             <td>{{ user|format_consumer_ref }}</td>
-                            <td>{{ user.firstname }} {{ user.lastname }}</td>
+                            <td>{{ user.lastname }} {{ user.firstname }}</td>
+                            <td>{{ user.city }} ({{ user.zipcode }})</td>
+                            <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+                            <td>{% if user.phoneNumber %}{{ user.phoneNumber }}{% else %}-{% endif %}</td>
                         {% else %}
                             <td>-</td>
                             <td>{{ 'admin.association.consumers.list.anonymous'|trans }}</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
                         {% endif %}
                         <td>{{ association.getSubscriptionForUser(user).credit|number_format_currency(open_miam_miam.currency) }}</td>
                         <td>
@@ -45,7 +56,7 @@
                 </tbody>
             </table>
         </div>
-        {{ pagerfanta(subscriptions, 'default', pagerfanta_opts) }}
+        {{ pagerfanta(subscriptions, 'twitter_bootstrap3_translated') }}
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.list.no_consumer'|trans} %}
     {% endif %}
