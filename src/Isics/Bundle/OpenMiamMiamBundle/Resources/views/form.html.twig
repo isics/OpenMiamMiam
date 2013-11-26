@@ -22,14 +22,9 @@
         </div>
     {% else %}
         <div class="form-group{% if form.vars.errors %} has-error{% endif %}">
-            {% if label_as_placeholder is not defined or not label_as_placeholder %}
-                {{ form_label(form) }}
-                {{ form_errors(form) }}
-                {{ form_widget(form) }}
-            {% else %}
-                {{ form_errors(form) }}
-                {{ form_widget(form, {'attr': {'placeholder': label}}) }}
-            {% endif %}
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
         </div>
     {% endif %}
 {% endspaceless %}
