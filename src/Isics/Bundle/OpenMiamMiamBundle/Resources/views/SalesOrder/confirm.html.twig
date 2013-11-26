@@ -29,6 +29,12 @@
                             {% endif %}
                             {{ user.zipcode }} {{ user.city }}
                         </p>
+                        {% if not user.phoneNumber %}
+                            <p>
+                                <span class="label label-danger"><span class="glyphicon glyphicon-warning-sign"></span>
+                                {{ 'order.confirm.consumer.no_phone_statement'|trans }}</span>
+                            </p>
+                        {% endif %}
                         <a href="{{ path('fos_user_profile_edit') }}">{{ 'order.confirm.consumer.update'|trans }}</a>
                     </div>
                 </div>
