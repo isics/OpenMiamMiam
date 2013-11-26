@@ -4,8 +4,8 @@ user.login.existing.title:       "Déjà client ?"
 user.login.new.title:            "Nouveau client ?"
 user.login.submit:               "S'identifier"
 user.login.register:             "Créer un compte"
-user.login.email.placeholder:    "Adresse e-mail"
-user.login.password.placeholder: "Mot de passe"
+user.login.email.label:          "Adresse e-mail"
+user.login.password.label:       "Mot de passe"
 
 # User / register
 user.register.title:                 "Créez votre compte :"
