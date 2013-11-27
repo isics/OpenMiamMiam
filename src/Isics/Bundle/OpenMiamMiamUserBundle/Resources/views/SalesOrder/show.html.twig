@@ -43,7 +43,7 @@
                         <td>
                             {{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}
                         </td>
-                        <td class="total">
+                        <td>
                             {{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}
                         </td>
                         <td>
