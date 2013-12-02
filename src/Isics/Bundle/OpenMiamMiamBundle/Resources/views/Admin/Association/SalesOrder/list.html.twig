@@ -86,6 +86,9 @@
                                 {% else %}
                                     {{ 'admin.association.sales_orders.anonymous'|trans }}
                                 {% endif %}
+                                {% if salesOrder.consumerComment %}
+                                    <span class="glyphicon glyphicon-comment pull-right"></span>
+                                {% endif %}
                             </td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
                             <td>
