@@ -14,7 +14,7 @@
             <div class="panel-body">
                 <p>
                     {% if order.user %}
-                        <strong>{{ format_identity(order.firstname, order.lastname) }} ({{ order.user|format_consumer_ref }})</strong><br />
+                        <strong>{{ format_identity(order.lastname, order.firstname) }} ({{ order.user|format_consumer_ref }})</strong><br />
                         {{ order.address1 }}<br />
                         {% if order.address2 != null %}
                             {{ order.address2 }}<br />

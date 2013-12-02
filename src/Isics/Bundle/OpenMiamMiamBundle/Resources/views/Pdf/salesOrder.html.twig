@@ -34,7 +34,7 @@
                 <td>
                     <h3>{{ 'pdf.sales_order.consumer'|trans }}</h3>
                     <p>
-                        <strong>{{ format_identity(order.firstname, order.lastname) }} {% if order.user is not null %}({{ order.user|format_consumer_ref }}){% endif %}</strong><br />
+                        <strong>{{ format_identity(order.lastname, order.firstname) }} {% if order.user is not null %}({{ order.user|format_consumer_ref }}){% endif %}</strong><br />
                         {{ order.address1 }}<br />
                         {% if order.address2 != null %}
                             {{ order.address2 }}<br />
