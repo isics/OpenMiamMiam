@@ -76,6 +76,9 @@
                             </td>
                             <td>{{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
                             <td>
+                                {% if salesOrder.consumerComment %}
+                                    <span class="glyphicon glyphicon-comment pull-right"></span>
+                                {% endif %}
                                 {% if salesOrder.user %}
                                     {{ salesOrder.lastname }} {{ salesOrder.firstname|first }}. ({{ salesOrder.user|format_consumer_ref }})
                                     {% if salesOrder.user.phoneNumber is not null %}
@@ -85,9 +88,6 @@
                                     {% endif %}
                                 {% else %}
                                     {{ 'admin.association.sales_orders.anonymous'|trans }}
-                                {% endif %}
-                                {% if salesOrder.consumerComment %}
-                                    <span class="glyphicon glyphicon-comment pull-right"></span>
                                 {% endif %}
                             </td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
