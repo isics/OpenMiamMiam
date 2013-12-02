@@ -11,9 +11,9 @@
 
 namespace Isics\Bundle\OpenMiamMiamUserBundle\Form\Type;
 
+use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,7 +24,7 @@ class RegistrationType extends BaseType implements EventSubscriberInterface
 {
 
     /**
-     * @var $termsOfServiceExtension
+     * @var TermOfServiceExtension $termsOfServiceExtension
      */
     private $termsOfServiceExtension;
 
@@ -55,6 +55,7 @@ class RegistrationType extends BaseType implements EventSubscriberInterface
                 ->remove('username')
                 ->addEventSubscriber($this);
     }
+
     /**
      * {@inheritDoc}
      */
