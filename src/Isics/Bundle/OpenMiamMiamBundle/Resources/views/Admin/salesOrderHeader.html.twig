@@ -32,7 +32,10 @@
                 {% if order.consumerComment is not null %}
                     <div class="alert alert-warning">
                         <span class="glyphicon glyphicon-comment"></span>
-                        {{ order.consumerComment|nl2br }}
+                        <strong>{{ 'admin.association.sales_orders.form.consumer_comment'|trans }}</strong>
+                        <div class="consumer-comment">
+                            {{ order.consumerComment|nl2br }}
+                        </div>
                     </div>
                 {% endif %}
             </div>
