@@ -77,7 +77,7 @@
                             <td>{{ salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
                             <td>
                                 {% if salesOrder.user %}
-                                    {{ format_identity(salesOrder.firstname, salesOrder.lastname, '%lastname% %firstname%') }}. ({{ salesOrder.user|format_consumer_ref }})
+                                    {{ format_identity(salesOrder.firstname, salesOrder.lastname, '%lastname% %firstname_first_letter%') }}. ({{ salesOrder.user|format_consumer_ref }})
                                     {% if salesOrder.user.phoneNumber is not null %}
                                         <br />
                                         {{ 'admin.association.sales_orders.list.phone_number'|trans }}
