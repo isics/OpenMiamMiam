@@ -90,14 +90,14 @@
     }
 
     /**
-     * Return format firstname
+     * Return string with capitalized first letter
      * 
-     * @param string $firstname
+     * @param string $string
      * @param string $encoding
      *
      * @return string
      */
-    private function mb_ucfirst($string, $encoding='UTF-8')
+    private function mb_ucfirst($string, $encoding = 'UTF-8')
     {
         return mb_substr(mb_strtoupper($string, $encoding), 0, 1, $encoding).mb_substr(mb_strtolower($string, $encoding), 1, mb_strlen($string), $encoding);
     }

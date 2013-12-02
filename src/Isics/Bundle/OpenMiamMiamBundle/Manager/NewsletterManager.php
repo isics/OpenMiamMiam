@@ -54,7 +54,7 @@ class NewsletterManager
     protected $engine;
 
     /**
-     * @var $userExtension
+     * @var UserExtension $userExtension
      */
     private $userExtension;
 

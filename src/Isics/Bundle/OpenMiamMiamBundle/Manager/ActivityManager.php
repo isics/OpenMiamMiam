@@ -31,7 +31,7 @@ class ActivityManager
     protected $entityManager;
 
     /**
-     * @var $userExtension
+     * @var UserExtension $userExtension
      */
     private $userExtension;
 

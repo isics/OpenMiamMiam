@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('title')->defaultValue('OpenMiamMiam Demo')->end()
                 ->scalarNode('currency')->defaultValue('EUR')->end()
-                ->scalarNode('user_pattern')->defaultValue("%%firstname%% %%lastname%%")->end()
+                ->scalarNode('user_identity_pattern')->defaultValue("%%firstname%% %%lastname%%")->end()
                 ->arrayNode('association')
                     ->addDefaultsIfNotSet()
                     ->children()
