@@ -77,7 +77,7 @@
         return strtr($pattern, array(
             '%firstname%' => $firstname,
             '%lastname%' => $lastname,
-            '%firstname_first_letter%' => mb_substr($firstname, 0, 1)
+            '%lastname_first_letter%' => mb_substr($lastname, 0, 1, 'UTF-8')
         ));
     }
 
