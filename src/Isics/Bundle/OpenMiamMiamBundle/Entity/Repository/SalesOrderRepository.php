@@ -90,7 +90,6 @@ class SalesOrderRepository extends EntityRepository
                 ->andWhere('so.branchOccurrence = :branchOccurrence')
                 ->setParameter('branchOccurrence', $branchOccurrence)
                 ->addOrderBy('so.id')
-                ->addOrderBy('sor.ref')
                 ->getQuery()
                 ->getResult();
     }

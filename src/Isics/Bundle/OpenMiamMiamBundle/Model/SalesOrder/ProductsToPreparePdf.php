@@ -103,6 +103,8 @@ class ProductsToPreparePdf
                 }
             }
         }
+
+        ksort($this->products);
     }
 
     /**
