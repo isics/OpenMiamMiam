@@ -7,7 +7,7 @@
  #}
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-default">
+        <div class="panel panel-default sales-order-consumer-header">
             <div class="panel-heading">
                 <h2 class="panel-title">{{ 'admin.association.sales_orders.form.consumer'|trans }}</h2>
             </div>
@@ -30,10 +30,10 @@
                     {% endif %}
                 </p>
                 {% if order.consumerComment is not null %}
-                    <div class="alert alert-warning">
+                    <div class="alert alert-warning consumer-comment">
                         <span class="glyphicon glyphicon-comment"></span>
                         <strong>{{ 'admin.association.sales_orders.form.consumer_comment'|trans }}</strong>
-                        <div class="consumer-comment">
+                        <div class="consumer-comment-content">
                             {{ order.consumerComment|nl2br }}
                         </div>
                     </div>
