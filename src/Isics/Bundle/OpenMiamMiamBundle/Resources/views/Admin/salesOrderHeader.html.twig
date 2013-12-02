@@ -29,6 +29,15 @@
                         {{ 'admin.association.sales_orders.anonymous'|trans }}
                     {% endif %}
                 </p>
+                {% if order.consumerComment is not null %}
+                    <div class="alert alert-warning">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        <strong>{{ 'admin.association.sales_orders.list.consumer_comment'|trans }}</strong>
+                        <div class="consumer-comment">
+                            {{ order.consumerComment|nl2br }}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
