@@ -218,6 +218,9 @@ OpenMiamMiam.SalesOrderForm = function() {
         this.addArtificialProductFormId = 'add-artificial-product-form';
         this.filterProductsFormId = 'filter-products-form';
         this.keyUpDelay = 400;
+        this.lastId = 0;
+        this.currentValues = {};
+        this.loader = $('<img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader" />');
 
         this.initialize();
     };
@@ -239,10 +242,15 @@ OpenMiamMiam.SalesOrderForm = function() {
             });
 
             this.addProductsModal.delegate('form', 'submit', function(e){
+                var form = $(this);
                 var promise = $.ajax({
                     type: 'post',
                     url: this.action,
                     data: $(this).serialize()
+                });
+
+                promise.done(function(){
+                    form.find('.loader').remove();
                 });
 
                 if ($(this).attr('id') == that.addArtificialProductFormId) {
@@ -268,18 +276,38 @@ OpenMiamMiam.SalesOrderForm = function() {
                 $('#'+that.filterProductsFormId).submit();
             });
 
+            this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'focus', function(){
+                var $this = $(this);
+                if (undefined === $this.data('id')) {
+                    var id = that.lastId++;
+                    $this.data('id', id);
+                }
+                that.currentValues[$this.data('id')] = $this.val();
+            });
+
             this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'keyup', function(){
+                var $this = $(this);
+
                 if (that.keyUpTimer !== undefined) {
                     clearTimeout(that.keyUpTimer);
                 }
-                that.keyUpTimer = setTimeout(function() {
+
+                if (that.currentValues[$this.data('id')] != $this.val()) {
+
+                    if ($this.nextAll('.loader').size() === 0){
+                        $this.after(that.loader.clone());
+                    }
+
+                    that.keyUpTimer = setTimeout(function() {
                         $('#'+that.filterProductsFormId).submit();
-                    },
-                    that.keyUpDelay
-                );
+                    }, that.keyUpDelay);
+                }
+
+                that.currentValues[$this.data('id')] = $this.val();
             });
 
             this.initializeControls();
+
         },
 
         initializeControls: function() {

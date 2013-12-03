@@ -31,7 +31,9 @@
                             {{ form_widget(filterForm.producer, {'attr': {'class': 'form-control input-sm'}}) }}
                         </th>
                         <th>
-                            {{ 'admin.association.sales_orders.add_products.name'|trans }}
+                            <div>
+                                {{ 'admin.association.sales_orders.add_products.name'|trans }}
+                            </div>
                             {{ form_errors(filterForm.name) }}
                             {{ form_widget(filterForm.name, {'attr': {'class': 'form-control input-sm'}}) }}
                         </th>
