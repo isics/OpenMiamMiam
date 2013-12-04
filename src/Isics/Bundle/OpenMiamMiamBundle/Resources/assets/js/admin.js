@@ -292,18 +292,16 @@ OpenMiamMiam.SalesOrderForm = function() {
                     clearTimeout(that.keyUpTimer);
                 }
 
-                if (that.currentValues[$this.data('id')] != $this.val()) {
-
-                    if ($this.nextAll('.loader').size() === 0){
-                        $this.after(that.loader.clone());
-                    }
-
-                    that.keyUpTimer = setTimeout(function() {
+                that.keyUpTimer = setTimeout(function() {
+                    if (that.currentValues[$this.data('id')] != $this.val()) {
+                        if ($this.nextAll('.loader').size() === 0){
+                            $this.after(that.loader.clone());
+                        }
                         $('#'+that.filterProductsFormId).submit();
-                    }, that.keyUpDelay);
-                }
+                    }
+                    that.currentValues[$this.data('id')] = $this.val();
+                }, that.keyUpDelay);
 
-                that.currentValues[$this.data('id')] = $this.val();
             });
 
             this.initializeControls();
