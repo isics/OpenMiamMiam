@@ -9,13 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder;
 
 use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawalTransfer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ColumnNameForNumber;
 use Symfony\Component\Translation\Translator;
 
-class DepositWithdrawalExcel
+class DepositWithdrawalExcel extends ColumnNameForNumber
 {
     /**
      * @var \PHPExcel
@@ -120,7 +121,7 @@ class DepositWithdrawalExcel
             // title for product ref
             $sheet->setCellValue(
                 'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.product_ref')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_ref')
             );
             $sheet->getStyle(
                 'A'.(string)$currentLine
@@ -129,7 +130,7 @@ class DepositWithdrawalExcel
             // title for product name
             $sheet->setCellValue(
                 'B'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.product_name')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_name')
             );
             $sheet->getStyle(
                 'B'.(string)$currentLine
@@ -138,7 +139,7 @@ class DepositWithdrawalExcel
             // title for product unit price
             $sheet->setCellValue(
                 'C'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.product_unit_price')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_unit_price')
             );
             $sheet->getStyle(
                 'C'.(string)$currentLine
@@ -147,7 +148,7 @@ class DepositWithdrawalExcel
             // title for product quantity
             $sheet->setCellValue(
                 'D'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.product_quantity')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_quantity')
             );
             $sheet->getStyle(
                 'D'.(string)$currentLine
@@ -156,7 +157,7 @@ class DepositWithdrawalExcel
             // title for product total
             $sheet->setCellValue(
                 'E'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.product_total')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_total')
             );
             $sheet->getStyle(
                 'E'.(string)$currentLine
@@ -212,7 +213,7 @@ class DepositWithdrawalExcel
             // title for total sales order for producer
             $sheet->setCellValue(
                 'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.total_sales_order_producer')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_sales_order_producer')
             );
 
             // Total sales order for producer
@@ -228,13 +229,13 @@ class DepositWithdrawalExcel
             // title for total sales order branch
             $sheet->setCellValue(
                 'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.total_sales_order_branch')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_sales_order_branch')
             );
 
             // Total sales order branch
             $sheet->setCellValue(
                 'E'.(string)$currentLine,
-                $formatter->formatCurrency($producersTransfer->getBranchTotalForProducerId($producerId),$this->currency)
+                $formatter->formatCurrency($producersTransfer->getBranchOccurrenceTotalForProducerId($producerId),$this->currency)
             );
             $sheet->getStyle(
                 'E'.(string)$currentLine
@@ -244,7 +245,7 @@ class DepositWithdrawalExcel
             // title for total sales order producer + branch
             $sheet->setCellValue(
                 'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.total_sales_order')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_sales_order')
             );
 
             // Total sales order producer + branch
@@ -262,7 +263,7 @@ class DepositWithdrawalExcel
                 // commission
                 $sheet->setCellValue(
                     'A'.(string)$currentLine,
-                    $this->translator->trans('excel.association.sales_order.deposit_withdrawal.commission', array(
+                    $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.commission', array(
                         '%commission%'  => $commission
                     ))
                 );
@@ -270,7 +271,7 @@ class DepositWithdrawalExcel
                 // Total commission
                 $sheet->setCellValue(
                     'E'.(string)$currentLine,
-                    $formatter->formatCurrency($producersTransfer->getTotalCommission($commission, $total),$this->currency)
+                    $formatter->formatCurrency($total,$this->currency)
                 );
                 $sheet->getStyle(
                     'E'.(string)$currentLine
@@ -283,7 +284,7 @@ class DepositWithdrawalExcel
             // title for total to pay
             $sheet->setCellValue(
                 'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_order.deposit_withdrawal.total_to_pay')
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_to_pay')
             );
             $sheet->getStyle(
                 'A'.(string)$currentLine
@@ -318,23 +319,6 @@ class DepositWithdrawalExcel
             $columnID++;
         } while ($columnID != $lastColumn);
 
-    }
-
-    /**
-     * Returns Excel column name representation (A, AB, AAB...) for column index
-     *
-     * @param int $number
-     *
-     * @return string
-     */
-    private function getColumnNameForNumber($number)
-    {
-        if ((int)$number < 26) {
-            return chr((int)$number + 65);
-        }
-        else {
-            return $this->getColumnNameForNumber(floor($number / 26) - 1).chr($number%26 + 65);
-        }
     }
 
     /**

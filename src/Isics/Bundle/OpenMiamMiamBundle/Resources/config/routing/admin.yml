@@ -134,7 +134,7 @@ open_miam_miam.admin.association.sales_order.allocate_payment:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/{paymentId}/allocate
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:allocatePayment }
 
-open_miam_miam.admin.association.sales_order.export:
+open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
     pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/export
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:export }
 

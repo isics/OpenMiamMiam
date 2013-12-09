@@ -26,13 +26,20 @@ class AssociationManager
     protected $entityManager;
 
     /**
+     * @var String $artificial_product_ref
+     */
+    protected $artificial_product_ref;
+
+    /**
      * Constructs object
      *
      * @param EntityManager $entityManager
+     * @param String $artificial_product_ref
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $artificial_product_ref)
     {
         $this->entityManager   = $entityManager;
+        $this->artificial_product_ref   = $artificial_product_ref;
     }
 
     /**
@@ -152,7 +159,7 @@ class AssociationManager
      *
      * @param BranchOccurrence  $branchOccurrence
      *
-     * @return ProducersTransfer
+     * @return ProducersDepositWithdrawalTransfer
      */
     public function getProducerTransferForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
@@ -178,6 +185,6 @@ class AssociationManager
             ->getQuery()
             ->getResult();
 
-        return new ProducersDepositWithdrawalTransfer($branchOccurrence, $producersData);
+        return new ProducersDepositWithdrawalTransfer($branchOccurrence, $producersData, $this->artificial_product_ref);
     }
 } 

@@ -11,10 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer;
 
+use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ColumnNameForNumber;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducersTransfer;
 use Symfony\Component\Translation\Translator;
 
-class TransferExcel
+class TransferExcel extends ColumnNameForNumber
 {
     /**
      * @var \PHPExcel
@@ -230,23 +231,6 @@ class TransferExcel
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
             $columnID++;
         } while ($columnID != $lastColumn);
-    }
-
-    /**
-     * Returns Excel column name representation (A, AB, AAB...) for column index
-     *
-     * @param int $number
-     *
-     * @return string
-     */
-    private function getColumnNameForNumber($number)
-    {
-        if ((int)$number < 26) {
-            return chr((int)$number + 65);
-        }
-        else {
-            return $this->getColumnNameForNumber(floor($number / 26) - 1).chr($number%26 + 65);
-        }
     }
 
     /**

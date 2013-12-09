@@ -73,8 +73,8 @@ parameters:
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
     open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
 
-    open_miam_miam.association.producer.transfer.class:                     'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
-    open_miam_miam.association.deposit_withdrawal.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\DepositWithdrawalExcel'
+    open_miam_miam.association.producer.transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
+    open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder\DepositWithdrawalExcel'
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
 
@@ -351,7 +351,7 @@ services:
 
     open_miam_miam.association_manager:
         class: %open_miam_miam.association_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, %open_miam_miam.artificial_product_ref% ]
 
     open_miam_miam.association_has_producer_manager:
         class: %open_miam_miam.association_has_producer_manager.class%

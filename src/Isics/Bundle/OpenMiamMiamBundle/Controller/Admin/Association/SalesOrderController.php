@@ -644,7 +644,7 @@ class SalesOrderController extends BaseController
 
         $document = $this->get('open_miam_miam.association.deposit_withdrawal');
 
-        $filename = $this->get('translator')->trans('excel.association.sales_order.deposit_withdrawal.filename', array(
+        $filename = $this->get('translator')->trans('excel.association.sales_orders.deposit_withdrawal.filename', array(
             '%year%'  => $branchOccurrence->getEnd()->format('Y'),
             '%day%'   => $branchOccurrence->getEnd()->format('d'),
             '%month%'  => $branchOccurrence->getEnd()->format('m')
