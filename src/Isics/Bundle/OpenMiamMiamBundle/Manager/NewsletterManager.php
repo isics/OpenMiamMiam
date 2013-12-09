@@ -185,14 +185,14 @@ class NewsletterManager
             if ($newsletter->hasBranches()) {
                 $recipients = array_merge(
                     $recipients,
-                    $userRepository->findConsumersForBranches($newsletter->getBranches())
+                    $userRepository->findNewsletterSubscribersForBranches($newsletter->getBranches())
                 );
             }
 
             if ($newsletter->isWithoutBranch()) {
                 $recipients = array_merge(
                     $recipients,
-                    $userRepository->findConsumersWithoutBranch()
+                    $userRepository->findNewsletterSubscribersWithoutBranch()
                 );
             }
         }

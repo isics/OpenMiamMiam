@@ -30,6 +30,8 @@ class RegistrationType extends BaseType
                 ->add('zipcode', 'text')
                 ->add('city', 'text')
                 ->add('phoneNumber', 'text', array('required' => false))
+                ->add('isOrdersOpenNotificationSubscriber', 'checkbox', array('required'  => false))
+                ->add('isNewsletterSubscriber', 'checkbox', array('required'  => false))
                 ->remove('username');
     }
 
