@@ -623,4 +623,45 @@ class SalesOrderController extends BaseController
             $salesOrdersPdf->render();
         });
     }
+
+    /**
+     * Export association deposit/withdrawal
+     *
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Association $association
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return Response
+     */
+    public function exportAction(Association $association, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($association);
+        $this->secureBranchOccurrence($association, $branchOccurrence);
+
+        $producerTransfer = $this->get('open_miam_miam.association_manager')
+            ->getProducerTransferForBranchOccurrence($branchOccurrence);
+
+        $document = $this->get('open_miam_miam.association.deposit_withdrawal');
+
+        $filename = $this->get('translator')->trans('excel.association.sales_orders.deposit_withdrawal.filename', array(
+            '%year%'  => $branchOccurrence->getEnd()->format('Y'),
+            '%day%'   => $branchOccurrence->getEnd()->format('d'),
+            '%month%'  => $branchOccurrence->getEnd()->format('m')
+        ));
+
+        $response = new StreamedResponse();
+        $response->headers->set('Content-type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $filename));
+
+        $response->setCallback(function() use ($document, $producerTransfer, $branchOccurrence) {
+            $document->generate($producerTransfer, $branchOccurrence);
+
+            $writer = new \PHPExcel_Writer_Excel2007($document->getExcel());
+
+            $writer->save('php://output');
+        });
+
+        return $response;
+    }
 }
