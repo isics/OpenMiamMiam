@@ -45,7 +45,7 @@ class SalesOrderController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
 
         $form = $this->createForm(
-            new SalesOrderConfirmationType(),
+            $this->get('open_miam_miam.form.type.sales_order_confirmation'),
             new SalesOrderConfirmation(),
             array(
                 'action' => $this->generateUrl(

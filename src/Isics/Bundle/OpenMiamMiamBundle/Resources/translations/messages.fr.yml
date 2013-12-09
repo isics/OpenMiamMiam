@@ -93,17 +93,19 @@ cart.unable_to_update:      "Impossible de mettre à jour le panier !"
 
 
 # Order process
-order.confirm.title:                 "Confirmez votre commande"
-order.confirm.consumer.title:        "Consommateur"
-order.confirm.consumer.update:       "Mettre à jour mes coordonnées"
-order.confirm.withdrawal.title:      "Retrait des produits"
-order.confirm.withdrawal.update:     "Changer le mode de retrait"
-order.confirm.cart.title:            "Votre commande"
-order.confirm.cart.update:           "Modifier ma commande"
-order.confirm.submit:                "Je confirme ma commande"
-order.confirm.consumer_comment:      "N'hésitez pas à nous laisser un commentaire :"
-order.confirm.terms_of_sale_checked: "J'ai lu et je suis en accord avec les conditions générales de vente."
-order.confirmed.title:               "Votre commande a été enregistrée !"
+order.confirm.title:                  "Confirmez votre commande"
+order.confirm.consumer.title:         "Consommateur"
+order.confirm.consumer.update:        "Mettre à jour mes coordonnées"
+order.confirm.withdrawal.title:       "Retrait des produits"
+order.confirm.withdrawal.update:      "Changer le mode de retrait"
+order.confirm.cart.title:             "Votre commande"
+order.confirm.cart.update:            "Modifier ma commande"
+order.confirm.submit:                 "Je confirme ma commande"
+order.confirm.consumer_comment:       "N'hésitez pas à nous laisser un commentaire :"
+order.confirmed.title:                "Votre commande a été enregistrée !"
+order.confirm.read_agree:             "J'ai lu et j'accepte les"
+order.confirm.terms_of_service:       "Conditions Générales d'Utilisation."
+order.confirm.error.terms_of_service: "Vous devez accepter les Conditions Générales d'Utilisation."
 order.confirmed.body_html:           |
     <p>Féliciations %firstname% !</p>
     <p>La commande <strong>%ref%</strong> a bien été enregistrée.</p>
