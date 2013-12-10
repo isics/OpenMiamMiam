@@ -435,6 +435,15 @@ class BranchOccurrenceManager
         $occurrences = array_merge($latest, $nextForBranches);
         usort($occurrences, array($this, 'sortOccurrences'));
 
-        return $occurrences;
+        $final  = array();
+
+        foreach ($occurrences as $current) {
+            if ( ! in_array($current, $final)) {
+                $final[] = $current;
+            }
+        }
+
+        return $final;
     }
+
 }
