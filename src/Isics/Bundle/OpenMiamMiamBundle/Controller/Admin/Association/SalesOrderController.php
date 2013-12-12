@@ -19,6 +19,9 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -440,15 +443,24 @@ class SalesOrderController extends BaseController
             }
         }
 
-        $products = $this->get('open_miam_miam.product_manager')->findForAssociation($association, $filters);
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
+            $this->get('open_miam_miam.product_manager')->findForAssociationQuery($association, $filters)
+        ));
+        $pagerfanta->setMaxPerPage(10);
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch(NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
 
         if ($filterForm->isSubmitted() && $request->isXmlHttpRequest()) {
             return $this->render(
                 'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:productsToAdd.html.twig',
                 array(
                     'association' => $association,
-                    'order' => $order,
-                    'products' => $products
+                    'order'       => $order,
+                    'products'    => $pagerfanta
                 )
             );
         }
@@ -460,7 +472,7 @@ class SalesOrderController extends BaseController
                 'order' => $order,
                 'artificialProductForm' => $artificialProductForm->createView(),
                 'filterForm' => $filterForm->createView(),
-                'products' => $products
+                'products' => $pagerfanta
             )
         );
     }

@@ -26,14 +26,14 @@
                 <thead>
                     <tr>
                         <th>
-                            {{ 'admin.association.sales_orders.add_products.producer'|trans }}
+                            <div>{{ 'admin.association.sales_orders.add_products.producer'|trans }}</div>
                             {{ form_errors(filterForm.producer) }}
-                            {{ form_widget(filterForm.producer, {'attr': {'class': 'form-control input-sm'}}) }}
+                            {{ form_widget(filterForm.producer, {'attr': {'class': 'form-control input-sm field-with-loader'}}) }}
                         </th>
                         <th>
-                            {{ 'admin.association.sales_orders.add_products.name'|trans }}
+                            <div>{{ 'admin.association.sales_orders.add_products.name'|trans }}</div>
                             {{ form_errors(filterForm.name) }}
-                            {{ form_widget(filterForm.name, {'attr': {'class': 'form-control input-sm'}}) }}
+                            {{ form_widget(filterForm.name, {'attr': {'class': 'form-control input-sm field-with-loader', 'autocomplete': 'off'}}) }}
                         </th>
                         <th>{{ 'admin.association.sales_orders.add_products.price'|trans }}</th>
                         <th>{{ 'admin.association.sales_orders.add_products.availability'|trans }}</th>

@@ -218,6 +218,9 @@ OpenMiamMiam.SalesOrderForm = function() {
         this.addArtificialProductFormId = 'add-artificial-product-form';
         this.filterProductsFormId = 'filter-products-form';
         this.keyUpDelay = 400;
+        this.lastId = 0;
+        this.currentValues = {};
+        this.loader = $('<img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader" />');
 
         this.initialize();
     };
@@ -238,11 +241,31 @@ OpenMiamMiam.SalesOrderForm = function() {
                 e.preventDefault();
             });
 
+            this.addProductsModal.delegate('ul.pagination a', 'click', function(e){
+                if (!$(this).parent().hasClass('disabled')) {
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        data: $('#'+that.filterProductsFormId).serialize(),
+                        type: 'post'
+                    })
+                    .done(function(response){
+                        that.addProductsModal.find('tbody').html(response);
+                    });
+                }
+
+                e.preventDefault();
+            });
+
             this.addProductsModal.delegate('form', 'submit', function(e){
+                var form = $(this);
                 var promise = $.ajax({
                     type: 'post',
                     url: this.action,
                     data: $(this).serialize()
+                });
+
+                promise.done(function(){
+                    form.find('.loader').remove();
                 });
 
                 if ($(this).attr('id') == that.addArtificialProductFormId) {
@@ -265,21 +288,58 @@ OpenMiamMiam.SalesOrderForm = function() {
             });
 
             this.addProductsModal.delegate('form#'+this.filterProductsFormId+' select', 'change', function(){
+                var $this = $(this);
                 $('#'+that.filterProductsFormId).submit();
+                if ($this.nextAll('.loader').size() === 0){
+                  $this.after(that.loader.clone());
+                }
+            });
+
+            this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'focus', function(){
+                var $this = $(this);
+                if (undefined === $this.data('id')) {
+                    var id = that.lastId++;
+                    $this.data('id', id);
+                }
+                that.currentValues[$this.data('id')] = $this.val();
+            });
+
+            this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'keydown', function(){
+                var $this = $(this);
+
+                if (that.currentValues[$this.data('id')] != $this.val()) {
+                    if ($this.nextAll('.loader').size() === 0){
+                        $this.after(that.loader.clone());
+                    }
+                }
             });
 
             this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'keyup', function(){
+                var $this = $(this);
+
                 if (that.keyUpTimer !== undefined) {
                     clearTimeout(that.keyUpTimer);
                 }
+
+                if (that.currentValues[$this.data('id')] != $this.val()) {
+                    if ($this.nextAll('.loader').size() === 0){
+                        $this.after(that.loader.clone());
+                    }
+                }
+
                 that.keyUpTimer = setTimeout(function() {
+                    if (that.currentValues[$this.data('id')] != $this.val()) {
                         $('#'+that.filterProductsFormId).submit();
-                    },
-                    that.keyUpDelay
-                );
+                    } else {
+                        $this.nextAll('.loader').remove();
+                    }
+                    that.currentValues[$this.data('id')] = $this.val();
+                }, that.keyUpDelay);
+
             });
 
             this.initializeControls();
+
         },
 
         initializeControls: function() {
