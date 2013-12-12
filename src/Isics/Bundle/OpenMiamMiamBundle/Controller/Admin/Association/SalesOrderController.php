@@ -446,7 +446,7 @@ class SalesOrderController extends BaseController
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->get('open_miam_miam.product_manager')->findForAssociationQuery($association, $filters)
         ));
-        $pagerfanta->setMaxPerPage(2);
+        $pagerfanta->setMaxPerPage(10);
 
         try {
             $pagerfanta->setCurrentPage($request->query->get('page', 1));
