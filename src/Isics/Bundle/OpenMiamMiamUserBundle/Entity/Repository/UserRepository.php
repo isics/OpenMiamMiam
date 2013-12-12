@@ -147,7 +147,7 @@ QUERY;
      */
     public function getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
-         $qb = $this->createQueryBuilder('u');
+        $qb = $this->createQueryBuilder('u');
 
         $branchesIds = array();
         foreach ($branches as $branch) {
