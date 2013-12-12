@@ -22,6 +22,7 @@ user.register.cancel:                                 "Annuler"
 user.register.submit:                                 "S'inscrire"
 user.register.read_agree:                             "J'ai lu et j'accepte les"
 user.register.terms_of_service:                       "Conditions Générales d'Utilisation."
+user.register.error.terms_of_service:                 "Vous devez accepter les Conditions Générales d'Utilisation."
 user.register.confirmed.title:                        "Bienvenue %firstname% !"
 user.register.confirmed.body_html:   |
     <p>Votre compte a bien été créé.<p>

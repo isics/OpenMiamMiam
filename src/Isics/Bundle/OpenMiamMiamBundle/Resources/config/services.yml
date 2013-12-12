@@ -54,6 +54,7 @@ parameters:
     open_miam_miam.form.type.producer_branch_occurrence_attendance.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchOccurrenceAttendanceType'
     open_miam_miam.form.type.sales_order.class:                           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderType'
     open_miam_miam.form.type.sales_order_row.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderRowType'
+    open_miam_miam.form.type.sales_order_confirmation.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrderConfirmationType'
     open_miam_miam.form.type.producer_sales_order.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerSalesOrderType'
     open_miam_miam.form.type.super_article.class:                         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperArticleType'
     open_miam_miam.form.type.cart_item.class:                             'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartItemType'
@@ -227,6 +228,13 @@ services:
         class: %open_miam_miam.form.type.sales_order_row.class%
         tags:
             - { name: form.type, alias: open_miam_miam_sales_order_row }
+
+    open_miam_miam.form.type.sales_order_confirmation:
+            class: %open_miam_miam.form.type.sales_order_confirmation.class%
+            arguments:
+                - @open_miam_miam.twig.terms_of_service_extension
+            tags:
+                - { name: form.type, alias: open_miam_miam_sales_order_confirmation }
 
     open_miam_miam.form.type.super_article:
         class: %open_miam_miam.form.type.super_article.class%

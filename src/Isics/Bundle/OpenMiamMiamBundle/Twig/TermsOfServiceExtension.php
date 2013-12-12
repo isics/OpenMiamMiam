@@ -48,7 +48,7 @@ class TermsOfServiceExtension extends \Twig_Extension
      */
     public function hasTermsOfService()
     {
-        return null !== $this->termsOfServiceUrl; 
+        return null !== $this->getTermsOfServiceUrl();
     }
 
     /**
