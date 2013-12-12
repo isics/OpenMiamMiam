@@ -14,7 +14,6 @@
     <td>{{ product.name }}</td>
     <td>{{ product.price|number_format_currency(open_miam_miam.currency) }}</td>
     <td>
-        {% set availabilityInfos = get_product_availability(order.branchOccurrence, product) %}
         {{ product_macro.availability_tag(availabilityInfos, 'backend.') }}
     </td>
     <td>

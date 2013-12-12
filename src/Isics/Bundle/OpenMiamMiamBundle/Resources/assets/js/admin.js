@@ -241,6 +241,21 @@ OpenMiamMiam.SalesOrderForm = function() {
                 e.preventDefault();
             });
 
+            this.addProductsModal.delegate('ul.pagination a', 'click', function(e){
+                if (!$(this).parent().hasClass('disabled')) {
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        data: $('#'+that.filterProductsFormId).serialize(),
+                        type: 'post'
+                    })
+                    .done(function(response){
+                        that.addProductsModal.find('tbody').html(response);
+                    });
+                }
+
+                e.preventDefault();
+            });
+
             this.addProductsModal.delegate('form', 'submit', function(e){
                 var form = $(this);
                 var promise = $.ajax({
@@ -273,7 +288,11 @@ OpenMiamMiam.SalesOrderForm = function() {
             });
 
             this.addProductsModal.delegate('form#'+this.filterProductsFormId+' select', 'change', function(){
+                var $this = $(this);
                 $('#'+that.filterProductsFormId).submit();
+                if ($this.nextAll('.loader').size() === 0){
+                  $this.after(that.loader.clone());
+                }
             });
 
             this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'focus', function(){
@@ -285,6 +304,16 @@ OpenMiamMiam.SalesOrderForm = function() {
                 that.currentValues[$this.data('id')] = $this.val();
             });
 
+            this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'keydown', function(){
+                var $this = $(this);
+
+                if (that.currentValues[$this.data('id')] != $this.val()) {
+                    if ($this.nextAll('.loader').size() === 0){
+                        $this.after(that.loader.clone());
+                    }
+                }
+            });
+
             this.addProductsModal.delegate('form#'+this.filterProductsFormId+' input[type="text"]', 'keyup', function(){
                 var $this = $(this);
 
@@ -292,12 +321,17 @@ OpenMiamMiam.SalesOrderForm = function() {
                     clearTimeout(that.keyUpTimer);
                 }
 
+                if (that.currentValues[$this.data('id')] != $this.val()) {
+                    if ($this.nextAll('.loader').size() === 0){
+                        $this.after(that.loader.clone());
+                    }
+                }
+
                 that.keyUpTimer = setTimeout(function() {
                     if (that.currentValues[$this.data('id')] != $this.val()) {
-                        if ($this.nextAll('.loader').size() === 0){
-                            $this.after(that.loader.clone());
-                        }
                         $('#'+that.filterProductsFormId).submit();
+                    } else {
+                        $this.nextAll('.loader').remove();
                     }
                     that.currentValues[$this.data('id')] = $this.val();
                 }, that.keyUpDelay);
