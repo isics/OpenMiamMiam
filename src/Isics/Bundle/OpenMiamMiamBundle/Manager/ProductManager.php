@@ -324,12 +324,12 @@ class ProductManager
      * @param Association $association
      * @param array $filters
      *
-     * @return array
+     * @return Query
      */
-    public function findForAssociation(Association $association, array $filters = null)
+    public function findForAssociationQuery(Association $association, array $filters = null)
     {
         $qb = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Product')
-                ->getForAssociationQueryBuilder($association);
+            ->getForAssociationQueryBuilder($association);
 
         if (isset($filters['name'])) {
             $qb->andWhere($qb->expr()->like('p.name', $qb->expr()->literal('%'.$filters['name'].'%')));
@@ -338,7 +338,20 @@ class ProductManager
             $qb->andWhere('p.producer = :producer')->setParameter('producer', $filters['producer']);
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery();
+    }
+
+    /**
+     * Returns products for association filtered by criteria
+     *
+     * @param Association $association
+     * @param array $filters
+     *
+     * @return array
+     */
+    public function findForAssociation(Association $association, array $filters = null)
+    {
+        return $this->findForAssociationQuery($association, $filters)->getResult();
     }
 
     /**
