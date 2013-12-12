@@ -45,10 +45,23 @@
                                 {{ form_row(form.city, {'label': 'user.register.city'}) }}
                             </div>
                         </div>
+
                         {{ form_row(form.phoneNumber, {'label': 'user.register.phone_number', 'label_as_placeholder': true}) }}
                         {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'user.register.is_orders_open_notification_subscriber'}) }}
                         {{ form_row(form.isNewsletterSubscriber, {'label': 'user.register.is_newsletter_subscriber'}) }}
+
+                        {% if form.termsOfService is defined %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ form_errors(form.termsOfService) }}
+                                    {{ form_widget(form.termsOfService) }}
+                                    {{ form_label(form.termsOfService, 'user.register.read_agree'|trans) }}
+                                    <a href="{{ terms_of_service_url() }}" target="blank">{{ 'user.register.terms_of_service'|trans }}</a>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
+
                     <div class="panel-footer text-right">
                         <a href="{{ path('open_miam_miam.homepage') }}" class="btn btn-default btn-lg">
                             {{ 'user.register.cancel'|trans }}

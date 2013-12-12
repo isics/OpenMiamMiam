@@ -13,8 +13,8 @@ parameters:
     mailer_sender_address: noreply@openmiammiam.org
     mailer_sender_name: OpenMiamMiam
 
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    locale:               en
+    secret:               ThisTokenIsNotSoSecretChangeIt
 
     node_path: /usr/local/bin/node
     node_modules_path: /usr/local/bin/node_modules
