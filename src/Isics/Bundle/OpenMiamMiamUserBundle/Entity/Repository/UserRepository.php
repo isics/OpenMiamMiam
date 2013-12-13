@@ -20,6 +20,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\UserFilter;
 
 class UserRepository extends EntityRepository
 {
@@ -233,5 +234,64 @@ QUERY;
 
         return $qb->leftJoin('u.salesOrders', 's')
             ->andWhere('s.id IS NULL');
+    }
+
+    /**
+     * Find user by role
+     *
+     * @param $role
+     * @return array
+     */
+    public function findByRole($role) {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from('IsicsOpenMiamMiamUserBundle:User', 'u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"' . $role . '"%')
+            ->orderBy('u.lastname', 'ASC')
+            ->AddOrderBy('u.firstname', 'ASC');
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     *  Find user by username
+     *
+     * @param $name
+     * @return array
+     */
+    public function findByUserFilter(UserFilter $userFilter){
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        $terms = array_filter(explode(' ', $userFilter->getName()));
+
+        foreach($terms as $i => $term) {
+            $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->like('u.firstname', ':term'.$i),
+                $qb->expr()->like('u.lastname', ':term'.$i)
+            ))
+            ->setParameter('term'.$i, '%'.$term.'%');
+        }
+
+        return $qb;
+    }
+
+    /**
+     *  Find user not admin/super admin
+     *
+     * @param $role
+     * @return array
+     */
+    public function findUserNotAdmin($role){
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from('IsicsOpenMiamMiamUserBundle:User', 'u')
+            ->where( 'u.roles NOT LIKE :roles' )
+            ->setParameter( 'roles', '%'. $role .'%' )
+            ->orderBy('u.lastname', 'ASC')
+            ->AddOrderBy('u.firstname', 'ASC');
+
+        return $qb;
     }
 }

@@ -15,6 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AssociationAdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\SuperAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -68,6 +69,10 @@ class AdminManager
     public function findAvailableAdminResources()
     {
         if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+            $this->adminResourceCollection->add(new AdminResource());
+        }
+
+        if ($this->securityContext->isGranted('ROLE_SUPER_ADMIN')) {
             $this->adminResourceCollection->add(new SuperAdminResource());
         }
 

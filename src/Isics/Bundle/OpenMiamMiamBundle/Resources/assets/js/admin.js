@@ -301,3 +301,50 @@ OpenMiamMiam.SalesOrderForm = function() {
 
     return object;
 }();
+
+OpenMiamMiam.ManagerAutocomplete = function() {
+    var object = function() {
+        this.handleAutocomplete();
+    };
+
+    object.prototype = {
+        handleAutocomplete: function() {
+            var query = $('#open_miam_miam_user_filter_name').attr('data-url');
+            $("#open_miam_miam_user_filter_name").typeahead({
+                source: function(term, response) {
+                    var $this = this;
+                    $.ajax({
+                        url: query,
+                        type: 'get',
+                        dataType: 'json',
+                        data: {
+                            term: term
+                        },
+                        success: function(data) {
+                            var reversed = {};
+                            var results = [];
+
+                            $.each(data, function(id, elem) {
+                                reversed[elem.fullname] = elem;
+                                results.push(elem.fullname);
+                            });
+
+                            $this.reversed = reversed;
+                           // console.log(results);
+                            // affichage des suggestions
+                            response(results);
+                        }
+                    });
+                },
+                updater : function(item) {
+                    // nous retrouvons alors les données associées
+                    var elem = this.reversed[item];
+                    console.log(elem.id);
+                    return elem.fullname;
+                }
+            });
+        }
+    };
+
+    return object;
+}();

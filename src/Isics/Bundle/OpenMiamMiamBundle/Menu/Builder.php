@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Menu;
 
 use Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AssociationAdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
@@ -67,7 +68,9 @@ class Builder
         $menu = $this->factory->createItem('root');
 
         foreach ($this->adminManager->findAvailableAdminResources() as $resource) {
-            if ($resource instanceof SuperAdminResource) {
+            if ($resource instanceof AdminResource) {
+                $this->addAdminMenuItems($menu, $resource);
+            } else if ($resource instanceof SuperAdminResource) {
                 $this->addSuperAdminMenuItems($menu, $resource);
             } else if ($resource instanceof AssociationAdminResource) {
                  $this->addAssociationAdminMenuItems($menu, $resource);
@@ -91,10 +94,34 @@ class Builder
     {
         $menuName = 'super';
 
-        $menu->addChild($menuName, array(
-            'route' => 'open_miam_miam.admin.super.show_dashboard',
-            'label' => sprintf($this->translator->trans($resource->getType())),
+        if (null === $menu->getChild($menuName)) {
+            $menu->addChild($menuName, array(
+                'route' => 'open_miam_miam.admin.super.show_dashboard',
+                'label' => sprintf($this->translator->trans($resource->getType())),
+            ));
+        }
+        $menu[$menuName]->addChild('Manager', array(
+            'route' => 'open_miam_miam.admin.super.manager.index',
+            'label' => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.super.menu.manager')),
         ));
+    }
+
+    /**
+     * Adds menu items for the admin area
+     *
+     * @param ItemInterface          $menu     Root menu
+     * @param AdminResourceInterface $resource Admin resource
+     */
+    protected function addAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    {
+        $menuName = 'super';
+
+        if (null === $menu->getChild($menuName)) {
+            $menu->addChild($menuName, array(
+                'route' => 'open_miam_miam.admin.super.show_dashboard',
+                'label' => sprintf($this->translator->trans($resource->getType())),
+            ));
+        }
         $menu[$menuName]->addChild('Dashboard', array(
             'route' => 'open_miam_miam.admin.super.show_dashboard',
             'label' => sprintf($this->labelFormat, 'home', $this->translator->trans('admin.super.menu.dashboard')),

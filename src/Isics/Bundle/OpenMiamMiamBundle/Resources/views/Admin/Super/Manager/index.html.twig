@@ -1,0 +1,115 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'admin.super.manager.title'|trans }}</h1>
+
+    <div class="row">
+        <div class="col-md-3">
+            {{ 'admin.super.manager.caption'|trans }}
+        </div>
+        <div class="col-md-6">
+            <table class="table table-bordered table-striped table-super-admin">
+                <tbody>
+                    {% for superAdmin in superAdmins %}
+                        <tr>
+                            <td>
+                                {{ superAdmin.lastname }} {{ superAdmin.firstname }}</br>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% for admin in admins %}
+                        <tr>
+                            <td>
+                                {{ admin.lastname }} {{ admin.firstname }}
+                            </td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.super.manager.demote_user', {'id': admin.id}) }}" class="btn btn-danger btn-sm" title="{{ 'admin.super.manager.demote'|trans }}">
+                                    <span class="glyphicon glyphicon-arrow-down"></span>
+                                    {{ 'admin.super.manager.demote'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ form_start(filterForm, {
+        'attr': {
+            'novalidate': '',
+            'id': 'filter-users-form',
+            'class': 'form form-inline'
+        }
+    }) }}
+        <div class="row">
+            <div class="col-md-6">
+                {{ 'admin.super.manager.promote_user.name'|trans }}
+                {{ form_errors(filterForm.name) }}
+                {{ form_widget(filterForm.name, {
+                    'attr': {
+                        'autocomplete': 'off',
+                        'data-provide' : 'typeahead',
+                        'data-url' : path('open_miam_miam.admin.super.manager.index_ajax'),
+                        'class': 'form-control input-sm'
+                    }
+                }) }}
+                <button name="filter" type="submit" class="btn btn-primary btn-lg">
+                    <span class="glyphicon glyphicon-search"></span>
+                    {{ 'admin.super.manager.search'|trans }}
+                </button>
+            </div>
+        </div>
+    {{ form_end(filterForm) }}
+
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-super-user">
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            {{ user.lastname }} {{ user.firstname }}
+                        </td>
+                        <td>
+                            <a href="{{ path('open_miam_miam.admin.super.manager.promote_user', {'id': user.id}) }}" class="btn btn-success btn-sm" title="{{ 'admin.super.manager.promote'|trans }}">
+                                <span class="glyphicon glyphicon-arrow-up"></span>
+                                {{ 'admin.super.manager.promote'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="manager-pagination">
+            {{ pagerfanta(users, 'twitter_bootstrap3_translated') }}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+        'bootstrap/js/typeahead.js'
+        filter='?uglifyjs2'
+        output='cache/js/*.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.ManagerAutocomplete();
+        });
+    </script>
+{% endblock %}
