@@ -47,8 +47,8 @@
                         </div>
 
                         {{ form_row(form.phoneNumber, {'label': 'user.register.phone_number', 'label_as_placeholder': true}) }}
-                        {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'user.register.is_orders_open_notification_subscriber'}) }}
                         {{ form_row(form.isNewsletterSubscriber, {'label': 'user.register.is_newsletter_subscriber'}) }}
+                        {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'user.register.is_orders_open_notification_subscriber'}) }}
 
                         {% if form.termsOfService is defined %}
                             <div class="row">
