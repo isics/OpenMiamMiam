@@ -106,13 +106,14 @@ order.confirm.cart.title:                  "Votre commande"
 order.confirm.cart.update:                 "Modifier ma commande"
 order.confirm.submit:                      "Je confirme ma commande"
 order.confirm.consumer_comment:            "N'hésitez pas à nous laisser un commentaire :"
-order.confirm.terms_of_sale_checked:       "J'ai lu et je suis en accord avec les conditions générales de vente."
 order.confirmed.title:                     "Votre commande a été enregistrée !"
+order.confirm.read_agree:                  "J'ai lu et j'accepte les"
+order.confirm.terms_of_service:            "Conditions Générales d'Utilisation."
+order.confirm.error.terms_of_service:      "Vous devez accepter les Conditions Générales d'Utilisation."
 order.confirmed.body_html:                 |
     <p>Féliciations %firstname% !</p>
     <p>La commande <strong>%ref%</strong> a bien été enregistrée.</p>
     <p>Un e-mail récapitulatif vous a été envoyé.</p>
-
 
 
 # Attendance
@@ -159,10 +160,10 @@ admin.close:                 "Fermer"
 
 
 # Admin login
-admin.login.title:                "Accès gestionnaire"
-admin.login.email.label:          "Adresse e-mail"
-admin.login.password.label:       "Mot de passe"
-admin.login.submit:               "Connexion"
+admin.login.title:          "Accès gestionnaire"
+admin.login.email.label:    "Adresse e-mail"
+admin.login.password.label: "Mot de passe"
+admin.login.submit:         "Connexion"
 
 # Admin index
 admin.index.title: "Choisissez un rôle :"
@@ -225,6 +226,14 @@ admin.super.newsletter.report.subject:       "Objet"
 admin.super.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
 admin.super.newsletter.report.sent_at:       "Envoyée le"
 admin.super.newsletter.report.nb_recipients: "Destinataires"
+
+newsletter.unsubscribe:     |
+    <p>
+        <em>
+            Vous pouvez modifier vos préférences d'alertes e-mail dans
+            <a href="%url%">votre profil</a>.
+        </em>
+    </p>
 
 # Admin / Super / Category
 admin.super.category.list.title:               "Catégories de produits"
@@ -718,6 +727,13 @@ mail.branch.orders_open.message_html:    |
     <p>Bonjour %firstname%,</p>
     <p>Les commandes pour le comptoir <a href="%branch_url%">%branch_name%</a> sont ouvertes <strong>du %order_open_date% au %order_closed_date%</strong>.</p>
     <p><strong>Rendez-vous sur <a href="%branch_url%">%branch_url%</a> pour commander !</strong></p>
+mail.branch.orders_open.unsubscribe:     |
+    <p>
+        <em>
+            Vous pouvez modifier vos préférences d'alertes e-mail dans
+            <a href="%url%">votre profil</a>.
+        </em>
+    </p>
 
 mail.branch.orders_closed.log.branch_name: "<info>Les commandes pour le comptoir \"%branch_name%\" sont fermées. Email de rappel de commande envoyé à :</info>"
 mail.branch.orders_closed.log.task_end:    "<info>%email_sent%</info> email(s) envoyé(s) en <info>%time%</info> secondes. Consommation mémoire : <info>%memory%</info> Mo"

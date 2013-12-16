@@ -12,20 +12,63 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\True;
 
-class SalesOrderConfirmationType extends AbstractType
+class SalesOrderConfirmationType extends AbstractType implements EventSubscriberInterface
 {
+    /**
+     * @var TermOfServiceExtension $termsOfServiceExtension
+     */
+    private $termsOfServiceExtension;
+
+    /**
+     * @param TermsOfServiceExtension $termsOfServiceExtension
+     */
+    public function __construct(TermsOfServiceExtension $termsOfServiceExtension)
+     {
+         $this->termsOfServiceExtension = $termsOfServiceExtension;
+     }
+
     /**
      * @see AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('termsOfSaleChecked', 'checkbox')
-                ->add('consumerComment', 'textarea', array('required' => false))
-                ->add('save', 'submit');
+        $builder->add('consumerComment', 'textarea', array('required' => false))
+                ->add('save', 'submit')
+                ->addEventSubscriber($this);
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+
+        if($this->termsOfServiceExtension->hasTermsOfService()) {
+            $form->add("termsOfService", "checkbox", array(
+                'mapped' => false,
+                'constraints' => array(
+                    new True(array('message' => 'order.confirm.error.terms_of_service'))
+                )
+            ));
+        }
     }
 
     /**

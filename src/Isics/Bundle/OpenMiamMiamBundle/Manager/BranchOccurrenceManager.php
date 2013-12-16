@@ -422,19 +422,19 @@ class BranchOccurrenceManager
     public function getToProcessForAssociation(Association $association)
     {
         $repository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
-        $latest = $repository->findAllLatestForAssociation($association);
+        $branchOccurrences = $repository->findAllLatestForAssociation($association);
 
-        $nextForBranches = array();
         foreach ($association->getBranches() as $branch) {
             $nextBranchOccurrence = $repository->findOneNextNotClosedForBranch($branch);
-            if (null !== $nextBranchOccurrence) {
-                $nextForBranches[] = $nextBranchOccurrence;
+
+            if (!in_array($nextBranchOccurrence, $branchOccurrences)) {
+                $branchOccurrences[] = $nextBranchOccurrence;
             }
         }
 
-        $occurrences = array_merge($latest, $nextForBranches);
-        usort($occurrences, array($this, 'sortOccurrences'));
+        usort($branchOccurrences, array($this, 'sortOccurrences'));
 
-        return $occurrences;
+        return $branchOccurrences;
     }
+
 }

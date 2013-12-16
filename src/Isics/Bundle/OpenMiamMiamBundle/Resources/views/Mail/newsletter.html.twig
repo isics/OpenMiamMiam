@@ -11,4 +11,8 @@
 
     {{ newsletter.body|raw }}
 
+    {{ 'newsletter.unsubscribe'|trans({
+        '%url%': url('fos_user_profile_edit')
+    })|raw }}
+
 {% endblock %}

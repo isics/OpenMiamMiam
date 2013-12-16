@@ -17,4 +17,8 @@
         '%order_closed_date%': ordersClosingDateTime|format_datetime(null, null, null, constant('IntlDateFormatter::FULL'))
     })|raw }}
 
+    {{ 'mail.branch.orders_open.unsubscribe'|trans({
+        '%url%': url('fos_user_profile_edit')
+    })|raw }}
+
 {% endblock %}

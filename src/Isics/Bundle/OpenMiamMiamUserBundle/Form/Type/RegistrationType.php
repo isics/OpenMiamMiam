@@ -12,10 +12,33 @@
 namespace Isics\Bundle\OpenMiamMiamUserBundle\Form\Type;
 
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
+use Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\True;
 
-class RegistrationType extends BaseType
+class RegistrationType extends BaseType implements EventSubscriberInterface
 {
+
+    /**
+     * @var TermOfServiceExtension $termsOfServiceExtension
+     */
+    private $termsOfServiceExtension;
+
+    /**
+     * @param string $class The User class name
+     * @param TermsOfServiceExtension $termsOfServiceExtension
+     */
+    public function __construct($class, TermsOfServiceExtension $termsOfServiceExtension)
+    {
+        parent::__construct($class);
+
+        $this->termsOfServiceExtension = $termsOfServiceExtension;
+    }
+
     /**
      * @see AbstractType
      */
@@ -30,7 +53,35 @@ class RegistrationType extends BaseType
                 ->add('zipcode', 'text')
                 ->add('city', 'text')
                 ->add('phoneNumber', 'text', array('required' => false))
-                ->remove('username');
+                ->add('isOrdersOpenNotificationSubscriber', 'checkbox', array('required'  => false))
+                ->add('isNewsletterSubscriber', 'checkbox', array('required'  => false))
+                ->remove('username')
+                ->addEventSubscriber($this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+
+        if($this->termsOfServiceExtension->hasTermsOfService()) {
+            $form->add("termsOfService", "checkbox", array(
+                'mapped' => false,
+                'constraints' => array(
+                    new True(array('message' => 'user.register.error.terms_of_service'))
+                )  
+            )); 
+        }
     }
 
     /**
