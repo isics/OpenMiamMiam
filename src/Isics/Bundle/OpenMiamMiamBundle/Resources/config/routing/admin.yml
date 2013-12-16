@@ -73,22 +73,21 @@ open_miam_miam.admin.super.category.delete:
     pattern:  /super/categories/{categoryId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:delete }
 
-open_miam_miam.admin.super.manager.index:
-    pattern:  /super/manager
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:index }
+open_miam_miam.admin.super.manager.list:
+    pattern:  /super/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:list }
 
-open_miam_miam.admin.super.manager.promote_user:
-    pattern:  /super/manager/promote_user/{id}
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:promoteUser }
+open_miam_miam.admin.super.manager.search:
+    pattern:  /super/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:search }
 
-open_miam_miam.admin.super.manager.demote_user:
-        pattern:  /super/manager/demote_user/{id}
-        defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:demoteUser }
+open_miam_miam.admin.super.manager.promote:
+    pattern:  /super/managers/promote/{id}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:promote }
 
-
-open_miam_miam.admin.super.manager.index_ajax:
-    pattern: /super/manager/filter_user
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:getAjaxResults}
+open_miam_miam.admin.super.manager.demote:
+    pattern:  /super/managers/demote/{id}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:demote }
 
 
 

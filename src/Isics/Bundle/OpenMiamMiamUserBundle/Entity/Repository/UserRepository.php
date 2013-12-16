@@ -24,6 +24,17 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\UserFilter;
 
 class UserRepository extends EntityRepository
 {
+    /**
+     * Returns query builder to find users with ROLE_ADMIN or ROLE_SUPER_ADMIN role
+     *
+     * @return QueryBuilder
+     */
+    public function getAdminsQueryBuilder()
+    {
+        return $this->filterAdmins()
+            ->orderBy('u.lastname', 'ASC')
+            ->AddOrderBy('u.firstname', 'ASC');
+    }
 
     /**
      * Returns consumers for association
@@ -42,6 +53,73 @@ class UserRepository extends EntityRepository
                 ->setParameter('association', $association)
                 ->addOrderBy('u.id')
                 ->addGroupBy('u.id');
+    }
+
+    /**
+     * Returns query builder to find non admins user filterd with a UserFilter
+     *
+     * @param string $keyword
+     *
+     * @return QueryBuilder
+     */
+    public function getNonAdminsByKeywordQueryBuilder($keyword)
+    {
+        return $this->filterByKeyword($keyword, $this->filterNonAdmins())
+            ->orderBy('u.lastname', 'ASC')
+            ->addOrderBy('u.firstname', 'ASC');
+    }
+
+    /**
+     * Filters admins
+     *
+     * @param QueryBuilder $qb Query builder
+     *
+     * @return QueryBuilder
+     */
+    public function filterAdmins(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        return $qb->andWhere($qb->expr()->orX(
+           $qb->expr()->like('u.roles', $qb->expr()->literal('%ROLE_ADMIN%')),
+           $qb->expr()->like('u.roles', $qb->expr()->literal('%ROLE_SUPER_ADMIN%'))
+        ));
+    }
+
+    /**
+     * Filters by keyword
+     *
+     * @pazam string       $keyword keyword
+     * @param QueryBuilder $qb      Query builder
+     *
+     * @return QueryBuilder
+     */
+    public function filterByKeyword($keyword, QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        return $qb->andWhere($qb->expr()->orX(
+           $qb->expr()->like('u.email', ':keyword'),
+           $qb->expr()->like('u.firstname', ':keyword'),
+           $qb->expr()->like('u.lastname', ':keyword')
+        ))->setParameter('keyword', "%$keyword%");
+    }
+
+    /**
+     * Filters non admins
+     *
+     * @param QueryBuilder $qb Query builder
+     *
+     * @return QueryBuilder
+     */
+    public function filterNonAdmins(QueryBuilder $qb = null)
+    {
+        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+
+        return $qb->andWhere($qb->expr()->andX(
+           $qb->expr()->not($qb->expr()->like('u.roles', $qb->expr()->literal('%ROLE_ADMIN%'))),
+           $qb->expr()->not($qb->expr()->like('u.roles', $qb->expr()->literal('%ROLE_SUPER_ADMIN%')))
+        ));
     }
 
     /**
@@ -237,61 +315,13 @@ QUERY;
     }
 
     /**
-     * Find user by role
+     * Find users with ROLE_ADMIN or ROLE_SUPER_ADMIN role
      *
-     * @param $role
      * @return array
      */
-    public function findByRole($role) {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('u')
-            ->from('IsicsOpenMiamMiamUserBundle:User', 'u')
-            ->where('u.roles LIKE :roles')
-            ->setParameter('roles', '%"' . $role . '"%')
-            ->orderBy('u.lastname', 'ASC')
-            ->AddOrderBy('u.firstname', 'ASC');
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     *  Find user by username
-     *
-     * @param $name
-     * @return array
-     */
-    public function findByUserFilter(UserFilter $userFilter){
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('u')
-            ->from('IsicsOpenMiamMiamUserBundle:User', 'u');
-
-        $terms = array_filter(explode(' ', $userFilter->getName()));
-
-        foreach($terms as $i => $term) {
-            $qb->andWhere($qb->expr()->orX(
-                $qb->expr()->like('u.firstname', ':term'.$i),
-                $qb->expr()->like('u.lastname', ':term'.$i)
-            ))
-            ->setParameter('term'.$i, '%'.$term.'%');
-        }
-
-        return $qb;
-    }
-
-    /**
-     *  Find user not admin/super admin
-     *
-     * @param $role
-     * @return array
-     */
-    public function findUserNotAdmin($role){
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('u')
-            ->from('IsicsOpenMiamMiamUserBundle:User', 'u')
-            ->where( 'u.roles NOT LIKE :roles' )
-            ->setParameter( 'roles', '%'. $role .'%' )
-            ->orderBy('u.lastname', 'ASC')
-            ->AddOrderBy('u.firstname', 'ASC');
-
-        return $qb;
+    public function findAdmins() {
+        return $this->getAdminsQueryBuilder()
+            ->getQuery()
+            ->getResult();
     }
 }

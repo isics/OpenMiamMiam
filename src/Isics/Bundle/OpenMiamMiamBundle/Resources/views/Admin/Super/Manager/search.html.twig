@@ -1,0 +1,49 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>{{ 'admin.super.manager.promote'|trans }}</h1>
+
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Super\\Manager\\searchForm.html.twig' with {'form': form} %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-super-managers">
+            <thead>
+                <tr>
+                    <th>{{ 'admin.super.manager.lastname'|trans }}</th>
+                    <th>{{ 'admin.super.manager.firstname'|trans }}</th>
+                    <th>{{ 'admin.super.manager.email'|trans }}</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            {{ user.lastname }}
+                        </td>
+                        <td>
+                            {{ user.firstname }}
+                        </td>
+                        <td>
+                            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('open_miam_miam.admin.super.manager.promote', {'id': user.id}) }}" class="btn btn-success btn-sm" title="{{ 'admin.super.manager.promote'|trans }}">
+                                <span class="glyphicon glyphicon-arrow-up"></span>
+                                {{ 'admin.super.manager.promote'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {{ pagerfanta(users, 'twitter_bootstrap3_translated') }}
+{% endblock %}

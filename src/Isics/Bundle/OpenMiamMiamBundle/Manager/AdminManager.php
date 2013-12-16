@@ -11,13 +11,12 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AssociationAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\SuperAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResource;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminResourceCollection;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AssociationAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\ProducerAdminResource;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -69,11 +68,12 @@ class AdminManager
     public function findAvailableAdminResources()
     {
         if ($this->securityContext->isGranted('ROLE_ADMIN')) {
-            $this->adminResourceCollection->add(new AdminResource());
-        }
+            $adminResource = new AdminAdminResource();
 
-        if ($this->securityContext->isGranted('ROLE_SUPER_ADMIN')) {
-            $this->adminResourceCollection->add(new SuperAdminResource());
+            if ($this->securityContext->isGranted('ROLE_SUPER_ADMIN')) {
+                $adminResource->setOwnerPerspective(true);
+            }
+            $this->adminResourceCollection->add($adminResource);
         }
 
         $producers = $this->findAvailableProducers();

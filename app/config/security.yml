@@ -45,6 +45,7 @@ security:
 
     access_control:
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /admin/super/managers, role: ROLE_SUPER_ADMIN }
         - { path: ^/admin/super/, role: ROLE_ADMIN }
         - { path: ^/admin/, role: ROLE_USER }
         - { path: ^(?!/admin/).*/?order/, role: ROLE_USER }

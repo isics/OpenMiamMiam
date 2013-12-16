@@ -21,6 +21,7 @@ OpenMiamMiam.ActionInSelectForm = function() {
     return object;
 }();
 
+
 OpenMiamMiam.UrlSwitcherSelect = function() {
 
     var object = function() {
@@ -302,45 +303,52 @@ OpenMiamMiam.SalesOrderForm = function() {
     return object;
 }();
 
-OpenMiamMiam.ManagerAutocomplete = function() {
-    var object = function() {
-        this.handleAutocomplete();
+
+OpenMiamMiam.AdminManagerAutocomplete = function() {
+    var object = function(promote_url_schema) {
+        this.promoteUrlSchema = promote_url_schema;
+
+        $('#open_miam_miam_search_search').hide();
     };
 
     object.prototype = {
         handleAutocomplete: function() {
-            var query = $('#open_miam_miam_user_filter_name').attr('data-url');
-            $("#open_miam_miam_user_filter_name").typeahead({
-                source: function(term, response) {
-                    var $this = this;
+            var that = this;
+
+            var $input = $('#open_miam_miam_search_keyword');
+            var $form = $('#open_miam_miam_search_form');
+
+            var $hiddenDiv = $('<div style="display: none"></div>');
+            var $loader = $('<span></span> <img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
+
+            $form.submit(function(e) {
+                e.preventDefault();
+            });
+
+            $input.autocomplete({
+                source: function(request, response) {
                     $.ajax({
-                        url: query,
-                        type: 'get',
+                        url: $form.attr('action'),
                         dataType: 'json',
-                        data: {
-                            term: term
-                        },
+                        data: $form.serialize(),
                         success: function(data) {
-                            var reversed = {};
-                            var results = [];
+                            response($.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    label: item.label
+                                };
+                            }));
 
-                            $.each(data, function(id, elem) {
-                                reversed[elem.fullname] = elem;
-                                results.push(elem.fullname);
-                            });
-
-                            $this.reversed = reversed;
-                           // console.log(results);
-                            // affichage des suggestions
-                            response(results);
+                            $hiddenDiv.append($loader);
                         }
                     });
                 },
-                updater : function(item) {
-                    // nous retrouvons alors les données associées
-                    var elem = this.reversed[item];
-                    console.log(elem.id);
-                    return elem.fullname;
+                minLength: 2,
+                search: function() {
+                    $form.append($loader);
+                },
+                select: function(event, ui) {
+                    window.location = that.promoteUrlSchema.replace('0', ui.item.id);
                 }
             });
         }

@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
 /**
  * Class ProducerAdminResource
  */
-class ProducerAdminResource extends EntityAdminResource
+class ProducerAdminResource extends BaseEntityAdminResource
 {
     /**
      * Constructor

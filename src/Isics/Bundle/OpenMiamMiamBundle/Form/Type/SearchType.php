@@ -11,18 +11,19 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserFilterType extends AbstractType
+class SearchType extends AbstractType
 {
-
+    /**
+     * @see AbstractType
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-                ->setMethod('GET');
+        $builder
+            ->add('keyword', 'text', array('required' => false))
+            ->add('search', 'submit');
     }
 
     /**
@@ -30,7 +31,7 @@ class UserFilterType extends AbstractType
      */
     public function getName()
     {
-        return 'open_miam_miam_user_filter';
+        return 'open_miam_miam_search';
     }
 
 }

@@ -64,7 +64,7 @@ parameters:
     open_miam_miam.form.type.association_newsletter.class:                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationNewsletterType'
     open_miam_miam.form.type.super_newsletter.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperNewsletterType'
     open_miam_miam.form.type.products_filter.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductsFilterType'
-    open_miam_miam.form.type.user_filter.class:                           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\UserFilterType'
+    open_miam_miam.form.type.search.class:                                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SearchType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
@@ -75,8 +75,6 @@ parameters:
     open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
 
     open_miam_miam.association.producer.transfer.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
-
-    open_miam_miam.model.user_filter.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Admin\UserFilter'
 
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
@@ -236,10 +234,10 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_super_article }
 
-    open_miam_miam.form.type.user_filter:
-            class: %open_miam_miam.form.type.user_filter.class%
+    open_miam_miam.form.type.search:
+            class: %open_miam_miam.form.type.search.class%
             tags:
-                - { name: form.type, alias: open_miam_miam_user_filter }
+                - { name: form.type, alias: open_miam_miam_search }
 
     open_miam_miam.form.type.producer_sales_order:
         class: %open_miam_miam.form.type.producer_sales_order.class%
@@ -439,9 +437,6 @@ services:
             - @translator
             - %open_miam_miam.currency%
         scope: prototype
-
-    open_miam_miam.model.user_filter:
-        class: %open_miam_miam.model.user_filter.class%
 
     # Workflows
     open_miam_miam.sales_order_workflow:

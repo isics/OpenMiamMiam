@@ -12,7 +12,7 @@ price:                "Prix"
 producer:             "Producteur"
 product:              "Produit"
 quantity:             "Quantité"
-super_admin:          "Super administrateur"
+admin:                "Administrateur"
 total:                "Total"
 update:               "Mettre à jour"
 consumer:             "Consommateur"
@@ -178,7 +178,7 @@ admin.super.menu.user_switch:   "Usurpateur d'identité"
 admin.super.menu.news:          "Actualité"
 admin.super.menu.newsletter:    "Lettre d'information"
 admin.super.menu.category:      "Catégories produits"
-admin.super.menu.manager: "Gestionnaires"
+admin.super.menu.manager:       "Gestionnaires"
 
 
 # Admin / Super / Dashboard
@@ -191,7 +191,7 @@ admin.super.user_switch.list.firstname: "Prénom"
 admin.super.user_switch.list.roles:     "Rôle(s)"
 admin.super.user_switch.list.switch:    "Usurper l'identité"
 admin.super.user_switch.alert.message:  "Vous avez usurpé l'identité de %firstname% %lastname%."
-admin.super.user_switch.alert.exit:     "Retour au rôle Super administrateur"
+admin.super.user_switch.alert.exit:     "Retour au rôle Administrateur"
 
 # Admin / Super / Article
 admin.super.articles.list.title:            "Actualité"
@@ -247,13 +247,18 @@ admin.super.category.message.unable_to_delete: "Impossible de supprimer cette ca
 admin.super.category.delete_dialog.content:    "Êtes-vous vraiment certain de vouloir supprimer cette catégorie ?"
 
 # Admin / Super / Manager
+admin.super.manager.title:              "{0} Aucun gestionnaire|{1} 1 gestionnaire|]1,Inf] %nb% gestionnaires"
+admin.super.manager.lastname:           "Nom"
+admin.super.manager.firstname:          "Prénom"
+admin.super.manager.email:              "E-mail"
+admin.super.manager.add:                "Ajouter"
+admin.super.manager.search:             "Rechercher"
+admin.super.manager.search.placeholder: "Rechercher"
+admin.super.manager.promote :           "Promouvoir"
+admin.super.manager.demote :            "Révoquer"
+admin.super.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
+admin.super.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
 
-admin.super.manager.title :             "Gestionnaires"
-admin.super.manager.caption :           "Gestionnaire(s)"
-admin.super.manager.promote :           "Promouvoir cet utilisateur"
-admin.super.manager.demote :            "Dépromouvoir cet utilisateur"
-admin.super.manager.search :            "Rechercher"
-admin.super.manager.promote_user.name : "Rechercher l'utilisateur :"
 
 
 # Admin / Association / Menu

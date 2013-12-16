@@ -9,18 +9,17 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource;
 
 /**
- * Class AdminResource
+ * Interface AdminResourceInterface
  */
-class AdminResource implements AdminResourceInterface
+interface AdminResourceInterface
 {
     /**
-     * @see AdminResourceInterface
+     * Returns type of resource
+     *
+     * @return string
      */
-    public function getType()
-    {
-        return 'super_admin';
-    }
+    public function getType();
 }

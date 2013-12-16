@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamUserBundle\Manager;
 
 
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class UserManager
 {
@@ -52,5 +53,31 @@ class UserManager
     {
         return $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')
             ->findConsumersForBranches($branches, $this->lastOrderNbDaysConsideringCustomer);
+    }
+
+    /**
+     * Promotes a user as admin
+     *
+     * User $user
+     */
+    public function promoteAdmin(User $user)
+    {
+        $user->addRole('ROLE_ADMIN');
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Demotes a user as admin
+     *
+     * User $user
+     */
+    public function demoteAdmin(User $user)
+    {
+        $user->removeRole('ROLE_ADMIN');
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }
