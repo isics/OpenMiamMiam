@@ -70,7 +70,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $aclProvider->updateAcl($acl4);
 
         $securityIdentity2 = new UserSecurityIdentity('john@smith.com', 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User');
-        $acl1->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OWNER);
+        $acl1->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OPERATOR);
         $aclProvider->updateAcl($acl1);
 
         $acl2->insertObjectAce($securityIdentity2, MaskBuilder::MASK_OWNER);

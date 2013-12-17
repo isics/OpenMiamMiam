@@ -109,16 +109,21 @@ class UserManager
     }
 
     /**
-     * Promotes a user as association operator
+     * Promotes a user as operator of an Association or a Producer
      *
-     * @param Association $association
-     * @param User        $user
+     * @param mixed $object (Association or Producer)
+     * @param User  $user
      *
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function promoteAssociationOperator(Association $association, User $user)
+    public function promoteOperator($object, User $user)
     {
-        $objectIdentity = ObjectIdentity::fromDomainObject($association);
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
 
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
@@ -139,21 +144,26 @@ class UserManager
             $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OPERATOR);
             $this->aclProvider->updateAcl($acl);
         } else {
-            throw new \RuntimeException(sprintf('User %s is already owner or operator for association %s.', $user, $association));
+            throw new \RuntimeException(sprintf('User %s is already owner or operator of object %s.', $user, $object));
         }
     }
 
     /**
-     * Demotes a user as association operator
+     * Demotes a user as operator of an Association or a Producer
      *
-     * @param Association $association
-     * @param User        $user
+     * @param mixed $object (Association or Producer)
+     * @param User  $user
      *
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function demoteAssociationOperator(Association $association, User $user)
+    public function demoteOperator($object, User $user)
     {
-        $objectIdentity = ObjectIdentity::fromDomainObject($association);
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $acl = $this->aclProvider->findAcl($objectIdentity);
 
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
@@ -165,29 +175,36 @@ class UserManager
                     $acl->deleteObjectAce($index);
                     $objectAceExists = true;
                 } else {
-                    throw new \RuntimeException(sprintf('User %s is owner for association %s. You can\'t demote him.', $user, $association));
+                    throw new \RuntimeException(sprintf('User %s is owner of object %s. You can\'t demote him.', $user, $object));
                 }
             }
         }
 
         if (false === $objectAceExists) {
-            throw new \RuntimeException(sprintf('User %s is not operator for association %s.', $user, $association));
+            throw new \RuntimeException(sprintf('User %s is not operator of object %s.', $user, $object));
         }
 
         $this->aclProvider->updateAcl($acl);
     }
 
     /**
-     * Returnes true if user is owner of association
+     * Returnes true if user is owner of an Association or a Producer
      *
-     * @param Association $association
-     * @param User        $user
+     * @param mixed $object (Association or Producer)
+     * @param User  $user
      *
      * @return boolean
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
-    public function isAssociationOwner(Association $association, User $user)
+    public function isOwner($object, User $user)
     {
-        $objectIdentity = ObjectIdentity::fromDomainObject($association);
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $acl = $this->aclProvider->findAcl($objectIdentity);
 
         $securityIdentity = UserSecurityIdentity::fromAccount($user);

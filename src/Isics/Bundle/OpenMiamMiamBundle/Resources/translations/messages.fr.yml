@@ -630,6 +630,19 @@ admin.producer.calendar.attendance.no:      "Non"
 admin.producer.calendar.attendance.unknown: "Ne sais pas encore"
 admin.producer.calendar.message.updated:    "Le calendrier de présence a été pris en compte."
 
+# Admin / Producer / Manager
+admin.producer.manager.title:              "{0} Aucun gestionnaire|{1} 1 gestionnaire|]1,Inf] %nb% gestionnaires"
+admin.producer.manager.lastname:           "Nom"
+admin.producer.manager.firstname:          "Prénom"
+admin.producer.manager.email:              "E-mail"
+admin.producer.manager.add:                "Ajouter"
+admin.producer.manager.search:             "Rechercher"
+admin.producer.manager.search.placeholder: "Rechercher"
+admin.producer.manager.promote :           "Promouvoir"
+admin.producer.manager.demote :            "Révoquer"
+admin.producer.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
+admin.producer.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
+
 
 
 # Messages

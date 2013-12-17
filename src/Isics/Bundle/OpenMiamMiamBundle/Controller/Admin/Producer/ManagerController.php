@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
+namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Adapter\CallbackAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
@@ -26,40 +26,40 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ManagerController extends BaseController
 {
     /**
-     * List manager
+     * List managers
      *
-     * @param Association $association
+     * @param Producer $producer
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(Association $association)
+    public function listAction(Producer $producer)
     {
-        $this->secure($association, true);
+        $this->secure($producer, true);
 
-        $users = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User')->findManager($association);
+        $users = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User')->findManager($producer);
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Manager:list.html.twig', array(
-            'association' => $association,
-            'users'       => $users,
-            'form'        => $this->getSearchForm($association)->createView(),
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\Manager:list.html.twig', array(
+            'producer' => $producer,
+            'users'    => $users,
+            'form'     => $this->getSearchForm($producer)->createView(),
         ));
     }
 
     /**
      * Search users not yet admin (AJAX or not)
      *
-     * @param Association $association
-     * @param Request     $request
+     * @param Producer $producer
+     * @param Request  $request
      *
      * @throws NotFoundHttpException
      */
-    public function searchAction(Association $association, Request $request)
+    public function searchAction(Producer $producer, Request $request)
     {
-        $this->secure($association, true);
+        $this->secure($producer, true);
 
         $keyword = '';
 
-        $form = $this->getSearchForm($association);
+        $form = $this->getSearchForm($producer);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $keyword = $form->getData()['keyword'];
@@ -68,7 +68,7 @@ class ManagerController extends BaseController
         // AJAX version
         if ($request->isXmlHttpRequest()) {
             $users = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User')
-                ->findNotManagerByKeyword($association, $keyword, 0, 20);
+                ->findNotManagerByKeyword($producer, $keyword, 0, 20);
 
             $data = array();
             foreach ($users as $user) {
@@ -84,15 +84,15 @@ class ManagerController extends BaseController
         } else {
             $repository = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User');
             $pagerfanta = new Pagerfanta(new CallbackAdapter(
-                function () use ($repository, $association, $keyword) {
-                    return $repository->countNotManagerByKeyword(
-                        $association,
+                function () use ($repository, $producer, $keyword) {
+                    return $repository->countNotManagerProducerByKeyword(
+                        $producer,
                         $keyword
                     );
                 },
-                function ($offset, $length) use ($repository, $association, $keyword) {
+                function ($offset, $length) use ($repository, $producer, $keyword) {
                     return $repository->findNotManagerByKeyword(
-                        $association,
+                        $producer,
                         $keyword,
                         $offset,
                         $length
@@ -108,10 +108,10 @@ class ManagerController extends BaseController
                 throw $this->createNotFoundException();
             }
 
-            return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Manager:search.html.twig', array(
-                'association' => $association,
-                'form'        => $form->createView(),
-                'users'       => $pagerfanta,
+            return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\Manager:search.html.twig', array(
+                'producer' => $producer,
+                'form'     => $form->createView(),
+                'users'    => $pagerfanta,
             ));
         }
     }
@@ -119,20 +119,20 @@ class ManagerController extends BaseController
     /**
      * Creates search form
      *
-     * @param Association $association
+     * @param Producer $producer
      *
      * @return Form
      */
-    protected function getSearchForm(Association $association)
+    protected function getSearchForm(Producer $producer)
     {
         return $this->createForm(
             $this->get('open_miam_miam.form.type.search'),
             null,
             array(
-                'action' => $this->generateUrl('open_miam_miam.admin.association.manager.search', array('id' => $association->getId())),
+                'action' => $this->generateUrl('open_miam_miam.admin.producer.manager.search', array('id' => $producer->getId())),
                 'method' => 'GET',
-            )
-        );
+         )
+     );
     }
 
     /**
@@ -140,27 +140,27 @@ class ManagerController extends BaseController
      *
      * @ParamConverter("user", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"userId": "id"}})
      *
-     * @param Association $association
-     * @param User        $user
+     * @param Producer $producer
+     * @param User     $user
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws NotFoundHttpException
      */
-    public function promoteAction(Association $association, User $user)
+    public function promoteAction(Producer $producer, User $user)
     {
-        $this->secure($association, true);
+        $this->secure($producer, true);
 
         try {
             $userManager = $this->get('open_miam_miam_user.manager.user');
-            $userManager->promoteOperator($association, $user);
+            $userManager->promoteOperator($producer, $user);
         } catch (\RuntimeException $e) {
             throw $this->createNotFoundException($e->getMessage());
         }
 
-        $this->get('session')->getFlashBag()->add('notice', 'admin.association.manager.message.promoted');
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.manager.message.promoted');
 
-        return $this->redirect($this->generateUrl('open_miam_miam.admin.association.manager.list', array('id' => $association->getId())));
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.manager.list', array('id' => $producer->getId())));
     }
 
     /**
@@ -168,26 +168,26 @@ class ManagerController extends BaseController
      *
      * @ParamConverter("user", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"userId": "id"}})
      *
-     * @param Association $association
-     * @param User        $user
+     * @param Producer $producer
+     * @param User      $user
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws NotFoundHttpException
      */
-    public function demoteAction(Association $association, User $user)
+    public function demoteAction(Producer $producer, User $user)
     {
-        $this->secure($association, true);
+        $this->secure($producer, true);
 
         try {
             $userManager = $this->get('open_miam_miam_user.manager.user');
-            $userManager->demoteOperator($association, $user);
+            $userManager->demoteOperator($producer, $user);
         } catch (\RuntimeException $e) {
             throw $this->createNotFoundException($e->getMessage());
         }
 
-        $this->get('session')->getFlashBag()->add('notice', 'admin.association.manager.message.demoted');
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.manager.message.demoted');
 
-        return $this->redirect($this->generateUrl('open_miam_miam.admin.association.manager.list', array('id' => $association->getId())));
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.producer.manager.list', array('id' => $producer->getId())));
     }
 }

@@ -21,12 +21,13 @@ class BaseController extends Controller
      * Secures an action
      *
      * @param Producer $producer
+     * @param boolean  $owner
      *
      * @throws AccessDeniedException
      */
-    protected function secure(Producer $producer)
+    protected function secure(Producer $producer, $owner = false)
     {
-        if (false === $this->get('security.context')->isGranted('OPERATOR', $producer)) {
+        if (false === $this->get('security.context')->isGranted($owner ? 'OWNER' : 'OPERATOR', $producer)) {
             throw new AccessDeniedException();
         }
     }

@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\UserFilter;
 
@@ -163,14 +164,18 @@ QUERY;
     }
 
     /**
-     * Return users managing an association
+     * Returns users managing an Association or a Producer
      *
-     * @param Association $association
+     * @param mixed $object (Association or Producer)
      *
      * @return array
      */
-    public function findManagingAssociation(Association $association)
+    public function findManager($object)
     {
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
         $query = <<<QUERY
             SELECT DISTINCT u.*
             FROM fos_user u
@@ -186,8 +191,8 @@ QUERY;
         $query = sprintf(
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Association'),
-            $association->getId()
+            addslashes(sprintf('Isics\Bundle\OpenMiamMiamBundle\Entity\%s', $object instanceof Association ? 'Association' : 'Producer')),
+            $object->getId()
         );
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
@@ -196,19 +201,56 @@ QUERY;
         return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
     }
 
+    /**
+     * Return users managing Producers
+     *
+     * @param array $producer Producer ids
+     *
+     * @return array
+     */
+    public function findProducerManagerByProducerIds($producerIds)
+    {
+        $query = <<<QUERY
+            SELECT DISTINCT u.*
+            FROM fos_user u
+            JOIN acl_security_identities si ON (si.identifier = CONCAT('%s-', u.username))
+            JOIN acl_entries e ON (e.security_identity_id = si.id)
+            JOIN acl_object_identities oi ON (oi.id = e.object_identity_id )
+            JOIN acl_classes c ON (c.id = oi.class_id)
+            WHERE c.class_type = '%s'
+            AND oi.object_identifier IN (%s)
+            ORDER BY u.lastname
+QUERY;
+
+        $query = sprintf(
+            $query,
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Producer'),
+            implode(',', $producersIds)
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
+    }
 
     /**
-     * Returns a query to find users non managing an association
+     * Counts users not managing an Association or a Producer
      *
-     * @param Association $association
-     * @param string      $keyword
-     * @param integer     $offset
-     * @param integer     $length
+     * @param mixed   $object (Association or Producer)
+     * @param string  $keyword
      *
      * @return Query
+     *
+     * @throws InvalidArgumentException
      */
-    public function countNonManagingAssociationByKeyword(Association $association, $keyword)
+    public function countNotManagerByKeyword($object, $keyword)
     {
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
         $query = <<<QUERY
             SELECT COUNT(u.id)
             FROM fos_user u
@@ -231,8 +273,8 @@ QUERY;
         $query = sprintf(
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Association'),
-            $association->getId(),
+            addslashes(sprintf('Isics\Bundle\OpenMiamMiamBundle\Entity\%s', $object instanceof Association ? 'Association' : 'Producer')),
+            $object->getId(),
             $keywordQb->getDqlPart('where')
         );
 
@@ -246,17 +288,23 @@ QUERY;
     }
 
     /**
-     * Returns users non managing an association
+     * Returns users not managing an Association or a Producer
      *
-     * @param Association $association
-     * @param string      $keyword
-     * @param integer     $offset
-     * @param integer     $length
+     * @param mixed   $object (Association or Producer)
+     * @param string  $keyword
+     * @param integer $offset
+     * @param integer $length
      *
      * @return Query
+     *
+     * @throws InvalidArgumentException
      */
-    public function findNonManagingAssociationByKeyword(Association $association, $keyword, $offset, $length)
+    public function findNotManagerByKeyword($object, $keyword, $offset, $length)
     {
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
         $query = <<<QUERY
             SELECT DISTINCT u.*
             FROM fos_user u
@@ -281,8 +329,8 @@ QUERY;
         $query = sprintf(
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Association'),
-            $association->getId(),
+            addslashes(sprintf('Isics\Bundle\OpenMiamMiamBundle\Entity\%s', $object instanceof Association ? 'Association' : 'Producer')),
+            $object->getId(),
             $keywordQb->getDqlPart('where'),
             $offset,
             $length
@@ -295,58 +343,6 @@ QUERY;
         $query->setParameters($keywordQb->getQuery()->getParameters());
 
         return $query->getResult();
-    }
-
-    /**
-     * Return users managing producer(s)
-     *
-     * @param mixed $producer Producer or array of Producer ids
-     *
-     * @return array
-     */
-    public function findManagingProducer($producer)
-    {
-        $producersIds = array();
-        if (is_array($producer)) {
-            foreach ($producer as $_producer) {
-                $producersIds[] = $_producer;
-            }
-        } else {
-            $producersIds[] = $producer->getId();
-        }
-
-        if (empty($producersIds)) {
-            return array();
-        }
-
-        $query = <<<QUERY
-            SELECT DISTINCT u.*
-            FROM %s u
-            JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
-            JOIN %s e ON (e.security_identity_id = si.id)
-            JOIN %s oi ON (oi.id = e.object_identity_id )
-            JOIN %s c ON (c.id = oi.class_id)
-            WHERE c.class_type = '%s'
-            AND oi.object_identifier IN (%s)
-            ORDER BY u.lastname
-QUERY;
-
-        $query = sprintf(
-            $query,
-            'fos_user',
-            'acl_security_identities',
-            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            'acl_entries',
-            'acl_object_identities',
-            'acl_classes',
-            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Producer'),
-            implode(',', $producersIds)
-        );
-
-        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
-
-        return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
     }
 
     /**

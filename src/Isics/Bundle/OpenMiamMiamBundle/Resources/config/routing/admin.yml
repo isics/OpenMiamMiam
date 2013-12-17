@@ -332,4 +332,18 @@ open_miam_miam.admin.producer.sales_order.add_product:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}/add_product/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProduct }
 
+open_miam_miam.admin.producer.manager.list:
+    pattern:  /producers/{id}/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:list }
 
+open_miam_miam.admin.producer.manager.search:
+    pattern:  /producers/{id}/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:search }
+
+open_miam_miam.admin.producer.manager.promote:
+    pattern:  /producers/{id}/managers/promote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:promote }
+
+open_miam_miam.admin.producer.manager.demote:
+    pattern:  /producers/{id}/managers/demote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:demote }

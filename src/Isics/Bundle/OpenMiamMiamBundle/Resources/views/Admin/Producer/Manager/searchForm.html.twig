@@ -9,12 +9,12 @@
 
     <div class="form-group">
         {{ form_errors(form.keyword) }}
-        {{ form_widget(form.keyword, {'attr': {'class': 'form-control input-lg', 'placeholder': 'admin.association.manager.search.placeholder'|trans}}) }}
+        {{ form_widget(form.keyword, {'attr': {'class': 'form-control input-lg', 'placeholder': 'admin.producer.manager.search.placeholder'|trans}}) }}
     </div>
 
     <button type="submit" id="open_miam_miam_search_search" class="btn btn-primary btn-lg" />
         <span class="glyphicon glyphicon-search"></span>
-        {{ 'admin.association.manager.search'|trans }}
+        {{ 'admin.producer.manager.search'|trans }}
     </button>
     {% do form.search.setRendered %}
 
