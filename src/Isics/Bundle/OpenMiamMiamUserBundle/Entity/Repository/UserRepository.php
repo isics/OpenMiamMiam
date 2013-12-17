@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
@@ -145,23 +146,155 @@ class UserRepository extends EntityRepository
     {
         $query = <<<QUERY
             SELECT DISTINCT u.*
-            FROM %s u INNER JOIN %s si ON (si.identifier = CONCAT('%s-', u.username))
-            JOIN %s e ON (e.security_identity_id = si.id)
+            FROM fos_user u INNER JOIN acl_security_identities si ON (si.identifier = CONCAT('%s-', u.username))
+            JOIN acl_entries e ON (e.security_identity_id = si.id)
             ORDER BY u.lastname
 QUERY;
 
         $query = sprintf(
             $query,
-            'fos_user',
-            'acl_security_identities',
-            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            'acl_entries'
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User')
         );
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
 
         return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
+    }
+
+    /**
+     * Return users managing an association
+     *
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function findManagingAssociation(Association $association)
+    {
+        $query = <<<QUERY
+            SELECT DISTINCT u.*
+            FROM fos_user u
+            JOIN acl_security_identities si ON (si.identifier = CONCAT('%s-', u.username))
+            JOIN acl_entries e ON (e.security_identity_id = si.id)
+            JOIN acl_object_identities oi ON (oi.id = e.object_identity_id )
+            JOIN acl_classes c ON (c.id = oi.class_id)
+            WHERE c.class_type = '%s'
+            AND oi.object_identifier = %s
+            ORDER BY u.lastname
+QUERY;
+
+        $query = sprintf(
+            $query,
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Association'),
+            $association->getId()
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        return $this->getEntityManager()->createNativeQuery($query, $rsm)->getResult();
+    }
+
+
+    /**
+     * Returns a query to find users non managing an association
+     *
+     * @param Association $association
+     * @param string      $keyword
+     * @param integer     $offset
+     * @param integer     $length
+     *
+     * @return Query
+     */
+    public function countNonManagingAssociationByKeyword(Association $association, $keyword)
+    {
+        $query = <<<QUERY
+            SELECT COUNT(u.id)
+            FROM fos_user u
+            WHERE u.id NOT IN
+            (
+                SELECT u.id
+                FROM fos_user u
+                JOIN acl_security_identities si ON (si.identifier = CONCAT('%s-', u.username))
+                JOIN acl_entries e ON (e.security_identity_id = si.id)
+                JOIN acl_object_identities oi ON (oi.id = e.object_identity_id)
+                JOIN acl_classes c ON (c.id = oi.class_id)
+                WHERE c.class_type = '%s'
+                AND oi.object_identifier = %s
+            )
+            AND (%s)
+QUERY;
+
+        $keywordQb = $this->filterByKeyword($keyword);
+
+        $query = sprintf(
+            $query,
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Association'),
+            $association->getId(),
+            $keywordQb->getDqlPart('where')
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        $query = $this->getEntityManager()->createNativeQuery($query, $rsm);
+        $query->setParameters($keywordQb->getQuery()->getParameters());
+
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * Returns users non managing an association
+     *
+     * @param Association $association
+     * @param string      $keyword
+     * @param integer     $offset
+     * @param integer     $length
+     *
+     * @return Query
+     */
+    public function findNonManagingAssociationByKeyword(Association $association, $keyword, $offset, $length)
+    {
+        $query = <<<QUERY
+            SELECT DISTINCT u.*
+            FROM fos_user u
+            WHERE u.id NOT IN
+            (
+                SELECT u.id
+                FROM fos_user u
+                JOIN acl_security_identities si ON (si.identifier = CONCAT('%s-', u.username))
+                JOIN acl_entries e ON (e.security_identity_id = si.id)
+                JOIN acl_object_identities oi ON (oi.id = e.object_identity_id)
+                JOIN acl_classes c ON (c.id = oi.class_id)
+                WHERE c.class_type = '%s'
+                AND oi.object_identifier = %s
+            )
+            AND (%s)
+            ORDER BY u.lastname
+            LIMIT %s, %s
+QUERY;
+
+        $keywordQb = $this->filterByKeyword($keyword);
+
+        $query = sprintf(
+            $query,
+            addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
+            addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Association'),
+            $association->getId(),
+            $keywordQb->getDqlPart('where'),
+            $offset,
+            $length
+        );
+
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+
+        $query = $this->getEntityManager()->createNativeQuery($query, $rsm);
+        $query->setParameters($keywordQb->getQuery()->getParameters());
+
+        return $query->getResult();
     }
 
     /**

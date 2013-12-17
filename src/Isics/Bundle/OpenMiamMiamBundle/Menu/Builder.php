@@ -175,6 +175,13 @@ class Builder
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.association.menu.newsletter')),
         ));
+        if ($resource->isOwnerPerspective()) {
+            $menu[$menuName]->addChild('Manager', array(
+                'route'           => 'open_miam_miam.admin.association.manager.list',
+                'routeParameters' => array('id' => $association->getId()),
+                'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.association.menu.managers')),
+            ));
+        }
     }
 
     /**

@@ -262,13 +262,14 @@ admin.super.manager.message.demoted:    "L'utilisateur a bien été révoqué de
 
 
 # Admin / Association / Menu
-admin.association.menu.dashboard:   "Tableau de bord"
-admin.association.menu.orders:      "Caisse"
-admin.association.menu.branches:    "Comptoirs"
-admin.association.menu.consumers:   "Consommateurs"
-admin.association.menu.producers:   "Producteurs"
-admin.association.menu.news:        "Actualité"
-admin.association.menu.newsletter:  "Lettre d'information"
+admin.association.menu.dashboard:  "Tableau de bord"
+admin.association.menu.orders:     "Caisse"
+admin.association.menu.branches:   "Comptoirs"
+admin.association.menu.consumers:  "Consommateurs"
+admin.association.menu.producers:  "Producteurs"
+admin.association.menu.news:       "Actualité"
+admin.association.menu.newsletter: "Lettre d'information"
+admin.association.menu.managers:   "Gestionnaires"
 
 # Admin / Association / Dashboard
 admin.association.dashboard.title: "Tableau de bord"
@@ -480,6 +481,21 @@ admin.association.newsletter.report.title:         "Lettre d'information : rappo
 admin.association.newsletter.report.subject:       "Objet"
 admin.association.newsletter.report.sent_at:       "Envoyée le"
 admin.association.newsletter.report.nb_recipients: "Destinataires"
+
+# Admin / Association / Manager
+admin.association.manager.title:              "{0} Aucun gestionnaire|{1} 1 gestionnaire|]1,Inf] %nb% gestionnaires"
+admin.association.manager.lastname:           "Nom"
+admin.association.manager.firstname:          "Prénom"
+admin.association.manager.email:              "E-mail"
+admin.association.manager.add:                "Ajouter"
+admin.association.manager.search:             "Rechercher"
+admin.association.manager.search.placeholder: "Rechercher"
+admin.association.manager.promote :           "Promouvoir"
+admin.association.manager.demote :            "Révoquer"
+admin.association.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
+admin.association.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
+
+
 
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"

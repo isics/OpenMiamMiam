@@ -25,3 +25,12 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - %open_miam_miam_user.last_order_nb_days_considering_customer%
+            - @security.acl.provider
+
+    # Twig extensions
+    open_miam_miam.twig.open_miam_miam_user_extension:
+        class:     Isics\Bundle\OpenMiamMiamUserBundle\Twig\OpenMiamMiamUserExtension
+        arguments:
+            - @open_miam_miam_user.manager.user
+        tags:
+            - { name: twig.extension }

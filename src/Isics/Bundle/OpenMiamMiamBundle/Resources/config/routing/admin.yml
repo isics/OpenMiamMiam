@@ -251,6 +251,24 @@ open_miam_miam.admin.association.newsletter.report:
     pattern:  /associations/{id}/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:showReport }
 
+open_miam_miam.admin.association.manager.list:
+    pattern:  /associations/{id}/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:list }
+
+open_miam_miam.admin.association.manager.search:
+    pattern:  /associations/{id}/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:search }
+
+open_miam_miam.admin.association.manager.promote:
+    pattern:  /associations/{id}/managers/promote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:promote }
+
+open_miam_miam.admin.association.manager.demote:
+    pattern:  /associations/{id}/managers/demote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:demote }
+
+
+
 #
 # Admin Producer
 #

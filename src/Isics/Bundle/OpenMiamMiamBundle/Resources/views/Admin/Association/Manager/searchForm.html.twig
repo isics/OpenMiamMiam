@@ -1,0 +1,14 @@
+{{ form_start(form, {'attr': {'id': 'open_miam_miam_search_form', 'class': 'form-inline'}}) }}
+
+    <div class="form-group">
+        {{ form_errors(form.keyword) }}
+        {{ form_widget(form.keyword, {'attr': {'class': 'form-control input-lg', 'placeholder': 'admin.super.manager.search.placeholder'|trans}}) }}
+    </div>
+
+    <button type="submit" id="open_miam_miam_search_search" class="btn btn-primary btn-lg" />
+        <span class="glyphicon glyphicon-search"></span>
+        {{ 'admin.super.manager.search'|trans }}
+    </button>
+    {% do form.search.setRendered %}
+
+{{ form_end(form) }}

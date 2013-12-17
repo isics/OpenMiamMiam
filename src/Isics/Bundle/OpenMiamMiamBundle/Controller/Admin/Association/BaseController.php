@@ -21,12 +21,13 @@ class BaseController extends Controller
      * Secures an action
      *
      * @param Association $association
+     * @param boolean     $owner
      *
      * @throws AccessDeniedException
      */
-    protected function secure(Association $association)
+    protected function secure(Association $association, $owner = false)
     {
-        if (false === $this->get('security.context')->isGranted('OPERATOR', $association)) {
+        if (false === $this->get('security.context')->isGranted($owner ? 'OWNER' : 'OPERATOR', $association)) {
             throw new AccessDeniedException();
         }
     }

@@ -12,14 +12,14 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Exception\NotValidCurrentPageException;
-use Pagerfanta\Pagerfanta;
 
 class ManagerController extends Controller
 {
@@ -122,13 +122,14 @@ class ManagerController extends Controller
      *
      * @throws NotFoundHttpException
      */
-    public function promoteAction(User $user) {
-        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
-            throw $this->createNotFoundException('Do not touch super admin!');
+    public function promoteAction(User $user)
+    {
+        try {
+            $userManager = $this->get('open_miam_miam_user.manager.user');
+            $userManager->promoteAdmin($user);
+        } catch (\RuntimeException $e) {
+            throw $this->createNotFoundException($e->getMessage());
         }
-
-        $userManager = $this->get('open_miam_miam_user.manager.user');
-        $userManager->promoteAdmin($user);
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.super.manager.message.promoted');
 
@@ -144,13 +145,14 @@ class ManagerController extends Controller
      *
      * @throws NotFoundHttpException
      */
-    public function demoteAction(User $user) {
-        if ($user->hasRole('ROLE_SUPER_ADMIN')) {
-            throw $this->createNotFoundException('Do not touch super admin!');
+    public function demoteAction(User $user)
+    {
+        try {
+            $userManager = $this->get('open_miam_miam_user.manager.user');
+            $userManager->demoteAdmin($user);
+        } catch (\RuntimeException $e) {
+            throw $this->createNotFoundException($e->getMessage());
         }
-
-        $userManager = $this->get('open_miam_miam_user.manager.user');
-        $userManager->demoteAdmin($user);
 
         $this->get('session')->getFlashBag()->add('notice', 'admin.super.manager.message.demoted');
 
