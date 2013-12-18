@@ -204,12 +204,16 @@ QUERY;
     /**
      * Return users managing Producers
      *
-     * @param array $producer Producer ids
+     * @param array $producerIds Producer ids
      *
      * @return array
      */
     public function findProducerManagerByProducerIds($producerIds)
     {
+        if (!count($producerIds)) {
+            return array();
+        }
+
         $query = <<<QUERY
             SELECT DISTINCT u.*
             FROM fos_user u
@@ -226,7 +230,7 @@ QUERY;
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
             addslashes('Isics\Bundle\OpenMiamMiamBundle\Entity\Producer'),
-            implode(',', $producersIds)
+            implode(',', $producerIds)
         );
 
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
