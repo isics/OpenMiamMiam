@@ -85,7 +85,7 @@ class ManagerController extends BaseController
             $repository = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User');
             $pagerfanta = new Pagerfanta(new CallbackAdapter(
                 function () use ($repository, $producer, $keyword) {
-                    return $repository->countNotManagerProducerByKeyword(
+                    return $repository->countNotManagerByKeyword(
                         $producer,
                         $keyword
                     );
