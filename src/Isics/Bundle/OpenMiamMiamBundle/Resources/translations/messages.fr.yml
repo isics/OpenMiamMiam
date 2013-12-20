@@ -731,7 +731,7 @@ mail.branch.orders_closed.message_html:    |
 excel.association.producer.transfer.filename:                                   "producers_transfer_%year%-%month%.xlsx"
 excel.association.producer.transfer.total:                                      "TOTAL"
 excel.association.producer.transfer.title:                                      "VIREMENTS AUX PRODUCTEURS"
-excel.association.sales_orders.deposit_withdrawal.filename:                     "deposit_withdrawal_%day%_%month%_%year%.xlsx"
+excel.association.sales_orders.deposit_withdrawal.filename:                     "dépôt-retrait %branch% %day%-%month%-%year%.xlsx"
 excel.association.sales_orders.deposit_withdrawal.product_ref :                 "Références"
 excel.association.sales_orders.deposit_withdrawal.product_name :                "Produits"
 excel.association.sales_orders.deposit_withdrawal.product_unit_price :          "P.U."
