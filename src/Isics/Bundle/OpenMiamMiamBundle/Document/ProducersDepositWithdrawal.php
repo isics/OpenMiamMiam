@@ -13,7 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Document;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 
-class ProducersDepositWithdrawalTransfer
+class ProducersDepositWithdrawal
 {
     /**
      * @var BranchOccurrence
@@ -135,6 +135,9 @@ class ProducersDepositWithdrawalTransfer
                 }
             }
         }
+
+        ksort($groups);
+
         return $groups;
     }
 
@@ -172,6 +175,8 @@ class ProducersDepositWithdrawalTransfer
                 $group += $salesOrderRowData['product_total'] * $salesOrderRowData['product_commission']/100;
             }
         }
+
+        ksort($groups);
 
         return $groups;
     }

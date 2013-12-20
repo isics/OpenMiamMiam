@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder;
 
-use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawalTransfer;
+use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ColumnNameForNumber;
 use Symfony\Component\Translation\Translator;
@@ -33,6 +33,41 @@ class DepositWithdrawalExcel extends ColumnNameForNumber
      */
     protected $currency;
 
+    /**
+     * @var \NumberFormatter
+     */
+    protected $formatter;
+
+    /**
+     * @var \IntlDateFormatter
+     */
+    protected $intl;
+
+    /**
+     * @var array
+     */
+    protected $styles = array();
+
+    /**
+     * @var array $columns Columns mapping
+     */
+    protected $columns = array(
+        'productRef'  => 'A',
+        'productName' => 'B',
+        'unitPrice'   => 'C',
+        'quantity'    => 'D',
+        'total'       => 'E',
+    );
+
+    /**
+     * @var string $firstColumn
+     */
+    protected $firstColumn = 'A';
+
+    /**
+     * @var string $lastColumn
+     */
+    protected $lastColumn = 'E';
 
     /**
      * Constructor
@@ -46,271 +81,74 @@ class DepositWithdrawalExcel extends ColumnNameForNumber
         $this->excel        = $excel;
         $this->translator   = $translator;
         $this->currency     = $currency;
-    }
 
-    /**
-     * Build document
-     *
-     * @param ProducersDepositWithdrawalTransfer $producersTransfer
-     * @param BranchOccurrence                   $branchOccurrence
-     */
-    public function generate(ProducersDepositWithdrawalTransfer $producersTransfer, BranchOccurrence $branchOccurrence)
-    {
-        $this->excel->setActiveSheetIndex(0);
-        $sheet = $this->excel->getActiveSheet();
-        $sheet->getPageSetup()->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+        // intl
+        $this->formatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::CURRENCY);
+        $this->intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM Y');
 
-        $formatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::CURRENCY);
-        $intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM Y');
-
-        $boldStyle = array(
+        // Styles
+        $this->styles['bold'] = array(
             'font' => array(
                 'bold' => true,
             )
         );
 
-        $centerStyle = array(
+        $this->styles['center'] = array(
             'alignment'=>array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER
             )
         );
 
-        $rightStyle = array(
+        $this->styles['right'] = array(
             'alignment'=>array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT
             )
         );
 
-        $borderStyle = array(
+        $this->styles['border'] = array(
             'borders' => array(
                 'outline' => array(
                     'style' => \PHPExcel_Style_Border::BORDER_THIN,
                 ),
             )
         );
+    }
+
+    /**
+     * Build document
+     *
+     * @param ProducersDepositWithdrawal $model
+     * @param BranchOccurrence                   $branchOccurrence
+     */
+    public function generate(ProducersDepositWithdrawal $producerDepositWithdrawal)
+    {
+        $this->excel->setActiveSheetIndex(0);
+        $sheet = $this->excel->getActiveSheet();
+        $sheet->getPageSetup()->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+
+        $branchOccurrence = $producerDepositWithdrawal->getBranchOccurrence();
 
         $currentLine = 1;
 
-        // Merge cells for document title
-        $sheet->mergeCells('A1:'.'E1');
-        $sheet->setCellValue(
-            'A1',
-            $branchOccurrence->getBranch()->getName()."\n\n".
+        // Title
+        $this->generateTitle($sheet, $currentLine, implode('', array(
+            $branchOccurrence->getBranch()->getName(),
+            "\n",
+            "\n",
             $branchOccurrence->getEnd()->format('d/m/Y')
-        );
-        $sheet->getStyle('A1')->    getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $sheet->getStyle('A1')->applyFromArray(array_merge($centerStyle, $boldStyle));
-        $sheet->getRowDimension('1')
-            ->setRowHeight(50);
+        )));
 
-        $currentLine++;
-
-        foreach ($producersTransfer->getProducers() as  $producerId => $producerName) {
-
-            $sheet->mergeCells('A'.(string)$currentLine.':'.'E'.(string)$currentLine);
-
-            // Producer name
-            $sheet->setCellValue(
-                'A'.(string)$currentLine,
+        // Producer parts
+        foreach ($producerDepositWithdrawal->getProducers() as  $producerId => $producerName) {
+            $this->generateProducer(
+                $sheet,
+                $currentLine,
+                $producerDepositWithdrawal,
+                $producerId,
                 $producerName
             );
-            $sheet->getStyle('A'.(string)$currentLine)->applyFromArray(array_merge($centerStyle, $boldStyle));
-            $startLine = (string)$currentLine;
-            $currentLine++;
-
-            // title for product ref
-            $sheet->setCellValue(
-                'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_ref')
-            );
-            $sheet->getStyle(
-                'A'.(string)$currentLine
-            )->applyFromArray(array_merge($centerStyle, $boldStyle));
-
-            // title for product name
-            $sheet->setCellValue(
-                'B'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_name')
-            );
-            $sheet->getStyle(
-                'B'.(string)$currentLine
-            )->applyFromArray(array_merge($centerStyle, $boldStyle));
-
-            // title for product unit price
-            $sheet->setCellValue(
-                'C'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_unit_price')
-            );
-            $sheet->getStyle(
-                'C'.(string)$currentLine
-            )->applyFromArray(array_merge($centerStyle, $boldStyle));
-
-            // title for product quantity
-            $sheet->setCellValue(
-                'D'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_quantity')
-            );
-            $sheet->getStyle(
-                'D'.(string)$currentLine
-            )->applyFromArray(array_merge($centerStyle, $boldStyle));
-
-            // title for product total
-            $sheet->setCellValue(
-                'E'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_total')
-            );
-            $sheet->getStyle(
-                'E'.(string)$currentLine
-            )->applyFromArray(array_merge($centerStyle, $boldStyle));
-
-            $currentLine++;
-
-            foreach ($producersTransfer->getGroupedSalesOrderRowsDataForProducerId($producerId) as $product) {
-
-                // Product reference
-                $sheet->setCellValue(
-                    'A'.(string)$currentLine,
-                    $product['product_ref']
-                );
-
-                $sheet->setCellValue(
-                    'B'.(string)$currentLine,
-                    $product['product_name']
-                );
-
-                // Product unit price
-                $sheet->setCellValue(
-                    'C'.(string)$currentLine,
-                    $formatter->formatCurrency($product['product_unit_price'],$this->currency)
-                );
-                $sheet->getStyle(
-                    'C'.(string)$currentLine
-                )->applyFromArray(array_merge($rightStyle));
-
-                // Product quantity
-                $sheet->setCellValue(
-                    'D'.(string)$currentLine,
-                    $product['product_quantity']
-                );
-                $sheet->getStyle(
-                    'D'.(string)$currentLine
-                )->applyFromArray(array_merge($centerStyle));
-
-                // Product total
-                $sheet->setCellValue(
-                    'E'.(string)$currentLine,
-                    $formatter->formatCurrency($product['product_total'],$this->currency)
-                );
-                $sheet->getStyle(
-                    'E'.(string)$currentLine
-                )->applyFromArray(array_merge($rightStyle));
-
-                $currentLine++;
-
-            }
-            $currentLine++;
-
-            // title for total sales order for producer
-            $sheet->setCellValue(
-                'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_sales_order_producer')
-            );
-
-            // Total sales order for producer
-            $sheet->setCellValue(
-                'E'.(string)$currentLine,
-                $formatter->formatCurrency($producersTransfer->getTotalForProducerId($producerId),$this->currency)
-            );
-            $sheet->getStyle(
-                'E'.(string)$currentLine
-            )->applyFromArray(array_merge($rightStyle));
-            $currentLine = $currentLine + 2;
-
-            // title for total sales order branch
-            $sheet->setCellValue(
-                'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_sales_order_branch')
-            );
-
-            // Total sales order branch
-            $sheet->setCellValue(
-                'E'.(string)$currentLine,
-                $formatter->formatCurrency($producersTransfer->getBranchOccurrenceTotalForProducerId($producerId),$this->currency)
-            );
-            $sheet->getStyle(
-                'E'.(string)$currentLine
-            )->applyFromArray(array_merge($rightStyle));
-            $currentLine = $currentLine + 2;
-
-            // title for total sales order producer + branch
-            $sheet->setCellValue(
-                'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_sales_order')
-            );
-
-            // Total sales order producer + branch
-            $sheet->setCellValue(
-                'E'.(string)$currentLine,
-                $formatter->formatCurrency($producersTransfer->getTotal($producerId),$this->currency)
-            );
-            $sheet->getStyle(
-                'E'.(string)$currentLine
-            )->applyFromArray(array_merge($boldStyle, $rightStyle));
-            $currentLine = $currentLine + 2;
-
-            foreach ($producersTransfer->getGroupedCommissionDataForProducerId($producerId) as  $commission => $total) {
-
-                // commission
-                $sheet->setCellValue(
-                    'A'.(string)$currentLine,
-                    $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.commission', array(
-                        '%commission%'  => $commission
-                    ))
-                );
-
-                // Total commission
-                $sheet->setCellValue(
-                    'E'.(string)$currentLine,
-                    $formatter->formatCurrency($total,$this->currency)
-                );
-                $sheet->getStyle(
-                    'E'.(string)$currentLine
-                )->applyFromArray(array_merge($rightStyle));
-
-                $currentLine++;
-            }
-            $currentLine++;
-
-            // title for total to pay
-            $sheet->setCellValue(
-                'A'.(string)$currentLine,
-                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_to_pay')
-            );
-            $sheet->getStyle(
-                'A'.(string)$currentLine
-            )->applyFromArray(array_merge($borderStyle, $boldStyle));
-
-            // Total to pay
-            $sheet->setCellValue(
-                'E'.(string)$currentLine,
-                $formatter->formatCurrency($producersTransfer->getTotalToPay($producerId),$this->currency)
-            );
-            $sheet->getStyle(
-                'E'.(string)$currentLine
-            )->applyFromArray(array_merge($boldStyle, $rightStyle));
-            $endCell = (string)$currentLine;
-            $currentLine = $currentLine + 2;
-
-            for($i = $startLine; $i <= $endCell; $i++) {
-                for ($j = 0; $j <= 4; $j++) {
-                    $letter = $this->getColumnNameForNumber($j);
-                    $sheet->getStyle(
-                        $letter.$i.''
-                    )->applyFromArray(array_merge($borderStyle));
-                }
-            }
-
         }
+
         // set width auto
         $columnID = 'A';
         $lastColumn = $sheet->getHighestColumn();
@@ -318,7 +156,398 @@ class DepositWithdrawalExcel extends ColumnNameForNumber
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
             $columnID++;
         } while ($columnID != $lastColumn);
+    }
 
+    /**
+     * Add title in document
+     *
+     * @param \PHPExcel_Worksheet $sheet La feuille de calcul
+     * @param int                 $line  La ligne courante
+     * @param string              $title Le titre
+     */
+    protected function generateTitle(\PHPExcel_Worksheet $sheet, &$line, $title)
+    {
+        $firstCell = $this->firstColumn.$line;
+        $lastCell = $this->lastColumn.$line;
+
+        // Merge cells for document title
+        $sheet->mergeCells($firstCell.':'.$lastCell);
+        $sheet->setCellValue($firstCell, $title);
+        $sheet->getStyle($firstCell)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $sheet->getStyle($firstCell)->applyFromArray(array_merge(
+            $this->styles['center'],
+            $this->styles['bold']
+        ));
+        $sheet->getRowDimension('1')->setRowHeight(50);
+
+        ++$line;
+    }
+
+    /**
+     * Generate a producer part of the document
+     *
+     * @param \PHPExcel_Worksheet        $sheet                     Data sheet
+     * @param                            $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Producer deposit / withdrawal model
+     * @param                            $producerId                Producer id
+     * @param                            $producerName              Producer name
+     */
+    protected function generateProducer(\PHPExcel_Worksheet $sheet,
+                                        &$line,
+                                        ProducersDepositWithdrawal $producerDepositWithdrawal,
+                                        $producerId,
+                                        $producerName)
+    {
+        $firstCell = $this->firstColumn.$line;
+        $lastCell = $this->lastColumn.$line;
+
+        $sheet->mergeCells($firstCell.':'.$lastCell);
+
+        // Producer name
+        $sheet->setCellValue(
+            $firstCell,
+            $producerName
+        );
+
+        $sheet->getStyle($firstCell)->applyFromArray($this->styles['bold']);
+
+        ++$line;
+
+        $startLine = $line;
+
+        $this->generateProducerTableHeader($sheet, $line);
+
+        foreach ($producerDepositWithdrawal->getGroupedSalesOrderRowsDataForProducerId($producerId) as $product) {
+            $this->generateProducerTableProduct($sheet, $line, $product);
+        }
+
+        ++$line;
+
+        $this->generateProducerSalesOrdersTotal($sheet, $line, $producerDepositWithdrawal, $producerId);
+
+        ++$line;
+
+        $this->generateProducerBranchSalesOrdersTotal($sheet, $line, $producerDepositWithdrawal, $producerId);
+
+        ++$line;
+
+        $this->generateProducerTotal($sheet, $line, $producerDepositWithdrawal, $producerId);
+
+        ++$line;
+
+        $commissions = $producerDepositWithdrawal->getGroupedCommissionDataForProducerId($producerId);
+        foreach ($commissions as  $commissionRate => $commissionTotal) {
+            $this->generateProducerCommission($sheet, $line, $commissionRate, $commissionTotal);
+        }
+
+        ++$line;
+
+        $this->generateProducerToPayUp($sheet, $line, $producerDepositWithdrawal, $producerId);
+
+        $endLine = $line;
+
+        for($i = $startLine; $i <= $endLine; $i++) {
+            for ($j = $this->firstColumn; $j <= $this->lastColumn; $j++) {
+                $sheet->getStyle($j.$i)->applyFromArray(array_merge($this->styles['border']));
+            }
+        }
+
+        ++$line;
+
+        $sheet->getRowDimension($line)->setRowHeight(20);
+
+        ++$line;
+    }
+
+    /**
+     * Generate producer table header
+     *
+     * @param \PHPExcel_Worksheet $sheet        Active sheet
+     * @param int                 $line         Current line
+     */
+    protected function generateProducerTableHeader(\PHPExcel_Worksheet $sheet, &$line)
+    {
+        // title for product ref
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_ref')
+        );
+        $sheet->getStyle(
+            $this->columns['productRef'].$line
+        )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        // title for product name
+        $sheet->setCellValue(
+            $this->columns['productName'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_name')
+        );
+        $sheet->getStyle(
+            $this->columns['productName'].$line
+        )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        // title for product unit price
+        $sheet->setCellValue(
+            $this->columns['unitPrice'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_unit_price')
+        );
+        $sheet->getStyle(
+            $this->columns['unitPrice'].$line
+        )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        // title for product quantity
+        $sheet->setCellValue(
+            $this->columns['quantity'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_quantity')
+        );
+        $sheet->getStyle(
+            $this->columns['quantity'].$line
+        )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        // title for product total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.product_total')
+        );
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        ++$line;
+    }
+
+    /**
+     * Generate producer table product line
+     *
+     * @param \PHPExcel_Worksheet $sheet
+     * @param int                 $line
+     * @param array               $product
+     */
+    protected function generateProducerTableProduct(\PHPExcel_Worksheet $sheet, &$line, array $product)
+    {
+        // Product reference
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $product['product_ref']
+        );
+
+        $sheet->setCellValue(
+            $this->columns['productName'].$line,
+            $product['product_name']
+        );
+
+        // Product unit price
+        $sheet->setCellValue(
+            $this->columns['unitPrice'].$line,
+            $this->formatter->formatCurrency($product['product_unit_price'], $this->currency)
+        );
+        $sheet->getStyle(
+            $this->columns['unitPrice'].$line
+        )->applyFromArray($this->styles['right']);
+
+        // Product quantity
+        $sheet->setCellValue(
+            $this->columns['quantity'].$line,
+            $product['product_quantity']
+        );
+        $sheet->getStyle(
+            $this->columns['quantity'].$line
+        )->applyFromArray($this->styles['center']);
+
+        // Product total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->formatter->formatCurrency($product['product_total'], $this->currency)
+        );
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray($this->styles['right']);
+
+        ++$line;
+    }
+
+    /**
+     * Generate sales order total
+     *
+     * @param \PHPExcel_Worksheet        $sheet                     Active sheet
+     * @param int                        $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
+     * @param int                        $producerId                Producer id
+     */
+    protected function generateProducerSalesOrdersTotal(\PHPExcel_Worksheet $sheet,
+                                                        &$line,
+                                                        ProducersDepositWithdrawal $producerDepositWithdrawal,
+                                                        $producerId)
+    {
+        // Title
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $this->translator->trans(
+                'excel.association.sales_orders.deposit_withdrawal.total_sales_order_producer'
+            )
+        );
+
+        // Total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getTotalForProducerId($producerId),
+                $this->currency
+            )
+        );
+
+        // Style
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray($this->styles['right']);
+
+        ++$line;
+    }
+
+    /**
+     * Generate producer branch occurrence sales orders total
+     *
+     * @param \PHPExcel_Worksheet        $sheet                     Active sheet
+     * @param int                        $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
+     * @param int                        $producerId                Producer id
+     */
+    protected function generateProducerBranchSalesOrdersTotal(\PHPExcel_Worksheet $sheet,
+                                                              &$line,
+                                                              ProducersDepositWithdrawal $producerDepositWithdrawal,
+                                                              $producerId)
+    {
+        // Title
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $this->translator->trans(
+                'excel.association.sales_orders.deposit_withdrawal.total_sales_order_branch'
+            )
+        );
+
+        // Total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId),
+                $this->currency
+            )
+        );
+
+        // Style
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray($this->styles['right']);
+
+        ++$line;
+    }
+
+    /**
+     * Generate producer total
+     *
+     * @param \PHPExcel_Worksheet        $sheet                     Active sheet
+     * @param int                        $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
+     * @param int                        $producerId                Producer id
+     */
+    protected function generateProducerTotal(\PHPExcel_Worksheet $sheet,
+                                             &$line,
+                                             ProducersDepositWithdrawal $producerDepositWithdrawal,
+                                             $producerId)
+    {
+        // Title
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $this->translator->trans(
+                'excel.association.sales_orders.deposit_withdrawal.total_sales_order'
+            )
+        );
+
+        // Total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getTotal($producerId),
+                $this->currency
+            )
+        );
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray(array_merge($this->styles['bold'], $this->styles['right']));
+
+        ++$line;
+    }
+
+    /**
+     * Generate producer commission line
+     *
+     * @param \PHPExcel_Worksheet $sheet                     Active sheet
+     * @param int                 $line                      Current line
+     * @param float               $commissionRate            Commission rate
+     * @param float               $commissionTotal           Commission total
+     */
+    protected function generateProducerCommission(\PHPExcel_Worksheet $sheet,
+                                                  &$line,
+                                                  $commissionRate,
+                                                  $commissionTotal)
+    {
+        // Rate
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.commission', array(
+                '%commission%'  => $commissionRate
+            ))
+        );
+
+        // Total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->formatter->formatCurrency($commissionTotal, $this->currency)
+        );
+
+        // Style
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray($this->styles['right']);
+
+        ++$line;
+    }
+
+    /**
+     * Generate producer to pay up
+     *
+     * @param \PHPExcel_Worksheet        $sheet                     Active sheet
+     * @param int                        $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
+     * @param int                        $producerId                Producer id
+     */
+    protected function generateProducerToPayUp(\PHPExcel_Worksheet $sheet,
+                                               &$line,
+                                               ProducersDepositWithdrawal $producerDepositWithdrawal,
+                                               $producerId)
+    {
+        // Title
+        $sheet->setCellValue(
+            $this->columns['productRef'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total_to_pay')
+        );
+
+        // Style
+        $sheet->getStyle(
+            $this->columns['productRef'].$line
+        )->applyFromArray(array_merge($this->styles['border'], $this->styles['bold']));
+
+        // Total
+        $sheet->setCellValue(
+            $this->columns['total'].$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getTotalToPay($producerId),
+                $this->currency
+            )
+        );
+        // Style
+        $sheet->getStyle(
+            $this->columns['total'].$line
+        )->applyFromArray(array_merge($this->styles['bold'], $this->styles['right']));
     }
 
     /**

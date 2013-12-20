@@ -13,7 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 
 use Doctrine\ORM\EntityManager;
-use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawalTransfer;
+use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducersTransfer;
@@ -159,7 +159,7 @@ class AssociationManager
      *
      * @param BranchOccurrence  $branchOccurrence
      *
-     * @return ProducersDepositWithdrawalTransfer
+     * @return ProducersDepositWithdrawal
      */
     public function getProducerTransferForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
@@ -185,6 +185,6 @@ class AssociationManager
             ->getQuery()
             ->getResult();
 
-        return new ProducersDepositWithdrawalTransfer($branchOccurrence, $producersData, $this->artificial_product_ref);
+        return new ProducersDepositWithdrawal($branchOccurrence, $producersData, $this->artificial_product_ref);
     }
 } 
