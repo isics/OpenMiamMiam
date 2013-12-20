@@ -13,7 +13,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducersTransfer;
 
 class AssociationManager
@@ -24,13 +26,20 @@ class AssociationManager
     protected $entityManager;
 
     /**
+     * @var String $artificial_product_ref
+     */
+    protected $artificial_product_ref;
+
+    /**
      * Constructs object
      *
      * @param EntityManager $entityManager
+     * @param String $artificial_product_ref
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $artificial_product_ref)
     {
         $this->entityManager   = $entityManager;
+        $this->artificial_product_ref   = $artificial_product_ref;
     }
 
     /**
@@ -143,5 +152,39 @@ class AssociationManager
         }
 
         return new ProducersTransfer($branchOccurrences, $producers, $producersData, $fromDate);
+    }
+
+    /**
+     * Get producers transfer object for branch occurence
+     *
+     * @param BranchOccurrence  $branchOccurrence
+     *
+     * @return ProducersDepositWithdrawal
+     */
+    public function getProducerTransferForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+
+        $producersDataQueryBuilder = $this->entityManager->createQueryBuilder();
+        $producersData = $producersDataQueryBuilder
+            ->select('p.id AS producer_id')
+            ->addSelect('p.name AS producer_name')
+            ->addSelect('pr.name AS product_name')
+            ->addSelect('sor.ref AS product_ref')
+            ->addSelect('sor.unitPrice AS product_unit_price')
+            ->addSelect('sor.quantity AS product_quantity')
+            ->addSelect('sor.total AS product_total')
+            ->addSelect('sor.commission AS product_commission')
+            ->from('IsicsOpenMiamMiamBundle:Producer', 'p')
+            ->leftJoin('p.salesOrderRows', 'sor')
+            ->leftJoin('sor.salesOrder', 'so')
+            ->leftJoin('sor.product', 'pr')
+            ->leftJoin('so.branchOccurrence', 'bo')
+            ->leftJoin('bo.branch', 'b')
+            ->leftJoin('b.association', 'a')
+            ->where($producersDataQueryBuilder->expr()->in('bo.id', $branchOccurrence->getId()))
+            ->getQuery()
+            ->getResult();
+
+        return new ProducersDepositWithdrawal($branchOccurrence, $producersData, $this->artificial_product_ref);
     }
 } 
