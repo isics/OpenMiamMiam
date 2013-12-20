@@ -191,7 +191,7 @@ QUERY;
         $query = sprintf(
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            addslashes(sprintf('Isics\Bundle\OpenMiamMiamBundle\Entity\%s', $object instanceof Association ? 'Association' : 'Producer')),
+            addslashes(get_class($object)),
             $object->getId()
         );
 
@@ -277,7 +277,7 @@ QUERY;
         $query = sprintf(
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            addslashes(sprintf('Isics\Bundle\OpenMiamMiamBundle\Entity\%s', $object instanceof Association ? 'Association' : 'Producer')),
+            addslashes(get_class($object)),
             $object->getId(),
             $keywordQb->getDqlPart('where')
         );
@@ -333,7 +333,7 @@ QUERY;
         $query = sprintf(
             $query,
             addslashes('Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'),
-            addslashes(sprintf('Isics\Bundle\OpenMiamMiamBundle\Entity\%s', $object instanceof Association ? 'Association' : 'Producer')),
+            addslashes(get_class($object)),
             $object->getId(),
             $keywordQb->getDqlPart('where'),
             $offset,

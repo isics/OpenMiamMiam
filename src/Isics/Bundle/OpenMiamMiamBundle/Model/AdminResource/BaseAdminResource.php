@@ -22,7 +22,7 @@ abstract class BaseAdminResource implements AdminResourceInterface
     protected $ownerPerspective = false;
 
     /**
-     * Defines if resource for owner perspective
+     * Defines resource owner perspective
      *
      * @param boolean $ownerPerspective
      */

@@ -33,7 +33,7 @@ class UserManager
     /**
      * Number of days after his last order, a user is considered as a customer
      *
-     * @var integer $lastOrderNbDaysConsideringCustomer
+     * @var int $lastOrderNbDaysConsideringCustomer
      */
     private $lastOrderNbDaysConsideringCustomer;
 
@@ -47,8 +47,9 @@ class UserManager
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
-     * @param integer       $lastOrderNbDaysConsideringCustomer
+     * @param EntityManager        $entityManager
+     * @param int                  $lastOrderNbDaysConsideringCustomer
+     * @param AclProviderInterface $aclProvider
      */
     public function __construct(EntityManager $entityManager, $lastOrderNbDaysConsideringCustomer, AclProviderInterface $aclProvider)
     {
