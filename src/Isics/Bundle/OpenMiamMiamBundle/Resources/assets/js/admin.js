@@ -319,7 +319,7 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
             var $form = $('#open_miam_miam_search_form');
 
             var $hiddenDiv = $('<div style="display: none"></div>');
-            var $loader = $('<span></span> <img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
+            var $loader = $('<img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
 
             $form.submit(function(e) {
                 e.preventDefault();

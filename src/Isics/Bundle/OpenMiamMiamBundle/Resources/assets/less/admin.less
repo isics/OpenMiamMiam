@@ -1,4 +1,5 @@
 @import "variables.less";
+@import "../../../../../../../web/bootstrap/less/dropdowns.less";
 @import "../../../../../../../web/bootstrap/less/mixins.less";
 
 //
@@ -578,4 +579,30 @@ h1 {
 //
 .edit-producer-button {
     margin-top : 20px;
+}
+
+#open_miam_miam_search_form {
+    position: relative;
+
+    .loader {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+}
+
+.ui-autocomplete {
+    .dropdown-menu;
+
+    > li > a {
+        border-radius: 0;
+
+        &.ui-state-focus {
+            color: @dropdown-link-active-color;
+            text-decoration: none;
+            outline: 0;
+            background-color: @dropdown-link-active-bg;
+            border: 0;
+        }
+    }
 }
