@@ -11,16 +11,15 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceCollection;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AssociationAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\SuperAdminResource;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminResourceCollection;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AssociationAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\ProducerAdminResource;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
 
 /**
  * Class AdminManager
@@ -57,6 +56,7 @@ class AdminManager
     {
         $this->securityContext = $securityContext;
         $this->entityManager = $entityManager;
+
         $this->adminResourceCollection = new AdminResourceCollection();
     }
 
@@ -67,75 +67,65 @@ class AdminManager
      */
     public function findAvailableAdminResources()
     {
-        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
-            $this->adminResourceCollection->add(new SuperAdminResource());
-        }
-
-        $producers = $this->findAvailableProducers();
-        foreach ($producers as $producer) {
-            $this->adminResourceCollection->add(new ProducerAdminResource($producer));
-        }
-
-        $associations = $this->findAvailableAssociations();
-        foreach ($associations as $association) {
-            $this->adminResourceCollection->add(new AssociationAdminResource($association));
-        }
+        $this->lookForAdminAdminResource();
+        $this->lookForAssociationAdminResources();
+        $this->lookForProducerAdminResources();
 
         return $this->adminResourceCollection;
     }
 
     /**
-     * Returns available producers for user
-     *
-     * @return array
+     * Adds admin admin resource if available
      */
-    public function findAvailableProducers()
+    protected function lookForAdminAdminResource()
     {
-        $repository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Producer');
+        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+            $adminAdminResource = new AdminAdminResource();
 
-        $ids = $this->filterAvailableEntitiesByPk($repository, $repository->findAllIds());
-        if (empty($ids)) {
-            return array();
+            if ($this->securityContext->isGranted('ROLE_SUPER_ADMIN')) {
+                $adminAdminResource->setOwnerPerspective(true);
+            }
+            $this->adminResourceCollection->add($adminAdminResource);
         }
-
-        return $repository->findById($ids);
     }
 
     /**
-     * Returns available associations for user
-     *
-     * @return array
+     * Adds association admin resources if available
      */
-    public function findAvailableAssociations()
+    protected function lookForAssociationAdminResources()
     {
         $repository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Association');
 
-        $ids = $this->filterAvailableEntitiesByPk($repository, $repository->findAllIds());
-        if (empty($ids)) {
-            return array();
-        }
+        foreach ($repository->findAllIds() as $pk) {
+            $objectIdentity = new ObjectIdentity($pk, $repository->getClassName());
 
-        return $repository->findById($ids);
+            if ($this->securityContext->isGranted('OWNER', $objectIdentity)) {
+                $associationAdminResource = new AssociationAdminResource($repository->findOneById($pk));
+                $associationAdminResource->setOwnerPerspective(true);
+                $this->adminResourceCollection->add($associationAdminResource);
+            } else if ($this->securityContext->isGranted('OPERATOR', $objectIdentity)) {
+                $this->adminResourceCollection->add(new AssociationAdminResource($repository->findOneById($pk)));
+            }
+        }
     }
 
     /**
-     * Returns available entities for user
-     *
-     * @param ObjectRepository $repository
-     * @param array $pks
-     *
-     * @return array
+     * Adds producer admin resources if available
      */
-    protected function filterAvailableEntitiesByPk(ObjectRepository $repository, array $pks)
+    protected function lookForProducerAdminResources()
     {
-        $availablePks = array();
-        foreach ($pks as $pk) {
+        $repository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Producer');
+
+        foreach ($repository->findAllIds() as $pk) {
             $objectIdentity = new ObjectIdentity($pk, $repository->getClassName());
+
             if ($this->securityContext->isGranted('OWNER', $objectIdentity)) {
-                $availablePks[] = $pk;
+                $producerAdminResource = new ProducerAdminResource($repository->findOneById($pk));
+                $producerAdminResource->setOwnerPerspective(true);
+                $this->adminResourceCollection->add($producerAdminResource);
+            } else if ($this->securityContext->isGranted('OPERATOR', $objectIdentity)) {
+                $this->adminResourceCollection->add(new ProducerAdminResource($repository->findOneById($pk)));
             }
         }
-
-        return $availablePks;
     }
 }

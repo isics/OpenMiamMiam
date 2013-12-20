@@ -12,11 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Menu;
 
 use Isics\Bundle\OpenMiamMiamBundle\Manager\AdminManager;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AssociationAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\ProducerAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\RelayAdminResource;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\SuperAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminResourceInterface;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AssociationAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\ProducerAdminResource;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\RelayAdminResource;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -67,14 +67,14 @@ class Builder
         $menu = $this->factory->createItem('root');
 
         foreach ($this->adminManager->findAvailableAdminResources() as $resource) {
-            if ($resource instanceof SuperAdminResource) {
-                $this->addSuperAdminMenuItems($menu, $resource);
+            if ($resource instanceof AdminAdminResource) {
+                $this->addAdminMenuItems($menu, $resource);
             } else if ($resource instanceof AssociationAdminResource) {
-                 $this->addAssociationAdminMenuItems($menu, $resource);
+                 $this->addAssociationMenuItems($menu, $resource);
             } else if ($resource instanceof ProducerAdminResource) {
-                $this->addProducerAdminMenuItems($menu, $resource);
+                $this->addProducerMenuItems($menu, $resource);
             } else if ($resource instanceof RelayAdminResource) {
-                $this->addRelayAdminMenuItems($menu, $resource);
+                $this->addRelayMenuItems($menu, $resource);
             }
         }
 
@@ -82,14 +82,14 @@ class Builder
     }
 
     /**
-     * Adds menu items for the super admin area
+     * Adds menu items for the admin area
      *
      * @param ItemInterface          $menu     Root menu
      * @param AdminResourceInterface $resource Admin resource
      */
-    protected function addSuperAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    protected function addAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
-        $menuName = 'super';
+        $menuName = 'admin';
 
         $menu->addChild($menuName, array(
             'route' => 'open_miam_miam.admin.super.show_dashboard',
@@ -115,6 +115,12 @@ class Builder
             'route' => 'open_miam_miam.admin.super.category.list',
             'label' => sprintf($this->labelFormat, 'sort-by-attributes', $this->translator->trans('admin.super.menu.category')),
         ));
+        if ($resource->isOwnerPerspective()) {
+            $menu[$menuName]->addChild('Manager', array(
+                'route' => 'open_miam_miam.admin.super.manager.list',
+                'label' => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.super.menu.manager')),
+            ));
+        }
     }
 
     /**
@@ -123,7 +129,7 @@ class Builder
      * @param ItemInterface          $menu     Root menu
      * @param AdminResourceInterface $resource Admin resource
      */
-    protected function addAssociationAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    protected function addAssociationMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
         $association = $resource->getEntity();
 
@@ -169,6 +175,13 @@ class Builder
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.association.menu.newsletter')),
         ));
+        if ($resource->isOwnerPerspective()) {
+            $menu[$menuName]->addChild('Manager', array(
+                'route'           => 'open_miam_miam.admin.association.manager.list',
+                'routeParameters' => array('id' => $association->getId()),
+                'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.association.menu.managers')),
+            ));
+        }
     }
 
     /**
@@ -177,7 +190,7 @@ class Builder
      * @param ItemInterface          $menu     Root menu
      * @param AdminResourceInterface $resource Admin resource
      */
-    protected function addProducerAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    protected function addProducerMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
         $producer = $resource->getEntity();
 
@@ -208,16 +221,18 @@ class Builder
             'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'time', $this->translator->trans('admin.producer.menu.calendar')),
         ));
-        // $menu[$menuName]->addChild('Managers', array(
-        //     // 'route'           => 'open_miam_miam.admin.producer.product.list',
-        //     // 'routeParameters' => array('id' => $producer->getId()),
-        //     'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.producer.menu.managers')),
-        // ));
         $menu[$menuName]->addChild('Producer infos', array(
             'route'           => 'open_miam_miam.admin.producer.edit',
             'routeParameters' => array('id' => $producer->getId()),
             'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.producer.menu.producer_infos')),
         ));
+        if ($resource->isOwnerPerspective()) {
+            $menu[$menuName]->addChild('Manager', array(
+                'route'           => 'open_miam_miam.admin.producer.manager.list',
+                'routeParameters' => array('id' => $producer->getId()),
+                'label'           => sprintf($this->labelFormat, 'lock', $this->translator->trans('admin.producer.menu.managers')),
+            ));
+        }
     }
 
     /**
@@ -226,7 +241,7 @@ class Builder
      * @param ItemInterface          $menu     Root menu
      * @param AdminResourceInterface $resource Admin resource
      */
-    protected function addRelayAdminMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
+    protected function addRelayMenuItems(ItemInterface $menu, AdminResourceInterface $resource)
     {
         // @todo
     }

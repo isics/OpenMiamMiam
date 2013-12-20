@@ -9,14 +9,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Relay;
 
 /**
  * Class RelayAdminResource
  */
-class RelayAdminResource extends EntityAdminResource
+class RelayAdminResource extends BaseEntityAdminResource
 {
     /**
      * Constructor

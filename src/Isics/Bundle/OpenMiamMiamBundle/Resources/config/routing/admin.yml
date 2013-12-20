@@ -73,6 +73,22 @@ open_miam_miam.admin.super.category.delete:
     pattern:  /super/categories/{categoryId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:delete }
 
+open_miam_miam.admin.super.manager.list:
+    pattern:  /super/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:list }
+
+open_miam_miam.admin.super.manager.search:
+    pattern:  /super/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:search }
+
+open_miam_miam.admin.super.manager.promote:
+    pattern:  /super/managers/promote/{id}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:promote }
+
+open_miam_miam.admin.super.manager.demote:
+    pattern:  /super/managers/demote/{id}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:demote }
+
 
 
 #
@@ -239,6 +255,24 @@ open_miam_miam.admin.association.newsletter.report:
     pattern:  /associations/{id}/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:showReport }
 
+open_miam_miam.admin.association.manager.list:
+    pattern:  /associations/{id}/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:list }
+
+open_miam_miam.admin.association.manager.search:
+    pattern:  /associations/{id}/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:search }
+
+open_miam_miam.admin.association.manager.promote:
+    pattern:  /associations/{id}/managers/promote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:promote }
+
+open_miam_miam.admin.association.manager.demote:
+    pattern:  /associations/{id}/managers/demote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:demote }
+
+
+
 #
 # Admin Producer
 #
@@ -302,4 +336,18 @@ open_miam_miam.admin.producer.sales_order.add_product:
     pattern:  /producers/{id}/sales_orders/{salesOrderId}/add_product/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProduct }
 
+open_miam_miam.admin.producer.manager.list:
+    pattern:  /producers/{id}/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:list }
 
+open_miam_miam.admin.producer.manager.search:
+    pattern:  /producers/{id}/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:search }
+
+open_miam_miam.admin.producer.manager.promote:
+    pattern:  /producers/{id}/managers/promote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:promote }
+
+open_miam_miam.admin.producer.manager.demote:
+    pattern:  /producers/{id}/managers/demote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:demote }

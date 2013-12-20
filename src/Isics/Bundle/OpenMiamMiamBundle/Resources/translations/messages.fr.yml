@@ -12,7 +12,7 @@ price:                "Prix"
 producer:             "Producteur"
 product:              "Produit"
 quantity:             "Quantité"
-super_admin:          "Super administrateur"
+admin:                "Administrateur"
 total:                "Total"
 update:               "Mettre à jour"
 consumer:             "Consommateur"
@@ -174,11 +174,13 @@ recipient.type.producers: "Producteurs"
 recipient.type.consumers: "Consommateurs"
 
 # Admin / Super / Menu
-admin.super.menu.dashboard:   "Tableau de bord"
-admin.super.menu.user_switch: "Usurpateur d'identité"
-admin.super.menu.news:        "Actualité"
-admin.super.menu.newsletter:  "Lettre d'information"
-admin.super.menu.category:    "Catégories produits"
+admin.super.menu.dashboard:     "Tableau de bord"
+admin.super.menu.user_switch:   "Usurpateur d'identité"
+admin.super.menu.news:          "Actualité"
+admin.super.menu.newsletter:    "Lettre d'information"
+admin.super.menu.category:      "Catégories produits"
+admin.super.menu.manager:       "Gestionnaires"
+
 
 # Admin / Super / Dashboard
 admin.super.dashboard.title: "Tableau de bord"
@@ -190,7 +192,7 @@ admin.super.user_switch.list.firstname: "Prénom"
 admin.super.user_switch.list.roles:     "Rôle(s)"
 admin.super.user_switch.list.switch:    "Usurper l'identité"
 admin.super.user_switch.alert.message:  "Vous avez usurpé l'identité de %firstname% %lastname%."
-admin.super.user_switch.alert.exit:     "Retour au rôle Super administrateur"
+admin.super.user_switch.alert.exit:     "Retour au rôle Administrateur"
 
 # Admin / Super / Article
 admin.super.articles.list.title:            "Actualité"
@@ -253,16 +255,30 @@ admin.super.category.message.deleted:          "La catégorie a bien été suppr
 admin.super.category.message.unable_to_delete: "Impossible de supprimer cette catégorie car d'autres catégories ou des produits y sont associés."
 admin.super.category.delete_dialog.content:    "Êtes-vous vraiment certain de vouloir supprimer cette catégorie ?"
 
+# Admin / Super / Manager
+admin.super.manager.title:              "{0} Aucun gestionnaire|{1} 1 gestionnaire|]1,Inf] %nb% gestionnaires"
+admin.super.manager.lastname:           "Nom"
+admin.super.manager.firstname:          "Prénom"
+admin.super.manager.email:              "E-mail"
+admin.super.manager.add:                "Ajouter"
+admin.super.manager.search:             "Rechercher"
+admin.super.manager.search.placeholder: "Rechercher"
+admin.super.manager.promote :           "Promouvoir"
+admin.super.manager.demote :            "Révoquer"
+admin.super.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
+admin.super.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
+
 
 
 # Admin / Association / Menu
-admin.association.menu.dashboard:   "Tableau de bord"
-admin.association.menu.orders:      "Caisse"
-admin.association.menu.branches:    "Comptoirs"
-admin.association.menu.consumers:   "Consommateurs"
-admin.association.menu.producers:   "Producteurs"
-admin.association.menu.news:        "Actualité"
-admin.association.menu.newsletter:  "Lettre d'information"
+admin.association.menu.dashboard:  "Tableau de bord"
+admin.association.menu.orders:     "Caisse"
+admin.association.menu.branches:   "Comptoirs"
+admin.association.menu.consumers:  "Consommateurs"
+admin.association.menu.producers:  "Producteurs"
+admin.association.menu.news:       "Actualité"
+admin.association.menu.newsletter: "Lettre d'information"
+admin.association.menu.managers:   "Gestionnaires"
 
 # Admin / Association / Dashboard
 admin.association.dashboard.title: "Tableau de bord"
@@ -476,6 +492,21 @@ admin.association.newsletter.report.subject:       "Objet"
 admin.association.newsletter.report.sent_at:       "Envoyée le"
 admin.association.newsletter.report.nb_recipients: "Destinataires"
 
+# Admin / Association / Manager
+admin.association.manager.title:              "{0} Aucun gestionnaire|{1} 1 gestionnaire|]1,Inf] %nb% gestionnaires"
+admin.association.manager.lastname:           "Nom"
+admin.association.manager.firstname:          "Prénom"
+admin.association.manager.email:              "E-mail"
+admin.association.manager.add:                "Ajouter"
+admin.association.manager.search:             "Rechercher"
+admin.association.manager.search.placeholder: "Rechercher"
+admin.association.manager.promote :           "Promouvoir"
+admin.association.manager.demote :            "Révoquer"
+admin.association.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
+admin.association.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
+
+
+
 # Admin / Producer / Menu
 admin.producer.menu.dashboard:      "Tableau de bord"
 admin.producer.menu.orders:         "Commandes"
@@ -608,6 +639,19 @@ admin.producer.calendar.attendance.yes:     "Oui"
 admin.producer.calendar.attendance.no:      "Non"
 admin.producer.calendar.attendance.unknown: "Ne sais pas encore"
 admin.producer.calendar.message.updated:    "Le calendrier de présence a été pris en compte."
+
+# Admin / Producer / Manager
+admin.producer.manager.title:              "{0} Aucun gestionnaire|{1} 1 gestionnaire|]1,Inf] %nb% gestionnaires"
+admin.producer.manager.lastname:           "Nom"
+admin.producer.manager.firstname:          "Prénom"
+admin.producer.manager.email:              "E-mail"
+admin.producer.manager.add:                "Ajouter"
+admin.producer.manager.search:             "Rechercher"
+admin.producer.manager.search.placeholder: "Rechercher"
+admin.producer.manager.promote :           "Promouvoir"
+admin.producer.manager.demote :            "Révoquer"
+admin.producer.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
+admin.producer.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
 
 
 

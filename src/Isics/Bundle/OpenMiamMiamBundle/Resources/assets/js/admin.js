@@ -21,6 +21,7 @@ OpenMiamMiam.ActionInSelectForm = function() {
     return object;
 }();
 
+
 OpenMiamMiam.UrlSwitcherSelect = function() {
 
     var object = function() {
@@ -354,6 +355,60 @@ OpenMiamMiam.SalesOrderForm = function() {
                 success: function(html){
                     that.editionFormFieldsContainer.html(html);
                     that.initializeControls();
+                }
+            });
+        }
+    };
+
+    return object;
+}();
+
+
+OpenMiamMiam.AdminManagerAutocomplete = function() {
+    var object = function(promote_url_schema) {
+        this.promoteUrlSchema = promote_url_schema;
+
+        $('#open_miam_miam_search_search').hide();
+    };
+
+    object.prototype = {
+        handleAutocomplete: function() {
+            var that = this;
+
+            var $input = $('#open_miam_miam_search_keyword');
+            var $form = $('#open_miam_miam_search_form');
+
+            var $hiddenDiv = $('<div style="display: none"></div>');
+            var $loader = $('<img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
+
+            $form.submit(function(e) {
+                e.preventDefault();
+            });
+
+            $input.autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: $form.attr('action'),
+                        dataType: 'json',
+                        data: $form.serialize(),
+                        success: function(data) {
+                            response($.map(data, function(item) {
+                                return {
+                                    id: item.id,
+                                    label: item.label
+                                };
+                            }));
+
+                            $hiddenDiv.append($loader);
+                        }
+                    });
+                },
+                minLength: 2,
+                search: function() {
+                    $form.append($loader);
+                },
+                select: function(event, ui) {
+                    window.location = that.promoteUrlSchema.replace('0', ui.item.id);
                 }
             });
         }

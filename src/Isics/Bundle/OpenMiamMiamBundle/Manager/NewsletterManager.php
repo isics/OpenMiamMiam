@@ -201,7 +201,7 @@ class NewsletterManager
             if ($newsletter->hasBranches()) {
                 $recipients = array_merge(
                     $recipients,
-                    $userRepository->findManagingProducer(
+                    $userRepository->findProducerManagerByProducerIds(
                         $this->entityManager
                             ->getRepository('IsicsOpenMiamMiamBundle:Producer')
                             ->findIdsForBranch($newsletter->getBranches())
@@ -212,7 +212,7 @@ class NewsletterManager
             if ($newsletter->isWithoutBranch()) {
                 $recipients = array_merge(
                     $recipients,
-                    $userRepository->findManagingProducer(
+                    $userRepository->findProducerManagerByProducerIds(
                         $this->entityManager
                             ->getRepository('IsicsOpenMiamMiamBundle:Producer')
                             ->findIdsWithoutBranch()

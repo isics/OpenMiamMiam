@@ -9,9 +9,9 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\AdminResourceInterface;
+use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminResourceInterface;
 
 /**
  * Class AdminResourceCollection

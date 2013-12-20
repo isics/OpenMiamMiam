@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Admin;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource;
 
 /**
  * Class EntityAdminResource
  */
-abstract class EntityAdminResource implements AdminResourceInterface
+abstract class BaseEntityAdminResource extends BaseAdminResource
 {
     /**
      * @var Entity $entity
