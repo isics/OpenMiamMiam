@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
@@ -282,8 +283,8 @@ QUERY;
             $keywordQb->getDqlPart('where')
         );
 
-        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addRootEntityFromClassMetadata('IsicsOpenMiamMiamUserBundle:User', 'u');
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('COUNT(u.id)', 'count');
 
         $query = $this->getEntityManager()->createNativeQuery($query, $rsm);
         $query->setParameters($keywordQb->getQuery()->getParameters());
@@ -384,7 +385,7 @@ QUERY;
 
     /**
      * Returns query builder to find consumers without branch
-     * 
+     *
      * @return QueryBuilder
      */
     public function getConsumersWithoutBranchQueryBuilder()
