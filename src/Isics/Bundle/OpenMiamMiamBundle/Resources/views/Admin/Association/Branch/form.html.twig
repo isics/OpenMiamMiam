@@ -41,8 +41,8 @@
             {{ form_row(form.facebook, {'label': 'admin.association.branch.form.facebook'|trans}) }}
         </div>
     </div>
-    {{ form_row(form.welcomeText, {'label': 'admin.association.branch.form.welcome_text'}) }}
-    {{ form_row(form.presentation, {'label': 'admin.association.branch.form.presentation', 'attr': {'rows': 20}}) }}
+    {{ form_row(form.welcomeText, {'label': 'admin.association.branch.form.welcome_text', 'attr': {'class': 'tinymce'}}) }}
+    {{ form_row(form.presentation, {'label': 'admin.association.branch.form.presentation', 'attr': {'class': 'tinymce', 'rows': 20}}) }}
 
     <a href="{{ path('open_miam_miam.admin.association.branch.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 
