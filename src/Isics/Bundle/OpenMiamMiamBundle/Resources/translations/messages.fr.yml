@@ -556,7 +556,7 @@ admin.producer.sales_orders.list.export.products_to_prepare:    "Produits à pr�
 admin.producer.sales_orders.list.export.sales_orders:           "Commandes"
 admin.producer.sales_orders.form.edit_title:                    "Commande %ref%"
 admin.producer.sales_orders.form.consumer:                      "Consommateur"
-admin.producer.sales_orders.form.withdrawal_title:              "Retrait des produits"
+admin.producer.sales_orders.form.branch:                        "Comptoir"
 admin.producer.sales_orders.form.total:                         "Total"
 admin.producer.sales_orders.sales_order_rows.no:                "Il n'y a pas de ligne de commande pour cette commande."
 admin.producer.sales_orders.form.sales_order_row.ref:           "Réf"

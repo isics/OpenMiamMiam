@@ -9,7 +9,7 @@
     <div class="col-md-6">
         <div class="panel panel-default sales-order-consumer-header">
             <div class="panel-heading">
-                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.consumer'|trans }}</h2>
+                <h2 class="panel-title">{{ 'admin.producer.sales_orders.form.consumer'|trans }}</h2>
             </div>
             <div class="panel-body">
                 <p>
@@ -22,17 +22,17 @@
                         {{ order.zipcode }} {{ order.city }}
                         {% if order.user.phoneNumber is not null %}
                             <br />
-                            {{ 'admin.association.sales_orders.list.phone_number'|trans }}
+                            {{ 'admin.producer.sales_orders.list.phone_number'|trans }}
                             {{ order.user.phoneNumber }}
                         {% endif %}
                     {% else %}
-                        {{ 'admin.association.sales_orders.anonymous'|trans }}
+                        {{ 'admin.producer.sales_orders.anonymous'|trans }}
                     {% endif %}
                 </p>
                 {% if showConsumerComment is defined and showConsumerComment and order.consumerComment is not null %}
                     <div class="alert alert-warning consumer-comment">
                         <span class="glyphicon glyphicon-comment"></span>
-                        <strong>{{ 'admin.association.sales_orders.form.consumer_comment'|trans }}</strong>
+                        <strong>{{ 'admin.producer.sales_orders.form.consumer_comment'|trans }}</strong>
                         <div class="consumer-comment-content">
                             {{ order.consumerComment|nl2br }}
                         </div>
@@ -44,7 +44,7 @@
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.withdrawal_title'|trans }}</h2>
+                <h2 class="panel-title">{{ 'admin.producer.sales_orders.form.branch'|trans }}</h2>
             </div>
             <div class="panel-body">
                 <p>
