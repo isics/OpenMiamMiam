@@ -69,18 +69,6 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * @param SalesOrder $order
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    protected function securePaidSalesOrder(SalesOrder $order)
-    {
-        if (!$this->get('open_miam_miam.sales_order_workflow')->canBeEdit($order)) {
-            throw $this->createNotFoundException('Sales order has already payment allocations');
-        }
-    }
-
-    /**
      * List sales order
      *
      * @param Producer $producer
@@ -94,30 +82,6 @@ class SalesOrderController extends BaseController
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list.html.twig', array(
             'producer' => $producer,
             'salesOrders' => $this->get('open_miam_miam.producer_sales_order_manager')->getForNextBranchOccurrences($producer)
-        ));
-    }
-
-    /**
-     * View a sales order
-     *
-     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
-     *
-     * @param Producer $producer
-     * @param SalesOrder $order
-     *
-     * @return Response
-     */
-    public function viewAction(Producer $producer, SalesOrder $order)
-    {
-        $this->secure($producer);
-        $this->secureSalesOrder($producer, $order);
-
-        $producerSalesOrder = new ProducerSalesOrder($producer, $order);
-
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:view.html.twig', array(
-            'producer' => $producer,
-            'producerSalesOrder' => $producerSalesOrder,
-            'activities' => $this->get('open_miam_miam.producer_sales_order_manager')->getActivities($producerSalesOrder)
         ));
     }
 
@@ -144,7 +108,6 @@ class SalesOrderController extends BaseController
         }
 
         $this->secureSalesOrder($producer, $order);
-        $this->securePaidSalesOrder($order);
 
         $producerSalesOrder = new ProducerSalesOrder($producer, $order);
 
@@ -219,7 +182,6 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrderRow($producer, $order, $row);
-        $this->securePaidSalesOrder($order);
 
         $order = $row->getSalesOrder();
         $user = $this->get('security.context')->getToken()->getUser();
@@ -261,7 +223,6 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrder($producer, $order);
-        $this->securePaidSalesOrder($order);
 
         $availability = $this->get('open_miam_miam.branch_occurrence_manager')
                 ->getProductAvailability($order->getBranchOccurrence(), $product);
@@ -315,7 +276,6 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrder($producer, $order);
-        $this->securePaidSalesOrder($order);
 
         $filterForm = $this->createForm(
             $this->get('open_miam_miam.form.type.products_filter'),

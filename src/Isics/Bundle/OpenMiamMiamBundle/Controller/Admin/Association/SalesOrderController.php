@@ -72,18 +72,6 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * @param SalesOrder $order
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    protected function securePaidSalesOrder(SalesOrder $order)
-    {
-        if (!$this->get('open_miam_miam.sales_order_workflow')->canBeEdit($order)) {
-            throw $this->createNotFoundException('Sales order has already payment allocations');
-        }
-    }
-
-    /**
      * List sales orders
      *
      * @param Association $association
@@ -170,46 +158,6 @@ class SalesOrderController extends BaseController
     }
 
     /**
-     * View a sales order
-     *
-     * @ParamConverter("order", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
-     *
-     * @param Association $association
-     * @param SalesOrder $order
-     *
-     * @return Response
-     */
-    public function viewAction(Association $association, SalesOrder $order)
-    {
-        $this->secure($association);
-        $this->secureSalesOrder($association, $order);
-
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:view.html.twig', array(
-            'association' => $association,
-            'order' => $order,
-            'activities' => $this->get('open_miam_miam.sales_order_manager')->getActivities($order)
-        ));
-    }
-
-    /**
-     * @return Form
-     */
-    protected function createEditionForm(Association $association, SalesOrder $order)
-    {
-         return $this->createForm(
-             $this->get('open_miam_miam.form.type.sales_order'),
-             $order,
-             array(
-                 'action' => $this->generateUrl(
-                     'open_miam_miam.admin.association.sales_order.edit',
-                     array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-                 ),
-                 'method' => 'POST'
-             )
-        );
-    }
-
-    /**
      * Update a sales order
      *
      * @param Request $request
@@ -232,9 +180,18 @@ class SalesOrderController extends BaseController
         }
 
         $this->secureSalesOrder($association, $order);
-        $this->securePaidSalesOrder($order);
 
-        $form = $this->createEditionForm($association, $order);
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.sales_order'),
+            $order,
+            array(
+                'action' => $this->generateUrl(
+                    'open_miam_miam.admin.association.sales_order.edit',
+                    array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+                ),
+                'method' => 'POST'
+            )
+        );
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -286,7 +243,6 @@ class SalesOrderController extends BaseController
     {
         $this->secure($association);
         $this->secureSalesOrderRow($association, $order, $row);
-        $this->securePaidSalesOrder($order);
 
         if ($order->getBranchOccurrence()->getBranch()->getAssociation()->getId() != $association->getId()
                 || $order->getId() !== $row->getSalesOrder()->getId()) {
@@ -324,7 +280,6 @@ class SalesOrderController extends BaseController
     {
         $this->secure($association);
         $this->secureSalesOrder($association, $order);
-        $this->securePaidSalesOrder($order);
 
         $availability = $this->get('open_miam_miam.branch_occurrence_manager')
                 ->getProductAvailability($order->getBranchOccurrence(), $product);
@@ -375,7 +330,6 @@ class SalesOrderController extends BaseController
     {
         $this->secure($association);
         $this->secureSalesOrder($association, $order);
-        $this->securePaidSalesOrder($order);
 
         $filterForm = $this->createForm(
             $this->get('open_miam_miam.form.type.products_filter'),
@@ -488,50 +442,50 @@ class SalesOrderController extends BaseController
      *
      * @return Response
      */
-    public function payAction(Request $request, Association $association, SalesOrder $order)
-    {
-        $this->secure($association);
-        $this->secureSalesOrder($association, $order);
-
-        $paymentManager = $this->get('open_miam_miam.payment_manager');
-
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.payment_allocation'),
-            $paymentManager->createPaymentAllocation($order),
-            array(
-                'action' => $this->generateUrl(
-                    'open_miam_miam.admin.association.sales_order.pay',
-                    array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-                ),
-                'method' => 'POST'
-            )
-        );
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $paymentManager->addPaymentAllocation(
-                    $order,
-                    $form->getData(),
-                    $this->get('security.context')->getToken()->getUser()
-                );
-
-                $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_added');
-
-                return $this->redirect($this->generateUrl(
-                    'open_miam_miam.admin.association.sales_order.list_for_branch_occurrence',
-                    array('id' => $association->getId(), 'branchOccurrenceId' => $order->getBranchOccurrence()->getId())
-                ));
-            }
-        }
-
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:pay.html.twig', array(
-            'association' => $association,
-            'salesOrder' => $order,
-            'paymentsToAllocate' => $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')->findToAllocatedForUser($order->getUser()),
-            'form' => $form->createView()
-        ));
-    }
+//    public function payAction(Request $request, Association $association, SalesOrder $order)
+//    {
+//        $this->secure($association);
+//        $this->secureSalesOrder($association, $order);
+//
+//        $paymentManager = $this->get('open_miam_miam.payment_manager');
+//
+//        $form = $this->createForm(
+//            $this->get('open_miam_miam.form.type.payment_allocation'),
+//            $paymentManager->createPaymentAllocation($order),
+//            array(
+//                'action' => $this->generateUrl(
+//                    'open_miam_miam.admin.association.sales_order.pay',
+//                    array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+//                ),
+//                'method' => 'POST'
+//            )
+//        );
+//
+//        if ($request->isMethod('POST')) {
+//            $form->handleRequest($request);
+//            if ($form->isValid()) {
+//                $paymentManager->addPaymentAllocation(
+//                    $order,
+//                    $form->getData(),
+//                    $this->get('security.context')->getToken()->getUser()
+//                );
+//
+//                $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_added');
+//
+//                return $this->redirect($this->generateUrl(
+//                    'open_miam_miam.admin.association.sales_order.list_for_branch_occurrence',
+//                    array('id' => $association->getId(), 'branchOccurrenceId' => $order->getBranchOccurrence()->getId())
+//                ));
+//            }
+//        }
+//
+//        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:pay.html.twig', array(
+//            'association' => $association,
+//            'salesOrder' => $order,
+//            'paymentsToAllocate' => $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')->findToAllocatedForUser($order->getUser()),
+//            'form' => $form->createView()
+//        ));
+//    }
 
     /**
      * Delete payment allocation to sales order
@@ -547,27 +501,27 @@ class SalesOrderController extends BaseController
      *
      * @return Response
      */
-    public function deletePaymentAllocationAction(Association $association, SalesOrder $order, PaymentAllocation $paymentAllocation)
-    {
-        $this->secure($association);
-        $this->secureSalesOrder($association, $order);
-
-        if ($paymentAllocation->getSalesOrder()->getId() !== $order->getId()) {
-            throw $this->createNotFoundException('Invalid payment allocation for sales order');
-        }
-
-        $this->get('open_miam_miam.payment_manager')->deletePaymentAllocation(
-            $paymentAllocation,
-            $this->get('security.context')->getToken()->getUser()
-        );
-
-        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocation_deleted');
-
-        return $this->redirect($this->generateUrl(
-            'open_miam_miam.admin.association.sales_order.pay',
-            array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-        ));
-    }
+//    public function deletePaymentAllocationAction(Association $association, SalesOrder $order, PaymentAllocation $paymentAllocation)
+//    {
+//        $this->secure($association);
+//        $this->secureSalesOrder($association, $order);
+//
+//        if ($paymentAllocation->getSalesOrder()->getId() !== $order->getId()) {
+//            throw $this->createNotFoundException('Invalid payment allocation for sales order');
+//        }
+//
+//        $this->get('open_miam_miam.payment_manager')->deletePaymentAllocation(
+//            $paymentAllocation,
+//            $this->get('security.context')->getToken()->getUser()
+//        );
+//
+//        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocation_deleted');
+//
+//        return $this->redirect($this->generateUrl(
+//            'open_miam_miam.admin.association.sales_order.pay',
+//            array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+//        ));
+//    }
 
     /**
      * Allocate payment to sales order
@@ -583,31 +537,31 @@ class SalesOrderController extends BaseController
      *
      * @return Response
      */
-    public function allocatePaymentAction(Association $association, SalesOrder $order, Payment $payment)
-    {
-        $this->secure($association);
-        $this->secureSalesOrder($association, $order);
-
-        if ($payment->getRest() == 0) {
-            throw $this->createNotFoundException('No rest for payment');
-        }
-        if ($order->getLeftToPay() == 0) {
-            throw $this->createNotFoundException('Order is settled');
-        }
-
-        $this->get('open_miam_miam.payment_manager')->allocatePayment(
-            $payment,
-            $order,
-            $this->get('security.context')->getToken()->getUser()
-        );
-
-        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocated');
-
-        return $this->redirect($this->generateUrl(
-            'open_miam_miam.admin.association.sales_order.pay',
-            array('id' => $association->getId(), 'salesOrderId' => $order->getId())
-        ));
-    }
+//    public function allocatePaymentAction(Association $association, SalesOrder $order, Payment $payment)
+//    {
+//        $this->secure($association);
+//        $this->secureSalesOrder($association, $order);
+//
+//        if ($payment->getRest() == 0) {
+//            throw $this->createNotFoundException('No rest for payment');
+//        }
+//        if ($order->getLeftToPay() == 0) {
+//            throw $this->createNotFoundException('Order is settled');
+//        }
+//
+//        $this->get('open_miam_miam.payment_manager')->allocatePayment(
+//            $payment,
+//            $order,
+//            $this->get('security.context')->getToken()->getUser()
+//        );
+//
+//        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocated');
+//
+//        return $this->redirect($this->generateUrl(
+//            'open_miam_miam.admin.association.sales_order.pay',
+//            array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+//        ));
+//    }
 
     /**
      * Get sales orders PDF for branch occurrence

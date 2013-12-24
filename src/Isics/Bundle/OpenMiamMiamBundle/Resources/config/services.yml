@@ -297,13 +297,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    open_miam_miam.twig.sales_order_workflow_extension:
-        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\SalesOrderWorkflowExtension
-        arguments:
-            - @open_miam_miam.sales_order_workflow
-        tags:
-            - { name: twig.extension }
-
     open_miam_miam.twig.terms_of_service_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension
         arguments:
@@ -465,7 +458,3 @@ services:
             - @translator
             - %open_miam_miam.currency%
         scope: prototype
-
-    # Workflows
-    open_miam_miam.sales_order_workflow:
-        class: %open_miam_miam.sales_order_workflow.class%

@@ -64,14 +64,9 @@
                 </thead>
                 <tbody>
                     {% for salesOrder in salesOrders %}
-                        {% set canBeEdit = can_be_edit(salesOrder) %}
                         <tr{% if salesOrder.leftToPay %} class="danger"{% endif %}>
                             <td>
-                                {% if canBeEdit %}
-                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
-                                {% else %}
-                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.view', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
-                                {% endif %}
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}">
                                     {{ salesOrder.ref }}
                                 </a>
                             </td>
@@ -100,12 +95,7 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if canBeEdit %}
-                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% else %}
-                                    <a href="{{ path('open_miam_miam.admin.association.sales_order.view', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% endif %}
-                                <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.pay'|trans }}"><span class="glyphicon glyphicon-euro"></span></a>
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                             </td>
                         </tr>
                     {% endfor %}
