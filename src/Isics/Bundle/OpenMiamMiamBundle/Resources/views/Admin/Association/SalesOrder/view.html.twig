@@ -14,7 +14,7 @@
         {{ 'admin.association.sales_orders.view.notice'|trans }}
     </div>
 
-    {% include 'IsicsOpenMiamMiamBundle:Admin:salesOrderHeader.html.twig' with { 'order': order, 'showConsumerComment': true } %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'order': order, 'showConsumerComment': true } %}
 
     <p class="text-right">
         <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg">
@@ -50,16 +50,6 @@
                     <tr>
                         <th colspan="4">{{ 'admin.association.sales_orders.form.total'|trans }}</th>
                         <td>{{ order.total|number_format_currency(open_miam_miam.currency) }}</td>
-                    </tr>
-                    <tr{% if order.leftToPay %} class="danger"{% endif %}>
-                        <th colspan="4">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</th>
-                        <td>
-                            {% if order.leftToPay %}
-                                {{ order.leftToPay|number_format_currency(open_miam_miam.currency) }}
-                            {% else %}
-                                {{ 0|number_format_currency(open_miam_miam.currency) }}
-                            {% endif %}
-                        </td>
                     </tr>
                 </tfoot>
             </table>

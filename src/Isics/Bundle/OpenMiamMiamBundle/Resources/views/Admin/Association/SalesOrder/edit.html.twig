@@ -10,17 +10,12 @@
 {% block content %}
     <h1>{{ 'admin.association.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} <small>- {{ order.date|format_datetime }}</small></h1>
 
-    {% include 'IsicsOpenMiamMiamBundle:Admin:salesOrderHeader.html.twig' with { 'order': order, 'showConsumerComment': true } %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'order': order, 'showConsumerComment': true } %}
 
     <p class="text-right">
         <a href="{{ path('open_miam_miam.admin.association.sales_order.add_products', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg" id="add-products-link" data-toggle="modal" data-target="#add-products-dialog">
             <span class="glyphicon glyphicon-plus-sign"></span>
             {{ 'admin.association.sales_orders.form.sales_order_row.create'|trans }}
-        </a>
-
-        <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg">
-            <span class="glyphicon glyphicon-euro"></span>
-            {{ 'admin.association.sales_orders.form.pay'|trans }}
         </a>
     </p>
 

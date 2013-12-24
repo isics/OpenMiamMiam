@@ -17,12 +17,8 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Doctrine\Common\Collections\ArrayCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Admin\UserFilter;
 
 class UserRepository extends EntityRepository

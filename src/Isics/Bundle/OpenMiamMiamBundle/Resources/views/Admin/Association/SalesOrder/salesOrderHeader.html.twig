@@ -1,0 +1,106 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.branch'|trans }}</h2>
+            </div>
+            <div class="panel-body">
+                <p>
+                    {% set branch=order.branchOccurrence.branch %}
+                    <strong>{{ branch.name }}</strong><br />
+                    {{ branch.address1 }}<br />
+                    {% if branch.address2 != null %}
+                        {{ branch.address2 }}<br />
+                    {% endif %}
+                    {{ branch.zipcode }} {{ branch.city }}
+                </p>
+            </div>
+        </div>
+        <div class="panel panel-default sales-order-consumer-header">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.consumer'|trans }}</h2>
+            </div>
+            <div class="panel-body">
+                <p>
+                    {% if order.user %}
+                        <strong>{{ order.firstname }} {{ order.lastname }} ({{ order.user|format_consumer_ref }})</strong><br />
+                        {{ order.address1 }}<br />
+                        {% if order.address2 != null %}
+                            {{ order.address2 }}<br />
+                        {% endif %}
+                        {{ order.zipcode }} {{ order.city }}
+                        {% if order.user.phoneNumber is not null %}
+                            <br />
+                            {{ 'admin.association.sales_orders.list.phone_number'|trans }}
+                            {{ order.user.phoneNumber }}
+                        {% endif %}
+                    {% else %}
+                        {{ 'admin.association.sales_orders.anonymous'|trans }}
+                    {% endif %}
+                </p>
+                {% if showConsumerComment is defined and showConsumerComment and order.consumerComment is not null %}
+                    <div class="alert alert-warning consumer-comment">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        <strong>{{ 'admin.association.sales_orders.form.consumer_comment'|trans }}</strong>
+                        <div class="consumer-comment-content">
+                            {{ order.consumerComment|nl2br }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" id="sales-order-consumer-credit">
+        {% set subscription = association.getSubscriptionForUser(order.user) %}
+        {% set class = 'panel-success' %}
+        {% if subscription.credit < 0 %}
+            {% set class = 'panel-danger' %}
+        {% else %}
+            {% set hasPaymentWithRestForAssociation = has_payment_with_rest_for_association(association, order.user) %}
+            {% if hasPaymentWithRestForAssociation %}
+                {% set class = 'panel-warning' %}
+            {% endif %}
+        {% endif %}
+
+        <div class="panel {{ class }}">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</h2>
+            </div>
+            <div class="panel-body">
+                {% if subscription.credit < 0 %}
+                    <p>
+                        {% if subscription.credit == order.credit %}
+                            <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
+                        {% else %}
+                            <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
+                            <br>{{ order.leftToPay|number_format_currency(open_miam_miam.currency) }} pour cette commande
+                        {% endif %}
+                    </p>
+
+                    <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-danger btn-block">
+                        {{ 'admin.association.sales_orders.form.pay'|trans }}
+                    </a>
+                {% elseif hasPaymentWithRestForAssociation %}
+                    <p>
+                        <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
+                        <br><span class="glyphicon glyphicon-warning-sign"></span> Affectation manquante
+                    </p>
+                    <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-warning btn-block">
+                        Affecter
+                    </a>
+                {%  else %}
+                    <p>
+                        <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

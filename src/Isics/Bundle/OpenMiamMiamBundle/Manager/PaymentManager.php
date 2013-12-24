@@ -262,4 +262,19 @@ class PaymentManager
         // Subscription
         $this->computeConsumerCredit($payment->getAssociation(), $payment->getUser());
     }
+
+    /**
+     * Returns true if user has at least one payment with rest
+     *
+     * @param Association $association
+     * @param User        $user
+     *
+     * @return bool
+     */
+    public function hasPaymentWithRestForAssociation(Association $association, User $user = null)
+    {
+        return $this->entityManager
+                ->getRepository('IsicsOpenMiamMiamBundle:Payment')
+                ->hasPaymentWithRestForUserAndAssociation($association, $user);
+    }
 }
