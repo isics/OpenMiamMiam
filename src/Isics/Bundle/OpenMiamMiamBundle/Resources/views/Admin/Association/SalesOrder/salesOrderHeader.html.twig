@@ -80,7 +80,7 @@
                             <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
                         {% else %}
                             <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
-                            <br>{{ order.leftToPay|number_format_currency(open_miam_miam.currency) }} pour cette commande
+                            <br>{{ 'admin.association.sales_orders.form.left_to_pay_for_order'|trans({'%amount%': order.leftToPay|number_format_currency(open_miam_miam.currency)}) }}
                         {% endif %}
                     </p>
 
@@ -90,10 +90,10 @@
                 {% elseif hasPaymentWithRestForAssociation %}
                     <p>
                         <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
-                        <br><span class="glyphicon glyphicon-warning-sign"></span> Affectation manquante
+                        <br><span class="glyphicon glyphicon-warning-sign"></span> {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
                     </p>
                     <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-warning btn-block">
-                        Affecter
+                        {{ 'admin.association.sales_orders.form.allocate'|trans }}
                     </a>
                 {%  else %}
                     <p>
