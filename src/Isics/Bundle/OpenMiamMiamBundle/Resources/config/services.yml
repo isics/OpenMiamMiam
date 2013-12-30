@@ -16,6 +16,7 @@ parameters:
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
     open_miam_miam.payment_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentValidator'
+    open_miam_miam.producer_with_owner_validator.class:          'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerWithOwnerValidator'
 
     open_miam_miam.activity_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
     open_miam_miam.branch_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchManager'
@@ -48,6 +49,7 @@ parameters:
     open_miam_miam.form.type.category.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CategoryType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
+    open_miam_miam.form.type.super_producer.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperProducerType'
     open_miam_miam.form.type.producer_has_branch.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerHasBranchType'
     open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
     open_miam_miam.form.type.producer_branch_attendances.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchAttendancesType'
@@ -117,6 +119,12 @@ services:
         arguments: [%open_miam_miam.buying_units%]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam.buying_unit_validator}
+
+    open_miam_miam.producer_with_owner_validator:
+        class:     %open_miam_miam.producer_with_owner_validator.class%
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: validator.constraint_validator, alias: open_miam_miam.producer_with_owner_validator}
 
     open_miam_miam.product_validator:
         class:     %open_miam_miam.product_validator.class%
@@ -199,6 +207,11 @@ services:
         class: %open_miam_miam.form.type.producer.class%
         tags:
             - { name: form.type, alias: open_miam_miam_producer }
+
+    open_miam_miam.form.type.super_producer:
+        class: %open_miam_miam.form.type.super_producer.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_super_producer }
 
     open_miam_miam.form.type.producer_has_branch:
         class: %open_miam_miam.form.type.producer_has_branch.class%
@@ -307,7 +320,7 @@ services:
     open_miam_miam.twig.terms_of_service_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension
         arguments:
-            - %open_miam_miam.terms_of_service_url%    
+            - %open_miam_miam.terms_of_service_url%
         tags:
             - { name: twig.extension }
 
@@ -380,7 +393,7 @@ services:
 
     open_miam_miam.producer_manager:
         class: %open_miam_miam.producer_manager.class%
-        arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel]
+        arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel, @open_miam_miam_user.manager.user, @open_miam_miam.activity_manager]
 
     open_miam_miam.acl_manager:
         class:     %open_miam_miam.acl_manager.class%

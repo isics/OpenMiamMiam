@@ -123,6 +123,122 @@ class UserManager
     }
 
     /**
+     * Returns owner of an Association or a Producer
+     *
+     * @param mixed $object (Association or Producer)
+     *
+     * @return User|null
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getOwner($object)
+    {
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $acl = $this->aclProvider->findAcl($objectIdentity);
+        $objectAces = $acl->getObjectAces();
+
+        $managers = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User')->findManager($object);
+
+        foreach ($managers as $manager) {
+            $securityIdentity = UserSecurityIdentity::fromAccount($manager);
+
+            foreach($objectAces as $index => $ace) {
+                if ($ace->getSecurityIdentity()->equals($securityIdentity)) {
+                    if (MaskBuilder::MASK_OWNER === $ace->getMask()) {
+
+                        return $manager;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Set a user as owner of an Association or a Producer
+     *
+     * @param mixed $object (Association or Producer)
+     * @param User  $user
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setOwner($object, User $user)
+    {
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+
+        try {
+            $acl = $this->aclProvider->findAcl($objectIdentity);
+        } catch (AclNotFoundException $e) {
+            $acl = $this->aclProvider->createAcl($objectIdentity);
+        }
+
+        $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+        $objectAceExists = false;
+        foreach($acl->getObjectAces() as $index => $ace) {
+            // Promotes if user already operator
+            if ($ace->getSecurityIdentity()->equals($securityIdentity) && MaskBuilder::MASK_OPERATOR === $ace->getMask()) {
+                $acl->updateObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+                $objectAceExists = true;
+
+            // Deletes old owner if exists
+            } else if (!$ace->getSecurityIdentity()->equals($securityIdentity) && MaskBuilder::MASK_OWNER === $ace->getMask()) {
+                $acl->deleteObjectAce($index);
+            };
+        }
+
+        // Creates if no user found
+        if (false === $objectAceExists) {
+            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+        }
+
+        $this->aclProvider->updateAcl($acl);
+    }
+
+    /**
+     * Returns true if user is owner of an Association or a Producer
+     *
+     * @param mixed $object (Association or Producer)
+     * @param User  $user
+     *
+     * @return boolean
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    public function isOwner($object, User $user)
+    {
+        if (!$object instanceof Association && !$object instanceof Producer) {
+            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
+        }
+
+        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $acl = $this->aclProvider->findAcl($objectIdentity);
+
+        $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+        foreach($acl->getObjectAces() as $index => $ace) {
+            if ($ace->getSecurityIdentity()->equals($securityIdentity)) {
+                if (MaskBuilder::MASK_OWNER === $ace->getMask()) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Promotes a user as operator of an Association or a Producer
      *
      * @param mixed $object (Association or Producer)
@@ -199,39 +315,5 @@ class UserManager
         }
 
         $this->aclProvider->updateAcl($acl);
-    }
-
-    /**
-     * Returnes true if user is owner of an Association or a Producer
-     *
-     * @param mixed $object (Association or Producer)
-     * @param User  $user
-     *
-     * @return boolean
-     *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     */
-    public function isOwner($object, User $user)
-    {
-        if (!$object instanceof Association && !$object instanceof Producer) {
-            throw new \InvalidArgumentException('Object must be an instance of Association or Producer.');
-        }
-
-        $objectIdentity = ObjectIdentity::fromDomainObject($object);
-        $acl = $this->aclProvider->findAcl($objectIdentity);
-
-        $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-        foreach($acl->getObjectAces() as $index => $ace) {
-            if ($ace->getSecurityIdentity()->equals($securityIdentity)) {
-                if (MaskBuilder::MASK_OWNER === $ace->getMask()) {
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }

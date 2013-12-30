@@ -1,4 +1,13 @@
+Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner:
+    constraints:
+        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerWithOwner: ~
+    properties:
+        producer:
+            - Valid: ~
+
 Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
     properties:
         name:
             - NotNull: ~
