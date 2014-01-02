@@ -146,13 +146,15 @@ class ProducerManager
      */
     public function getProducerWithOwner(Producer $producer = null)
     {
+        $producerWithOwner = new ProducerWithOwner();
+
         if (null === $producer) {
-            $producerWithOwner = new ProducerWithOwner($this->create());
+            $producerWithOwner->setProducer($this->create());
         } else {
-            $producerWithOwner = new ProducerWithOwner($producer);
+            $producerWithOwner->setProducer($producer);
 
             if (null !== $owner = $this->userManager->getOwner($producer)) {
-                $producerWithOwner->setOwnerEmail($owner->getEmail());
+                $producerWithOwner->setOwner($owner);
             }
         }
 
@@ -172,10 +174,7 @@ class ProducerManager
         $this->save($producer, $user);
 
         // Set owner
-        $user = $this->entityManager
-            ->getRepository('IsicsOpenMiamMiamUserBundle:User')
-            ->findOneByEmail($producerWithOwner->getOwnerEmail());
-        $this->userManager->setOwner($producer, $user);
+        $this->userManager->setOwner($producer, $producerWithOwner->getOwner());
     }
 
     /**

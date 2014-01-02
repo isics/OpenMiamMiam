@@ -1,8 +1,10 @@
 Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner:
-    constraints:
-        - Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerWithOwner: ~
     properties:
         producer:
+            - Valid: ~
+        owner:
+            - NotNull:
+                message: error.notfound
             - Valid: ~
 
 Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:

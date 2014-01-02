@@ -185,10 +185,14 @@ class UserManager
 
         $objectAceExists = false;
         foreach($acl->getObjectAces() as $index => $ace) {
-            // Promotes if user already operator
-            if ($ace->getSecurityIdentity()->equals($securityIdentity) && MaskBuilder::MASK_OPERATOR === $ace->getMask()) {
-                $acl->updateObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+            // Look if user already in ACEs
+            if ($ace->getSecurityIdentity()->equals($securityIdentity)) {
                 $objectAceExists = true;
+
+                // Promotes if user not yet owner
+                if (MaskBuilder::MASK_OPERATOR === $ace->getMask()) {
+                    $acl->updateObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+                }
 
             // Deletes old owner if exists
             } else if (!$ace->getSecurityIdentity()->equals($securityIdentity) && MaskBuilder::MASK_OWNER === $ace->getMask()) {

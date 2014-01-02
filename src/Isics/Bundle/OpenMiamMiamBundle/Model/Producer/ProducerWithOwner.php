@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Model\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class ProducerWithOwner
 {
@@ -22,16 +23,16 @@ class ProducerWithOwner
     protected $producer;
 
     /**
-     * @var string $ownerEmail
+     * @var User $owner
      */
-    protected $ownerEmail;
+    protected $owner;
 
     /**
-     * Constructor
+     * Sets Producer
      *
-     * @param Producer $producer
+     * @param Producer
      */
-    public function __construct(Producer $producer)
+    public function setProducer(Producer $producer)
     {
         $this->producer = $producer;
     }
@@ -47,11 +48,23 @@ class ProducerWithOwner
     }
 
     /**
-     * @see Producer
+     * Sets owner
+     *
+     * @param User $owner
      */
-    public function getName()
+    public function setOwner($owner)
     {
-        return $this->producer->getName();
+        $this->owner = $owner;
+    }
+
+    /**
+     * Returns owner
+     *
+     * @return User|null
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 
     /**
@@ -63,23 +76,11 @@ class ProducerWithOwner
     }
 
     /**
-     * Returns owner email
-     *
-     * @return string
+     * @see Producer
      */
-    public function getOwnerEmail()
+    public function getName()
     {
-        return $this->ownerEmail;
-    }
-
-    /**
-     * Sets owner email
-     *
-     * @param string $ownerEmail
-     */
-    public function setOwnerEmail($ownerEmail)
-    {
-        $this->ownerEmail = $ownerEmail;
+        return $this->producer->getName();
     }
 
     /**

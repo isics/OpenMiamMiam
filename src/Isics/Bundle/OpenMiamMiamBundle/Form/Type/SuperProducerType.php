@@ -26,7 +26,7 @@ class SuperProducerType extends AbstractType
     {
         $builder
             ->add('name', 'text')
-            ->add('ownerEmail', 'text')
+            ->add('owner', 'fos_user_username')
             ->add('associations', 'entity', array(
                 'class'        => 'IsicsOpenMiamMiamBundle:Association',
                 'property'     => 'name',
