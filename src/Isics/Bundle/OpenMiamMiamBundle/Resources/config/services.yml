@@ -16,7 +16,6 @@ parameters:
     open_miam_miam.sales_order_validator.class:                  'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\SalesOrderValidator'
     open_miam_miam.payment_allocation_validator.class:           'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentAllocationValidator'
     open_miam_miam.payment_validator.class:                      'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\PaymentValidator'
-    open_miam_miam.producer_with_owner_validator.class:          'Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints\ProducerWithOwnerValidator'
 
     open_miam_miam.activity_manager.class:                 'Isics\Bundle\OpenMiamMiamBundle\Manager\ActivityManager'
     open_miam_miam.branch_manager.class:                   'Isics\Bundle\OpenMiamMiamBundle\Manager\BranchManager'
@@ -119,12 +118,6 @@ services:
         arguments: [%open_miam_miam.buying_units%]
         tags:
             - { name: validator.constraint_validator, alias: open_miam_miam.buying_unit_validator}
-
-    open_miam_miam.producer_with_owner_validator:
-        class:     %open_miam_miam.producer_with_owner_validator.class%
-        arguments: [@doctrine.orm.entity_manager]
-        tags:
-            - { name: validator.constraint_validator, alias: open_miam_miam.producer_with_owner_validator}
 
     open_miam_miam.product_validator:
         class:     %open_miam_miam.product_validator.class%
