@@ -646,7 +646,7 @@ class SalesOrderController extends BaseController
      *
      * @return Response
      */
-    public function exportAction(Association $association, BranchOccurrence $branchOccurrence)
+    public function getDepositWithdrawalExcelForBranchOccurrenceAction(Association $association, BranchOccurrence $branchOccurrence)
     {
         $this->secure($association);
         $this->secureBranchOccurrence($association, $branchOccurrence);

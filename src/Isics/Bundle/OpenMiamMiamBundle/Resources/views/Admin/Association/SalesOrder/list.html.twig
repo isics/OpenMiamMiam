@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <select class="form-control input-md">
                         <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.sales_orders'|trans }}</option>
-                        <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.deposit_withdrawal'|trans }}</option>
+                        <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_deposit_withdrawal_excel_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.deposit_withdrawal'|trans }}</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary btn-md">

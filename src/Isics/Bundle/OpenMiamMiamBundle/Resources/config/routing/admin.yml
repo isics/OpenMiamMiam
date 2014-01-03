@@ -151,8 +151,12 @@ open_miam_miam.admin.association.sales_order.allocate_payment:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:allocatePayment }
 
 open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/export
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:export }
+    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/sales_order
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
+
+open_miam_miam.admin.association.sales_orders.get_deposit_withdrawal_excel_for_branch_occurrence:
+    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/deposit_withdrawal
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getDepositWithdrawalExcelForBranchOccurrence }
 
 open_miam_miam.admin.association.branch.list:
     pattern:  /associations/{id}/branches
