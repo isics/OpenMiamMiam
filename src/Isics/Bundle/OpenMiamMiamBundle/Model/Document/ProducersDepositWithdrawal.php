@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Document;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Document;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 

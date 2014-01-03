@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Document;
 
 class ProducersTransfer
 {

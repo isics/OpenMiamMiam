@@ -13,10 +13,10 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 
 use Doctrine\ORM\EntityManager;
-use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawal;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducersTransfer;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersTransfer;
 
 class AssociationManager
 {

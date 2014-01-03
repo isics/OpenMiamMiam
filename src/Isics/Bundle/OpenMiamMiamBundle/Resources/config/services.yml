@@ -75,8 +75,8 @@ parameters:
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
     open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
 
-    open_miam_miam.association.producer.transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
-    open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder\DepositWithdrawalExcel'
+    open_miam_miam.association.producer.transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Producer\TransferExcel'
+    open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Association\DepositWithdrawalExcel'
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
 

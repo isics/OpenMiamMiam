@@ -9,14 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder;
+namespace Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Association;
 
-use Isics\Bundle\OpenMiamMiamBundle\Document\ProducersDepositWithdrawal;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ColumnNameForNumber;
 use Symfony\Component\Translation\Translator;
 
-class DepositWithdrawalExcel extends ColumnNameForNumber
+class DepositWithdrawalExcel
 {
     /**
      * @var \PHPExcel
