@@ -15,13 +15,13 @@ class ProducerListener
         $entityManager = $event->getEntityManager();
         $connection = $entityManager->getConnection();
 
-        if ($event->getEntity() instanceof Branch){
+        if ($event->getEntity() instanceof Branch) {
 
             $branch = $event->getEntity();
 
             $removedProducers = $branch->getProducers()->getDeleteDiff();
 
-            foreach ($removedProducers as $removedProducer){
+            foreach ($removedProducers as $removedProducer) {
                 // Prepare query to retrieve product's ids of producer
                 $productIdsQuery = $connection->prepare('SELECT id FROM product WHERE producer_id = :producer_id');
                 $productIdsQuery->execute(array(
@@ -29,11 +29,11 @@ class ProducerListener
                 ));
 
                 // Get product's ids of producer
-                $productIds = array_map(function($result){
+                $productIds = array_map(function($result) {
                     return reset($result);
                 }, $productIdsQuery->fetchAll(Query::HYDRATE_SCALAR));
 
-                if (0 < count($productIds)){
+                if (0 < count($productIds)) {
 
                     // Remove relations branch_has_product for these products and branch
                     $productIdsQuery = $connection->prepare(sprintf(
