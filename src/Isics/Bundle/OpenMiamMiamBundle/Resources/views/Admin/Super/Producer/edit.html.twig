@@ -19,9 +19,18 @@
 
 {% block javascript %}
     {{ parent() }}
+
     <script type="text/javascript">
+
+        var superProducerAutocomplete = new OpenMiamMiam.SuperProducerAutocomplete(
+            {{ form.vars.data.owner|json_encode|raw }},
+            {{ url('open_miam_miam.admin.super.user.search')|json_encode|raw }}
+        );
+
+
         $(function() {
-            new OpenMiamMiam.DeleteDialog;
+            new OpenMiamMiam.DeleteDialog();
+            superProducerAutocomplete.handleAutocomplete();
         });
     </script>
 {% endblock %}

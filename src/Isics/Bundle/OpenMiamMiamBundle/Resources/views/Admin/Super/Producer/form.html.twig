@@ -14,7 +14,9 @@
     {{ form_errors(form) }}
 
     {{ form_row(form.name, {'label': 'admin.super.producers.form.name'|trans}) }}
-    {{ form_row(form.owner, {'label': 'admin.super.producers.form.owner'|trans, 'attr': {'placeholder':  'admin.super.producers.form.owner.placeholder'|trans}}) }}
+    <div class="owner-container">
+        {{ form_row(form.owner, {'label': 'admin.super.producers.form.owner'|trans, 'attr': {'placeholder':  'admin.super.producers.form.owner.placeholder'|trans}}) }}
+    </div>
     {{ form_row(form.associations, {'label': 'admin.super.producers.form.associations'|trans}) }}
 
     <a href="{{ path('open_miam_miam.admin.super.producer.list') }}" class="pull-right">{{ 'admin.return'|trans }}</a>

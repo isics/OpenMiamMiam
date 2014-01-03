@@ -12,3 +12,18 @@
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:Super\\Producer\\form.html.twig' with {'form': form} %}
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var superProducerAutocomplete = new OpenMiamMiam.SuperProducerAutocomplete(
+            null,
+            {{ url('open_miam_miam.admin.super.user.search')|json_encode|raw }}
+        );
+
+        $(function(){
+            superProducerAutocomplete.handleAutocomplete();
+        });
+    </script>
+{% endblock %}

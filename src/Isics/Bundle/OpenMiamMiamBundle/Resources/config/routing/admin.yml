@@ -25,6 +25,10 @@ open_miam_miam.admin.super.user_switch.list:
     pattern:  /super/user-switch
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\UserSwitch:list }
 
+open_miam_miam.admin.super.user.search:
+    pattern:  /super/user/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\User:search }
+
 open_miam_miam.admin.super.article.list:
     pattern:  /super/articles
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:list }
