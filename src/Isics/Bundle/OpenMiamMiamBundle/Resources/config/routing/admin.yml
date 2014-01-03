@@ -25,6 +25,10 @@ open_miam_miam.admin.super.user_switch.list:
     pattern:  /super/user-switch
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\UserSwitch:list }
 
+open_miam_miam.admin.super.user.search:
+    pattern:  /super/user/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\User:search }
+
 open_miam_miam.admin.super.article.list:
     pattern:  /super/articles
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:list }
@@ -56,6 +60,40 @@ open_miam_miam.admin.super.newsletter.send:
 open_miam_miam.admin.super.newsletter.report:
     pattern:  /super/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:showReport }
+
+open_miam_miam.admin.super.producer.list:
+    pattern:  /super/producers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:list }
+
+open_miam_miam.admin.super.producer.create:
+    pattern:  /super/producers/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:create }
+
+open_miam_miam.admin.super.producer.edit:
+    pattern:  /super/producers/{producerId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:edit }
+
+open_miam_miam.admin.super.producer.delete:
+    pattern:  /super/producers/{producerId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:delete }
+
+open_miam_miam.admin.super.producer.manager.list:
+    pattern:  /super/producers/{producerId}/managers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:list }
+
+open_miam_miam.admin.super.producer.manager.seach:
+    pattern:  /super/producers/{producerId}/managers/search
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:search }
+
+open_miam_miam.admin.super.producer.manager.promote:
+    pattern:  /super/producers/{producerId}/managers/promote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:promote }
+
+open_miam_miam.admin.super.producer.manager.demote:
+    pattern:  /super/producers/{producerId}/managers/demote/{userId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:demote }
+
+
 
 open_miam_miam.admin.super.category.list:
     pattern:  /super/categories

@@ -1,0 +1,70 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ 'admin.super.producers.list.title'|transchoice(producers|length, {'%nb%': producers|length}) }}</h1>
+        </div>
+        <div class="col-md-6">
+            <a href="{{ path('open_miam_miam.admin.super.producer.create') }}" class="btn btn-primary btn-lg pull-right">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                {{ 'admin.super.producers.list.create'|trans }}
+            </a>
+        </div>
+    </div>
+
+    {% if producers|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-super-producers">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.super.producers.list.name'|trans }}</th>
+                        {% for association in associations %}
+                            <th>{{ association.name|truncate(8) }}</th>
+                        {% endfor %}
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producer in producers %}
+                        <tr>
+                            <td><a href="{{ path('open_miam_miam.admin.super.producer.edit', {'producerId': producer.id}) }}">{{ producer.name }}</a></td>
+                            {% for association in associations %}
+                                <td>
+                                    {% if association in producer.associations %}
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.super.producer.edit', {'producerId': producer.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.super.producers.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.super.producer.delete', {'producerId': producer.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.super.producers.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {{ pagerfanta(producers, 'twitter_bootstrap3_translated') }}
+
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Super\\Producer\\deleteDialog.html.twig' %}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.super.producers.list.no_producer'|trans} %}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.DeleteDialog;
+        });
+    </script>
+{% endblock %}

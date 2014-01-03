@@ -179,6 +179,7 @@ admin.super.menu.dashboard:     "Tableau de bord"
 admin.super.menu.user_switch:   "Usurpateur d'identité"
 admin.super.menu.news:          "Actualité"
 admin.super.menu.newsletter:    "Lettre d'information"
+admin.super.menu.producer:      "Producteurs"
 admin.super.menu.category:      "Catégories produits"
 admin.super.menu.manager:       "Gestionnaires"
 
@@ -231,6 +232,26 @@ admin.super.newsletter.report.subject:       "Objet"
 admin.super.newsletter.report.title:         "Lettre d'information : rapport d'envoi"
 admin.super.newsletter.report.sent_at:       "Envoyée le"
 admin.super.newsletter.report.nb_recipients: "Destinataires"
+
+# Admin / Super / Producer
+admin.super.producers.list.title:             "{0} Aucun producteur|{1} 1 producteur|]1,Inf] %nb% producteurs"
+admin.super.producers.list.create:            "Nouveau producteur"
+admin.super.producers.list.no_producer:       "Aucun producteur n'a encore été créé."
+admin.super.producers.list.name:              "Nom"
+admin.super.producers.list.edit:              "Modifier le producteur"
+admin.super.producers.list.delete:            "Supprimer le producteur"
+admin.super.producers.form.new_title:         "Nouveau producteur"
+admin.super.producers.form.edit_title:        "Producteur «%name%»"
+admin.super.producers.form.name:              "Nom"
+admin.super.producers.form.owner:             "Gestionnaire principal"
+admin.super.producers.form.owner.placeholder: "E-mail"
+admin.super.producers.form.associations:      "Association(s)"
+admin.super.producers.form.delete:            "Supprimer le producteur"
+admin.super.producers.message.created:        "Le producteur a bien été créé."
+admin.super.producers.message.updated:        "Le producteur a bien été mis à jour."
+admin.super.producers.message.deleted:        "Le producteur a bien été supprimé."
+admin.super.producers.delete_dialog.content:  "Êtes-vous vraiment certain de vouloir supprimer ce producteur ?"
+
 
 newsletter.unsubscribe:     |
     <p>
@@ -669,6 +690,8 @@ message.cart.updated: "Votre panier a été mis à jour."
 # Activities
 activity_stream.branch.created:                         "a créé le comptoir %name%."
 activity_stream.branch.updated:                         "a mis à jour le comptoir %name%."
+activity_stream.producer.created:                       "a créé le producteur «%name%»."
+activity_stream.producer.updated:                       "a mis à jour le producteur «%name%»."
 activity_stream.product.created:                        "a créé le produit %name%."
 activity_stream.product.updated:                        "a mis à jour le produit %name%."
 activity_stream.sales_order.created:                    "a passé la commande %ref%."

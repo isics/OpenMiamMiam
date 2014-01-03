@@ -38,6 +38,7 @@ class IsicsOpenMiamMiamExtension extends Extension
 
         $container->setParameter('open_miam_miam.association.pagination.consumers', $config['association']['pagination']['consumers']);
         $container->setParameter('open_miam_miam.association.pagination.consumer_payments', $config['association']['pagination']['consumer_payments']);
+        $container->setParameter('open_miam_miam.super.pagination.producer', $config['super']['pagination']['producer']);
         $container->setParameter('open_miam_miam.super.pagination.user', $config['super']['pagination']['user']);
 
         $container->setParameter('open_miam_miam.product', $config['product']);

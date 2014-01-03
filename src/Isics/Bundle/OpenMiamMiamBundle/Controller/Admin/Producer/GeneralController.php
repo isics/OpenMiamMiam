@@ -67,7 +67,7 @@ class GeneralController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $producerManager->save($producer);
+                $producerManager->save($producer, $this->get('security.context')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.infos.message.updated');
 

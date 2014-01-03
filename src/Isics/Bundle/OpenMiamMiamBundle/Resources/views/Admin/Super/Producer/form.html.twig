@@ -1,0 +1,34 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
+{% set producerWithOwner = form.vars.data %}
+
+{{ form_start(form) }}
+
+    {{ form_errors(form) }}
+
+    {{ form_row(form.name, {'label': 'admin.super.producers.form.name'|trans}) }}
+    <div class="owner-container">
+        {{ form_row(form.owner, {'label': 'admin.super.producers.form.owner'|trans, 'attr': {'placeholder':  'admin.super.producers.form.owner.placeholder'|trans}}) }}
+    </div>
+    {{ form_row(form.associations, {'label': 'admin.super.producers.form.associations'|trans}) }}
+
+    <a href="{{ path('open_miam_miam.admin.super.producer.list') }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+
+    <button type="submit" class="btn btn-primary btn-lg" />
+        <span class="glyphicon glyphicon-floppy-save"></span>
+        {{ 'admin.save'|trans }}
+    </button>
+
+    {% if producerWithOwner.producer.id is not null %}
+        <a data-url="{{ path('open_miam_miam.admin.super.producer.delete', {'producerId': producerWithOwner.producer.id}) }}" class="btn btn-danger btn-lg" title="{{ 'admin.super.producers.form.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+    {% endif %}
+
+    {% do form.save.setRendered %}
+{{ form_end(form) }}

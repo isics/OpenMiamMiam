@@ -10,7 +10,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
  * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  */
-class User extends BaseUser
+class User extends BaseUser implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -336,5 +336,30 @@ class User extends BaseUser
     public function getFullName()
     {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    /**
+     * Retourne la version array de l'objet en vue de la serialisation json
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'id'                                     => $this->getId(),
+            'username'                               => $this->getUsername(),
+            'email'                                  => $this->getEmail(),
+            'last_login'                             => $this->getLastLogin(),
+            'firstname'                              => $this->getFirstname(),
+            'lastname'                               => $this->getLastname(),
+            'address1'                               => $this->getAddress1(),
+            'address2'                               => $this->getAddress2(),
+            'zipcode'                                => $this->getZipcode(),
+            'city'                                   => $this->getCity(),
+            'phone_number'                           => $this->getPhoneNumber(),
+            'is_orders_open_notification_subscriber' => $this->getIsOrdersOpenNotificationSubscriber(),
+            'is_newsletter_subsriber'                => $this->getIsNewsletterSubscriber(),
+            'identity'                               => $this->getFullName()
+        );
     }
 }

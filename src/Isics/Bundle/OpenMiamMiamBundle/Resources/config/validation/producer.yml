@@ -1,4 +1,15 @@
+Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner:
+    properties:
+        producer:
+            - Valid: ~
+        owner:
+            - NotNull:
+                message: error.notfound
+            - Valid: ~
+
 Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
     properties:
         name:
             - NotNull: ~
