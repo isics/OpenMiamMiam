@@ -264,14 +264,4 @@ class User extends BaseUser
         $this->username = $email;
         $this->usernameCanonical = $email;
     }
-
-    /**
-     * Returns full name
-     *
-     * @return string
-     */
-    public function getFullName()
-    {
-        return $this->firstname.' '.$this->lastname;
-    }
 }
