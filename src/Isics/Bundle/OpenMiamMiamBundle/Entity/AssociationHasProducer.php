@@ -38,7 +38,7 @@ class AssociationHasProducer
     /**
      * @var Producer $producer
      *
-     * @ORM\ManyToOne(targetEntity="Producer", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Producer")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="producer_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })

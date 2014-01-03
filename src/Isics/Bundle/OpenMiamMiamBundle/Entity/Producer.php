@@ -121,7 +121,7 @@ class Producer
     /**
      * @var Doctrine\Common\Collections\Collection $associationHasProducer
      *
-     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="producer", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AssociationHasProducer", mappedBy="producer", cascade={"all"}, orphanRemoval=true)
      */
     private $associationHasProducer;
 
@@ -467,7 +467,7 @@ class Producer
      * Set productRefCounter
      *
      * @param integer $productRefCounter
-     * 
+     *
      * @return Producer
      */
     public function setProductRefCounter($productRefCounter)
@@ -508,7 +508,7 @@ class Producer
     }
 
     /**
-     * Remove association
+     * Remove association and related branches
      *
      * @param Association $association
      */
@@ -518,6 +518,10 @@ class Producer
             $this->getAssociationHasProducer()->removeElement(
                 $this->getAssociationHasProducerByAssociation($association)
             );
+        }
+
+        foreach ($association->getBranches() as $branch) {
+            $this->removeBranch($branch);
         }
     }
 

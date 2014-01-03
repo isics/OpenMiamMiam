@@ -14,6 +14,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamUserBundle\Manager\UserManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,6 +30,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ProducerManager
 {
     /**
+     * @var array $config
+     */
+    protected $config;
+
+    /**
      * @var EntityManager $entityManager
      */
     protected $entityManager;
@@ -37,10 +45,14 @@ class ProducerManager
     protected $kernel;
 
     /**
-     * @var array $config
+     * @var UserManager $userManager
      */
-    protected $config;
+    protected $userManager;
 
+    /**
+     * @var ActivityManager $activityManager
+     */
+    protected $activityManager;
 
 
     /**
@@ -50,10 +62,12 @@ class ProducerManager
      * @param EntityManager $entityManager
      * @param KernelInterface $kernel
      */
-    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel)
+    public function __construct(array $config, EntityManager $entityManager, KernelInterface $kernel, UserManager $userManager, ActivityManager $activityManager)
     {
-        $this->entityManager = $entityManager;
-        $this->kernel = $kernel;
+        $this->entityManager   = $entityManager;
+        $this->kernel          = $kernel;
+        $this->userManager     = $userManager;
+        $this->activityManager = $activityManager;
 
         $resolver = new OptionsResolver();
         $this->setDefaultOptions($resolver);
@@ -71,12 +85,38 @@ class ProducerManager
     }
 
     /**
+     * Creates a producer
+     *
+     * @return Producer
+     */
+    public function create()
+    {
+        $producer = new Producer();
+
+        return $producer;
+    }
+
+    /**
      * Saves a producer
      *
      * @param Producer $producer
+     * @param User     $user
      */
-    public function save(Producer $producer)
+    public function save(Producer $producer, User $user = null)
     {
+        $activityTransKey = null;
+        if (null === $producer->getId()) {
+            $activityTransKey = 'activity_stream.producer.created';
+        } else {
+            $unitOfWork = $this->entityManager->getUnitOfWork();
+            $unitOfWork->computeChangeSets();
+
+            $changeSet = $unitOfWork->getEntityChangeSet($producer);
+            if (!empty($changeSet)) {
+                $activityTransKey = 'activity_stream.producer.updated';
+            }
+        }
+
         // Save object
         $this->entityManager->persist($producer);
         $this->entityManager->flush();
@@ -84,6 +124,78 @@ class ProducerManager
         // Process image file
         $this->processProfileImageFile($producer);
         $this->processPresentationImageFile($producer);
+
+        // Activity
+        if (null !== $activityTransKey) {
+            $activity = $this->activityManager->createFromEntities(
+                $activityTransKey,
+                array('%name%' => $producer->getName()),
+                $producer,
+                null,
+                $user
+            );
+            $this->entityManager->persist($activity);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * Returns a ProducerWithOwner (DTO)
+     *
+     * @return ProducerWithOwner
+     */
+    public function getProducerWithOwner(Producer $producer = null)
+    {
+        $producerWithOwner = new ProducerWithOwner();
+
+        if (null === $producer) {
+            $producerWithOwner->setProducer($this->create());
+        } else {
+            $producerWithOwner->setProducer($producer);
+
+            if (null !== $owner = $this->userManager->getOwner($producer)) {
+                $producerWithOwner->setOwner($owner);
+            }
+        }
+
+        return $producerWithOwner;
+    }
+
+    /**
+     * Saves ProducerWithOwner
+     *
+     * @param ProducerWithOwner $producerWithOwner
+     * @param User              $user
+     */
+    public function saveProducerWithOwner(ProducerWithOwner $producerWithOwner, User $user = null)
+    {
+        $producer = $producerWithOwner->getProducer();
+
+        $this->save($producer, $user);
+
+        // Set owner
+        $this->userManager->setOwner($producer, $producerWithOwner->getOwner());
+    }
+
+    /**
+     * Removes a producer
+     *
+     * @param Producer $producer
+     */
+    public function delete(Producer $producer)
+    {
+        // Save object
+        $this->entityManager->remove($producer);
+        $this->entityManager->flush();
+
+        // Remove images
+        if (null !== $producer->getProfileImage()) {
+            $this->doRemoveProfileImage($producer);
+        }
+
+        if (null !== $producer->getPresentationImage()) {
+            $this->doRemovePresentationImage($producer);
+        }
     }
 
     /**
@@ -136,15 +248,25 @@ class ProducerManager
      */
     public function removeProfileImage(Producer $producer)
     {
+        if (null !== $producer->getProfileImage()) {
+            $this->doRemoveProfileImage($producer);
+
+            $producer->setProfileImage(null);
+
+            $this->entityManager->persist($producer);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * Removes profileImage file
+     *
+     * @param Producer $producer
+     */
+    protected function doRemoveProfileImage(Producer $producer)
+    {
         $fileSystem = new Filesystem();
-        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($producer);
-
-        $fileSystem->remove($uploadDir.'/'.$producer->getProfileImage());
-
-        $producer->setProfileImage(null);
-
-        $this->entityManager->persist($producer);
-        $this->entityManager->flush();
+        $fileSystem->remove($this->kernel->getRootDir().'/../web'.$this->getProfileImagePath($producer));
     }
 
     /**
@@ -215,15 +337,25 @@ class ProducerManager
      */
     public function removePresentationImage(Producer $producer)
     {
+        if (null !== $producer->getPresentationImage()) {
+            $this->doRemovePresentationImage($producer);
+
+            $producer->setPresentationImage(null);
+
+            $this->entityManager->persist($producer);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * Removes presentationImage file
+     *
+     * @param Producer $producer
+     */
+    protected function doRemovePresentationImage(Producer $producer)
+    {
         $fileSystem = new Filesystem();
-        $uploadDir = $this->kernel->getRootDir().'/../web'.$this->getUploadDir($producer);
-
-        $fileSystem->remove($uploadDir.'/'.$producer->getPresentationImage());
-
-        $producer->setPresentationImage(null);
-
-        $this->entityManager->persist($producer);
-        $this->entityManager->flush();
+        $fileSystem->remove($this->kernel->getRootDir().'/../web'.$this->getPresentationImagePath($producer));
     }
 
     /**
@@ -252,5 +384,17 @@ class ProducerManager
 
         $this->entityManager->persist($producer);
         $this->entityManager->flush();
+    }
+
+    /**
+     * Returns activities of a producer
+     *
+     * @param Producer $producer
+     *
+     * @return array
+     */
+    public function getActivities(Producer $producer)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($producer);
     }
 }

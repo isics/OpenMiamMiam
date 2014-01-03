@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <nav>
+    <nav id="menu">
         <ul class="nav nav-pills nav-stacked well">
             {% for child in currentItem.children %}
                 <li{% if matcher.isCurrent(child) %} class="active"{% endif %}><a href="{{ child.uri }}">{{ child.label|raw }}</a></li>
