@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <h1>
                 {% if consumer is defined %}
-                    {{ 'admin.association.consumers.payments.list.title'|trans({'%consumer%': consumer.fullName}) }}
+                    {{ 'admin.association.consumers.payments.list.title'|trans({'%consumer%': format_user_identity(consumer) }) }}
                 {% else %}
                     {{ 'admin.association.consumers.payments.list.anonymous_title'|trans }}
                 {% endif %}
