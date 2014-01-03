@@ -793,7 +793,7 @@ mail.branch.orders_closed.message_html:    |
     <p><strong>N'oubliez pas de venir chercher votre commande %ref% !</strong></p>
 
 # Excel
-excel.association.producer.transfer.filename:                                   "producers_transfer_%year%-%month%.xlsx"
+excel.association.producer.transfer.filename:                                   "virements aux producteurs %month%-%year%.xlsx"
 excel.association.producer.transfer.total:                                      "TOTAL"
 excel.association.producer.transfer.title:                                      "VIREMENTS AUX PRODUCTEURS"
 excel.association.sales_orders.deposit_withdrawal.filename:                     "dépôt-retrait %branch% %day%-%month%-%year%.xlsx"
