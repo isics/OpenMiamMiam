@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Association;
 
+use Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Tools;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Symfony\Component\Translation\Translator;
@@ -98,6 +99,12 @@ class DepositWithdrawalExcel
             )
         );
 
+        $this->styles['vertical_center'] = array(
+            'alignment'=>array(
+                'vertical' => \PHPExcel_Style_Alignment::VERTICAL_CENTER
+            )
+        );
+
         $this->styles['right'] = array(
             'alignment'=>array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT
@@ -106,7 +113,7 @@ class DepositWithdrawalExcel
 
         $this->styles['border'] = array(
             'borders' => array(
-                'outline' => array(
+                'allborders' => array(
                     'style' => \PHPExcel_Style_Border::BORDER_THIN,
                 ),
             )
@@ -121,24 +128,25 @@ class DepositWithdrawalExcel
      */
     public function generate(ProducersDepositWithdrawal $producerDepositWithdrawal)
     {
-        $this->excel->setActiveSheetIndex(0);
-        $sheet = $this->excel->getActiveSheet();
-        $sheet->getPageSetup()->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+        $currentSheetIndex = 0;
 
-        $branchOccurrence = $producerDepositWithdrawal->getBranchOccurrence();
+        $this->excel->setActiveSheetIndex($currentSheetIndex);
+        $sheet = $this->excel->getActiveSheet();
+        $sheet->setTitle($this->translator->trans(
+            'excel.association.sales_orders.deposit_withdrawal.summary_title'
+        ));
+        $sheet->getPageSetup()->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
 
         $currentLine = 1;
 
-        // Title
-        $this->generateTitle($sheet, $currentLine, implode('', array(
-            $branchOccurrence->getBranch()->getName(),
-            "\n",
-            "\n",
-            $branchOccurrence->getEnd()->format('d/m/Y')
-        )));
+        $this->generateSummaryPage($sheet, $currentLine, $producerDepositWithdrawal);
 
         // Producer parts
         foreach ($producerDepositWithdrawal->getProducers() as  $producerId => $producerName) {
+            $sheet = $this->excel->createSheet(++$currentSheetIndex);
+            $sheet->setTitle($producerName);
+            $currentLine = 1;
+
             $this->generateProducer(
                 $sheet,
                 $currentLine,
@@ -148,26 +156,22 @@ class DepositWithdrawalExcel
             );
         }
 
-        // set width auto
-        $columnID = 'A';
-        $lastColumn = $sheet->getHighestColumn();
-        do {
-            $sheet->getColumnDimension($columnID)->setAutoSize(true);
-            $columnID++;
-        } while ($columnID != $lastColumn);
+        $this->excel->setActiveSheetIndex(0);
     }
 
     /**
      * Add title in document
      *
-     * @param \PHPExcel_Worksheet $sheet La feuille de calcul
-     * @param int                 $line  La ligne courante
-     * @param string              $title Le titre
+     * @param \PHPExcel_Worksheet $sheet       La feuille de calcul
+     * @param int                 $line        La ligne courante
+     * @param string              $title       Le titre
+     * @param string              $firstColumn First column
+     * @param string              $lastColumn  Last column
      */
-    protected function generateTitle(\PHPExcel_Worksheet $sheet, &$line, $title)
+    protected function generateTitle(\PHPExcel_Worksheet $sheet, &$line, $title, $firstColumn = null, $lastColumn = null)
     {
-        $firstCell = $this->firstColumn.$line;
-        $lastCell = $this->lastColumn.$line;
+        $firstCell = (null !== $firstColumn ? $firstColumn : $this->firstColumn).$line;
+        $lastCell = (null !== $lastColumn ? $lastColumn : $this->lastColumn).$line;
 
         // Merge cells for document title
         $sheet->mergeCells($firstCell.':'.$lastCell);
@@ -180,6 +184,228 @@ class DepositWithdrawalExcel
         $sheet->getRowDimension('1')->setRowHeight(50);
 
         ++$line;
+    }
+
+    /**
+     * Generate summary page
+     *
+     * @param \PHPExcel_Worksheet        $sheet                     Data sheet
+     * @param int                        $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Producer deposit / withdrawal model
+     */
+    protected function generateSummaryPage(\PHPExcel_Worksheet $sheet,
+                                           &$line,
+                                           ProducersDepositWithdrawal $producerDepositWithdrawal)
+    {
+        $branchOccurrence = $producerDepositWithdrawal->getBranchOccurrence();
+
+        // Title
+        $this->generateTitle($sheet, $line, implode('', array(
+            $branchOccurrence->getBranch()->getName(),
+            "\n",
+            "\n",
+            $branchOccurrence->getEnd()->format('d/m/Y')
+        )), 'A', 'F');
+
+        ++$line;
+
+        $startLine = $line;
+
+        $currentColumn = 1;
+        $commissionRateData = $producerDepositWithdrawal->getAllCommissionsRate();
+        $commissionsRateColumn = array();
+
+        // Table headers
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.summary.header.sales_order')
+        );
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn++).$line)
+            ->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.summary.header.branch')
+        );
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn++).$line)
+            ->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.summary.header.total')
+        );
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn++).$line)
+            ->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        foreach ($commissionRateData as $commissionRate => $commissionAmount){
+            $commissionsRateColumn[$commissionRate] = $currentColumn;
+            $sheet->setCellValue(
+                Tools::getColumnNameForNumber($currentColumn).$line,
+                $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.summary.header.commission', array(
+                    '%commission%' => $commissionRate
+                ))
+            );
+            $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+                ->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+            ++$currentColumn;
+        }
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.summary.header.to_pay')
+        );
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
+        $sheet->getRowDimension($line)->setRowHeight(30);
+        $sheet->getStyle('A'.$line.':'.Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray($this->styles['vertical_center']);
+
+        ++$line;
+
+        foreach ($producerDepositWithdrawal->getProducers() as $producerId => $producerName){
+            $this->generateSummaryPageProducer(
+                $sheet,
+                $line,
+                $producerDepositWithdrawal,
+                $producerId,
+                $producerName,
+                $commissionsRateColumn
+            );
+            ++$line;
+        }
+
+        $line += 2;
+        $currentColumn = 0;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total')
+        );
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn++).$line)
+            ->applyFromArray($this->styles['bold']);
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getSumTotalForProducers($producerId),
+                $this->currency
+            )
+        );
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getSumBranchOccurrenceTotalForProducers($producerId),
+                $this->currency
+            )
+        );
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getSumTotal($producerId),
+                $this->currency
+            )
+        );
+
+        foreach ($commissionRateData as $commissionRate => $commissionAmount){
+            $commissionsRateColumn[$commissionRate] = $currentColumn;
+            $sheet->setCellValue(
+                Tools::getColumnNameForNumber($currentColumn).$line,
+                $this->formatter->formatCurrency(
+                    $commissionAmount,
+                    $this->currency
+                )
+            );
+
+            ++$currentColumn;
+        }
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getSumTotalToPay($producerId),
+                $this->currency
+            )
+        );
+
+        $column = 0;
+
+        do {
+            $sheet->getColumnDimension(Tools::getColumnNameForNumber($column))->setAutoSize(true);
+            ++$column;
+        } while ($column != $currentColumn);
+
+
+        $sheet->getStyle(Tools::getColumnNameForNumber(0).$startLine.':'.Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray($this->styles['border']);
+
+        $sheet->getStyle(Tools::getColumnNameForNumber(1).($startLine+1).':'.Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray($this->styles['right']);
+    }
+
+    /**
+     * @param \PHPExcel_Worksheet        $sheet                     Data sheet
+     * @param int                        $line                      Current line
+     * @param ProducersDepositWithdrawal $producerDepositWithdrawal Producer deposit / withdrawal model
+     * @param int                        $producerId                Producer id
+     * @param string                     $producerName              Producer name
+     * @param array                      $commissionRateColumns     Commission rate columns
+     */
+    protected function generateSummaryPageProducer(\PHPExcel_Worksheet $sheet,
+                                                   &$line,
+                                                   ProducersDepositWithdrawal $producerDepositWithdrawal,
+                                                   $producerId,
+                                                   $producerName,
+                                                   array $commissionRateColumns)
+    {
+        $currentColumn = 0;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $producerName
+        );
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getTotalForProducerId($producerId),
+                $this->currency
+            )
+        );
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId),
+                $this->currency
+            )
+        );
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn++).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getTotal($producerId),
+                $this->currency
+            )
+        );
+
+        foreach ($producerDepositWithdrawal->getGroupedCommissionDataForProducerId($producerId) as $commissionRate => $commissionAmount){
+            $column = $commissionRateColumns[$commissionRate];
+
+            $sheet->setCellValue(
+                Tools::getColumnNameForNumber($column).$line,
+                $this->formatter->formatCurrency(
+                    $commissionAmount,
+                    $this->currency
+                )
+            );
+        }
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber(max($commissionRateColumns)+1).$line,
+            $this->formatter->formatCurrency(
+                $producerDepositWithdrawal->getTotalToPay($producerId),
+                $this->currency
+            )
+        );
     }
 
     /**
@@ -197,18 +423,7 @@ class DepositWithdrawalExcel
                                         $producerId,
                                         $producerName)
     {
-        $firstCell = $this->firstColumn.$line;
-        $lastCell = $this->lastColumn.$line;
-
-        $sheet->mergeCells($firstCell.':'.$lastCell);
-
-        // Producer name
-        $sheet->setCellValue(
-            $firstCell,
-            $producerName
-        );
-
-        $sheet->getStyle($firstCell)->applyFromArray($this->styles['bold']);
+        $this->generateTitle($sheet, $line, $producerName);
 
         ++$line;
 
@@ -255,7 +470,13 @@ class DepositWithdrawalExcel
 
         $sheet->getRowDimension($line)->setRowHeight(20);
 
-        ++$line;
+        // set width auto
+        $columnID = 'A';
+        $lastColumn = $sheet->getHighestColumn();
+        do {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+            $columnID++;
+        } while ($columnID != $lastColumn);
     }
 
     /**
