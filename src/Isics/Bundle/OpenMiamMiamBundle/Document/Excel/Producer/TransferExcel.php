@@ -9,13 +9,13 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer;
+namespace Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Producer;
 
-use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ColumnNameForNumber;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Association\ProducersTransfer;
+use Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Tools;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersTransfer;
 use Symfony\Component\Translation\Translator;
 
-class TransferExcel extends ColumnNameForNumber
+class TransferExcel
 {
     /**
      * @var \PHPExcel
@@ -92,19 +92,19 @@ class TransferExcel extends ColumnNameForNumber
         foreach ($producersTransfer->getBranchOccurrences() as $branchOccurrence) {
             // branch occurence Name
             $sheet->setCellValue(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).'2',
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).'2',
                 $branchOccurrence->getBranch()->getName()
             );
 
             // branch occurence Date
             $sheet->setCellValue(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).'3',
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).'3',
                 $branchOccurrence->getEnd()->format('d/m/Y')
             );
             // branch occurence group style
             $sheet->getStyle(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).'2:'.
-                $this->getColumnNameForNumber($branchOccurrenceNumber).'3'
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).'2:'.
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).'3'
             )->applyFromArray(array_merge($borderStyle, $centerStyle, $boldStyle));
 
             ++$branchOccurrenceNumber;
@@ -114,7 +114,7 @@ class TransferExcel extends ColumnNameForNumber
         $columnNumber = $branchOccurrenceNumber;
 
         // Merge cells for document title
-        $sheet->mergeCells('B1:'.$this->getColumnNameForNumber($branchOccurrenceNumber).'1');
+        $sheet->mergeCells('B1:'.Tools::getColumnNameForNumber($branchOccurrenceNumber).'1');
         $sheet->setCellValue(
             'B1',
             ucfirst($intl->format($producersTransfer->getDate()))."\n\n".
@@ -127,12 +127,12 @@ class TransferExcel extends ColumnNameForNumber
 
         // title of producer total column
         $sheet->setCellValue(
-            $this->getColumnNameForNumber($branchOccurrenceNumber).'2',
+            Tools::getColumnNameForNumber($branchOccurrenceNumber).'2',
             $this->translator->trans('excel.association.producer.transfer.total')
         );
         $sheet->getStyle(
-            $this->getColumnNameForNumber($branchOccurrenceNumber).'2:'.
-            $this->getColumnNameForNumber($branchOccurrenceNumber).'3'
+            Tools::getColumnNameForNumber($branchOccurrenceNumber).'2:'.
+            Tools::getColumnNameForNumber($branchOccurrenceNumber).'3'
         )->applyFromArray(array_merge($borderStyle, $centerStyle, $boldStyle));
 
 
@@ -159,11 +159,11 @@ class TransferExcel extends ColumnNameForNumber
 
                 // total for producer by branch occurence
                 $sheet->setCellValue(
-                    $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
+                    Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
                     null !== $value ? $formatter->formatCurrency($value,$this->currency) : '-'
                 );
                 $sheet->getStyle(
-                    $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
+                    Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
                 )->applyFromArray(array_merge($borderStyle, $rightStyle));
 
                 ++$branchOccurrenceNumber;
@@ -171,11 +171,11 @@ class TransferExcel extends ColumnNameForNumber
 
             // Total by producer
             $sheet->setCellValue(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
                 $formatter->formatCurrency($producersTransfer->getTotalForProducerId($producer->getId()),$this->currency)
             );
             $sheet->getStyle(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
             )->applyFromArray(array_merge($borderStyle, $boldStyle, $rightStyle));
 
             ++$currentLine;
@@ -183,7 +183,7 @@ class TransferExcel extends ColumnNameForNumber
 
         // style of TOTAL cell
         $sheet->getStyle(
-            $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
+            Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
         )->applyFromArray(array_merge($borderStyle, $boldStyle, $rightStyle));
 
         // title for branch occurrence total
@@ -208,11 +208,11 @@ class TransferExcel extends ColumnNameForNumber
 
             // branch occurrence total
             $sheet->setCellValue(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
                 null !== $value ? $formatter->formatCurrency($value,$this->currency) : '-'
             );
             $sheet->getStyle(
-                $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
+                Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine
             )->applyFromArray(array_merge($borderStyle, $boldStyle, $rightStyle));
 
             ++$branchOccurrenceNumber;
@@ -220,7 +220,7 @@ class TransferExcel extends ColumnNameForNumber
 
         // producer total
         $sheet->setCellValue(
-            $this->getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
+            Tools::getColumnNameForNumber($branchOccurrenceNumber).(string)$currentLine,
             $formatter->formatCurrency(array_sum($producersTransfer->getTotalByProducers()),$this->currency)
         );
 
