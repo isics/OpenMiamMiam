@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Document;
+namespace Isics\Bundle\OpenMiamMiamBundle\Model\Document;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 
@@ -68,6 +68,28 @@ class ProducersDepositWithdrawal
         }
         asort($producers);
         return $producers;
+    }
+
+    /**
+     * Returns all commission rate sorted
+     */
+    public function getAllCommissionsRate()
+    {
+        $commissions = array();
+
+        foreach ($this->getProducers() as $producerId => $producerName){
+            foreach ($this->getGroupedCommissionDataForProducerId($producerId) as $commissionRate => $commissionAmount){
+                if (!isset($commissions[$commissionRate])){
+                    $commissions[$commissionRate] = $commissionAmount;
+                } else {
+                    $commissions[$commissionRate] += $commissionAmount;
+                }
+            }
+        }
+
+        ksort($commissions);
+
+        return $commissions;
     }
 
     /**
@@ -242,6 +264,70 @@ class ProducersDepositWithdrawal
         }
 
         return $this->getTotal($producerId) - $totalCommission;
+    }
+
+    /**
+     * Returns sales orders rows total for all producers
+     *
+     * @return float
+     */
+    public function getSumTotalForProducers()
+    {
+        $total = 0;
+
+        foreach (array_keys($this->getProducers()) as $producerId){
+            $total += $this->getTotalForProducerId($producerId);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Returns branch occurrence sales orders rows for all producers
+     *
+     * @return float
+     */
+    public function getSumBranchOccurrenceTotalForProducers()
+    {
+        $total = 0;
+
+        foreach (array_keys($this->getProducers()) as $producerId){
+            $total += $this->getBranchOccurrenceTotalForProducerId($producerId);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Returns total for all producers
+     *
+     * @return float
+     */
+    public function getSumTotal()
+    {
+        $total = 0;
+
+        foreach (array_keys($this->getProducers()) as $producerId){
+            $total += $this->getTotal($producerId);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Returns amount to pay for all producers
+     *
+     * @return float
+     */
+    public function getSumTotalToPay()
+    {
+        $total = 0;
+
+        foreach (array_keys($this->getProducers()) as $producerId){
+            $total += $this->getTotalToPay($producerId);
+        }
+
+        return $total;
     }
 
 }
