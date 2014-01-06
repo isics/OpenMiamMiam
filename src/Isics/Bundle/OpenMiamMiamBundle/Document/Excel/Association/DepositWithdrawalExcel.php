@@ -36,7 +36,12 @@ class DepositWithdrawalExcel
     /**
      * @var \NumberFormatter
      */
-    protected $formatter;
+    protected $numberFormatter;
+
+    /**
+     * @var \NumberFormatter
+     */
+    protected $currencyFormatter;
 
     /**
      * @var \IntlDateFormatter
@@ -83,7 +88,10 @@ class DepositWithdrawalExcel
         $this->currency     = $currency;
 
         // intl
-        $this->formatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::CURRENCY);
+        $this->numberFormatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::DECIMAL);
+        $this->numberFormatter->setAttribute(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, true);
+        $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
+        $this->currencyFormatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::CURRENCY);
         $this->intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM Y');
 
         // Styles
@@ -242,7 +250,7 @@ class DepositWithdrawalExcel
             $sheet->setCellValue(
                 Tools::getColumnNameForNumber($currentColumn).$line,
                 $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.summary.header.commission', array(
-                    '%commission%' => $commissionRate
+                    '%commission%' => $this->numberFormatter->format($commissionRate)
                 ))
             );
             $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
@@ -275,7 +283,7 @@ class DepositWithdrawalExcel
             ++$line;
         }
 
-        $line += 2;
+        ++$line;
         $currentColumn = 0;
 
         $sheet->setCellValue(
@@ -287,7 +295,7 @@ class DepositWithdrawalExcel
 
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getSumTotalForProducers($producerId),
                 $this->currency
             )
@@ -295,7 +303,7 @@ class DepositWithdrawalExcel
 
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getSumBranchOccurrenceTotalForProducers($producerId),
                 $this->currency
             )
@@ -303,7 +311,7 @@ class DepositWithdrawalExcel
 
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getSumTotal($producerId),
                 $this->currency
             )
@@ -313,7 +321,7 @@ class DepositWithdrawalExcel
             $commissionsRateColumn[$commissionRate] = $currentColumn;
             $sheet->setCellValue(
                 Tools::getColumnNameForNumber($currentColumn).$line,
-                $this->formatter->formatCurrency(
+                $this->currencyFormatter->formatCurrency(
                     $commissionAmount,
                     $this->currency
                 )
@@ -324,7 +332,7 @@ class DepositWithdrawalExcel
 
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getSumTotalToPay($producerId),
                 $this->currency
             )
@@ -368,21 +376,21 @@ class DepositWithdrawalExcel
         );
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getTotalForProducerId($producerId),
                 $this->currency
             )
         );
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId),
                 $this->currency
             )
         );
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getTotal($producerId),
                 $this->currency
             )
@@ -393,7 +401,7 @@ class DepositWithdrawalExcel
 
             $sheet->setCellValue(
                 Tools::getColumnNameForNumber($column).$line,
-                $this->formatter->formatCurrency(
+                $this->currencyFormatter->formatCurrency(
                     $commissionAmount,
                     $this->currency
                 )
@@ -401,7 +409,7 @@ class DepositWithdrawalExcel
         }
         $sheet->setCellValue(
             Tools::getColumnNameForNumber(max($commissionRateColumns)+1).$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getTotalToPay($producerId),
                 $this->currency
             )
@@ -424,6 +432,15 @@ class DepositWithdrawalExcel
                                         $producerName)
     {
         $this->generateTitle($sheet, $line, $producerName);
+
+        // Title
+        $branchOccurrence = $producerDepositWithdrawal->getBranchOccurrence();
+        $this->generateTitle($sheet, $line, implode('', array(
+            $branchOccurrence->getBranch()->getName(),
+            "\n",
+            "\n",
+            $branchOccurrence->getEnd()->format('d/m/Y')
+        )));
 
         ++$line;
 
@@ -558,7 +575,7 @@ class DepositWithdrawalExcel
         // Product unit price
         $sheet->setCellValue(
             $this->columns['unitPrice'].$line,
-            $this->formatter->formatCurrency($product['product_unit_price'], $this->currency)
+            $this->currencyFormatter->formatCurrency($product['product_unit_price'], $this->currency)
         );
         $sheet->getStyle(
             $this->columns['unitPrice'].$line
@@ -576,7 +593,7 @@ class DepositWithdrawalExcel
         // Product total
         $sheet->setCellValue(
             $this->columns['total'].$line,
-            $this->formatter->formatCurrency($product['product_total'], $this->currency)
+            $this->currencyFormatter->formatCurrency($product['product_total'], $this->currency)
         );
         $sheet->getStyle(
             $this->columns['total'].$line
@@ -609,7 +626,7 @@ class DepositWithdrawalExcel
         // Total
         $sheet->setCellValue(
             $this->columns['total'].$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getTotalForProducerId($producerId),
                 $this->currency
             )
@@ -647,7 +664,7 @@ class DepositWithdrawalExcel
         // Total
         $sheet->setCellValue(
             $this->columns['total'].$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId),
                 $this->currency
             )
@@ -685,7 +702,7 @@ class DepositWithdrawalExcel
         // Total
         $sheet->setCellValue(
             $this->columns['total'].$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getTotal($producerId),
                 $this->currency
             )
@@ -714,14 +731,14 @@ class DepositWithdrawalExcel
         $sheet->setCellValue(
             $this->columns['productRef'].$line,
             $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.commission', array(
-                '%commission%'  => $commissionRate
+                '%commission%'  => $this->numberFormatter->format($commissionRate)
             ))
         );
 
         // Total
         $sheet->setCellValue(
             $this->columns['total'].$line,
-            $this->formatter->formatCurrency($commissionTotal, $this->currency)
+            $this->currencyFormatter->formatCurrency($commissionTotal, $this->currency)
         );
 
         // Style
@@ -759,7 +776,7 @@ class DepositWithdrawalExcel
         // Total
         $sheet->setCellValue(
             $this->columns['total'].$line,
-            $this->formatter->formatCurrency(
+            $this->currencyFormatter->formatCurrency(
                 $producerDepositWithdrawal->getTotalToPay($producerId),
                 $this->currency
             )
