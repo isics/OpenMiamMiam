@@ -317,6 +317,18 @@ services:
         tags:
             - { name: twig.extension }
 
+    open_miam_miam.twig.user_formatter:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Formatter\UserFormatter
+        arguments:
+            - %open_miam_miam.user_identity_pattern%
+
+    open_miam_miam.twig.user_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension
+        arguments:
+            - @open_miam_miam.twig.user_formatter
+        tags:
+            - { name: twig.extension }
+
 
 
     # Menus
@@ -341,7 +353,7 @@ services:
     # Managers
     open_miam_miam.activity_manager:
         class: %open_miam_miam.activity_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.twig.user_extension]
 
     open_miam_miam.branch_manager:
         class: %open_miam_miam.branch_manager.class%
@@ -413,7 +425,7 @@ services:
 
     open_miam_miam.newsletter_manager:
         class: %open_miam_miam.newsletter_manager.class%
-        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating, @open_miam_miam.twig.user_extension]
 
 
 
@@ -476,3 +488,10 @@ services:
         class: Isics\Bundle\OpenMiamMiamBundle\Listener\ProducerListener
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
+
+    open_miam_miam.listener.user.serializer:
+        class:  Isics\Bundle\OpenMiamMiamBundle\Listener\UserListener
+        arguments:
+            - @open_miam_miam.twig.user_formatter
+        tags:
+            - { name: jms_serializer.event_listener, event: serializer.post_serialize, class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User, format: json, method: onPostSerialize }

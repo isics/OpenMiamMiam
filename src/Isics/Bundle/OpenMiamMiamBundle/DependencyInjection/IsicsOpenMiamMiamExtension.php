@@ -35,6 +35,7 @@ class IsicsOpenMiamMiamExtension extends Extension
         $container->setParameter('open_miam_miam.currency', $config['currency']);
         $container->setParameter('open_miam_miam.terms_of_service_url', $config['terms_of_service_url']);
         $container->setParameter('open_miam_miam.artificial_product_ref', $config['artificial_product_ref']);
+        $container->setParameter('open_miam_miam.user_identity_pattern', $config['user_identity_pattern']);
 
         $container->setParameter('open_miam_miam.association.pagination.consumers', $config['association']['pagination']['consumers']);
         $container->setParameter('open_miam_miam.association.pagination.consumer_payments', $config['association']['pagination']['consumer_payments']);

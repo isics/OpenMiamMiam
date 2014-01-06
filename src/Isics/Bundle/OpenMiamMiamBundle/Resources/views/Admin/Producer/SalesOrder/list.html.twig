@@ -64,7 +64,7 @@
                                 <td>{{ producerSalesOrder.salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
                                 <td>
                                     {% if producerSalesOrder.salesOrder.user %}
-                                        {{ producerSalesOrder.salesOrder.lastname }} {{ producerSalesOrder.salesOrder.firstname|first }}. ({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})
+                                        {{ format_identity(producerSalesOrder.salesOrder.lastname, producerSalesOrder.salesOrder.firstname, '%lastname% %firstname_first_letter%') }}.({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})
                                         {% if producerSalesOrder.salesOrder.user.phoneNumber is not null %}
                                             <br />
                                             {{ 'admin.producer.sales_orders.list.phone_number'|trans }}

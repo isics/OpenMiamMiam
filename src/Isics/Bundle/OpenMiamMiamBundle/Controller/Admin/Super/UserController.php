@@ -32,8 +32,11 @@ class UserController extends Controller
 
         $userRepository = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamUserBundle:User');
 
-        return new JsonResponse(
-            $userRepository->filterByKeyword($request->query->get('term'))->getQuery()->getResult()
-        );
+        $serializer = $this->get('jms_serializer');
+
+        return new JsonResponse($serializer->serialize(
+            $userRepository->filterByKeyword($request->query->get('term'))->getQuery()->getResult(),
+            'json'
+        ));
     }
 }

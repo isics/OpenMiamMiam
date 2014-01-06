@@ -81,7 +81,7 @@
                                     <span class="glyphicon glyphicon-comment pull-right"></span>
                                 {% endif %}
                                 {% if salesOrder.user %}
-                                    {{ salesOrder.lastname }} {{ salesOrder.firstname|first }}. ({{ salesOrder.user|format_consumer_ref }})
+                                    {{ format_identity(salesOrder.lastname, salesOrder.firstname, '%lastname% %firstname_first_letter%') }}. ({{ salesOrder.user|format_consumer_ref }})
                                     {% if salesOrder.user.phoneNumber is not null %}
                                         <br />
                                         {{ 'admin.association.sales_orders.list.phone_number'|trans }}

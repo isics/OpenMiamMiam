@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('currency')->defaultValue('EUR')->end()
                 ->scalarNode('terms_of_service_url')->defaultValue(null)->end()
                 ->scalarNode('artificial_product_ref')->defaultValue('MISC')->end()
+                ->scalarNode('user_identity_pattern')->defaultValue("%%firstname%% %%lastname%%")->end()
                 ->arrayNode('association')
                     ->addDefaultsIfNotSet()
                     ->children()

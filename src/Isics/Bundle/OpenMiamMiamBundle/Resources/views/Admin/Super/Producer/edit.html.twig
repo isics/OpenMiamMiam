@@ -23,7 +23,7 @@
     <script type="text/javascript">
 
         var superProducerAutocomplete = new OpenMiamMiam.SuperProducerAutocomplete(
-            {{ form.vars.data.owner|json_encode|raw }},
+            {{ form.vars.data.owner|serialize('json')|raw }},
             {{ url('open_miam_miam.admin.super.user.search')|json_encode|raw }}
         );
 

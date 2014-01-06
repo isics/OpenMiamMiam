@@ -43,7 +43,7 @@
             <table width="100%">
                 <tbody>
                     <tr>
-                        <td><strong>{{ order.firstname }} {{ order.lastname }} {% if order.user is not null %}({{ order.user|format_consumer_ref }}){% endif %}</strong>
+                        <td><strong>{{ format_identity(order.lastname, order.firstname) }} {% if order.user is not null %}({{ order.user|format_consumer_ref }}){% endif %}</strong>
                             {% if order.user is defined %}
                                 <br />{{ order.user.zipcode }} {{ order.user.city }}
                                 {% if order.user.phoneNumber is not null %}

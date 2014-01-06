@@ -445,8 +445,8 @@ OpenMiamMiam.SuperProducerAutocomplete = function() {
                             term: $input.val()
                         },
                         success: function(data) {
-                            response($.map(data, function(item) {
-                                return $.extend({}, item, {
+                            response($.map($.parseJSON(data), function(item) {
+                                return $.extend(item, {
                                     label: that.formatItem(item)
                                 });
                             }));
