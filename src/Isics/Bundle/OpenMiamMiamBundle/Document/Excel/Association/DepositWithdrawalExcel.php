@@ -189,7 +189,7 @@ class DepositWithdrawalExcel
             $this->styles['center'],
             $this->styles['bold']
         ));
-        $sheet->getRowDimension('1')->setRowHeight(50);
+        $sheet->getRowDimension($line)->setRowHeight(50);
 
         ++$line;
     }
