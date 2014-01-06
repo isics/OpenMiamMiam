@@ -18,8 +18,8 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
@@ -34,7 +34,7 @@ class UserController extends Controller
 
         $serializer = $this->get('jms_serializer');
 
-        return new JsonResponse($serializer->serialize(
+        return new Response($serializer->serialize(
             $userRepository->filterByKeyword($request->query->get('term'))->getQuery()->getResult(),
             'json'
         ));

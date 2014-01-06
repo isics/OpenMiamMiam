@@ -26,10 +26,10 @@
                 {% for user in users %}
                     <tr>
                         <td>
-                            {{ user.lastname }}
+                            {{ format_user_identity(user, '%lastname%') }}
                         </td>
                         <td>
-                            {{ user.firstname }}
+                            {{ format_user_identity(user, '%firstname%') }}
                         </td>
                         <td>
                             <a href="mailto:{{ user.email }}">{{ user.email }}</a>

@@ -393,10 +393,9 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
                         data: $form.serialize(),
                         success: function(data) {
                             response($.map(data, function(item) {
-                                return {
-                                    id: item.id,
-                                    label: item.label
-                                };
+                                return $.extend(item, {
+                                    label: that.formatItem(item)
+                                });
                             }));
 
                             $hiddenDiv.append($loader);
@@ -411,6 +410,10 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
                     window.location = that.promoteUrlSchema.replace('0', ui.item.id);
                 }
             });
+        },
+
+        formatItem: function(item){
+            return item.identity+' ('+item.email+')';
         }
     };
 
@@ -445,7 +448,7 @@ OpenMiamMiam.SuperProducerAutocomplete = function() {
                             term: $input.val()
                         },
                         success: function(data) {
-                            response($.map($.parseJSON(data), function(item) {
+                            response($.map(data, function(item) {
                                 return $.extend(item, {
                                     label: that.formatItem(item)
                                 });
