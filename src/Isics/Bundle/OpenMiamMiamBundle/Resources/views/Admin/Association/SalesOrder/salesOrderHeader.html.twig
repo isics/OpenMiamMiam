@@ -59,48 +59,53 @@
     </div>
     <div class="col-md-6" id="sales-order-consumer-credit">
         {% set subscription = association.getSubscriptionForUser(order.user) %}
-        {% set class = 'panel-success' %}
-        {% if subscription.credit < 0 %}
-            {% set class = 'panel-danger' %}
-        {% else %}
-            {% set hasPaymentWithRestForAssociation = has_payment_with_rest_for_association(association, order.user) %}
-            {% if hasPaymentWithRestForAssociation %}
-                {% set class = 'panel-warning' %}
-            {% endif %}
-        {% endif %}
-
-        <div class="panel {{ class }}">
-            <div class="panel-heading">
-                <h2 class="panel-title">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</h2>
-            </div>
-            <div class="panel-body">
-                {% if subscription.credit < 0 %}
-                    <p>
-                        {% if subscription.credit == order.credit %}
-                            <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
-                        {% else %}
-                            <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
-                            <br>{{ 'admin.association.sales_orders.form.left_to_pay_for_order'|trans({'%amount%': order.leftToPay|number_format_currency(open_miam_miam.currency)}) }}
-                        {% endif %}
-                    </p>
-
-                    <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-danger btn-block">
-                        {{ 'admin.association.sales_orders.form.pay'|trans }}
-                    </a>
-                {% elseif hasPaymentWithRestForAssociation %}
-                    <p>
-                        <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
-                        <br><span class="glyphicon glyphicon-warning-sign"></span> {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
-                    </p>
-                    <a href="{{ path('open_miam_miam.admin.association.sales_order.pay', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-warning btn-block">
-                        {{ 'admin.association.sales_orders.form.allocate'|trans }}
-                    </a>
-                {%  else %}
-                    <p>
-                        <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
-                    </p>
+        {% if subscription is not null %}
+            {% set class = 'panel-success' %}
+            {% if subscription.credit < 0 %}
+                {% set class = 'panel-danger' %}
+            {% else %}
+                {% set hasPaymentWithRestForAssociation = has_payment_with_rest_for_association(association, order.user) %}
+                {% if hasPaymentWithRestForAssociation %}
+                    {% set class = 'panel-warning' %}
                 {% endif %}
+            {% endif %}
+
+            <div class="panel {{ class }}">
+                <div class="panel-heading">
+                    <h2 class="panel-title">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</h2>
+                </div>
+                <div class="panel-body">
+                    {% if subscription.credit < 0 %}
+                        <p>
+                            {% if subscription.credit == order.credit %}
+                                <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
+                            {% else %}
+                                <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
+                                <br>{{ 'admin.association.sales_orders.form.left_to_pay_for_order'|trans({'%amount%': order.leftToPay|number_format_currency(open_miam_miam.currency)}) }}
+                            {% endif %}
+                        </p>
+                        {% if order.user is not null %}
+                            <a href="{{ path('open_miam_miam.admin.association.payment.manage_user_payments', {'id': association.id, 'userId': order.user.id}) }}" class="btn btn-danger btn-block">
+                        {% else %}
+                            <a href="{{ path('open_miam_miam.admin.association.payment.manage_anonymous_payments', {'id': association.id}) }}" class="btn btn-danger btn-block">
+                        {% endif %}
+                            {{ 'admin.association.sales_orders.form.pay'|trans }}
+                        </a>
+                    {% elseif hasPaymentWithRestForAssociation %}
+                        <p>
+                            <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
+                            <br><span class="glyphicon glyphicon-warning-sign"></span> {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
+                        </p>
+                        <a href="#" class="btn btn-warning btn-block">
+                            {{ 'admin.association.sales_orders.form.allocate'|trans }}
+                        </a>
+                    {%  else %}
+                        <p>
+                            <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
+                        </p>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 </div>
