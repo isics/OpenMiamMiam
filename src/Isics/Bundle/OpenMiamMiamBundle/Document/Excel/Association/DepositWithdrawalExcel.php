@@ -39,11 +39,6 @@ class DepositWithdrawalExcel
     protected $numberFormatter;
 
     /**
-     * @var \NumberFormatter
-     */
-    protected $currencyFormatter;
-
-    /**
      * @var \IntlDateFormatter
      */
     protected $intl;
@@ -54,14 +49,20 @@ class DepositWithdrawalExcel
     protected $styles = array();
 
     /**
+     * @var array
+     */
+    protected $producerTabs = array();
+
+    /**
      * @var array $columns Columns mapping
      */
     protected $columns = array(
         'productRef'  => 'A',
         'productName' => 'B',
         'unitPrice'   => 'C',
-        'quantity'    => 'D',
-        'total'       => 'E',
+        'dropped_off' => 'D',
+        'quantity'    => 'E',
+        'total'       => 'F',
     );
 
     /**
@@ -72,7 +73,7 @@ class DepositWithdrawalExcel
     /**
      * @var string $lastColumn
      */
-    protected $lastColumn = 'E';
+    protected $lastColumn = 'F';
 
     /**
      * Constructor
@@ -91,7 +92,6 @@ class DepositWithdrawalExcel
         $this->numberFormatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::DECIMAL);
         $this->numberFormatter->setAttribute(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, true);
         $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
-        $this->currencyFormatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::CURRENCY);
         $this->intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM Y');
 
         // Styles
@@ -138,7 +138,39 @@ class DepositWithdrawalExcel
     {
         $currentSheetIndex = 0;
 
-        $this->excel->setActiveSheetIndex($currentSheetIndex);
+        // Producer parts
+        foreach ($producerDepositWithdrawal->getProducers() as  $producerId => $producerName) {
+            $sheet = $this->excel->createSheet(++$currentSheetIndex);
+            $sheet->setTitle($producerName);
+            $currentLine = 1;
+
+            $producerTab = array(
+                'producer_name'         => $producerName,
+                'tab_name'              => $producerName,
+                'first_product_line'    => null,
+                'last_product_line'     => null,
+                'total_products_line'   => null,
+                'misc_line'             => null,
+                'total_line'            => null,
+                'first_commission_line' => null,
+                'last_commission_line'  => null,
+                'to_pay_up_line'        => null,
+                'commission_lines'      => array()
+            );
+
+            $this->generateProducer(
+                $sheet,
+                $currentLine,
+                $producerDepositWithdrawal,
+                $producerId,
+                $producerName,
+                $producerTab
+            );
+
+            $this->producerTabs[$producerId] = $producerTab;
+        }
+
+        $this->excel->setActiveSheetIndex(0);
         $sheet = $this->excel->getActiveSheet();
         $sheet->setTitle($this->translator->trans(
             'excel.association.sales_orders.deposit_withdrawal.summary_title'
@@ -148,23 +180,6 @@ class DepositWithdrawalExcel
         $currentLine = 1;
 
         $this->generateSummaryPage($sheet, $currentLine, $producerDepositWithdrawal);
-
-        // Producer parts
-        foreach ($producerDepositWithdrawal->getProducers() as  $producerId => $producerName) {
-            $sheet = $this->excel->createSheet(++$currentSheetIndex);
-            $sheet->setTitle($producerName);
-            $currentLine = 1;
-
-            $this->generateProducer(
-                $sheet,
-                $currentLine,
-                $producerDepositWithdrawal,
-                $producerId,
-                $producerName
-            );
-        }
-
-        $this->excel->setActiveSheetIndex(0);
     }
 
     /**
@@ -271,6 +286,8 @@ class DepositWithdrawalExcel
 
         ++$line;
 
+        $producerFirstLine = $line;
+
         foreach ($producerDepositWithdrawal->getProducers() as $producerId => $producerName){
             $this->generateSummaryPageProducer(
                 $sheet,
@@ -290,51 +307,60 @@ class DepositWithdrawalExcel
             Tools::getColumnNameForNumber($currentColumn).$line,
             $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.total')
         );
-        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn++).$line)
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
             ->applyFromArray($this->styles['bold']);
+        ++$currentColumn;
 
-        $sheet->setCellValue(
-            Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getSumTotalForProducers($producerId),
-                $this->currency
+        $this->writeCurrencyNumber(
+            $sheet,
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=SUM(%s:%s)',
+                Tools::getColumnNameForNumber($currentColumn).$producerFirstLine,
+                Tools::getColumnNameForNumber($currentColumn).($line - 1)
             )
         );
+        ++$currentColumn;
 
-        $sheet->setCellValue(
-            Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getSumBranchOccurrenceTotalForProducers($producerId),
-                $this->currency
+        $this->writeCurrencyNumber(
+            $sheet,
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=SUM(%s:%s)',
+                Tools::getColumnNameForNumber($currentColumn).$producerFirstLine,
+                Tools::getColumnNameForNumber($currentColumn).($line - 1)
             )
         );
+        ++$currentColumn;
 
-        $sheet->setCellValue(
-            Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getSumTotal($producerId),
-                $this->currency
+        $this->writeCurrencyNumber(
+            $sheet,
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=SUM(%s:%s)',
+                Tools::getColumnNameForNumber($currentColumn).$producerFirstLine,
+                Tools::getColumnNameForNumber($currentColumn).($line - 1)
             )
         );
+        ++$currentColumn;
 
         foreach ($commissionRateData as $commissionRate => $commissionAmount){
             $commissionsRateColumn[$commissionRate] = $currentColumn;
-            $sheet->setCellValue(
+            $this->writeCurrencyNumber(
+                $sheet,
                 Tools::getColumnNameForNumber($currentColumn).$line,
-                $this->currencyFormatter->formatCurrency(
-                    $commissionAmount,
-                    $this->currency
+                sprintf('=SUM(%s:%s)',
+                    Tools::getColumnNameForNumber($currentColumn).$producerFirstLine,
+                    Tools::getColumnNameForNumber($currentColumn).($line - 1)
                 )
             );
 
             ++$currentColumn;
         }
 
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             Tools::getColumnNameForNumber($currentColumn).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getSumTotalToPay($producerId),
-                $this->currency
+            sprintf('=SUM(%s:%s)',
+                Tools::getColumnNameForNumber($currentColumn).$producerFirstLine,
+                Tools::getColumnNameForNumber($currentColumn).($line - 1)
             )
         );
 
@@ -374,44 +400,50 @@ class DepositWithdrawalExcel
             Tools::getColumnNameForNumber($currentColumn++).$line,
             $producerName
         );
-        $sheet->setCellValue(
+        $producerTab = $this->producerTabs[$producerId];
+        $this->writeCurrencyNumber(
+            $sheet,
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getTotalForProducerId($producerId),
-                $this->currency
+            sprintf('=\'%s\'!%s',
+                $this->getEscapedTabName($producerId),
+                $this->columns['total'].$producerTab['total_products_line']
             )
         );
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId),
-                $this->currency
+            sprintf('=\'%s\'!%s',
+                $this->getEscapedTabName($producerId),
+                $this->columns['total'].$producerTab['misc_line']
             )
         );
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             Tools::getColumnNameForNumber($currentColumn++).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getTotal($producerId),
-                $this->currency
+            sprintf('=\'%s\'!%s',
+                $this->getEscapedTabName($producerId),
+                $this->columns['total'].$producerTab['total_line']
             )
         );
 
         foreach ($producerDepositWithdrawal->getGroupedCommissionDataForProducerId($producerId) as $commissionRate => $commissionAmount){
             $column = $commissionRateColumns[$commissionRate];
 
-            $sheet->setCellValue(
+            $this->writeCurrencyNumber(
+                $sheet,
                 Tools::getColumnNameForNumber($column).$line,
-                $this->currencyFormatter->formatCurrency(
-                    $commissionAmount,
-                    $this->currency
+                sprintf('=\'%s\'!%s',
+                    $this->getEscapedTabName($producerId),
+                    $this->columns['total'].$producerTab['commission_lines'][$commissionRate]
                 )
             );
         }
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             Tools::getColumnNameForNumber(max($commissionRateColumns)+1).$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getTotalToPay($producerId),
-                $this->currency
+            sprintf('=\'%s\'!%s',
+                $this->getEscapedTabName($producerId),
+                $this->columns['total'].$producerTab['to_pay_up_line']
             )
         );
     }
@@ -424,12 +456,14 @@ class DepositWithdrawalExcel
      * @param ProducersDepositWithdrawal $producerDepositWithdrawal Producer deposit / withdrawal model
      * @param                            $producerId                Producer id
      * @param                            $producerName              Producer name
+     * @param                            $producerTab               Producer tab data
      */
     protected function generateProducer(\PHPExcel_Worksheet $sheet,
                                         &$line,
                                         ProducersDepositWithdrawal $producerDepositWithdrawal,
                                         $producerId,
-                                        $producerName)
+                                        $producerName,
+                                        &$producerTab)
     {
         $this->generateTitle($sheet, $line, $producerName);
 
@@ -447,33 +481,52 @@ class DepositWithdrawalExcel
         $startLine = $line;
 
         $this->generateProducerTableHeader($sheet, $line);
+        ++$line;
 
-        foreach ($producerDepositWithdrawal->getGroupedSalesOrderRowsDataForProducerId($producerId) as $product) {
+        $producerDepositWithdrawal->getGroupedSalesOrderRowsDataForProducerId($producerId);
+
+        $salesOrderRows = $producerDepositWithdrawal->getGroupedSalesOrderRowsDataForProducerId($producerId);
+
+        $producerTab['first_product_line'] = $line;
+        $producerTab['last_product_line'] = $line + count($salesOrderRows);
+
+        foreach ($salesOrderRows as $product) {
             $this->generateProducerTableProduct($sheet, $line, $product);
+            ++$line;
         }
 
-        ++$line;
+        $line += 2;
 
-        $this->generateProducerSalesOrdersTotal($sheet, $line, $producerDepositWithdrawal, $producerId);
+        $this->generateProducerSalesOrdersTotal($sheet, $line, $producerDepositWithdrawal, $producerId, $producerTab);
+        $producerTab['total_products_line'] = $line;
 
-        ++$line;
+        $line += 2;
 
         $this->generateProducerBranchSalesOrdersTotal($sheet, $line, $producerDepositWithdrawal, $producerId);
+        $producerTab['misc_line'] = $line;
 
-        ++$line;
+        $line += 2;
 
-        $this->generateProducerTotal($sheet, $line, $producerDepositWithdrawal, $producerId);
+        $this->generateProducerTotal($sheet, $line, $producerDepositWithdrawal, $producerId, $producerTab);
+        $producerTab['total_line'] = $line;
 
-        ++$line;
+        $line += 2;
 
         $commissions = $producerDepositWithdrawal->getGroupedCommissionDataForProducerId($producerId);
+
+        $producerTab['first_commission_line'] = $line;
+        $producerTab['last_commission_line'] = $line + count($commissions);
+
         foreach ($commissions as  $commissionRate => $commissionTotal) {
             $this->generateProducerCommission($sheet, $line, $commissionRate, $commissionTotal);
+            $producerTab['commission_lines'][$commissionRate] = $line;
+            ++$line;
         }
 
         ++$line;
 
-        $this->generateProducerToPayUp($sheet, $line, $producerDepositWithdrawal, $producerId);
+        $this->generateProducerToPayUp($sheet, $line, $producerDepositWithdrawal, $producerId, $producerTab);
+        $producerTab['to_pay_up_line'] = $line;
 
         $endLine = $line;
 
@@ -531,6 +584,15 @@ class DepositWithdrawalExcel
             $this->columns['unitPrice'].$line
         )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
 
+        // title for product quantity (dropped off)
+        $sheet->setCellValue(
+            $this->columns['dropped_off'].$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.dropped_off_product_quantity')
+        );
+        $sheet->getStyle(
+            $this->columns['dropped_off'].$line
+        )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
+
         // title for product quantity
         $sheet->setCellValue(
             $this->columns['quantity'].$line,
@@ -548,8 +610,6 @@ class DepositWithdrawalExcel
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray(array_merge($this->styles['center'], $this->styles['bold']));
-
-        ++$line;
     }
 
     /**
@@ -559,7 +619,7 @@ class DepositWithdrawalExcel
      * @param int                 $line
      * @param array               $product
      */
-    protected function generateProducerTableProduct(\PHPExcel_Worksheet $sheet, &$line, array $product)
+    protected function generateProducerTableProduct(\PHPExcel_Worksheet $sheet, $line, array $product)
     {
         // Product reference
         $sheet->setCellValue(
@@ -573,13 +633,23 @@ class DepositWithdrawalExcel
         );
 
         // Product unit price
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['unitPrice'].$line,
-            $this->currencyFormatter->formatCurrency($product['product_unit_price'], $this->currency)
+            $product['product_unit_price']
         );
         $sheet->getStyle(
             $this->columns['unitPrice'].$line
         )->applyFromArray($this->styles['right']);
+
+        // Product quantity (dropped off)
+        $sheet->setCellValue(
+            $this->columns['dropped_off'].$line,
+            $product['product_quantity']
+        );
+        $sheet->getStyle(
+            $this->columns['dropped_off'].$line
+        )->applyFromArray($this->styles['center']);
 
         // Product quantity
         $sheet->setCellValue(
@@ -591,15 +661,14 @@ class DepositWithdrawalExcel
         )->applyFromArray($this->styles['center']);
 
         // Product total
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['total'].$line,
-            $this->currencyFormatter->formatCurrency($product['product_total'], $this->currency)
+            '='.$this->columns['unitPrice'].$line.'*'.$this->columns['quantity'].$line
         );
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray($this->styles['right']);
-
-        ++$line;
     }
 
     /**
@@ -609,11 +678,13 @@ class DepositWithdrawalExcel
      * @param int                        $line                      Current line
      * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
      * @param int                        $producerId                Producer id
+     * @param array                      $producerTab               Producer tab data
      */
     protected function generateProducerSalesOrdersTotal(\PHPExcel_Worksheet $sheet,
-                                                        &$line,
+                                                        $line,
                                                         ProducersDepositWithdrawal $producerDepositWithdrawal,
-                                                        $producerId)
+                                                        $producerId,
+                                                        array $producerTab)
     {
         // Title
         $sheet->setCellValue(
@@ -623,21 +694,24 @@ class DepositWithdrawalExcel
             )
         );
 
+        $value = $producerTab['last_product_line'] - $producerTab['first_product_line'] > 0 ?
+            sprintf('=SUM(%s:%s)',
+                $this->columns['total'].$producerTab['first_product_line'],
+                $this->columns['total'].($producerTab['last_product_line'] - 1)
+            ) :
+            0.0 ;
+
         // Total
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['total'].$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getTotalForProducerId($producerId),
-                $this->currency
-            )
+            $value
         );
 
         // Style
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray($this->styles['right']);
-
-        ++$line;
     }
 
     /**
@@ -649,7 +723,7 @@ class DepositWithdrawalExcel
      * @param int                        $producerId                Producer id
      */
     protected function generateProducerBranchSalesOrdersTotal(\PHPExcel_Worksheet $sheet,
-                                                              &$line,
+                                                              $line,
                                                               ProducersDepositWithdrawal $producerDepositWithdrawal,
                                                               $producerId)
     {
@@ -662,20 +736,16 @@ class DepositWithdrawalExcel
         );
 
         // Total
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['total'].$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId),
-                $this->currency
-            )
+            $producerDepositWithdrawal->getBranchOccurrenceTotalForProducerId($producerId)
         );
 
         // Style
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray($this->styles['right']);
-
-        ++$line;
     }
 
     /**
@@ -685,11 +755,13 @@ class DepositWithdrawalExcel
      * @param int                        $line                      Current line
      * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
      * @param int                        $producerId                Producer id
+     * @param array                      $producerTab               Producer tab
      */
     protected function generateProducerTotal(\PHPExcel_Worksheet $sheet,
-                                             &$line,
+                                             $line,
                                              ProducersDepositWithdrawal $producerDepositWithdrawal,
-                                             $producerId)
+                                             $producerId,
+                                             array $producerTab)
     {
         // Title
         $sheet->setCellValue(
@@ -699,19 +771,20 @@ class DepositWithdrawalExcel
             )
         );
 
+        $value = sprintf('=%s+%s',
+            $this->columns['total'].$producerTab['total_products_line'],
+            $this->columns['total'].$producerTab['misc_line']
+        );
+
         // Total
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['total'].$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getTotal($producerId),
-                $this->currency
-            )
+            $value
         );
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray(array_merge($this->styles['bold'], $this->styles['right']));
-
-        ++$line;
     }
 
     /**
@@ -723,7 +796,7 @@ class DepositWithdrawalExcel
      * @param float               $commissionTotal           Commission total
      */
     protected function generateProducerCommission(\PHPExcel_Worksheet $sheet,
-                                                  &$line,
+                                                  $line,
                                                   $commissionRate,
                                                   $commissionTotal)
     {
@@ -736,17 +809,16 @@ class DepositWithdrawalExcel
         );
 
         // Total
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['total'].$line,
-            $this->currencyFormatter->formatCurrency($commissionTotal, $this->currency)
+            $commissionTotal
         );
 
         // Style
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray($this->styles['right']);
-
-        ++$line;
     }
 
     /**
@@ -756,11 +828,13 @@ class DepositWithdrawalExcel
      * @param int                        $line                      Current line
      * @param ProducersDepositWithdrawal $producerDepositWithdrawal Model
      * @param int                        $producerId                Producer id
+     * @param array                      $producerTab               Producer tab
      */
     protected function generateProducerToPayUp(\PHPExcel_Worksheet $sheet,
-                                               &$line,
+                                               $line,
                                                ProducersDepositWithdrawal $producerDepositWithdrawal,
-                                               $producerId)
+                                               $producerId,
+                                               array $producerTab)
     {
         // Title
         $sheet->setCellValue(
@@ -773,18 +847,57 @@ class DepositWithdrawalExcel
             $this->columns['productRef'].$line
         )->applyFromArray(array_merge($this->styles['border'], $this->styles['bold']));
 
+        $commissionFormula = $producerTab['last_commission_line'] - $producerTab['first_commission_line'] > 0 ?
+            sprintf('SUM(%s:%s)',
+                $this->columns['total'].$producerTab['first_commission_line'],
+                $this->columns['total'].($producerTab['last_commission_line'] - 1)
+            ) :
+            0 ;
+
+        $value = sprintf('=%s-%s',
+            $this->columns['total'].$producerTab['total_line'],
+            $commissionFormula
+        );
+
         // Total
-        $sheet->setCellValue(
+        $this->writeCurrencyNumber(
+            $sheet,
             $this->columns['total'].$line,
-            $this->currencyFormatter->formatCurrency(
-                $producerDepositWithdrawal->getTotalToPay($producerId),
-                $this->currency
-            )
+            $value
         );
         // Style
         $sheet->getStyle(
             $this->columns['total'].$line
         )->applyFromArray(array_merge($this->styles['bold'], $this->styles['right']));
+    }
+
+    /**
+     * @param \PHPExcel_Worksheet $sheet Active sheet
+     * @param string              $cell  Cell
+     * @param string              $value Value
+     */
+    private function writeCurrencyNumber(\PHPExcel_Worksheet $sheet, $cell, $value)
+    {
+        $sheet->setCellValue($cell, $value);
+        $sheet->getStyle($cell)->getNumberFormat()->setFormatCode(
+            '#,##0.00 €'
+        );
+    }
+
+    /**
+     * Returns escaped tab name for formula
+     *
+     * @param int $producerId
+     *
+     * @return string|null
+     */
+    private function getEscapedTabName($producerId)
+    {
+        if (array_key_exists($producerId, $this->producerTabs)) {
+            return str_replace('\'', '\'\'', $this->producerTabs[$producerId]['tab_name']);
+        }
+
+        return null;
     }
 
     /**

@@ -829,6 +829,7 @@ excel.association.sales_orders.deposit_withdrawal.summary.header.to_pay:        
 excel.association.sales_orders.deposit_withdrawal.product_ref:                  "Références"
 excel.association.sales_orders.deposit_withdrawal.product_name:                 "Produits"
 excel.association.sales_orders.deposit_withdrawal.product_unit_price:           "P.U."
+excel.association.sales_orders.deposit_withdrawal.dropped_off_product_quantity: "Déposés"
 excel.association.sales_orders.deposit_withdrawal.product_quantity:             "Vendus"
 excel.association.sales_orders.deposit_withdrawal.product_total:                "Total"
 excel.association.sales_orders.deposit_withdrawal.total_sales_order_producer:   "Total commandes TTC"
