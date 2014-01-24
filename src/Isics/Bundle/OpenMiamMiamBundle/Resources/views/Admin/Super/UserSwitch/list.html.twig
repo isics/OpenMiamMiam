@@ -12,7 +12,7 @@
 
     {% if users|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-condensed table-striped">
+            <table class="table table-bordered table-condensed table-striped table-user-switch">
                 <thead>
                     <tr>
                         <th>{{ 'admin.super.user_switch.list.lastname'|trans }}</th>
@@ -25,8 +25,8 @@
                     {% for user in users %}
                         {% if app.user != user %}
                             <tr>
-                                <td>{{ user.lastname }}</td>
-                                <td>{{ user.firstname }}</td>
+                                <td>{{ format_user_identity(user, '%lastname%') }}</td>
+                                <td>{{ format_user_identity(user, '%firstname%') }}</td>
                                 <td>?</td>
                                 <td>
                                     <a href="{{ path('open_miam_miam.admin', {'_switch_user': user.email }) }}" class="btn btn-danger" title="{{ 'admin.super.user_switch.list.switch'|trans }}">

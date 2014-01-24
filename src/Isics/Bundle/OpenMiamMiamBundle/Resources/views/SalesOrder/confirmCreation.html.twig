@@ -13,7 +13,7 @@
             <a href="#" class="btn btn-success active"><strong><span class="badge">3</span> {{ 'order.process.stage3'|trans }}</strong></a>
         </div>
 
-        <h1>{{ 'order.confirmed.title'|trans({'%firstname%': app.user.firstname, '%lastname%': app.user.lastname, '%ref%': order.ref}) }}</h1>
-        {{ 'order.confirmed.body_html'|trans({'%firstname%': app.user.firstname, '%lastname%': app.user.lastname,'%ref%': order.ref})|raw }}
+        <h1>{{ 'order.confirmed.title'|trans({'%firstname%': format_user_identity(app.user, '%firstname%'), '%lastname%': format_user_identity(app.user, '%lastname%'), '%ref%': order.ref}) }}</h1>
+        {{ 'order.confirmed.body_html'|trans({'%firstname%': format_user_identity(app.user, '%firstname%'), '%lastname%': format_user_identity(app.user, '%lastname%'),'%ref%': order.ref})|raw }}
     {% endblock %}
 {% endembed %}

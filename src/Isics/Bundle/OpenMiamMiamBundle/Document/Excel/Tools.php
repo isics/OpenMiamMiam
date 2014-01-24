@@ -9,20 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association;
+namespace Isics\Bundle\OpenMiamMiamBundle\Document\Excel;
 
-abstract class ColumnNameForNumber
+class Tools
 {
-    /**
-     * @var array
-     */
-    protected $number;
-
-    public function __construct($number)
-    {
-        $this->number = $number;
-    }
-
     /**
      * Returns Excel column name representation (A, AB, AAB...) for column index
      *
@@ -30,13 +20,13 @@ abstract class ColumnNameForNumber
      *
      * @return string
      */
-    public function getColumnNameForNumber($number)
+    public static function getColumnNameForNumber($number)
     {
         if ((int)$number < 26) {
             return chr((int)$number + 65);
         }
         else {
-            return $this->getColumnNameForNumber(floor($number / 26) - 1).chr($number%26 + 65);
+            return static::getColumnNameForNumber(floor($number / 26) - 1).chr($number%26 + 65);
         }
     }
 }

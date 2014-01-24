@@ -10,7 +10,7 @@
 {% block content %}
 
     {{ 'mail.branch.orders_closed.message_html'|trans({
-        '%firstname%': salesOrder.user.firstname,
+        '%firstname%': format_user_identity(salesOrder.user, '%firstname%'),
         '%ref%': salesOrder.ref,
         '%branch_name%': branchOccurrence.branch.name,
         '%branch_url%': url('open_miam_miam.branch.homepage', {'branchSlug': branchOccurrence.branch.slug}),

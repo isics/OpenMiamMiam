@@ -14,7 +14,7 @@
     {{ form_errors(form) }}
 
     {{ form_row(form.title, {'label': 'admin.association.articles.form.title'|trans}) }}
-    {{ form_row(form.body, {'label': 'admin.association.articles.form.body'|trans, 'attr': {'rows': 10}}) }}
+    {{ form_row(form.body, {'label': 'admin.association.articles.form.body'|trans, 'attr': {'class': 'tinymce', 'rows': 10}}) }}
     {{ form_row(form.isPublished, {'label': 'admin.association.articles.form.is_published'|trans}) }}
     <hr />
     {{ form_row(form.branches, {'label': 'admin.association.articles.form.branches'|trans}) }}

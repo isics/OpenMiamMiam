@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -50,6 +50,7 @@ parameters:
     open_miam_miam.form.type.category.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CategoryType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
+    open_miam_miam.form.type.super_producer.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperProducerType'
     open_miam_miam.form.type.producer_has_branch.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerHasBranchType'
     open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
     open_miam_miam.form.type.producer_branch_attendances.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerBranchAttendancesType'
@@ -79,8 +80,8 @@ parameters:
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
     open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
 
-    open_miam_miam.association.producer.transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Model\Association\Producer\TransferExcel'
-    open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder\DepositWithdrawalExcel'
+    open_miam_miam.association.producer.transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Producer\TransferExcel'
+    open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Association\DepositWithdrawalExcel'
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
     open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
@@ -205,6 +206,11 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_producer }
 
+    open_miam_miam.form.type.super_producer:
+        class: %open_miam_miam.form.type.super_producer.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_super_producer }
+
     open_miam_miam.form.type.producer_has_branch:
         class: %open_miam_miam.form.type.producer_has_branch.class%
         tags:
@@ -328,6 +334,18 @@ services:
         tags:
             - { name: twig.extension }
 
+    open_miam_miam.twig.user_formatter:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Formatter\UserFormatter
+        arguments:
+            - %open_miam_miam.user_identity_pattern%
+
+    open_miam_miam.twig.user_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension
+        arguments:
+            - @open_miam_miam.twig.user_formatter
+        tags:
+            - { name: twig.extension }
+
     # Menus
     open_miam_miam.menu_builder:
         class:     %open_miam_miam.menu_builder.class%
@@ -350,7 +368,7 @@ services:
     # Managers
     open_miam_miam.activity_manager:
         class: %open_miam_miam.activity_manager.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.twig.user_extension]
 
     open_miam_miam.branch_manager:
         class: %open_miam_miam.branch_manager.class%
@@ -395,7 +413,7 @@ services:
 
     open_miam_miam.producer_manager:
         class: %open_miam_miam.producer_manager.class%
-        arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel]
+        arguments: [%open_miam_miam.producer%, @doctrine.orm.entity_manager, @kernel, @open_miam_miam_user.manager.user, @open_miam_miam.activity_manager]
 
     open_miam_miam.acl_manager:
         class:     %open_miam_miam.acl_manager.class%
@@ -422,7 +440,7 @@ services:
 
     open_miam_miam.newsletter_manager:
         class: %open_miam_miam.newsletter_manager.class%
-        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating]
+        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating, @open_miam_miam.twig.user_extension]
 
     open_miam_miam.allocate_payment_manager:
         class: %open_miam_miam.allocate_payment_manager.class%
@@ -494,9 +512,27 @@ services:
             - %open_miam_miam.currency%
         scope: prototype
 
+    # Workflows
+    open_miam_miam.sales_order_workflow:
+        class: %open_miam_miam.sales_order_workflow.class%
+
     # Factory
     open_miam_miam.factory.allocate_payment:
         class: %open_miam_miam.factory.allocate_payment.class%
         arguments:
             - @open_miam_miam.repository.payment
             - @open_miam_miam.repository.sales_order
+
+    # Listeners
+    open_miam_miam.listener.producer:
+        class: Isics\Bundle\OpenMiamMiamBundle\Listener\ProducerListener
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    open_miam_miam.listener.user.serializer:
+        class:  Isics\Bundle\OpenMiamMiamBundle\Listener\UserListener
+        arguments:
+            - @open_miam_miam.twig.user_formatter
+        tags:
+            - { name: jms_serializer.event_listener, event: serializer.post_serialize, class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User, format: json, method: onPostSerialize }
+

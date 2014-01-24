@@ -5,10 +5,14 @@ namespace Isics\Bundle\OpenMiamMiamUserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
+ *
+ * @ExclusionPolicy("all")
  */
 class User extends BaseUser
 {
@@ -23,6 +27,7 @@ class User extends BaseUser
      * @var string $firstname
      *
      * @ORM\Column(name="firstname", type="string", length=128, nullable=false)
+     * @Expose
      */
     private $firstname;
 
@@ -30,6 +35,7 @@ class User extends BaseUser
      * @var string $lastname
      *
      * @ORM\Column(name="lastname", type="string", length=128, nullable=false)
+     * @Expose
      */
     private $lastname;
 
@@ -37,6 +43,7 @@ class User extends BaseUser
      * @var string $address1
      *
      * @ORM\Column(name="address1", type="string", length=64, nullable=false)
+     * @Expose
      */
     private $address1;
 
@@ -44,6 +51,7 @@ class User extends BaseUser
      * @var string $address2
      *
      * @ORM\Column(name="address2", type="string", length=64, nullable=true)
+     * @Expose
      */
     private $address2;
 
@@ -51,6 +59,7 @@ class User extends BaseUser
      * @var string $zipcode
      *
      * @ORM\Column(name="zipcode", type="string", length=8, nullable=false)
+     * @Expose
      */
     private $zipcode;
 
@@ -58,6 +67,7 @@ class User extends BaseUser
      * @var string $city
      *
      * @ORM\Column(name="city", type="string", length=64, nullable=false)
+     * @Expose
      */
     private $city;
 
@@ -65,6 +75,7 @@ class User extends BaseUser
      * @var string $phoneNumber
      *
      * @ORM\Column(name="phone_number", type="string", length=16, nullable=true)
+     * @Expose
      */
     private $phoneNumber;
 
@@ -86,6 +97,7 @@ class User extends BaseUser
      * @var boolean $isOrdersOpenNotificationSubscriber
      *
      * @ORM\Column(name="is_orders_open_notification_subscriber", type="boolean", nullable=false, options={"default":1})
+     * @Expose
      */
     private $isOrdersOpenNotificationSubscriber;
 
@@ -93,6 +105,7 @@ class User extends BaseUser
      * @var boolean $isNewsletterSubscriber
      *
      * @ORM\Column(name="is_newsletter_subscriber", type="boolean", nullable=false, options={"default":1})
+     * @Expose
      */
     private $isNewsletterSubscriber;
 
@@ -340,16 +353,6 @@ class User extends BaseUser
         parent::setEmail($email);
         $this->username = $email;
         $this->usernameCanonical = $email;
-    }
-
-    /**
-     * Returns full name
-     *
-     * @return string
-     */
-    public function getFullName()
-    {
-        return $this->firstname.' '.$this->lastname;
     }
 
     /**

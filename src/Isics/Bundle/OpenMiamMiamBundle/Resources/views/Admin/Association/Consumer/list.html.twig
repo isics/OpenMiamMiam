@@ -32,7 +32,7 @@
                     <tr{% if association.getSubscriptionForUser(user).credit > 0 %} class="success"{% elseif association.getSubscriptionForUser(user).credit < 0 %} class="danger"{% endif %}>
                         {% if user %}
                             <td>{{ user|format_consumer_ref }}</td>
-                            <td>{{ user.lastname }} {{ user.firstname }}</td>
+                            <td>{{ format_user_identity(user) }}</td>
                             <td>{{ user.city }} ({{ user.zipcode }})</td>
                             <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
                             <td>{% if user.phoneNumber %}{{ user.phoneNumber }}{% else %}-{% endif %}</td>

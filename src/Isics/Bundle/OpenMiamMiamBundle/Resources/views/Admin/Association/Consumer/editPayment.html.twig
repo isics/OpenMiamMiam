@@ -10,7 +10,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ 'admin.association.consumers.payments.form.edit_title'|trans({'%consumer%': consumer.fullName}) }}</h1>
+            <h1>{{ 'admin.association.consumers.payments.form.edit_title'|trans({'%consumer%': format_user_identity(consumer) }) }}</h1>
         </div>
     </div>
     <div class="row">

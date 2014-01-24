@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <select class="form-control input-md">
                         <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.sales_orders'|trans }}</option>
-                        <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.deposit_withdrawal'|trans }}</option>
+                        <option value="{{ path('open_miam_miam.admin.association.sales_orders.get_deposit_withdrawal_excel_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': branchOccurrence.id}) }}">{{ 'admin.association.sales_orders.list.export.deposit_withdrawal'|trans }}</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary btn-md">
@@ -76,7 +76,7 @@
                                     <span class="glyphicon glyphicon-comment pull-right"></span>
                                 {% endif %}
                                 {% if salesOrder.user %}
-                                    {{ salesOrder.lastname }} {{ salesOrder.firstname|first }}. ({{ salesOrder.user|format_consumer_ref }})
+                                    {{ format_identity(salesOrder.lastname, salesOrder.firstname, '%lastname% %firstname_first_letter%') }}. ({{ salesOrder.user|format_consumer_ref }})
                                     {% if salesOrder.user.phoneNumber is not null %}
                                         <br />
                                         {{ 'admin.association.sales_orders.list.phone_number'|trans }}

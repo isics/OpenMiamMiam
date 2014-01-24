@@ -16,6 +16,16 @@ use Doctrine\ORM\EntityRepository;
 class AssociationRepository extends EntityRepository
 {
     /**
+     * Finds all association sorted by name
+     *
+     * @return array
+     */
+    public function findAll()
+    {
+        return $this->findBy(array(), array('name' => 'asc'));
+    }
+
+    /**
      * Finds all ids
      *
      * @return array

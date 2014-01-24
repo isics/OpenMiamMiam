@@ -22,7 +22,7 @@
                     </div>
                     <div class="panel-body">
                         <p>
-                            <strong>{{ user.firstname }} {{ user.lastname }} ({{ user|format_consumer_ref }})</strong><br />
+                            <strong>{{ format_user_identity(user) }} ({{ user|format_consumer_ref }})</strong><br />
                             {{ user.address1 }}<br />
                             {% if user.address2 != null %}
                                 {{ user.address2 }}<br />

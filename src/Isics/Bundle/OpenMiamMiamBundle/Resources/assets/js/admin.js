@@ -393,10 +393,9 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
                         data: $form.serialize(),
                         success: function(data) {
                             response($.map(data, function(item) {
-                                return {
-                                    id: item.id,
-                                    label: item.label
-                                };
+                                return $.extend(item, {
+                                    label: that.formatItem(item)
+                                });
                             }));
 
                             $hiddenDiv.append($loader);
@@ -411,6 +410,70 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
                     window.location = that.promoteUrlSchema.replace('0', ui.item.id);
                 }
             });
+        },
+
+        formatItem: function(item){
+            return item.identity+' ('+item.email+')';
+        }
+    };
+
+    return object;
+}();
+
+OpenMiamMiam.SuperProducerAutocomplete = function() {
+    var object = function(initial_owner, search_user_url){
+        this.initial_owner = initial_owner;
+        this.search_user_url = search_user_url;
+    };
+
+    object.prototype = {
+        handleAutocomplete: function(){
+            var that = this;
+
+            var $ownerField = $('#open_miam_miam_super_producer_owner');
+
+            var $input = $('<input type="text" class="form-control" />');
+
+            var $hiddenDiv = $('<div style="display: none"></div>');
+            var $loader = $('<img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader"/>');
+
+            $ownerField.after($input).hide();
+
+            $input.autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: that.search_user_url,
+                        dataType: 'json',
+                        data: {
+                            term: $input.val()
+                        },
+                        success: function(data) {
+                            response($.map(data, function(item) {
+                                return $.extend(item, {
+                                    label: that.formatItem(item)
+                                });
+                            }));
+
+                            $hiddenDiv.append($loader);
+                        }
+                    });
+                },
+                minLength: 2,
+                search: function() {
+                    $input.parent().append($loader);
+                },
+                select: function(event, ui) {
+                    $ownerField.val(ui.item.email);
+                }
+            });
+
+            if (this.initial_owner) {
+                $input.val(this.formatItem(this.initial_owner));
+            }
+        },
+
+        formatItem: function(item){
+            return item.identity+' ('+item.email+')';
         }
     };
 
