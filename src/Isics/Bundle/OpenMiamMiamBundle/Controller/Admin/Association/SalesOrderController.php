@@ -19,6 +19,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
@@ -630,5 +631,47 @@ class SalesOrderController extends BaseController
         });
 
         return $response;
+    }
+
+    /**
+     * Show and manage user payments form
+     *
+     * @ParamConverter("user", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"userId": "id"}})
+     *
+     * @param Request     $request     Request
+     * @param Association $association Association
+     * @param User        $user        User
+     *
+     * @return Response
+     */
+    public function manageUserPaymentsAction(Request $request, Association $association, User $user)
+    {
+        $allocatePayment = $this->get('open_miam_miam.factory.allocate_payment')->create($association, $user);
+
+        $form = $this->createForm(
+            $this->get('open_miam_miam.form.type.allocate_payment'),
+            $allocatePayment
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                try {
+                    $this->get('open_miam_miam.allocate_payment_manager')
+                        ->process($form->getData());
+                }
+                catch (\Exception $e) {
+                    die('OOPS :)');
+                }
+            }
+        }
+
+        return $this->render(
+            'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:manageUserPayments.html.twig',
+            array(
+                'association' => $association,
+                'form'        => $form->createView()
+            )
+        );
     }
 }

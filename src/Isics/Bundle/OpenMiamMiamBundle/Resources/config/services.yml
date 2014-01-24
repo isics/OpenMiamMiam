@@ -35,6 +35,8 @@ parameters:
     open_miam_miam.producer_sales_order_manager.class:     'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
     open_miam_miam.payment_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager'
     open_miam_miam.newsletter_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
+    open_miam_miam.allocate_payment_manager.class:         'Isics\Bundle\OpenMiamMiamBundle\Manager\AllocatePaymentManager'
+
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -66,6 +68,8 @@ parameters:
     open_miam_miam.form.type.super_newsletter.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperNewsletterType'
     open_miam_miam.form.type.products_filter.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductsFilterType'
     open_miam_miam.form.type.search.class:                                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SearchType'
+    open_miam_miam.form.type.allocate_payment.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentType'
+    open_miam_miam.form.type.allocate_payment_payment.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentPaymentType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
@@ -79,6 +83,7 @@ parameters:
     open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\SalesOrder\DepositWithdrawalExcel'
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
+    open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
 
 
 services:
@@ -282,7 +287,19 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_products_filter }
 
+    open_miam_miam.form.type.allocate_payment:
+        class: %open_miam_miam.form.type.allocate_payment.class%
+        arguments:
+            - @open_miam_miam.consumer_manager
+            - @open_miam_miam.repository.payment
+            - @open_miam_miam.repository.sales_order
+        tags:
+            - { name: form.type, alias: open_miam_miam_allocate_payment }
 
+    open_miam_miam.form.type.allocate_payment_payment:
+        class: %open_miam_miam.form.type.allocate_payment_payment.class%
+        tags:
+            - { name: form.type, alias: isics_open_miam_miam_allocate_payment_payment }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -407,7 +424,25 @@ services:
         class: %open_miam_miam.newsletter_manager.class%
         arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating]
 
+    open_miam_miam.allocate_payment_manager:
+        class: %open_miam_miam.allocate_payment_manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
 
+    # Repositories
+    open_miam_miam.repository.payment:
+        class:           Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\PaymentRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Payment"
+
+    open_miam_miam.repository.sales_order:
+        class:           Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:SalesOrder"
 
     # Models
     open_miam_miam.sales_order_statistics:
@@ -458,3 +493,10 @@ services:
             - @translator
             - %open_miam_miam.currency%
         scope: prototype
+
+    # Factory
+    open_miam_miam.factory.allocate_payment:
+        class: %open_miam_miam.factory.allocate_payment.class%
+        arguments:
+            - @open_miam_miam.repository.payment
+            - @open_miam_miam.repository.sales_order

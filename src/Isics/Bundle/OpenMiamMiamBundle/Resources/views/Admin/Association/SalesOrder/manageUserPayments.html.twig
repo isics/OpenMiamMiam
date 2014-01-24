@@ -1,0 +1,17 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>{{ format_user_identity(form.data.user) }}</h1>
+
+    {{ form_start(form, {'action': path('open_miam_miam.admin.association.payment.manage_user_payments'), 'method': 'POST'}) }}
+        {{ form(form) }}
+        <input type="submit" value="" class="btn btn-success" />
+    {{ form_end(form) }}
+{% endblock %}

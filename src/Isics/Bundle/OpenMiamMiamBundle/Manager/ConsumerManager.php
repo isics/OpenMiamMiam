@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -76,7 +77,7 @@ class ConsumerManager
      * @param Association $association
      * @param User $consumer
      *
-     * @return Association
+     * @return Subscription
      */
     public function getSubscription(Association $association, User $consumer)
     {
