@@ -6,7 +6,7 @@
  # with this source code in the file LICENSE.
  #}
 {% block root %}
-    {% set currentItem = none %}
+    {% set currentItem = null %}
 
     <div class="panel panel-default">
         <div class="panel-body">
@@ -20,9 +20,11 @@
 
     <nav>
         <ul class="nav nav-pills nav-stacked well">
-            {% for child in currentItem.children %}
-                <li{% if matcher.isCurrent(child) %} class="active"{% endif %}><a href="{{ child.uri }}">{{ child.label|raw }}</a></li>
-            {% endfor %}
+            {% if currentItem is not null %}
+                {% for child in currentItem.children %}
+                    <li{% if matcher.isCurrent(child) %} class="active"{% endif %}><a href="{{ child.uri }}">{{ child.label|raw }}</a></li>
+                {% endfor %}
+            {% endif %}
         </ul>
     </nav>
 {% endblock %}
