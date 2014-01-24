@@ -35,7 +35,7 @@ class Branch
     /**
      * @var Association
      *
-     * @ORM\ManyToOne(targetEntity="Association")
+     * @ORM\ManyToOne(targetEntity="Association", inversedBy="branches")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })

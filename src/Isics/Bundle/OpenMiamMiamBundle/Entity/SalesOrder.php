@@ -144,6 +144,7 @@ class SalesOrder
      * @var array
      *
      * @ORM\OneToMany(targetEntity="PaymentAllocation", mappedBy="salesOrder", cascade="all", orphanRemoval=true)
+     *
      * @ORM\OrderBy({"date" = "ASC"})
      */
     private $paymentAllocations;

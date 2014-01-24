@@ -58,7 +58,7 @@ class SalesOrderRow
     /**
      * @var Producer
      *
-     * @ORM\ManyToOne(targetEntity="Producer")
+     * @ORM\ManyToOne(targetEntity="Producer", inversedBy="salesOrderRows")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="producer_id", referencedColumnName="id", nullable=false)
      * })

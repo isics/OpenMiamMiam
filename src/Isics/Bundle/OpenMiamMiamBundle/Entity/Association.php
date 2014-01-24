@@ -161,6 +161,13 @@ class Association
     private $subscriptions;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection $payments
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Payment", mappedBy="association")
+     */
+    private $payments;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -731,5 +738,21 @@ class Association
         }
 
         return null;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $payments
+     */
+    public function setPayments($payments)
+    {
+        $this->payments = $payments;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPayments()
+    {
+        return $this->payments;
     }
 }

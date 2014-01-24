@@ -97,6 +97,20 @@ class User extends BaseUser
     private $isNewsletterSubscriber;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection $payments
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Payment", mappedBy="user")
+     */
+    private $payments;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection $activityLogs
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Activity", mappedBy="user")
+     */
+    private $activityLogs;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -336,5 +350,21 @@ class User extends BaseUser
     public function getFullName()
     {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    /**
+     * @param \Isics\Bundle\OpenMiamMiamUserBundle\Entity\Doctrine\Common\Collections\Collection $salesOrders
+     */
+    public function setSalesOrders($salesOrders)
+    {
+        $this->salesOrders = $salesOrders;
+    }
+
+    /**
+     * @return \Isics\Bundle\OpenMiamMiamUserBundle\Entity\Doctrine\Common\Collections\Collection
+     */
+    public function getSalesOrders()
+    {
+        return $this->salesOrders;
     }
 }
