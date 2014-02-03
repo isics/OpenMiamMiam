@@ -34,8 +34,8 @@ class PaymentType extends AbstractType
         }
 
         $builder->add('type', 'choice', array(
-                    'choices' => $typeChoices,
-                    'expanded' => true
+                    'choices'  => $typeChoices,
+                    'expanded' => false
                 ));
 
         if ($options['with_submit']) {

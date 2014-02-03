@@ -35,7 +35,10 @@ class PaymentManager
      */
     protected $activityManager;
 
-
+    /**
+     * @var SubscriptionManager
+     */
+    protected $subscriptionManager;
 
     /**
      * Constructs object
@@ -43,26 +46,29 @@ class PaymentManager
      * @param EntityManager $entityManager
      * @param ActivityManager $activityManager
      */
-    public function __construct(EntityManager $entityManager, ActivityManager $activityManager)
+    public function __construct(EntityManager $entityManager, ActivityManager $activityManager, SubscriptionManager $subscriptionManager)
     {
         $this->entityManager = $entityManager;
         $this->activityManager = $activityManager;
+        $this->subscriptionManager = $subscriptionManager;
     }
 
     /**
      * Returns a new payment
      *
-     * @param User $user
      * @param Association $association
+     * @param User $user
      *
      * @return Payment
      */
-    public function createPayment(User $user, Association $association)
+    public function createPayment(Association $association, User $user = null)
     {
         $payment = new Payment();
         $payment->setType(Payment::TYPE_CASH);
         $payment->setDate(new \DateTime());
-        $payment->setUser($user);
+        if (null !== $user) {
+            $payment->setUser($user);
+        }
         $payment->setAssociation($association);
 
         return $payment;
@@ -103,13 +109,7 @@ class PaymentManager
      */
     public function computeConsumerCredit(Association $association, User $user = null)
     {
-        $subscription = $association->getSubscriptionForUser($user);
-
-        if (null === $subscription) {
-            $subscription = new Subscription();
-            $subscription->setAssociation($association);
-            $subscription->setUser($user);
-        }
+        $subscription = $this->subscriptionManager->create($association, $user);
 
         $salesOrderTotal = $this->entityManager
                 ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
@@ -120,7 +120,6 @@ class PaymentManager
 
         $subscription->setCredit($paymentsAmount-$salesOrderTotal);
 
-        $this->entityManager->persist($subscription);
         $this->entityManager->flush();
     }
 
@@ -197,7 +196,7 @@ class PaymentManager
      *
      * @throws \LogicException
      */
-    public function allocatePayment(Payment $payment, SalesOrder $order, User $user)
+    public function allocatePayment(Payment $payment, SalesOrder $order, User $user = null)
     {
         if ($payment->getRest() == 0) {
             throw new \LogicException('No rest for payment');
@@ -231,6 +230,9 @@ class PaymentManager
         $this->entityManager->persist($activity);
 
         $this->entityManager->flush();
+
+        // Subscription
+        $this->computeConsumerCredit($payment->getAssociation(), $user);
     }
 
     /**
@@ -274,7 +276,24 @@ class PaymentManager
     public function hasPaymentWithRestForAssociation(Association $association, User $user = null)
     {
         return $this->entityManager
-                ->getRepository('IsicsOpenMiamMiamBundle:Payment')
+                ->getRepository('')
                 ->hasPaymentWithRestForUserAndAssociation($association, $user);
+    }
+
+    /**
+     * Return true if user (or anonymous) has missing allocations
+     *
+     * @param Association $association
+     * @param User        $user
+     *
+     * @return bool
+     */
+    public function hasMissingAllocations(Association $association, User $user = null)
+    {
+        $paymentRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Payment');
+        $salesOrderRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder');
+
+        return $paymentRepository->hasPaymentWithRestForUserAndAssociation($association, $user)
+            && $salesOrderRepository->hasSalesOrdersNotSettledForAssociation($association, $user);
     }
 }

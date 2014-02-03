@@ -22,6 +22,8 @@ use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
  *
  * @ORM\Table(name="payment")
  * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\PaymentRepository")
+ *
+ * @ORM\HasLifecycleCallbacks()
  */
 class Payment
 {
@@ -269,5 +271,17 @@ class Payment
         }
 
         $this->rest = $rest;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->rest = $this->amount;
+
+        foreach ($this->getPaymentAllocations() as $paymentAllocation) {
+            $this->rest - $paymentAllocation->getAmount();
+        }
     }
 }

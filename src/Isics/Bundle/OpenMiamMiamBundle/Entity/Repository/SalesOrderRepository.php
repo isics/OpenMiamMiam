@@ -270,4 +270,32 @@ class SalesOrderRepository extends EntityRepository
             ->where('so.user = :user')
             ->setParameter('user', $user);
     }
+
+    /**
+     * @param Association $association
+     * @param User        $user
+     *
+     * @return bool
+     */
+    public function hasSalesOrdersNotSettledForAssociation(Association $association, User $user = null)
+    {
+        $qb = $this->createQueryBuilder('so')
+            ->select('COUNT(so.id) AS counter')
+            ->innerJoin('so.branchOccurrence', 'bo')
+            ->innerJoin('bo.branch', 'b')
+            ->andWhere('so.credit < 0')
+            ->andWhere('b.association = :association')
+            ->setParameter('association', $association);
+
+        if (null !== $user) {
+            $qb->andWhere('so.user = :user')->setParameter('user', $user);
+        }
+        else {
+            $qb->andWhere('so.user IS NULL');
+        }
+
+        $result = $qb->getQuery()->getSingleResult();
+
+        return (bool)$result['counter'];
+    }
 }

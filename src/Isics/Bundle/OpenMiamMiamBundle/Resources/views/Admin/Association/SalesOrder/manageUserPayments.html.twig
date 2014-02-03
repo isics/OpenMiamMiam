@@ -7,11 +7,108 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
-{% block content %}
-    <h1>{{ format_user_identity(form.data.user) }}</h1>
+{% form_theme form '@IsicsOpenMiamMiam/Admin/paymentForm.html.twig' %}
 
-    {{ form_start(form, {'action': path('open_miam_miam.admin.association.payment.manage_user_payments'), 'method': 'POST'}) }}
-        {{ form(form) }}
-        <input type="submit" value="" class="btn btn-success" />
-    {{ form_end(form) }}
+{% block content %}
+    {% set hasMissingAllocations = has_missing_allocations(association, user) %}
+    <div class="user_payment_allocation">
+        {% if user is not null %}
+            <h1>{{ format_user_identity(user) }} ({{ user|format_consumer_ref }})</h1>
+        {% else %}
+            <h1>{{ 'admin.association.consumers.list.anonymous'|trans }}</h1>
+        {% endif %}
+
+        <p class="left-to-pay {% if subscription.leftToPay == 0 %}left-to-pay-ok{% else %}left-to-pay-ko{% endif %}">
+            {{ 'admin.association.sales_orders.form.left_to_pay'|trans }} :
+            {{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}
+        </p>
+
+        {% if hasMissingAllocations %}
+            <div class="missing-allocation-container">
+                <span class="label label-danger">
+                    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+                    {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
+                </span>
+            </div>
+        {% endif %}
+
+
+        {{ form_start(form, {
+            'action': path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+            'method': 'POST',
+            'attr': {
+                'novalidate': 'novalidate'
+            }
+        }) }}
+
+            <table class="allocate-payment-table">
+                <tbody>
+                    <tr>
+                        {% if form.sales_orders is defined %}
+                            <td class="payments">
+                                <div class="well well-sm">
+                                    {% if form.payments is defined %}
+                                        {% if form.new_payment.vars.value.amount != 0 %}
+                                            {{ form_row(form.new_payment) }}
+                                            <hr />
+                                            {{ form_row(form.payments) }}
+                                        {% else %}
+                                            {{ form_row(form.payments) }}
+                                            <hr />
+                                            {{ form_row(form.new_payment) }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ form_row(form.new_payment, {'without_checkbox': true}) }}
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="arrow">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </td>
+                            <td class="sales-orders">
+                                <div class="well well-sm">
+                                    {{ form_row(form.sales_orders) }}
+                                </div>
+                            </td>
+                        {% else %}
+                            <td class="payments payments-only">
+                                {% if form.payments is defined %}
+                                    {% if form.new_payment.vars.value.amount != 0 %}
+                                        {{ form_row(form.new_payment) }}
+                                        <hr />
+                                        {{ form_row(form.payments) }}
+                                    {% else %}
+                                        {{ form_row(form.payments) }}
+                                        <hr />
+                                        {{ form_row(form.new_payment) }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ form_row(form.new_payment, {'without_checkbox': true}) }}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+
+                    </tr>
+                </tbody>
+            </table>
+
+            {{ form_rest(form) }}
+
+            <button type="submit" class="btn btn-primary btn-lg" >
+                <span class="glyphicon glyphicon-floppy-save"></span>
+                {{ 'admin.save'|trans }}
+            </button>
+            <a href="{{ redirectRoute }}" class="pull-right">{{ 'admin.cancel'|trans }}</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function(){
+            new OpenMiamMiam.AllocatePaymentManager();
+        });
+    </script>
 {% endblock %}

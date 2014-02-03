@@ -2,7 +2,9 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Association;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class AllocatePayment
@@ -64,10 +66,42 @@ class AllocatePayment
     }
 
     /**
+     * @param array|ArrayCollection $payments
+     */
+    public function setPayments($payments)
+    {
+        if ($payments instanceof ArrayCollection) {
+            $payments = $payments->toArray();
+        }
+
+        if (!is_array($payments)) {
+            throw new \InvalidArgumentException('Parameter must be an array or an ArrayCollection instance');
+        }
+
+        $this->payments = $payments;
+    }
+
+    /**
      * @return array
      */
     public function getSalesOrders()
     {
         return $this->salesOrders;
+    }
+
+    /**
+     * @param array|ArrayCollection $salesOrders
+     */
+    public function setSalesOrders($salesOrders)
+    {
+        if ($salesOrders instanceof ArrayCollection) {
+            $salesOrders = $salesOrders->toArray();
+        }
+
+        if (!is_array($salesOrders)) {
+            throw new \InvalidArgumentException('Parameter must be an array or an ArrayCollection instance');
+        }
+
+        $this->salesOrders = $salesOrders;
     }
 }

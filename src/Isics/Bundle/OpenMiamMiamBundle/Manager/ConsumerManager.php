@@ -79,7 +79,7 @@ class ConsumerManager
      *
      * @return Subscription
      */
-    public function getSubscription(Association $association, User $consumer)
+    public function getSubscription(Association $association, User $consumer = null)
     {
         return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Subscription')
                 ->findOneBy(array('association' => $association, 'user' => $consumer));

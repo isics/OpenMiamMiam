@@ -312,6 +312,12 @@ open_miam_miam.admin.association.payment.manage_user_payments:
     pattern:  /associations/{id}/consumers/{userId}/manage_payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:ManageUserPayments }
 
+open_miam_miam.admin.association.payment.manage_payments.from_sales_order:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/manage_payments
+    defaults:
+        _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:ManageUserPayments
+        from: sales_order
+
 #
 # Admin Producer
 #

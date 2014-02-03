@@ -637,16 +637,39 @@ class SalesOrderController extends BaseController
      * Show and manage user payments form
      *
      * @ParamConverter("user", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"userId": "id"}})
+     * @ParamConverter("salesOrder", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping": {"salesOrderId": "id"}})
      *
      * @param Request     $request     Request
      * @param Association $association Association
      * @param User        $user        User
+     * @param SalesOrder  $salesOrder  Sales order
      *
      * @return Response
      */
-    public function manageUserPaymentsAction(Request $request, Association $association, User $user)
+    public function manageUserPaymentsAction(Request $request,
+                                             $from,
+                                             Association $association,
+                                             User $user = null,
+                                             SalesOrder $salesOrder = null)
     {
+        switch ($from) {
+            case 'sales_order':
+                $user = $salesOrder->getUser();
+                $redirectRoute = $this->generateUrl('open_miam_miam.admin.association.sales_order.edit', array(
+                    'id'           => $association->getId(),
+                    'salesOrderId' => $salesOrder->getId()
+                ));
+                break;
+            default:
+                throw new \LogicException('No "from" parameter were provided in query.');
+        }
+
+
         $allocatePayment = $this->get('open_miam_miam.factory.allocate_payment')->create($association, $user);
+        $subscription = $this->get('open_miam_miam.subscription_manager')->create(
+            $association,
+            $user
+        );
 
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.allocate_payment'),
@@ -659,9 +682,11 @@ class SalesOrderController extends BaseController
                 try {
                     $this->get('open_miam_miam.allocate_payment_manager')
                         ->process($form->getData());
+
+                    return $this->redirect($redirectRoute);
                 }
                 catch (\Exception $e) {
-                    die('OOPS :)');
+
                 }
             }
         }
@@ -669,8 +694,11 @@ class SalesOrderController extends BaseController
         return $this->render(
             'IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:manageUserPayments.html.twig',
             array(
-                'association' => $association,
-                'form'        => $form->createView()
+                'association'   => $association,
+                'user'          => $user,
+                'subscription'  => $subscription,
+                'form'          => $form->createView(),
+                'redirectRoute' => $redirectRoute
             )
         );
     }

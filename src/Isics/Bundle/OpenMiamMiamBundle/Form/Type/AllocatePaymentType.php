@@ -9,7 +9,9 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\PaymentRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,6 +23,11 @@ class AllocatePaymentType extends AbstractType
      * @var ConsumerManager
      */
     private $consumerManager;
+
+    /**
+     * @var PaymentManager
+     */
+    private $paymentManager;
 
     /**
      * @var PaymentRepository
@@ -40,10 +47,12 @@ class AllocatePaymentType extends AbstractType
      * @param SalesOrderRepository $salesOrderRepository
      */
     public function __construct(ConsumerManager $consumerManager,
+                                PaymentManager $paymentManager,
                                 PaymentRepository $paymentRepository,
                                 SalesOrderRepository $salesOrderRepository)
     {
         $this->consumerManager      = $consumerManager;
+        $this->paymentManager       = $paymentManager;
         $this->paymentRepository    = $paymentRepository;
         $this->salesOrderRepository = $salesOrderRepository;
     }
@@ -65,30 +74,30 @@ class AllocatePaymentType extends AbstractType
         $salesOrdersQueryBuilder = $this->getSalesOrdersQueryBuilder($association, $user);
         $salesOrders = $salesOrdersQueryBuilder->getQuery()->getResult();
 
-        $newPayment = new Payment();
+        $newPayment = $this->paymentManager->createPayment($association, $user);
         $newPayment->setAmount($due);
-//        $newPayment->setAssociation($association);
-//        if (null !== $user) {
-//            $newPayment->setUser($user);
-//        }
 
-        $builder
-            ->add('payments', 'entity', array(
-                'class'         => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Payment',
-                'property'      => 'rest',
-                'expanded'      => true,
-                'multiple'      => true,
-                'required'      => false,
-                'query_builder' => $paymentsQueryBuilder,
-                'data'          => $payments
-            ))
-            ->add('new_payment', 'open_miam_miam_payment', array(
-                'without_amount' => false,
-                'with_submit'    => false,
-                'property_path'  => 'payments[__new_payment__]',
-                'data'           => $newPayment
-            ))
-            ->add('sales_orders', 'entity', array(
+        $builder->add('new_payment', 'open_miam_miam_payment', array(
+            'without_amount' => false,
+            'with_submit'    => false,
+            'property_path'  => 'payments[__new_payment__]',
+            'data'           => $newPayment
+        ));
+
+        if (count($salesOrders)) {
+            if (count($payments)) {
+                $builder->add('payments', 'open_miam_miam_payments_for_allocate_payment', array(
+                    'class'         => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Payment',
+                    'property'      => 'rest',
+                    'expanded'      => true,
+                    'multiple'      => true,
+                    'required'      => false,
+                    'query_builder' => $paymentsQueryBuilder,
+                    'data'          => $payments
+                ));
+            }
+
+            $builder->add('sales_orders', 'open_miam_miam_sales_orders_for_allocate_payment', array(
                 'class'         => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder',
                 'property'      => 'credit',
                 'multiple'      => true,
@@ -97,32 +106,7 @@ class AllocatePaymentType extends AbstractType
                 'query_builder' => $salesOrdersQueryBuilder,
                 'data'          => $salesOrders
             ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setOptional(array('user'));
-
-        $resolver->setAllowedTypes(array(
-            'user' => 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'
-        ));
-
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\AllocatePayment'
-        ));
-    }
-
-    /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_allocate_payment';
+        }
     }
 
     /**
@@ -200,5 +184,31 @@ class AllocatePaymentType extends AbstractType
         }
 
         return $salesOrdersQueryBuilder;
+    }
+
+    /**
+     * @see AbstractType
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setOptional(array('user'));
+
+        $resolver->setAllowedTypes(array(
+            'user' => 'Isics\Bundle\OpenMiamMiamUserBundle\Entity\User'
+        ));
+
+        $resolver->setDefaults(array(
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\AllocatePayment'
+        ));
+    }
+
+    /**
+     * Returns the name of this type.
+     *
+     * @return string The name of this type
+     */
+    public function getName()
+    {
+        return 'open_miam_miam_allocate_payment';
     }
 }

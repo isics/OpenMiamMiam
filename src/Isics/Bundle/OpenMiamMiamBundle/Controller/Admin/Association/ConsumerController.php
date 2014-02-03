@@ -168,6 +168,7 @@ class ConsumerController extends BaseController
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
+     * @DEPRECATED
      */
     public function createPaymentAction(Request $request, Association $association, User $consumer)
     {

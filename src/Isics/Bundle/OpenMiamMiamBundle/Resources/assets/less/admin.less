@@ -1,6 +1,7 @@
 @import "variables.less";
-@import "../../../../../../../web/bootstrap/less/dropdowns.less";
 @import "../../../../../../../web/bootstrap/less/mixins.less";
+@import "../../../../../../../web/bootstrap/less/type.less";
+@import "../../../../../../../web/bootstrap/less/dropdowns.less";
 
 //
 // Global
@@ -196,12 +197,28 @@ h1 {
     .panel {
         font-size: @font-size-medium;
 
-        strong {
-            font-size: 50px;
-        }
-
         .panel-body {
             text-align: center;
+        }
+
+        p.left-to-pay strong {
+            font-size: @left-to-pay-big-font-size;
+        }
+
+        .missing-allocation-container {
+            margin-bottom: @missing-allocation-container-margin-bottom;
+        }
+
+        &.panel-success p.left-to-pay strong {
+            .text-success;
+        }
+
+        &.panel-warning p.left-to-pay strong {
+            .text-warning;
+        }
+
+        &.panel-danger p.left-to-pay strong {
+            .text-danger;
         }
     }
 }
@@ -679,4 +696,90 @@ div.owner-container .loader {
     position: absolute;
     right: 10px;
     bottom: 10px;
+}
+
+
+
+//
+// Sales orders / Payments / Allocations
+//
+div.user_payment_allocation {
+    h1,
+    p.left-to-pay,
+    div.missing-allocation-container {
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 10px !important;
+    }
+
+    .missing-allocation-container {
+        margin-bottom: @missing-allocation-container-margin-bottom;
+    }
+
+    p.left-to-pay {
+        font-size: @left-to-pay-medium-font-size;
+
+        &.left-to-pay-ok {
+            .text-success;
+        }
+
+        &.left-to-pay-ko {
+            .text-danger;
+        }
+    }
+
+    table.allocate-payment-table {
+        width: 100%;
+
+        #open_miam_miam_allocate_payment_new_payment_amount {
+            text-align: right;
+        }
+
+        label {
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        td.payments {
+            width: 45%;
+
+            hr {
+                margin: 10px 0;
+                border-color: lightgrey;
+            }
+
+            table {
+                width: 100%;
+
+                &.new-payment td.checkbox {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        td.arrow {
+            width: 10%;
+            text-align: center;
+
+            span.glyphicon {
+                font-size: 3em;
+            }
+        }
+
+        td.sales-orders {
+            width: 45%;
+
+            table {
+                width: 100%;
+            }
+        }
+
+        td.payments span.payment-rest,
+        td.sales-orders span.sales-order-left-to-pay {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    }
 }

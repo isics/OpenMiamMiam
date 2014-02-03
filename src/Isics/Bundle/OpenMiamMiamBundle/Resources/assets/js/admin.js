@@ -479,3 +479,98 @@ OpenMiamMiam.SuperProducerAutocomplete = function() {
 
     return object;
 }();
+
+OpenMiamMiam.AllocatePaymentManager = function(){
+    var object = function(){
+        this.$form = $('.allocate-payment-table').parents('form:first');
+
+        this.$newPaymentContainer = this.$form.find('.new-payment');
+
+        this.$newPaymentAmountField = this.$newPaymentContainer.find(':input[name*="[amount]"]');
+
+        this.$newPaymentFields = this.$newPaymentContainer.find(':input');
+
+        this.$salesOrderRows = this.$form.find('table.sales-orders tr');
+
+        this.oldPaymentValue = this.$newPaymentAmountField.val();
+
+        this.initialize();
+    };
+
+    object.prototype = {
+        initialize: function(){
+            var that = this;
+
+            var $tdContainer = this.$newPaymentContainer.find('td.checkbox');
+
+            if ($tdContainer.size() > 0){
+
+                var $checkbox = $('<input type="checkbox" checked="checked" />');
+
+                $checkbox.click(function(){
+                    console.log(that.$newPaymentFields);
+                    if ($(this).is(':checked')){
+                        that.$newPaymentFields.removeAttr('disabled');
+                        that.$newPaymentAmountField.val(that.oldPaymentValue);
+                    }
+                    else {
+                        that.$newPaymentFields.attr('disabled', 'disabled');
+                        that.oldPaymentValue = that.$newPaymentAmountField.val();
+                        that.$newPaymentAmountField.val(0);
+                    }
+                });
+
+                $tdContainer.append($checkbox);
+            }
+
+            if (this.$salesOrderRows.size() == 1) {
+                this.$salesOrderRows.find('td.checkbox').hide();
+            }
+        }
+    };
+
+    return object;
+}();
+
+OpenMiamMiam.AllocatePaymentModal = function(){
+    var object = function(container){
+        this.$container = $(container);
+
+        this.$dialog = this.addDialog();
+
+        this.$container.bindEvents();
+
+        this.initialize()
+    };
+
+    object.prototype = {
+        addDialog: function(){
+            var $dialog = $('<div class="modal fade" id="add-products-dialog" tabindex="-1" role="dialog" aria-labelledby="Add products" aria-hidden="true"></div>');
+            $dialog.attr({
+                'id': 'sales-order-payments-manager',
+                'class': 'modal fade',
+                'tabindex': '-1',
+                'role': 'dialog',
+                'aria-labelledby': 'Manage payments',
+                'aria-hidden': true
+            });
+
+            $('body').append($dialog);
+
+            return $dialog;
+        },
+
+        bindEvents: function(){
+            var that = this;
+
+            var $button = this.$container.find('a.manage');
+
+            $button.attr({
+                'data-toggle': 'modal',
+                'data-target': that.$dialog.attr('id')
+            });
+        }
+    };
+
+    return object;
+}();

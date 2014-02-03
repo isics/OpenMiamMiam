@@ -36,7 +36,7 @@ parameters:
     open_miam_miam.payment_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager'
     open_miam_miam.newsletter_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
     open_miam_miam.allocate_payment_manager.class:         'Isics\Bundle\OpenMiamMiamBundle\Manager\AllocatePaymentManager'
-
+    open_miam_miam.subscription_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SubscriptionManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -70,7 +70,8 @@ parameters:
     open_miam_miam.form.type.products_filter.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductsFilterType'
     open_miam_miam.form.type.search.class:                                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SearchType'
     open_miam_miam.form.type.allocate_payment.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentType'
-    open_miam_miam.form.type.allocate_payment_payment.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentPaymentType'
+    open_miam_miam.form.type.payments_for_allocate_payment.class:         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentsForAllocatePaymentType'
+    open_miam_miam.form.type.sales_orders_for_allocate_payment.class:     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrdersForAllocatePaymentType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
@@ -297,15 +298,21 @@ services:
         class: %open_miam_miam.form.type.allocate_payment.class%
         arguments:
             - @open_miam_miam.consumer_manager
+            - @open_miam_miam.payment_manager
             - @open_miam_miam.repository.payment
             - @open_miam_miam.repository.sales_order
         tags:
             - { name: form.type, alias: open_miam_miam_allocate_payment }
 
-    open_miam_miam.form.type.allocate_payment_payment:
-        class: %open_miam_miam.form.type.allocate_payment_payment.class%
+    open_miam_miam.form.type.payments_for_allocate_payment:
+        class: %open_miam_miam.form.type.payments_for_allocate_payment.class%
         tags:
-            - { name: form.type, alias: isics_open_miam_miam_allocate_payment_payment }
+            - { name: form.type, alias: open_miam_miam_payments_for_allocate_payment }
+
+    open_miam_miam.form.type.sales_orders_for_allocate_payment:
+        class: %open_miam_miam.form.type.sales_orders_for_allocate_payment.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_sales_orders_for_allocate_payment }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -436,7 +443,10 @@ services:
 
     open_miam_miam.payment_manager:
         class: %open_miam_miam.payment_manager.class%
-        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @open_miam_miam.activity_manager
+            - @open_miam_miam.subscription_manager
 
     open_miam_miam.newsletter_manager:
         class: %open_miam_miam.newsletter_manager.class%
@@ -444,6 +454,12 @@ services:
 
     open_miam_miam.allocate_payment_manager:
         class: %open_miam_miam.allocate_payment_manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @open_miam_miam.payment_manager
+
+    open_miam_miam.subscription_manager:
+        class: %open_miam_miam.subscription_manager.class%
         arguments:
             - @doctrine.orm.entity_manager
 

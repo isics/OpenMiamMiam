@@ -427,7 +427,7 @@ class SalesOrder
      */
     public function getLeftToPay()
     {
-        return -1*$this->credit;
+        return abs(min(0, $this->credit));
     }
 
     /**
