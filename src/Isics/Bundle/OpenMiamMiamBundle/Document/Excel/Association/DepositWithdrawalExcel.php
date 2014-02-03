@@ -141,7 +141,6 @@ class DepositWithdrawalExcel
         // Producer parts
         foreach ($producerDepositWithdrawal->getProducers() as  $producerId => $producerName) {
             $sheet = $this->excel->createSheet(++$currentSheetIndex);
-            $sheet->setTitle($producerName);
             $currentLine = 1;
 
             $producerTab = array(
@@ -168,6 +167,8 @@ class DepositWithdrawalExcel
             );
 
             $this->producerTabs[$producerId] = $producerTab;
+
+            $sheet->setTitle($this->getEscapedTabName($producerId));
         }
 
         $this->excel->setActiveSheetIndex(0);
@@ -894,7 +895,9 @@ class DepositWithdrawalExcel
     private function getEscapedTabName($producerId)
     {
         if (array_key_exists($producerId, $this->producerTabs)) {
-            return str_replace('\'', '\'\'', $this->producerTabs[$producerId]['tab_name']);
+            $illegal = array('.', '?', '!', '*', '/', '[', ']', '\'', ':');
+
+            return str_replace($illegal, ' ', $this->producerTabs[$producerId]['tab_name']);
         }
 
         return null;
