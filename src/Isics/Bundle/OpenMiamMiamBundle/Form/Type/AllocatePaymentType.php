@@ -76,6 +76,7 @@ class AllocatePaymentType extends AbstractType
 
         $newPayment = $this->paymentManager->createPayment($association, $user);
         $newPayment->setAmount($due);
+        $newPayment->setType(Payment::TYPE_CHEQUE);
 
         $builder->add('new_payment', 'open_miam_miam_payment', array(
             'without_amount' => false,
