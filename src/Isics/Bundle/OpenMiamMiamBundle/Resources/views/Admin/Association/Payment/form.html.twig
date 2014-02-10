@@ -1,0 +1,147 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends app.request.xmlHttpRequest ? 'IsicsOpenMiamMiamBundle:Admin/Association/Payment:formDialog.html.twig' : 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% form_theme form '@IsicsOpenMiamMiam/form.html.twig' '@IsicsOpenMiamMiam/Admin/Association/Payment/formTheme.html.twig' %}
+
+{% set hasMissingAllocations = has_missing_allocations(association, user) %}
+
+{% block title %}
+    {% if subscription.leftToPay > 0 %}
+        {{ 'admin.association.consumers.payments.form.title.settle'|trans }}
+    {% elseif hasMissingAllocations %}
+        {{ 'admin.association.consumers.payments.form.title.allocate'|trans }}
+    {% else %}
+        {{ 'admin.association.consumers.payments.form.title.add_payment'|trans }}
+    {% endif %}
+{% endblock title %}
+
+{% block modal_class %}
+    {% spaceless %}
+        {% if subscription.leftToPay > 0 %}
+            {{ 'modal-lg' }}
+        {% elseif hasMissingAllocations %}
+            {{ 'modal-lg' }}
+        {% else %}
+            {{ 'modal-sm' }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block content %}
+    <div class="user_payment_allocation">
+        {% if user is not null %}
+            <h1>{{ format_user_identity(user) }} ({{ user|format_consumer_ref }})</h1>
+        {% else %}
+            <h1>{{ 'admin.association.consumers.list.anonymous'|trans }}</h1>
+        {% endif %}
+
+        <p class="left-to-pay {% if subscription.leftToPay == 0 %}left-to-pay-ok{% else %}left-to-pay-ko{% endif %}">
+            {{ 'admin.association.sales_orders.form.left_to_pay'|trans }} :
+            {{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}
+        </p>
+
+        {% if hasMissingAllocations %}
+            <div class="missing-allocation-container">
+                <span class="label label-danger">
+                    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+                    {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
+                </span>
+            </div>
+        {% endif %}
+
+
+        {{ form_start(form, {
+        'action': path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')),
+        'method': 'POST',
+        'attr': {
+        'novalidate': 'novalidate'
+        }
+        }) }}
+
+        <table class="allocate-payment-table">
+            <tbody>
+            <tr>
+                {% if form.sales_orders is defined %}
+                    <td class="payments">
+                        <div class="well well-sm">
+                            {% if form.payments is defined %}
+                                {% if form.new_payment.vars.value.amount != 0 %}
+                                    {{ form_row(form.new_payment) }}
+                                    <hr />
+                                    {{ form_row(form.payments) }}
+                                {% else %}
+                                    {{ form_row(form.payments) }}
+                                    <hr />
+                                    {{ form_row(form.new_payment) }}
+                                {% endif %}
+                            {% else %}
+                                {{ form_row(form.new_payment, {'without_checkbox': true}) }}
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="arrow">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </td>
+                    <td class="sales-orders">
+                        <div class="well well-sm">
+                            {{ form_row(form.sales_orders) }}
+                        </div>
+                    </td>
+                {% else %}
+                    <td class="payments payments-only">
+                        {% if form.payments is defined %}
+                            {% if form.new_payment.vars.value.amount != 0 %}
+                                {{ form_row(form.new_payment) }}
+                                <hr />
+                                {{ form_row(form.payments) }}
+                            {% else %}
+                                {{ form_row(form.payments) }}
+                                <hr />
+                                {{ form_row(form.new_payment) }}
+                            {% endif %}
+                        {% else %}
+                            {{ form_row(form.new_payment, {'without_checkbox': true}) }}
+                        {% endif %}
+                    </td>
+                {% endif %}
+
+            </tr>
+            </tbody>
+        </table>
+
+        {{ form_rest(form) }}
+
+        <div class="modal-footer">
+            <a href="{{ redirectRoute }}" class="cancel pull-right">{{ 'admin.cancel'|trans }}</a>
+            <div class="save">
+                <button type="submit" class="btn btn-primary btn-lg" >
+                    <span class="glyphicon glyphicon-floppy-save"></span>
+                    {% if subscription.leftToPay > 0 %}
+                        {{ 'admin.association.consumers.payments.form.action.settle'|trans }}
+                    {% elseif hasMissingAllocations %}
+                        {{ 'admin.association.consumers.payments.form.action.allocate'|trans }}
+                    {% else %}
+                        {{ 'admin.association.consumers.payments.form.action.add_payment'|trans }}
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function(){
+            new OpenMiamMiam.AllocatePaymentManager();
+        });
+    </script>
+{% endblock %}

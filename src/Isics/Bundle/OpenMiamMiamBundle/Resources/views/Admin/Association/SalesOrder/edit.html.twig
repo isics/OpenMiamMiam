@@ -32,8 +32,8 @@
     {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}
     {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\SalesOrder\\deleteRowDialog.html.twig' %}
 
-    <div class="modal fade" id="add-products-dialog" tabindex="-1" role="dialog" aria-labelledby="Add products" aria-hidden="true">
-    </div>
+    <div class="modal fade" id="add-products-dialog" tabindex="-1" role="dialog" aria-labelledby="Add products" aria-hidden="true"></div>
+    <div class="modal fade" id="manage-payments-dialog" tabindex="-1" role="dialog" aria-labelledby="Manage payments" aria-hidden="true"></div>
 {% endblock %}
 
 {% block javascript %}
@@ -41,7 +41,17 @@
     <script type="text/javascript">
         $(function() {
             new OpenMiamMiam.SalesOrderForm;
-            new OpenMiamMiam.AllocatePaymentModal($('#sales-order-consumer-credit'));
+            new OpenMiamMiam.AllocatePaymentModal(
+                $('#sales-order-consumer-credit'),
+                {{ url('open_miam_miam.admin.association.payment.sales_order_summary', {
+                    'id':           association.id,
+                    'salesOrderId': order.id
+                })|json_encode|raw }},
+                {{ url('open_miam_miam.admin.association.payment.manage_payments.from_sales_order', {
+                    'id':           association.id,
+                    'salesOrderId': order.id
+                })|json_encode|raw }}
+            );
         });
     </script>
 {% endblock %}

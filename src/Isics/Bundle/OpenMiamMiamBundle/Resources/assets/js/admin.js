@@ -533,41 +533,84 @@ OpenMiamMiam.AllocatePaymentManager = function(){
 }();
 
 OpenMiamMiam.AllocatePaymentModal = function(){
-    var object = function(container){
+    var object = function(container, reloadContainerUrl, formUrl, manageButton){
         this.$container = $(container);
+        this.reloadContainerUrl = reloadContainerUrl;
+        this.formUrl = formUrl;
+        this.$manageButton= manageButton;
 
-        this.$dialog = this.addDialog();
+        this.$dialog = $('#manage-payments-dialog');
 
-        this.$container.bindEvents();
-
-        this.initialize()
+        this.initialize();
     };
 
     object.prototype = {
-        addDialog: function(){
-            var $dialog = $('<div class="modal fade" id="add-products-dialog" tabindex="-1" role="dialog" aria-labelledby="Add products" aria-hidden="true"></div>');
-            $dialog.attr({
-                'id': 'sales-order-payments-manager',
-                'class': 'modal fade',
-                'tabindex': '-1',
-                'role': 'dialog',
-                'aria-labelledby': 'Manage payments',
-                'aria-hidden': true
-            });
+        initialize: function(){
+            var clickFunction = function(e){
+                e.preventDefault();
 
-            $('body').append($dialog);
+                $.ajax({
+                    url: this.formUrl,
+                    type: 'get',
+                    success: function(html){
+                        this.onPaymentFormSubmit(html);
+                        this.$dialog.modal('show');
+                    }.bind(this)
+                });
+            }.bind(this);
 
-            return $dialog;
+            if (undefined !== this.$manageButton) {
+                this.$manageButton.click(clickFunction);
+            }
+            else {
+                this.$container.on('click', 'a.manage', clickFunction);
+            }
         },
 
-        bindEvents: function(){
+        onPaymentFormSubmit: function(html) {
             var that = this;
 
-            var $button = this.$container.find('a.manage');
+            this.$dialog.html(html);
+            this.$dialog.find('.modal-footer .save').css({
+                'text-align': 'center'
+            });
+            this.$dialog.find('.modal-footer .cancel')
+                .addClass('btn btn-default')
+                .click(function(e){
+                    e.preventDefault();
 
-            $button.attr({
-                'data-toggle': 'modal',
-                'data-target': that.$dialog.attr('id')
+                    this.$dialog.modal('hide');
+                }.bind(this));
+
+            new OpenMiamMiam.AllocatePaymentManager();
+
+            this.$dialog.find('form').submit(function(e){
+                e.preventDefault();
+
+                var form = $(this);
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(html){
+                        this.$dialog.modal('hide');
+                        this.reloadContainer();
+                    }.bind(that),
+                    error: function(xhr){
+                        this.onPaymentFormSubmit(xhr.responseText);
+                    }.bind(that)
+                });
+            });
+        },
+
+        reloadContainer: function(){
+            $.ajax({
+                url: this.reloadContainerUrl,
+                type: 'get',
+                success: function(html){
+                    this.$container.html(html);
+                }.bind(this)
             });
         }
     };

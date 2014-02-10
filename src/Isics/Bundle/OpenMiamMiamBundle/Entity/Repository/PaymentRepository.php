@@ -124,7 +124,10 @@ class PaymentRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p')
                 ->select('COUNT(p.id) AS counter')
                 ->andWhere('p.association = :association')
-                ->setParameter('association', $association);
+                ->setParameter('association', $association)
+                -> andWhere('p.rest > :minAmount')
+                ->setParameter('minAmount', 0)
+        ;
 
         if (null === $user) {
             $qb->andWhere($qb->expr()->isNull('p.user'));

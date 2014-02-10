@@ -29,7 +29,7 @@ class PaymentType extends AbstractType
         );
 
         if (!$options['without_amount']) {
-            $builder->add('amount', 'text');
+            $builder->add('amount', 'money');
             $typeChoices[Payment::TYPE_TRANSFER] = 'payment.transfer';
         }
 

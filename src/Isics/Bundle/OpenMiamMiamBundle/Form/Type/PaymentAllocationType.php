@@ -22,7 +22,7 @@ class PaymentAllocationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('amount', 'text', array(
+        $builder->add('amount', 'money', array(
                     'required' => false
                 ))
                 ->add('payment', 'open_miam_miam_payment')

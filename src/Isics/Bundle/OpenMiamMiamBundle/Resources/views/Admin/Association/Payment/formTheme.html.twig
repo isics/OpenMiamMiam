@@ -50,10 +50,7 @@
                 <strong>{{ 'admin.association.sales_orders.payment.form.new_payment'|trans }}</strong>
                 <div class="new-payment row">
                     <div class="col-md-6">
-                        <div class="input-group">
-                            {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
-                            <span class="input-group-addon">{{ open_miam_miam.currency|format_currency_symbol }}</span>
-                        </div>
+                        {{ form_widget(form.amount) }}
                     </div>
                     <div class="col-md-6">
                         {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
@@ -62,6 +59,19 @@
             </td>
         </tr>
     </table>
+{% endblock %}
+
+{% block money_widget %}
+    {% set currency = money_pattern|replace({'{{ widget }}': ''}) %}
+
+    <div {% if form.vars.errors %}class="has-error"{% endif %}>
+        <div class="input-group">
+            {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+            <span class="input-group-addon">{{ currency }}</span>
+        </div>
+        {{ form_errors(form) }}
+    </div>
+
 {% endblock %}
 
 {% block open_miam_miam_sales_orders_for_allocate_payment_label %}
