@@ -96,7 +96,7 @@
                         {{ salesOrder.date|date('d/m/Y') }}
                     </label>
                 </td>
-                <td>
+                <td class="text-right">
                     <label for="{{ child.vars.id }}">
                         {% set salesOrderTotal = salesOrder.total %}
                         {% set salesOrderLeftToPay = salesOrder.leftToPay %}

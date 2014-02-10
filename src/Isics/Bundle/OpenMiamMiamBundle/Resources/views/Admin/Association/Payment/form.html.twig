@@ -117,30 +117,43 @@
 
         {{ form_rest(form) }}
 
-        <div class="modal-footer">
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4 text-center">
-                    <button type="submit" class="btn btn-success btn-lg" >
-                        {% if subscription.leftToPay > 0 %}
-                            {{ 'admin.association.consumers.payments.form.action.settle'|trans }}
-                        {% elseif hasMissingAllocations %}
-                            {{ 'admin.association.consumers.payments.form.action.allocate'|trans }}
-                        {% else %}
-                            {{ 'admin.association.consumers.payments.form.action.add_payment'|trans }}
-                        {% endif %}
-                    </button>
-                </div>
-                <div class="col-md-4">
-                    <a href="{{ redirectRoute }}" class="cancel btn btn-default pull-right">
-                        {{ 'admin.cancel'|trans }}
-                    </a>
-                </div>
+        {% if not app.request.xmlHttpRequest %}
+            <div>
+                <button type="submit" class="btn btn-success" >
+                    {% if subscription.leftToPay > 0 %}
+                        {{ 'admin.association.consumers.payments.form.action.settle'|trans }}
+                    {% elseif hasMissingAllocations %}
+                        {{ 'admin.association.consumers.payments.form.action.allocate'|trans }}
+                    {% else %}
+                        {{ 'admin.association.consumers.payments.form.action.add_payment'|trans }}
+                    {% endif %}
+                </button>
+                <a href="{{ redirectRoute }}" class="cancel btn btn-default">
+                    {{ 'admin.cancel'|trans }}
+                </a>
             </div>
-        </div>
+        {% endif %}
+
         {{ form_end(form) }}
     </div>
 {% endblock %}
+
+{% if not app.request.xmlHttpRequest %}
+    {% block footer %}
+        <button type="submit" class="btn btn-success" >
+            {% if subscription.leftToPay > 0 %}
+                {{ 'admin.association.consumers.payments.form.action.settle'|trans }}
+            {% elseif hasMissingAllocations %}
+                {{ 'admin.association.consumers.payments.form.action.allocate'|trans }}
+            {% else %}
+                {{ 'admin.association.consumers.payments.form.action.add_payment'|trans }}
+            {% endif %}
+        </button>
+        <a href="{{ redirectRoute }}" class="cancel btn btn-default">
+            {{ 'admin.cancel'|trans }}
+        </a>
+    {% endblock %}
+{% endif %}
 
 {% block javascript %}
     {{ parent() }}
