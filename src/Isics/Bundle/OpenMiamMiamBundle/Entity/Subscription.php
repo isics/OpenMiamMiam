@@ -124,4 +124,14 @@ class Subscription
     {
         return $this->credit;
     }
+
+    /**
+     * Returns left to pay
+     *
+     * @return float
+     */
+    public function getLeftToPay()
+    {
+        return abs(min(0, $this->credit));
+    }
 }

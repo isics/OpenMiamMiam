@@ -29,15 +29,18 @@ class PaymentType extends AbstractType
         );
 
         if (!$options['without_amount']) {
-            $builder->add('amount', 'text');
+            $builder->add('amount', 'money');
             $typeChoices[Payment::TYPE_TRANSFER] = 'payment.transfer';
         }
 
         $builder->add('type', 'choice', array(
-                    'choices' => $typeChoices,
-                    'expanded' => true
-                ))
-                ->add('save', 'submit');
+                    'choices'  => $typeChoices,
+                    'expanded' => false
+                ));
+
+        if ($options['with_submit']) {
+            $builder->add('save', 'submit');
+        }
     }
 
     /**
@@ -46,8 +49,9 @@ class PaymentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Payment',
-            'without_amount' => true
+            'data_class'     => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Payment',
+            'without_amount' => true,
+            'with_submit'    => true
         ));
     }
 

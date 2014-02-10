@@ -22,6 +22,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Symfony\Component\Intl\Intl;
 
 class OpenMiamMiamExtension extends \Twig_Extension
 {
@@ -90,6 +91,7 @@ class OpenMiamMiamExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('format_consumer_ref', array($this, 'formatConsumerRef')),
+            new \Twig_SimpleFilter('format_currency_symbol', array($this, 'formatCurrencySymbol'))
         );
     }
 
@@ -105,7 +107,7 @@ class OpenMiamMiamExtension extends \Twig_Extension
             'get_producer_profile_image_path' => new \Twig_Function_Method($this, 'getProfileImageProducerPath'),
             'get_producer_presentation_image_path' => new \Twig_Function_Method($this, 'getPresentationImageProducerPath'),
             'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay'),
-            'get_product_availability' => new \Twig_Function_Method($this, 'getProductAvailability'),
+            'get_product_availability' => new \Twig_Function_Method($this, 'getProductAvailability')
         );
     }
 
@@ -119,6 +121,16 @@ class OpenMiamMiamExtension extends \Twig_Extension
     public function formatConsumerRef(User $user)
     {
         return $this->consumerManager->formatRef($user);
+    }
+
+    /**
+     * Format currency symbol
+     *
+     * @param $currency
+     */
+    public function formatCurrencySymbol($currency)
+    {
+        return Intl::getCurrencyBundle()->getCurrencySymbol($currency, 'en');
     }
 
     /**

@@ -144,6 +144,7 @@ class SalesOrder
      * @var array
      *
      * @ORM\OneToMany(targetEntity="PaymentAllocation", mappedBy="salesOrder", cascade="all", orphanRemoval=true)
+     *
      * @ORM\OrderBy({"date" = "ASC"})
      */
     private $paymentAllocations;
@@ -426,7 +427,7 @@ class SalesOrder
      */
     public function getLeftToPay()
     {
-        return -1*$this->credit;
+        return abs(min(0, $this->credit));
     }
 
     /**

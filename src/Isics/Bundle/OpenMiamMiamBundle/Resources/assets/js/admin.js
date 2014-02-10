@@ -479,3 +479,136 @@ OpenMiamMiam.SuperProducerAutocomplete = function() {
 
     return object;
 }();
+
+OpenMiamMiam.AllocatePaymentManager = function(){
+    var object = function(){
+        this.$form = $('.allocate-payment-table').parents('form:first');
+
+        this.$newPaymentContainer = this.$form.find('.new-payment');
+
+        this.$newPaymentAmountField = this.$newPaymentContainer.find(':input[name*="[amount]"]');
+
+        this.$newPaymentFields = this.$newPaymentContainer.find(':input');
+
+        this.$salesOrderRows = this.$form.find('table.sales-orders tr');
+
+        this.oldPaymentValue = this.$newPaymentAmountField.val();
+
+        this.initialize();
+    };
+
+    object.prototype = {
+        initialize: function(){
+            var that = this;
+
+            var $tdContainer = this.$newPaymentContainer.find('td.checkbox');
+
+            if ($tdContainer.size() > 0){
+
+                var $checkbox = $('<input type="checkbox" checked="checked" />');
+
+                $checkbox.click(function(){
+                    if ($(this).is(':checked')){
+                        that.$newPaymentFields.removeAttr('disabled');
+                        that.$newPaymentAmountField.val(that.oldPaymentValue);
+                    }
+                    else {
+                        that.$newPaymentFields.attr('disabled', 'disabled');
+                        that.oldPaymentValue = that.$newPaymentAmountField.val();
+                        that.$newPaymentAmountField.val(0);
+                    }
+                });
+
+                $tdContainer.append($checkbox);
+            }
+
+            if (this.$salesOrderRows.size() == 1) {
+                this.$salesOrderRows.find('td.checkbox').hide();
+            }
+        }
+    };
+
+    return object;
+}();
+
+OpenMiamMiam.AllocatePaymentModal = function(){
+    var object = function(container, reloadContainerUrl, formUrl, manageButton){
+        this.$container = $(container);
+        this.reloadContainerUrl = reloadContainerUrl;
+        this.formUrl = formUrl;
+        this.$manageButton= manageButton;
+
+        this.$dialog = $('#manage-payments-dialog');
+
+        this.initialize();
+    };
+
+    object.prototype = {
+        initialize: function(){
+            var clickFunction = function(e){
+                e.preventDefault();
+
+                $.ajax({
+                    url: this.formUrl,
+                    type: 'get',
+                    success: function(html){
+                        this.onPaymentFormSubmit(html);
+                        this.$dialog.modal('show');
+                    }.bind(this)
+                });
+            }.bind(this);
+
+            if (undefined !== this.$manageButton) {
+                this.$manageButton.click(clickFunction);
+            }
+            else {
+                this.$container.on('click', 'a.manage', clickFunction);
+            }
+        },
+
+        onPaymentFormSubmit: function(html) {
+            var that = this;
+
+            this.$dialog.html(html);
+            this.$dialog.find('.modal-footer .cancel')
+                .click(function(e){
+                    e.preventDefault();
+
+                    this.$dialog.modal('hide');
+                }.bind(this));
+
+            new OpenMiamMiam.AllocatePaymentManager();
+
+            this.$dialog.find('form').submit(function(e){
+                e.preventDefault();
+
+                var form = $(this);
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(html){
+                        this.$dialog.modal('hide');
+                        this.reloadContainer();
+                    }.bind(that),
+                    error: function(xhr){
+                        this.onPaymentFormSubmit(xhr.responseText);
+                    }.bind(that)
+                });
+            });
+        },
+
+        reloadContainer: function(){
+            $.ajax({
+                url: this.reloadContainerUrl,
+                type: 'get',
+                success: function(html){
+                    this.$container.html(html);
+                }.bind(this)
+            });
+        }
+    };
+
+    return object;
+}();

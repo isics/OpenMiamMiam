@@ -1,0 +1,23 @@
+{% set subscriptionCredit = subscription.credit %}
+
+{% if subscriptionCredit < 0 %}
+    {% set containerClass = 'text-danger' %}
+{% elseif hasMissingAllocations %}
+    {% set containerClass = 'text-warning' %}
+{%  else %}
+    {% set containerClass = 'text-success' %}
+{% endif %}
+
+<span class="{{ containerClass }}">
+    {% if subscriptionCredit < 0 %}-{% endif %}
+    {{ subscription.credit | abs | number_format_currency(open_miam_miam.currency) }}
+    {% if hasMissingAllocations %}
+        <div>
+            <span class="label label-danger">
+                <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+                {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
+            </span>
+        </div>
+    {% endif %}
+</span>
+

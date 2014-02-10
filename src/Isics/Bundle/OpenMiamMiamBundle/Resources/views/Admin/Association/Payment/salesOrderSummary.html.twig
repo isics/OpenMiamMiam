@@ -1,0 +1,47 @@
+{% set class = 'panel-success' %}
+{% if subscription.credit < 0 %}
+    {% set class = 'panel-danger' %}
+{% else %}
+    {% if hasMissingAllocations %}
+        {% set class = 'panel-warning' %}
+    {% endif %}
+{% endif %}
+
+<div class="panel {{ class }}">
+    <div class="panel-heading">
+        <h2 class="panel-title">{{ 'admin.association.sales_orders.form.left_to_pay'|trans }}</h2>
+    </div>
+    <div class="panel-body">
+        {% if subscription.credit < 0 %}
+            <p class="left-to-pay">
+                <strong>{{ subscription.leftToPay|number_format_currency(open_miam_miam.currency) }}</strong>
+                {% if subscription.credit != order.credit %}
+                    <br>{{ 'admin.association.sales_orders.form.left_to_pay_for_order'|trans({'%amount%': order.leftToPay|number_format_currency(open_miam_miam.currency)}) }}
+                {% endif %}
+            </p>
+            <a href="{{ path('open_miam_miam.admin.association.payment.manage_payments.from_sales_order', {'id': association.id, 'salesOrderId': order.id}) }}" class="manage btn btn-danger btn-block">
+                {{ 'admin.association.sales_orders.form.pay'|trans }}
+            </a>
+        {% elseif hasMissingAllocations %}
+            <p class="left-to-pay">
+                <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
+            </p>
+            <div class="missing-allocation-container">
+                <span class="label label-danger">
+                    <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+                    {{ 'admin.association.sales_orders.form.missing_allocation'|trans }}
+                </span>
+            </div>
+            <a href="{{ path('open_miam_miam.admin.association.payment.manage_payments.from_sales_order', {'id': association.id, 'salesOrderId': order.id}) }}" class="manage btn btn-warning btn-block">
+                {{ 'admin.association.sales_orders.form.allocate'|trans }}
+            </a>
+        {%  else %}
+            <p class="left-to-pay">
+                <strong>{{ '0'|number_format_currency(open_miam_miam.currency) }}</strong>
+            </p>
+            <a href="{{ path('open_miam_miam.admin.association.payment.manage_payments.from_sales_order', {'id': association.id, 'salesOrderId': order.id}) }}" class="manage btn btn-success btn-block">
+                {{ 'admin.association.sales_orders.form.add'|trans }}
+            </a>
+        {% endif %}
+    </div>
+</div>

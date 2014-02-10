@@ -176,18 +176,6 @@ open_miam_miam.admin.association.sales_order.add_artificial_product:
     pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/add/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRow }
 
-open_miam_miam.admin.association.sales_order.pay:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/pay
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:Pay }
-
-open_miam_miam.admin.association.sales_order.delete_payment_allocation:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/allocations/{paymentAllocationId}/delete
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:deletePaymentAllocation }
-
-open_miam_miam.admin.association.sales_order.allocate_payment:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments/{paymentId}/allocate
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:allocatePayment }
-
 open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
     pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/sales_order
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
@@ -245,25 +233,9 @@ open_miam_miam.admin.association.consumer.list_payments:
     pattern:  /associations/{id}/consumers/{consumerId}/payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments }
 
-open_miam_miam.admin.association.consumer.create_payment:
-    pattern:  /associations/{id}/consumers/{consumerId}/payments/new
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:createPayment }
-
-open_miam_miam.admin.association.consumer.edit_payment:
-    pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:editPayment }
-
 open_miam_miam.admin.association.consumer.delete_payment:
     pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/delete
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePayment }
-
-open_miam_miam.admin.association.consumer.delete_payment_allocation:
-    pattern: /associations/{id}/consumers/{consumerId}/payments/allocations/{paymentAllocationId}/delete
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:deletePaymentAllocation }
-
-open_miam_miam.admin.association.consumer.allocate_sales_order:
-    pattern:  /associations/{id}/consumers/{consumerId}/payments/{paymentId}/allocate_sales_order/{salesOrderId}
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:allocateSalesOrder }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:delete }
 
 open_miam_miam.admin.association.article.list:
     pattern:  /associations/{id}/articles
@@ -313,7 +285,32 @@ open_miam_miam.admin.association.manager.demote:
     pattern:  /associations/{id}/managers/demote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:demote }
 
+#
+# Admin Payment
+#
+open_miam_miam.admin.association.payment.manage_anonymous_payments:
+    pattern:  /associations/{id}/consumers/anonymous/manage_payments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:manageAnonymousPayments }
 
+open_miam_miam.admin.association.payment.manage_user_payments:
+    pattern:  /associations/{id}/consumers/{userId}/manage_payments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:manageUserPayments }
+
+open_miam_miam.admin.association.payment.manage_payments.from_sales_order:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/manage_payments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:manageSalesOrderPayments }
+
+open_miam_miam.admin.association.payment.anonymous_summary:
+    pattern:  /associations/{id}/consumers/anonymous/payments_summary
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:anonymousSummary }
+
+open_miam_miam.admin.association.payment.user_summary:
+    pattern:  /associations/{id}/consumers/{userId}/payments_summary
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:userSummary }
+
+open_miam_miam.admin.association.payment.sales_order_summary:
+    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments_summary
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:salesOrderSummary }
 
 #
 # Admin Producer

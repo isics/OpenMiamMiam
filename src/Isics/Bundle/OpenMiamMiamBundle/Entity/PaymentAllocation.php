@@ -49,7 +49,7 @@ class PaymentAllocation
     /**
      * @var payment
      *
-     * @ORM\ManyToOne(targetEntity="Payment")
+     * @ORM\ManyToOne(targetEntity="Payment", inversedBy="paymentAllocations")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=false, onDelete="RESTRICT")
      * })
@@ -59,7 +59,7 @@ class PaymentAllocation
     /**
      * @var salesOrder
      *
-     * @ORM\ManyToOne(targetEntity="SalesOrder")
+     * @ORM\ManyToOne(targetEntity="SalesOrder", inversedBy="paymentAllocations")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sales_order_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })

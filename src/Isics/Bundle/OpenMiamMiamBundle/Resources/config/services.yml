@@ -35,6 +35,8 @@ parameters:
     open_miam_miam.producer_sales_order_manager.class:     'Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerSalesOrderManager'
     open_miam_miam.payment_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager'
     open_miam_miam.newsletter_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
+    open_miam_miam.allocate_payment_manager.class:         'Isics\Bundle\OpenMiamMiamBundle\Manager\AllocatePaymentManager'
+    open_miam_miam.subscription_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SubscriptionManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -67,6 +69,9 @@ parameters:
     open_miam_miam.form.type.super_newsletter.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperNewsletterType'
     open_miam_miam.form.type.products_filter.class:                       'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductsFilterType'
     open_miam_miam.form.type.search.class:                                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SearchType'
+    open_miam_miam.form.type.allocate_payment.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentType'
+    open_miam_miam.form.type.payments_for_allocate_payment.class:         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentsForAllocatePaymentType'
+    open_miam_miam.form.type.sales_orders_for_allocate_payment.class:     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrdersForAllocatePaymentType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
@@ -80,6 +85,7 @@ parameters:
     open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Association\DepositWithdrawalExcel'
     open_miam_miam.sales_order_workflow.class: 'Isics\Bundle\OpenMiamMiamBundle\Workflow\SalesOrderWorkflow'
 
+    open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
 
 
 services:
@@ -288,7 +294,25 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_products_filter }
 
+    open_miam_miam.form.type.allocate_payment:
+        class: %open_miam_miam.form.type.allocate_payment.class%
+        arguments:
+            - @open_miam_miam.consumer_manager
+            - @open_miam_miam.payment_manager
+            - @open_miam_miam.repository.payment
+            - @open_miam_miam.repository.sales_order
+        tags:
+            - { name: form.type, alias: open_miam_miam_allocate_payment }
 
+    open_miam_miam.form.type.payments_for_allocate_payment:
+        class: %open_miam_miam.form.type.payments_for_allocate_payment.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_payments_for_allocate_payment }
+
+    open_miam_miam.form.type.sales_orders_for_allocate_payment:
+        class: %open_miam_miam.form.type.sales_orders_for_allocate_payment.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_sales_orders_for_allocate_payment }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -303,17 +327,17 @@ services:
         tags:
             - { name: twig.extension }
 
-    open_miam_miam.twig.sales_order_workflow_extension:
-        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\SalesOrderWorkflowExtension
-        arguments:
-            - @open_miam_miam.sales_order_workflow
-        tags:
-            - { name: twig.extension }
-
     open_miam_miam.twig.terms_of_service_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension
         arguments:
             - %open_miam_miam.terms_of_service_url%
+        tags:
+            - { name: twig.extension }
+
+    open_miam_miam.twig.payment_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\PaymentExtension
+        arguments:
+            - @open_miam_miam.payment_manager
         tags:
             - { name: twig.extension }
 
@@ -328,8 +352,6 @@ services:
             - @open_miam_miam.twig.user_formatter
         tags:
             - { name: twig.extension }
-
-
 
     # Menus
     open_miam_miam.menu_builder:
@@ -421,13 +443,40 @@ services:
 
     open_miam_miam.payment_manager:
         class: %open_miam_miam.payment_manager.class%
-        arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager]
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @open_miam_miam.activity_manager
+            - @open_miam_miam.subscription_manager
 
     open_miam_miam.newsletter_manager:
         class: %open_miam_miam.newsletter_manager.class%
         arguments: [@doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @mailer, %open_miam_miam.mailer%, @templating, @open_miam_miam.twig.user_extension]
 
+    open_miam_miam.allocate_payment_manager:
+        class: %open_miam_miam.allocate_payment_manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @open_miam_miam.payment_manager
 
+    open_miam_miam.subscription_manager:
+        class: %open_miam_miam.subscription_manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    # Repositories
+    open_miam_miam.repository.payment:
+        class:           Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\PaymentRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Payment"
+
+    open_miam_miam.repository.sales_order:
+        class:           Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:SalesOrder"
 
     # Models
     open_miam_miam.sales_order_statistics:
@@ -483,6 +532,13 @@ services:
     open_miam_miam.sales_order_workflow:
         class: %open_miam_miam.sales_order_workflow.class%
 
+    # Factory
+    open_miam_miam.factory.allocate_payment:
+        class: %open_miam_miam.factory.allocate_payment.class%
+        arguments:
+            - @open_miam_miam.repository.payment
+            - @open_miam_miam.repository.sales_order
+
     # Listeners
     open_miam_miam.listener.producer:
         class: Isics\Bundle\OpenMiamMiamBundle\Listener\ProducerListener
@@ -495,3 +551,4 @@ services:
             - @open_miam_miam.twig.user_formatter
         tags:
             - { name: jms_serializer.event_listener, event: serializer.post_serialize, class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User, format: json, method: onPostSerialize }
+

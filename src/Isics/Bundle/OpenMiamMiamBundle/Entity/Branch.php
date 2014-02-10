@@ -35,7 +35,7 @@ class Branch
     /**
      * @var Association
      *
-     * @ORM\ManyToOne(targetEntity="Association")
+     * @ORM\ManyToOne(targetEntity="Association", inversedBy="branches")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
@@ -149,7 +149,12 @@ class Branch
      */
     private $products;
 
-
+    /**
+     * @var Doctrine\Common\Collection\Collection $articles
+     *
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="branches")
+     */
+    private $articles;
 
     /**
      * Constructor
@@ -545,5 +550,21 @@ class Branch
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @param Doctrine\Common\Collection\Collection $articles
+     */
+    public function setArticles($articles)
+    {
+        $this->articles = $articles;
+    }
+
+    /**
+     * @return Doctrine\Common\Collection\Collection
+     */
+    public function getArticles()
+    {
+        return $this->articles;
     }
 }

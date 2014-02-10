@@ -110,4 +110,33 @@ class PaymentRepository extends EntityRepository
                 ->getQuery()
                 ->getResult();
     }
+
+    /**
+     * Returns true if user has at least one payment with rest
+     *
+     * @param Association $association
+     * @param User        $user
+     *
+     * @return bool
+     */
+    public function hasPaymentWithRestForUserAndAssociation(Association $association, User $user = null)
+    {
+        $qb = $this->createQueryBuilder('p')
+                ->select('COUNT(p.id) AS counter')
+                ->andWhere('p.association = :association')
+                ->setParameter('association', $association)
+                -> andWhere('p.rest > :minAmount')
+                ->setParameter('minAmount', 0)
+        ;
+
+        if (null === $user) {
+            $qb->andWhere($qb->expr()->isNull('p.user'));
+        } else {
+            $qb->andWhere('p.user = :user')->setParameter('user', $user);
+        }
+
+        $result = $qb->getQuery()->getSingleResult();
+
+        return $result['counter'];
+    }
 }
