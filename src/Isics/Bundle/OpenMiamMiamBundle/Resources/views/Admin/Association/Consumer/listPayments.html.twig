@@ -20,15 +20,6 @@
         </div>
     </div>
 
-    {% if consumer is defined %}
-        <div class="col-md-12">
-            <a href="{{ path('open_miam_miam.admin.association.consumer.create_payment', {'id': association.id, 'consumerId': consumer.id}) }}" class="btn btn-primary btn-lg pull-right">
-                <span class="glyphicon glyphicon-plus-sign"></span>
-                {{ 'admin.association.consumers.payments.list.create'|trans }}
-            </a>
-        </div>
-    {% endif %}
-
     {% if payments|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-sales-orders">
@@ -52,10 +43,7 @@
                         <td>{{ payment.rest|number_format_currency(open_miam_miam.currency) }}</td>
                         {% if consumer is defined %}
                             <td>
-                                <a href="{{ path('open_miam_miam.admin.association.consumer.edit_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.association.consumers.payments.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
-                                {% if payment.rest == payment.amount %}
-                                    <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.consumers.payments.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
-                                {% endif  %}
+                                <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete_payment', {'id': association.id, 'consumerId': consumer.id, 'paymentId': payment.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.consumers.payments.list.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
                             </td>
                         {% endif %}
                     </tr>

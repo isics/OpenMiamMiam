@@ -41,22 +41,8 @@ class PaymentExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'has_payment_with_rest_for_association' => new \Twig_Function_Method($this, 'hasPaymentWithRestForAssociation'),
-            'has_missing_allocations'               => new \Twig_Function_Method($this, 'hasMissingAllocations'),
+            'has_missing_allocations' => new \Twig_Function_Method($this, 'hasMissingAllocations'),
         );
-    }
-
-    /**
-     * Returns true if user has at least one payment with rest
-     *
-     * @param Association $association
-     * @param User        $user
-     *
-     * @return bool
-     */
-    public function hasPaymentWithRestForAssociation(Association $association, User $user = null)
-    {
-        return $this->paymentManager->hasPaymentWithRestForAssociation($association, $user);
     }
 
     /**

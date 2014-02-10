@@ -266,21 +266,6 @@ class PaymentManager
     }
 
     /**
-     * Returns true if user has at least one payment with rest
-     *
-     * @param Association $association
-     * @param User        $user
-     *
-     * @return bool
-     */
-    public function hasPaymentWithRestForAssociation(Association $association, User $user = null)
-    {
-        return $this->entityManager
-                ->getRepository('')
-                ->hasPaymentWithRestForUserAndAssociation($association, $user);
-    }
-
-    /**
      * Return true if user (or anonymous) has missing allocations
      *
      * @param Association $association

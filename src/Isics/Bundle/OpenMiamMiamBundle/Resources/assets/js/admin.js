@@ -508,7 +508,6 @@ OpenMiamMiam.AllocatePaymentManager = function(){
                 var $checkbox = $('<input type="checkbox" checked="checked" />');
 
                 $checkbox.click(function(){
-                    console.log(that.$newPaymentFields);
                     if ($(this).is(':checked')){
                         that.$newPaymentFields.removeAttr('disabled');
                         that.$newPaymentAmountField.val(that.oldPaymentValue);

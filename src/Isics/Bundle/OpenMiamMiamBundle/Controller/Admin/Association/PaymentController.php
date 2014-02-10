@@ -3,6 +3,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AllocatePayment;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
@@ -14,6 +15,35 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PaymentController extends BaseController
 {
+    /**
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function secureConsumer(Association $association, User $consumer)
+    {
+        if (null === $this->get('open_miam_miam.consumer_manager')->getSubscription($association, $consumer)) {
+            throw $this->createNotFoundException('Invalid consumer for association');
+        }
+    }
+
+    /**
+     * @param Association $association
+     * @param User $consumer
+     * @param Payment $payment
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function securePayment(Association $association, User $consumer, Payment $payment)
+    {
+        $this->secureConsumer($association, $consumer);
+        if ($payment->getAssociation()->getId() != $association->getId()
+            || $payment->getUser()->getId() != $consumer->getId()) {
+            throw $this->createNotFoundException('Invalid payment for association');
+        }
+    }
+
     /**
      * Anonymous payments form
      *
@@ -241,6 +271,35 @@ class PaymentController extends BaseController
             'subscription'          => $subscription,
             'order'                 => $salesOrder,
             'hasMissingAllocations' => $hasMissingAllocations
+        ));
+    }
+
+    /**
+     * Deletes consumer payment
+     *
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("payment", class="IsicsOpenMiamMiamBundle:Payment", options={"mapping": {"paymentId": "id"}})
+     *
+     * @param Association $association
+     * @param User $consumer
+     * @param Payment $payment
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function deleteAction(Association $association, User $consumer, Payment $payment)
+    {
+        $this->secure($association);
+        $this->securePayment($association, $consumer, $payment);
+
+        $this->get('open_miam_miam.allocate_payment_manager')->deletePaymentAndAllocations($payment);
+
+        $this->get('session')->getFlashBag()->add('notice', 'admin.producer.consumers.message.payment_deleted');
+
+        return $this->redirect($this->generateUrl(
+            'open_miam_miam.admin.association.consumer.list_payments',
+            array('id' => $association->getId(), 'consumerId' => $consumer->getId())
         ));
     }
 }

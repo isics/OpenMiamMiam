@@ -3,6 +3,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AllocatePayment;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
@@ -119,5 +120,24 @@ class AllocatePaymentManager
                 }
             }
         }
+    }
+
+    /**
+     * Delete payment and all related allocations
+     *
+     * @param Payment $payment
+     */
+    public function deletePaymentAndAllocations(Payment $payment)
+    {
+        foreach ($payment->getPaymentAllocations() as $paymentAllocation) {
+            /** @var SalesOrder $salesOrder */
+            $salesOrder = $paymentAllocation->getSalesOrder();
+
+            $salesOrder->setCredit($salesOrder->getCredit() - $paymentAllocation->getAmount());
+
+            $this->entityManager->remove($paymentAllocation);
+        }
+
+        $this->paymentManager->delete($payment);
     }
 }
