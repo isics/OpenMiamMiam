@@ -36,7 +36,7 @@
                             <td>{{ user.city }} ({{ user.zipcode }})</td>
                             <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
                             <td>{% if user.phoneNumber %}{{ user.phoneNumber }}{% else %}-{% endif %}</td>
-                            <td class="consumer-credit-container"
+                            <td class="consumer-credit-container nowrap"
                                 data-manage-url="{{ url('open_miam_miam.admin.association.payment.manage_user_payments', {
                                     'id':     association.id,
                                     'userId': user.id
@@ -50,7 +50,7 @@
                                     'userId': user.id
                                 })) }}
                             </td>
-                            <td>
+                            <td class="nowrap">
                                 <a href="{{ path('open_miam_miam.admin.association.payment.manage_user_payments', {
                                     'id': association.id,
                                     'userId': user.id
@@ -70,7 +70,7 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td class="consumer-credit-container"
+                            <td class="consumer-credit-container nowrap"
                                 data-manage-url="{{ url('open_miam_miam.admin.association.payment.manage_anonymous_payments', {
                                     'id':     association.id
                                 }) }}"
@@ -81,7 +81,7 @@
                                     'id': association.id
                                 })) }}
                             </td>
-                            <td>
+                            <td class="nowrap">
                                 <a href="{{ path('open_miam_miam.admin.association.payment.manage_anonymous_payments', {
                                     'id': association.id
                                 }) }}" class="btn btn-primary btn-xs manage" title="{{ 'admin.association.consumers.payments.manage' | trans }}">
