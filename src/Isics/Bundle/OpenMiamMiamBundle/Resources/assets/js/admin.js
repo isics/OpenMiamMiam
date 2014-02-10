@@ -570,11 +570,7 @@ OpenMiamMiam.AllocatePaymentModal = function(){
             var that = this;
 
             this.$dialog.html(html);
-            this.$dialog.find('.modal-footer .save').css({
-                'text-align': 'center'
-            });
             this.$dialog.find('.modal-footer .cancel')
-                .addClass('btn btn-default')
                 .click(function(e){
                     e.preventDefault();
 

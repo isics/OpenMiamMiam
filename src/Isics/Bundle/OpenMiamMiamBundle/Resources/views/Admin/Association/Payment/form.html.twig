@@ -118,18 +118,24 @@
         {{ form_rest(form) }}
 
         <div class="modal-footer">
-            <a href="{{ redirectRoute }}" class="cancel pull-right">{{ 'admin.cancel'|trans }}</a>
-            <div class="save">
-                <button type="submit" class="btn btn-primary btn-lg" >
-                    <span class="glyphicon glyphicon-floppy-save"></span>
-                    {% if subscription.leftToPay > 0 %}
-                        {{ 'admin.association.consumers.payments.form.action.settle'|trans }}
-                    {% elseif hasMissingAllocations %}
-                        {{ 'admin.association.consumers.payments.form.action.allocate'|trans }}
-                    {% else %}
-                        {{ 'admin.association.consumers.payments.form.action.add_payment'|trans }}
-                    {% endif %}
-                </button>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4 text-center">
+                    <button type="submit" class="btn btn-success btn-lg" >
+                        {% if subscription.leftToPay > 0 %}
+                            {{ 'admin.association.consumers.payments.form.action.settle'|trans }}
+                        {% elseif hasMissingAllocations %}
+                            {{ 'admin.association.consumers.payments.form.action.allocate'|trans }}
+                        {% else %}
+                            {{ 'admin.association.consumers.payments.form.action.add_payment'|trans }}
+                        {% endif %}
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <a href="{{ redirectRoute }}" class="cancel btn btn-default pull-right">
+                        {{ 'admin.cancel'|trans }}
+                    </a>
+                </div>
             </div>
         </div>
         {{ form_end(form) }}
