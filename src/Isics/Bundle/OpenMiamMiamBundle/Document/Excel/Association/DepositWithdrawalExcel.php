@@ -665,7 +665,7 @@ class DepositWithdrawalExcel
         $this->writeCurrencyNumber(
             $sheet,
             $this->columns['total'].$line,
-            '='.$this->columns['unitPrice'].$line.'*'.$this->columns['quantity'].$line
+            $product['product_total']
         );
         $sheet->getStyle(
             $this->columns['total'].$line
