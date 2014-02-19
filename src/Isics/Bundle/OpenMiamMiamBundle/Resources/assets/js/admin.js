@@ -570,6 +570,13 @@ OpenMiamMiam.AllocatePaymentModal = function(){
             var that = this;
 
             this.$dialog.html(html);
+            var $form = this.$dialog.find('form');
+            this.$dialog.find('.modal-footer :submit')
+                .click(function(e){
+                    e.preventDefault();
+
+                    $form.submit();
+                });
             this.$dialog.find('.modal-footer .cancel')
                 .click(function(e){
                     e.preventDefault();
