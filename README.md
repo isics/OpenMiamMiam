@@ -1,4 +1,4 @@
-OpenMiamMiam [![Build Status](https://secure.travis-ci.org/twbs/bootstrap.png)](https://travis-ci.org/isics/OpenMiamMiam)
+OpenMiamMiam [![Build Status](https://secure.travis-ci.org/isics/OpenMiamMiam.png)](https://travis-ci.org/isics/OpenMiamMiam)
 ============
 
 OpenMiamMiam is an open source pre-order platform designed for collectives points of sale.
