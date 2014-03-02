@@ -4,6 +4,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AllocatePayment;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
@@ -130,14 +131,34 @@ class AllocatePaymentManager
     public function deletePaymentAndAllocations(Payment $payment)
     {
         foreach ($payment->getPaymentAllocations() as $paymentAllocation) {
-            /** @var SalesOrder $salesOrder */
-            $salesOrder = $paymentAllocation->getSalesOrder();
-
-            $salesOrder->setCredit($salesOrder->getCredit() - $paymentAllocation->getAmount());
-
-            $this->entityManager->remove($paymentAllocation);
+            $this->deletePaymentAllocation($paymentAllocation, false);
         }
 
         $this->paymentManager->delete($payment);
+
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Delete a payment's allocation
+     *
+     * @param PaymentAllocation $paymentAllocation Payment's allocation
+     */
+    public function deletePaymentAllocation(PaymentAllocation $paymentAllocation, $withFlush = true)
+    {
+        $salesOrder = $paymentAllocation->getSalesOrder();
+        $payment = $paymentAllocation->getPayment();
+
+        $salesOrder->setCredit($salesOrder->getCredit() - $paymentAllocation->getAmount());
+        $payment->setRest($payment->getRest() + $paymentAllocation->getAmount());
+
+        $this->entityManager->persist($salesOrder);
+        $this->entityManager->persist($payment);
+
+        $this->entityManager->remove($paymentAllocation);
+
+        if ($withFlush) {
+            $this->entityManager->flush();
+        }
     }
 }

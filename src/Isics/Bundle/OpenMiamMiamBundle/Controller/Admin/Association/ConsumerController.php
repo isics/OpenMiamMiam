@@ -22,12 +22,13 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConsumerController extends BaseController
 {
     /**
      * @param Association $association
-     * @param User $consumer
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -41,7 +42,7 @@ class ConsumerController extends BaseController
     /**
      * List consumers
      *
-     * @param Request $request
+     * @param Request     $request
      * @param Association $association
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -54,19 +55,19 @@ class ConsumerController extends BaseController
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
-                    ->getForAssociationQueryBuilder($association)
-                    ->getQuery()
+                ->getForAssociationQueryBuilder($association)
+                ->getQuery()
         ));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
 
         try {
             $pagerfanta->setCurrentPage($request->query->get('page', 1));
-        } catch(NotValidCurrentPageException $e) {
+        } catch (NotValidCurrentPageException $e) {
             throw $this->createNotFoundException();
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list.html.twig', array(
-            'association'=> $association,
+            'association'   => $association,
             'subscriptions' => $pagerfanta
         ));
     }
@@ -74,7 +75,7 @@ class ConsumerController extends BaseController
     /**
      * List anonymous payments
      *
-     * @param Request $request
+     * @param Request     $request
      * @param Association $association
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -86,20 +87,20 @@ class ConsumerController extends BaseController
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
-                    ->getForConsumerAndAssociationQueryBuilder($association)
-                    ->getQuery()
+                ->getForConsumerAndAssociationQueryBuilder($association)
+                ->getQuery()
         ));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));
 
         try {
             $pagerfanta->setCurrentPage($request->query->get('page', 1));
-        } catch(NotValidCurrentPageException $e) {
+        } catch (NotValidCurrentPageException $e) {
             throw $this->createNotFoundException();
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments.html.twig', array(
-            'association'=> $association,
-            'payments' => $pagerfanta
+            'association' => $association,
+            'payments'    => $pagerfanta
         ));
     }
 
@@ -108,9 +109,9 @@ class ConsumerController extends BaseController
      *
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      *
-     * @param Request $request
+     * @param Request     $request
      * @param Association $association
-     * @param User $consumer
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return Response
@@ -122,21 +123,43 @@ class ConsumerController extends BaseController
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
-                    ->getForConsumerAndAssociationQueryBuilder($association, $consumer)
-                    ->getQuery()
+                ->getForConsumerAndAssociationQueryBuilder($association, $consumer)
+                ->getQuery()
         ));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));
 
         try {
             $pagerfanta->setCurrentPage($request->query->get('page', 1));
-        } catch(NotValidCurrentPageException $e) {
+        } catch (NotValidCurrentPageException $e) {
             throw $this->createNotFoundException();
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments.html.twig', array(
-            'association'=> $association,
-            'consumer' => $consumer,
-            'payments' => $pagerfanta
+            'association' => $association,
+            'consumer'    => $consumer,
+            'payments'    => $pagerfanta
+        ));
+    }
+
+    /**
+     * List allocations for payment
+     *
+     * @ParamConverter("payment", class="IsicsOpenMiamMiamBundle:Payment", options={"mapping": {"paymentId": "id"}})
+     *
+     * @param Association $association Association
+     * @param Payment     $payment     Payment
+     *
+     * @return Response
+     */
+    public function listPaymentAllocationsAction(Association $association, Payment $payment)
+    {
+        $this->secure($association);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPaymentAllocations.html.twig', array(
+            'association' => $association,
+            'payment'     => $payment,
+            'allocations' => $payment->getPaymentAllocations(),
+            'consumer'    => $payment->getUser()
         ));
     }
 }
