@@ -78,13 +78,6 @@ class AllocatePaymentType extends AbstractType
         $newPayment->setAmount($due);
         $newPayment->setType(Payment::TYPE_CHEQUE);
 
-        $builder->add('new_payment', 'open_miam_miam_payment', array(
-            'without_amount' => false,
-            'with_submit'    => false,
-            'property_path'  => 'payments[__new_payment__]',
-            'data'           => $newPayment
-        ));
-
         if (count($salesOrders)) {
             if (count($payments)) {
                 $builder->add('payments', 'open_miam_miam_payments_for_allocate_payment', array(
@@ -108,6 +101,14 @@ class AllocatePaymentType extends AbstractType
                 'data'          => $salesOrders
             ));
         }
+
+        // Keep after $builder->add('payments') to avoid a mapping issue
+        $builder->add('new_payment', 'open_miam_miam_payment', array(
+            'without_amount' => false,
+            'with_submit'    => false,
+            'property_path'  => 'payments[__new_payment__]',
+            'data'           => $newPayment
+        ));
     }
 
     /**

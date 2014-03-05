@@ -74,7 +74,7 @@ class PaymentController extends BaseController
         $response = new Response(null, 200);
 
         if ($request->isMethod('POST')) {
-            if ($this->handlePaymentsAllocationForm($request, $form, $allocatePayment)) {
+            if ($this->handlePaymentsAllocationForm($request, $form)) {
                 return $this->redirect($redirectRoute);
             } else {
                 $response->setStatusCode(400);
@@ -127,7 +127,7 @@ class PaymentController extends BaseController
         $response = new Response(null, 200);
 
         if ($request->isMethod('POST')) {
-            if ($this->handlePaymentsAllocationForm($request, $form, $allocatePayment)) {
+            if ($this->handlePaymentsAllocationForm($request, $form)) {
                 return $this->redirect($redirectRoute);
             } else {
                 $response->setStatusCode(400);
@@ -179,11 +179,10 @@ class PaymentController extends BaseController
      *
      * @param Request         $request
      * @param Form            $form
-     * @param AllocatePayment $allocatePayment
      *
      * @return bool
      */
-    protected function handlePaymentsAllocationForm(Request $request, Form $form, AllocatePayment $allocatePayment)
+    protected function handlePaymentsAllocationForm(Request $request, Form $form)
     {
         $form->handleRequest($request);
 
@@ -191,6 +190,7 @@ class PaymentController extends BaseController
             try {
                 $this->get('open_miam_miam.allocate_payment_manager')
                     ->process($form->getData());
+              die('OK');
 
                 return true;
             } catch (\Exception $e) {
