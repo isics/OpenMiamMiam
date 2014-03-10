@@ -21,7 +21,7 @@
                 <a href="{{ path('open_miam_miam.article.show', {'articleSlug': article.slug, 'articleId': article.id}) }}" class="list-group-item">
                     <span class="badge">{{ article.publishedAt|format_date(null, null, null, constant('IntlDateFormatter::SHORT')) }}</span>
                     <h2 class="list-group-item-heading">{{ article.title }}</h2>
-                    <p class="list-group-item-text">{{ article.body|striptags|truncate(250) }}</p>
+                    <p class="list-group-item-text">{{ article.body|striptags|truncate(250,true)|raw }}</p>
                 </a>
             {% endfor %}
         </div>
