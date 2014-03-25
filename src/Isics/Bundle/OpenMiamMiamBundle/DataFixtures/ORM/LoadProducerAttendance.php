@@ -24,20 +24,20 @@ class LoadProducerAttendanceData extends AbstractFixture implements OrderedFixtu
     public function load(ObjectManager $manager)
     {
         $producerAttendance = new ProducerAttendance();
-        $producerAttendance->setProducer($this->getReference('Beth Rave'));
-        $producerAttendance->setBranchOccurrence($this->getReference('branch occurrence Branch 1 +1 week'));
+        $producerAttendance->setProducer($this->getReference('producer.beth_rave'));
+        $producerAttendance->setBranchOccurrence($this->getReference('branch_occurrence.branch1_+1 week'));
         $producerAttendance->setIsAttendee(true);
         $manager->persist($producerAttendance);
 
         $producerAttendance = new ProducerAttendance();
-        $producerAttendance->setProducer($this->getReference('Elsa Dorsa'));
-        $producerAttendance->setBranchOccurrence($this->getReference('branch occurrence Branch 1 +1 week'));
+        $producerAttendance->setProducer($this->getReference('producer.elsa_dorsa'));
+        $producerAttendance->setBranchOccurrence($this->getReference('branch_occurrence.branch1_+1 week'));
         $producerAttendance->setIsAttendee(true);
         $manager->persist($producerAttendance);
 
         $producerAttendance = new ProducerAttendance();
-        $producerAttendance->setProducer($this->getReference('Romeo Frigo'));
-        $producerAttendance->setBranchOccurrence($this->getReference('branch occurrence Branch 1 +1 week'));
+        $producerAttendance->setProducer($this->getReference('producer.romeo_frigo'));
+        $producerAttendance->setBranchOccurrence($this->getReference('branch_occurrence.branch1_+1 week'));
         $producerAttendance->setIsAttendee(true);
         $manager->persist($producerAttendance);
 

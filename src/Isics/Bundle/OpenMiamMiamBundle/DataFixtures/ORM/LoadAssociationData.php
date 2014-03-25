@@ -15,16 +15,39 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class LoadAssociationData extends AbstractFixture implements OrderedFixtureInterface
+class LoadAssociationData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+        $this->translator = $this->container->get('translator');
+        $this->translator->setLocale($this->container->getParameter('locale'));
+    }
+
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
         $association = new Association();
-        $association->setName('Friends of organic food');
+        $association->setName($this->translator->trans('association.friends_of_organic_food', array(), 'fixtures'));
         $association->setClosingDelay(86400);
         $association->setOpeningDelay(86400);
         $association->setDefaultCommission(10);
