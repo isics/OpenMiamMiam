@@ -124,6 +124,20 @@ class User extends BaseUser
     private $activityLogs;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection $comments
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Comment", mappedBy="user")
+     */
+    private $comments;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection $writtenComments
+     * 
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Comment", mappedBy="writer")
+     */
+    private $writtenComments;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -369,5 +383,193 @@ class User extends BaseUser
     public function getSalesOrders()
     {
         return $this->salesOrders;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add salesOrders
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder $salesOrders
+     * @return User
+     */
+    public function addSalesOrder(\Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder $salesOrders)
+    {
+        $this->salesOrders[] = $salesOrders;
+    
+        return $this;
+    }
+
+    /**
+     * Remove salesOrders
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder $salesOrders
+     */
+    public function removeSalesOrder(\Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder $salesOrders)
+    {
+        $this->salesOrders->removeElement($salesOrders);
+    }
+
+    /**
+     * Add subscriptions
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription $subscriptions
+     * @return User
+     */
+    public function addSubscription(\Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription $subscriptions)
+    {
+        $this->subscriptions[] = $subscriptions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove subscriptions
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription $subscriptions
+     */
+    public function removeSubscription(\Isics\Bundle\OpenMiamMiamBundle\Entity\Subscription $subscriptions)
+    {
+        $this->subscriptions->removeElement($subscriptions);
+    }
+
+    /**
+     * Add payments
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Payment $payments
+     * @return User
+     */
+    public function addPayment(\Isics\Bundle\OpenMiamMiamBundle\Entity\Payment $payments)
+    {
+        $this->payments[] = $payments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove payments
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Payment $payments
+     */
+    public function removePayment(\Isics\Bundle\OpenMiamMiamBundle\Entity\Payment $payments)
+    {
+        $this->payments->removeElement($payments);
+    }
+
+    /**
+     * Get payments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
+     * Add activityLogs
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Activity $activityLogs
+     * @return User
+     */
+    public function addActivityLog(\Isics\Bundle\OpenMiamMiamBundle\Entity\Activity $activityLogs)
+    {
+        $this->activityLogs[] = $activityLogs;
+    
+        return $this;
+    }
+
+    /**
+     * Remove activityLogs
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Activity $activityLogs
+     */
+    public function removeActivityLog(\Isics\Bundle\OpenMiamMiamBundle\Entity\Activity $activityLogs)
+    {
+        $this->activityLogs->removeElement($activityLogs);
+    }
+
+    /**
+     * Get activityLogs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getActivityLogs()
+    {
+        return $this->activityLogs;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $comments
+     * @return User
+     */
+    public function addComment(\Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add writtenComments
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $writtenComments
+     * @return User
+     */
+    public function addWrittenComment(\Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $writtenComments)
+    {
+        $this->writtenComments[] = $writtenComments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove writtenComments
+     *
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $writtenComments
+     */
+    public function removeWrittenComment(\Isics\Bundle\OpenMiamMiamBundle\Entity\Comment $writtenComments)
+    {
+        $this->writtenComments->removeElement($writtenComments);
+    }
+
+    /**
+     * Get writtenComments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getWrittenComments()
+    {
+        return $this->writtenComments;
     }
 }
