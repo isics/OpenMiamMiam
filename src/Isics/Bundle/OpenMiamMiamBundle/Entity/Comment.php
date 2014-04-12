@@ -54,7 +54,7 @@ class Comment
     /**
      * @var User $user
      * 
-     * @ORM\ManyToOne(targetEntity="Isics\Bundle\openMiamMiamUserBundle\Entity\User", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="comments")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      * })
@@ -64,7 +64,7 @@ class Comment
     /**
      * @var User $writer
      * 
-     * @ORM\ManyToOne(targetEntity="Isics\Bundle\openMiamMiamUserBundle\Entity\User", inversedBy="writtenComments")
+     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="writtenComments")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      * })
