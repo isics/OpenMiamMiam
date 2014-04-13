@@ -752,9 +752,10 @@ error.calendar.invalid_producer_attendance: "Présence invalide"
 error.product.invalid_branches:    "Au moins un comptoir est invalide"
 error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
 
-error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
-error.cart.product_unavailable:           "Produit indisponible"
-error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%."
+error.cart.product_unavailable:           "Produit indisponible."
+error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)."
+error.cart.decimal_quantity_not_allowed:  "Impossible de commander une quantité décimale pour ce produit."
 
 error.artificial_product.invalid: "Les deux champs doivent être renseignés"
 

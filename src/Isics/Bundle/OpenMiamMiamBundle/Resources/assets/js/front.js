@@ -146,7 +146,17 @@ OpenMiamMiam.CartAddForm = function() {
                         },
                         error: function(jqXHR) {
                             pending--;
-                            alert(jqXHR.responseText);
+                            var error = $.parseJSON(jqXHR.responseText);
+
+                            var message = error.message;
+
+                            message += "\n\n";
+
+                            $.each(error.errors, function(index, element){
+                                message += element + "\n";
+                            });
+
+                            alert(message);
                         },
                         complete: function() {
                             form.find(':input,:submit').prop('disabled', false);
