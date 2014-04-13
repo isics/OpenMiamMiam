@@ -25,3 +25,6 @@ monolog:
             type:  stream
             path:  %kernel.logs_dir%/%kernel.environment%.log
             level: debug
+
+isics_open_miam_miam_user:
+    last_order_nb_days_considering_customer: 180
