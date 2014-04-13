@@ -897,7 +897,7 @@ class DepositWithdrawalExcel
         if (array_key_exists($producerId, $this->producerTabs)) {
             $illegal = array('.', '?', '!', '*', '/', '[', ']', '\'', ':');
 
-            return str_replace($illegal, ' ', $this->producerTabs[$producerId]['tab_name']);
+            return substr(str_replace($illegal, ' ', $this->producerTabs[$producerId]['tab_name']), 0, 31);
         }
 
         return null;
