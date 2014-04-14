@@ -64,7 +64,21 @@ class SalesOrderController extends BaseController
             || $row->getProducer()->getId() !== $producer->getId()
             || $order->getId() !== $row->getSalesOrder()->getId()) {
 
-            throw new $this->createNotFoundException('Invalid sales order row for producer');
+            throw $this->createNotFoundException('Invalid sales order row for producer');
+        }
+    }
+
+    /**
+     * Ensure sales order is open to ad product or edit content
+     *
+     * @param SalesOrder $salesOrder
+     *
+     * @throw NotFoundHttpException
+     */
+    public function ensureSalesOrderIsOpen(SalesOrder $salesOrder)
+    {
+        if ($this->get('open_miam_miam.sales_order_manager')->isLocked($salesOrder)) {
+            throw $this->createNotFoundException('Sales order is locked');
         }
     }
 
@@ -81,7 +95,8 @@ class SalesOrderController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list.html.twig', array(
             'producer' => $producer,
-            'salesOrders' => $this->get('open_miam_miam.producer_sales_order_manager')->getForNextBranchOccurrences($producer)
+            'salesOrders' => $this->get('open_miam_miam.producer_sales_order_manager')->getForNextBranchOccurrences($producer),
+            'historySalesOrders' => $this->get('open_miam_miam.producer_sales_order_manager')->getForLastBranchOccurrences($producer)
         ));
     }
 
@@ -111,10 +126,14 @@ class SalesOrderController extends BaseController
 
         $producerSalesOrder = new ProducerSalesOrder($producer, $order);
 
+        // Should we have to remove form controls ?
+        $isLocked = $this->get('open_miam_miam.sales_order_manager')->isLocked($order);
+
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.producer_sales_order'),
             new ProducerSalesOrder($producer, $order),
             array(
+                'locked' => $isLocked,
                 'action' => $this->generateUrl(
                     'open_miam_miam.admin.producer.sales_order.edit',
                     array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
@@ -123,7 +142,7 @@ class SalesOrderController extends BaseController
             )
         );
 
-        if ($request->isMethod('POST')) {
+        if (!$isLocked && $request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $user = $this->get('security.context')->getToken()->getUser();
@@ -152,7 +171,8 @@ class SalesOrderController extends BaseController
             return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:editionFormFields.html.twig', array(
                 'producer' => $producer,
                 'producerSalesOrder' => $producerSalesOrder,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'mustRemoveFormControls' => $isLocked
             ));
         }
 
@@ -160,7 +180,8 @@ class SalesOrderController extends BaseController
             'producer' => $producer,
             'producerSalesOrder' => $producerSalesOrder,
             'form' => $form->createView(),
-            'activities' => $this->get('open_miam_miam.producer_sales_order_manager')->getActivities($producerSalesOrder)
+            'activities' => $this->get('open_miam_miam.producer_sales_order_manager')->getActivities($producerSalesOrder),
+            'mustRemoveFormControls' => $isLocked
         ));
     }
 
@@ -182,6 +203,7 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrderRow($producer, $order, $row);
+        $this->ensureSalesOrderIsOpen($order);
 
         $order = $row->getSalesOrder();
         $user = $this->get('security.context')->getToken()->getUser();
@@ -223,6 +245,7 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrder($producer, $order);
+        $this->ensureSalesOrderIsOpen($order);
 
         $availability = $this->get('open_miam_miam.branch_occurrence_manager')
                 ->getProductAvailability($order->getBranchOccurrence(), $product);
@@ -276,6 +299,7 @@ class SalesOrderController extends BaseController
     {
         $this->secure($producer);
         $this->secureSalesOrder($producer, $order);
+        $this->ensureSalesOrderIsOpen($order);
 
         $filterForm = $this->createForm(
             $this->get('open_miam_miam.form.type.products_filter'),

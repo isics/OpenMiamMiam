@@ -22,8 +22,17 @@ class ProducerSalesOrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('salesOrderRows','collection', array('type' => 'open_miam_miam_sales_order_row'))
-                ->add('save', 'submit');
+        $builder
+            ->add('salesOrderRows','collection', array(
+                'type'    => 'open_miam_miam_sales_order_row',
+                'options' => array(
+                   'locked' => (bool)$options['locked']
+                )
+            ));
+
+        if (!$options['locked']) {
+            $builder->add('save', 'submit');
+        }
     }
 
     /**
@@ -31,7 +40,10 @@ class ProducerSalesOrderType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder'));
+        $resolver->setDefaults(array(
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder',
+            'locked'     => false
+        ));
     }
 
     /**

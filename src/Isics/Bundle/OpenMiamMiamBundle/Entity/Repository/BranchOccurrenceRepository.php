@@ -47,6 +47,7 @@ class BranchOccurrenceRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
     /**
      * Finds next occurrence for a branch which is not closed
      *
@@ -68,6 +69,31 @@ class BranchOccurrenceRepository extends EntityRepository
                 ->setMaxResults(1)
                 ->setParameter('branch', $branch)
                 ->setParameter('date', $date)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
+
+    /**
+     * Finds last occurrence for a branch
+     *
+     * @param Branch $branch Branch
+     *
+     * @return BranchOccurrence|null
+     */
+    public function findOneLastForBranch(Branch $branch)
+    {
+        $date = new \DateTime();
+        $date->sub(new \DateInterval(
+            sprintf('PT%sS', $branch->getAssociation()->getOpeningDelay())
+        ));
+
+        return $this->createQueryBuilder('bo')
+                ->where('bo.branch = :branch')
+                ->setParameter('branch', $branch)
+                ->andWhere('bo.end < :date')
+                ->setParameter('date', $date)
+                ->orderBy('bo.begin', 'DESC')
+                ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
     }

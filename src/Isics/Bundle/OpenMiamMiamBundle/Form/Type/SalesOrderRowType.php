@@ -25,7 +25,8 @@ class SalesOrderRowType extends AbstractType implements EventSubscriberInterface
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('quantity', 'text')->addEventSubscriber($this);
+        $builder
+            ->addEventSubscriber($this);
     }
 
     /**
@@ -44,9 +45,16 @@ class SalesOrderRowType extends AbstractType implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (null !== $data && (null === $data->getUnitPrice() || .0 === (float)$data->getUnitPrice())) {
-            $form->add('total', 'text');
+        if (!$form->getConfig()->getOption('locked')) {
+
+            $form->add('quantity', 'number');
+
+            if (null !== $data && (null === $data->getUnitPrice() || .0 === (float)$data->getUnitPrice())) {
+                $form->add('total', 'number');
+            }
         }
+
+
     }
 
     /**
@@ -54,7 +62,10 @@ class SalesOrderRowType extends AbstractType implements EventSubscriberInterface
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow'));
+        $resolver->setDefaults(array(
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow',
+            'locked'     => false
+        ));
     }
 
     /**
