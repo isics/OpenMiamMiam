@@ -10,8 +10,18 @@ default:
         class: Isics\Bundle\OpenMiamMiamBundle\Behat\FeatureContext
     extensions:
         Behat\MinkExtension\Extension:
-            base_url:  'your_base_url'
+            base_url:  'http://localhost/web/app_test.php'
             goutte:    ~
         Behat\Symfony2Extension\Extension: ~
     paths:
         features: src/Isics/Bundle/OpenMiamMiamBundle/Resources
+        bootstrap: %behat.paths.features%/bootstrap
+    formatter:
+        name: pretty
+        parameters:
+            decorated: true
+            verbose: true
+            time: true
+            language: en
+            output_path: null
+            multiline_arguments: true 

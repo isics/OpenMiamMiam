@@ -16,6 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -37,6 +38,45 @@ class ConsumerController extends BaseController
         if (null === $this->get('open_miam_miam.consumer_manager')->getSubscription($association, $consumer)) {
             throw $this->createNotFoundException('Invalid consumer for association');
         }
+    }
+
+    /**
+     * Edit a consumer
+     *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * 
+     * @param Association $association
+     * @param User        $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Association $association, User $consumer)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
+            //To change to Comment, find a way to get Comments without error
+            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
+                ->getForConsumerAndAssociationQueryBuilder($association, $consumer)
+                ->getQuery()
+        ));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch (NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
+            'association' => $association,
+            'consumer'    => $consumer,
+            'comments'    => $pagerfanta
+        ));
     }
 
     /**
@@ -88,6 +128,7 @@ class ConsumerController extends BaseController
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
                 ->getForConsumerAndAssociationQueryBuilder($association)
+
                 ->getQuery()
         ));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));

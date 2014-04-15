@@ -221,6 +221,10 @@ open_miam_miam.admin.association.producer.export:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:export }
     #methods: [POST]
 
+open_miam_miam.admin.association.consumer.edit:
+    pattern:  /associations/{associationId}/consumers/{consumerId}/comments
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:edit }
+
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }
