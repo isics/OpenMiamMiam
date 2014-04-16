@@ -63,6 +63,12 @@
                                 }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.list.payments'|trans }}">
                                     <span class="glyphicon glyphicon-list"></span>
                                 </a>
+                                <a href="{{ path('open_miam_miam.admin.association.consumer.edit', {
+                                    'associationId': association.id,
+                                    'consumerId': user.id
+                                }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.list.comments'|trans }}">
+                                    <span class="glyphicon glyficon-list"></span>
+                                </a>
                             </td>
                         {% else %}
                             <td>-</td>

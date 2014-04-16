@@ -36,7 +36,7 @@
                         <td>{{ comment.isProcessed }}</td>
                     </tr>
                     <tr>
-                        <td colspan=4>{{ comment.content }}</td>
+                        <td colspan=4>{{ comment.content|nl2br }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -49,12 +49,15 @@
 
     <a href="{{ path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 
-    <h3>Ajouter un commentaire</h3>
+    <h3>{{ 'admin.association.consumers.comments.add.title'|trans }}</h3>
 
     <div>
         <form method="post" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-            <input type="submit" class="btn btn-success" value="Ajouter" />
+            {{ form_errors(form) }}
+            {{ form_widget(form.content) }}
+            {{ form_rest(form) }}
+            <br/><br/>
+            <input type="submit" class="btn btn-success" value="{{ 'admin.association.consumers.comments.add.button'|trans }}" />
         </form>
     </div>
 {% endblock %}

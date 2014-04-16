@@ -333,6 +333,7 @@ admin.association.consumers.list.credit:              "Solde"
 admin.association.consumers.list.anonymous:           "Anonyme"
 admin.association.consumers.list.payments:            "Liste des règlements"
 admin.association.consumers.list.payment_allocations: "Liste des affectations de ce règlement"
+admin.association.consumers.list.comments:            "Liste des commentaires"
 
 admin.association.consumers.payments.manage:                         "Gestion des règlements"
 admin.association.consumers.payments.list.title:                     "Liste des règlements de %consumer%"
@@ -383,6 +384,9 @@ admin.association.consumers.comments.list.date:                      "Date"
 admin.association.consumers.comments.list.consumer:                  "Consommateur"
 admin.association.consumers.comments.list.writtenBy:                 "Ecrit par"
 admin.association.consumers.comments.list.processed:                 "Traité"
+
+admin.association.consumers.comments.add.title:                      "Ajouter un commentaire"
+admin.association.consumers.comments.add.button:                     "Ajouter"
 
 admin.producer.consumers.message.payment_created:            "Le règlement a bien été ajouté."
 admin.producer.consumers.message.payment_updated:            "Le règlement a bien été mis à jour."
