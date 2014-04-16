@@ -91,6 +91,37 @@ class ConsumerController extends BaseController
     }
 
     /**
+     * Process a comment
+     *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("comment", class="IsicsOpenMiamMiamBundle:Comment", options={"mapping": {"commentId": "id"}})
+     * 
+     * @param Association $association
+     * @param User        $consumer
+     * @param Comment     $comment
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function processCommentAction(Association $association, User $consumer, Comment $comment)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        $em = $this->getDoctrine()->getManager();
+        $comment->setIsProcessed(true);
+        $em->persist($comment);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.edit', array(
+            'associationId' => $association->getId(),
+            'consumerId'    => $consumer->getId(),
+        )));
+    }
+
+    /**
      * List consumers
      *
      * @param Request     $request

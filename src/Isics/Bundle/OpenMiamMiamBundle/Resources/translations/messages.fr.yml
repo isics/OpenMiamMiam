@@ -383,7 +383,9 @@ admin.association.consumers.comments.list.no_comment:                "Il n'y a p
 admin.association.consumers.comments.list.date:                      "Date"
 admin.association.consumers.comments.list.consumer:                  "Consommateur"
 admin.association.consumers.comments.list.writtenBy:                 "Ecrit par"
-admin.association.consumers.comments.list.processed:                 "Traité"
+admin.association.consumers.comments.list.isProcessed:               "Traité"
+admin.association.consumers.comments.list.process:                   "Traiter ce commentaire"
+admin.association.consumers.comments.list.processed:                 "Ce commentaire a été traité"
 
 admin.association.consumers.comments.add.title:                      "Ajouter un commentaire"
 admin.association.consumers.comments.add.button:                     "Ajouter"

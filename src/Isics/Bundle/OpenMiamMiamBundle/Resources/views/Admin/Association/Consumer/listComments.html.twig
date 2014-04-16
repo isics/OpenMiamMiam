@@ -25,7 +25,7 @@
                 <tr>
                     <th>{{ 'admin.association.consumers.comments.list.date'|trans }}</th>
                     <th>{{ 'admin.association.consumers.comments.list.writtenBy'|trans }}</th>
-                    <th>{{ 'admin.association.consumers.comments.list.processed'|trans }}</th>
+                    <th>{{ 'admin.association.consumers.comments.list.isProcessed'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,21 @@
                     <tr>
                         <td>{{ comment.writingDate|format_date }}</td>
                         <td>{{ comment.writer }}</td>
-                        <td>{{ comment.isProcessed }}</td>
+                        <td>
+                            {% if comment.isProcessed %}
+                                <a class="btn btn-default btn-xs" title="{{'admin.association.consumers.comments.list.processed'|trans }}">
+                                    <span class="glyphicon glyphicon-ok" />
+                                </a>
+                            {% else %}
+                                <a href="{{ path('open_miam_miam.admin.association.consumer.processComment', {
+                                    'associationId': association.id,
+                                    'consumerId': consumer.id,
+                                    'commentId': comment.id
+                                }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
+                                    <span class="glyphicon glyphicon-cog" />
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <td colspan=4>{{ comment.content|nl2br }}</td>

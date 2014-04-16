@@ -225,6 +225,10 @@ open_miam_miam.admin.association.consumer.edit:
     pattern:  /associations/{associationId}/consumers/{consumerId}/comments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:edit }
 
+open_miam_miam.admin.association.consumer.processComment:
+    pattern:  /associations/{associationId}/consumers/{consumerId}/comments/{commentId}/process
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
+
 open_miam_miam.admin.association.consumer.list:
     pattern:  /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }

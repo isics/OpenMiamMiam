@@ -19,6 +19,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CommentType;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
@@ -194,14 +196,32 @@ class SalesOrderController extends BaseController
             )
         );
 
+        $comment = new Comment;
+        $commentForm = $this->createForm(new CommentType, $comment);
+
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
+            $commentForm->handleRequest($request);
             if ($form->isValid()) {
                 $user = $this->get('security.context')->getToken()->getUser();
                 $this->get('open_miam_miam.sales_order_manager')->save($order, $association, $user);
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.updated');
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.admin.association.sales_order.edit',
+                    array('id' => $association->getId(), 'salesOrderId' => $order->getId())
+                ));
+            }
+            else if ($commentForm->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $comment->setWritingDate(new \datetime);
+                $comment->setUser($order->getUser());
+                $comment->setWriter($this->get('security.context')->getToken()->getUser());
+                $comment->setIsProcessed(false);
+                $em->persist($comment);
+                $em->flush();
 
                 return $this->redirect($this->generateUrl(
                     'open_miam_miam.admin.association.sales_order.edit',
@@ -218,11 +238,21 @@ class SalesOrderController extends BaseController
             ));
         }
 
+        $comments = $order->getUser()->getComments();
+        $notProcessedComments = array();
+        foreach ($comments as $comment) {
+            if (!$comment->getIsProcessed()) {
+                $notProcessedComments[] = $comment;
+            }
+        }
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:edit.html.twig', array(
             'association' => $association,
             'order' => $order,
             'form' => $form->createView(),
-            'activities' => $this->get('open_miam_miam.sales_order_manager')->getActivities($order)
+            'activities' => $this->get('open_miam_miam.sales_order_manager')->getActivities($order),
+            'comments' => $notProcessedComments,
+            'commentForm' => $commentForm->createView(),
         ));
     }
 
