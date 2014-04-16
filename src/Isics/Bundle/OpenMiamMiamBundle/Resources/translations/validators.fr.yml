@@ -1,1 +1,6 @@
 order.confirm.error.terms_of_service: "Vous devez accepter les Conditions Générales d'Utilisation."
+
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%."
+error.cart.product_unavailable:           "Produit indisponible."
+error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)."
+error.cart.decimal_quantity_not_allowed:  "Impossible de commander une quantité décimale pour ce produit."

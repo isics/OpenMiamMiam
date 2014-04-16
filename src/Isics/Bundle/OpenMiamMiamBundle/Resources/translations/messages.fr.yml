@@ -648,6 +648,11 @@ admin.producer.sales_orders.message.payment_allocation_deleted: "Le règlement a
 admin.producer.sales_orders.message.updated:                    "La commande a bien été mise à jour."
 admin.producer.sales_orders.message.product_added:              "Le produit a bien été ajouté à la commande"
 
+admin.producer.sales_orders.history.title:                      "Historique des commandes"
+admin.producer.sales_orders.history.view:                       "Voir la commande"
+admin.producer.sales_orders.history.view_all:                   "Voir l'historique complet"
+
+
 admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 
 # Admin / Producer / Products
@@ -763,9 +768,10 @@ error.calendar.invalid_producer_attendance: "Présence invalide"
 error.product.invalid_branches:    "Au moins un comptoir est invalide"
 error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
 
-error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%"
-error.cart.product_unavailable:           "Produit indisponible"
-error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)"
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%."
+error.cart.product_unavailable:           "Produit indisponible."
+error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)."
+error.cart.decimal_quantity_not_allowed:  "Impossible de commander une quantité décimale pour ce produit."
 
 error.artificial_product.invalid: "Les deux champs doivent être renseignés"
 

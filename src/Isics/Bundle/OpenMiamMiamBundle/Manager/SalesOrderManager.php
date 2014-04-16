@@ -495,6 +495,25 @@ class SalesOrderManager
     }
 
     /**
+     * Returns true if salesOrder is locked (not editable), false otherwise
+     *
+     * @param SalesOrder $salesOrder
+     *
+     * @return boolean
+     */
+    public function isLocked(SalesOrder $salesOrder)
+    {
+        $salesOrderBranchOccurrence = $salesOrder->getBranchOccurrence();
+
+        $maxEndDate = new \DateTime();
+        $maxEndDate->sub(new \DateInterval(
+            sprintf('PT%sS', $salesOrderBranchOccurrence->getBranch()->getAssociation()->getOpeningDelay())
+        ));
+
+        return $salesOrderBranchOccurrence->getEnd() < $maxEndDate;
+    }
+
+    /**
      * Send email to consumer
      *
      * @param SalesOrder $order

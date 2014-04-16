@@ -165,7 +165,10 @@ class ProductRepository extends EntityRepository
      */
     public function findForProducer(Producer $producer)
     {
-        return $this->getForProducerQueryBuilder($producer)->getQuery()->getResult();
+        return $this->getForProducerQueryBuilder($producer)
+            ->orderBy('p.ref')
+            ->getQuery()
+            ->getResult();
     }
 
     /**

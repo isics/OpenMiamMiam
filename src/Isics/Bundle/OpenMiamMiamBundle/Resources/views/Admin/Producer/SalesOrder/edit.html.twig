@@ -13,12 +13,14 @@
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:Producer\\SalesOrder\\salesOrderHeader.html.twig' %}
 
-    <p class="text-right">
-        <a href="{{ path('open_miam_miam.admin.producer.sales_order.add_products', {'id': producer.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg" id="add-products-link" data-toggle="modal" data-target="#add-products-dialog">
-            <span class="glyphicon glyphicon-plus-sign"></span>
-            {{ 'admin.producer.sales_orders.form.sales_order_row.create'|trans }}
-        </a>
-    </p>
+    {% if not mustRemoveFormControls %}
+        <p class="text-right">
+            <a href="{{ path('open_miam_miam.admin.producer.sales_order.add_products', {'id': producer.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg" id="add-products-link" data-toggle="modal" data-target="#add-products-dialog">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                {{ 'admin.producer.sales_orders.form.sales_order_row.create'|trans }}
+            </a>
+        </p>
+    {% endif %}
 
     {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_sales_order_form', 'novalidate': '', 'class': 'form form-inline'}}) }}
         {{ form_errors(form) }}
@@ -27,7 +29,9 @@
         </div>
 
         {% do form.salesOrderRows.setRendered %}
-        {% do form.save.setRendered %}
+        {% if not mustRemoveFormControls %}
+            {% do form.save.setRendered %}
+        {% endif %}
     {{ form_end(form) }}
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %}

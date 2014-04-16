@@ -36,6 +36,8 @@ class CartItemValidator extends ConstraintValidator
      */
     public function validate($cartItem, Constraint $constraint)
     {
+        /** @var \Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem $cartItem */
+
         // Validates that product exists in branch
         if (!$cartItem->getProduct()->getBranches()->contains($cartItem->getCart()->getBranch())) {
             $this->context->addViolationAt('product', 'error.cart.product_unavailable_in_branch', array('branch' => $cartItem->getCart()->getBranch()->getName()));
@@ -49,6 +51,12 @@ class CartItemValidator extends ConstraintValidator
         // Validates stock
         if (Product::AVAILABILITY_ACCORDING_TO_STOCK === $cartItem->getProduct()->getAvailability() && $cartItem->getProduct()->getStock() < $cartItem->getQuantity()) {
             $this->context->addViolationAt('product', 'error.cart.not_enough_stock', array('rest' => $cartItem->getProduct()->getStock()));
+        }
+
+        // Validate decimal quantity
+        $quantity = $cartItem->getQuantity();
+        if ((intval($quantity) != floatval($quantity)) && !$cartItem->getProduct()->getAllowDecimalQuantity()) {
+            $this->context->addViolationAt('product', 'error.cart.decimal_quantity_not_allowed');
         }
     }
 }

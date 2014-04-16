@@ -64,6 +64,32 @@ class ProducerSalesOrderManager
     }
 
     /**
+     * Returns sales order of a producer for last branch occurrences
+     *
+     * @param Producer $producer
+     *
+     * @return array
+     */
+    public function getForLastBranchOccurrences(Producer $producer)
+    {
+        $producerSalesOrders = new ProducerSalesOrders($producer);
+
+        $branchOccurrenceRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence');
+
+        foreach ($producer->getBranches() as $branch) {
+            $branchOccurrence = $branchOccurrenceRepository->findOneLastForBranch($branch);
+            if (null !== $branchOccurrence) {
+                $branchOccurrenceSaleOrders = $this->getForBranchOccurrence($producer, $branchOccurrence);
+                $producerSalesOrders->addProducerBranchOccurrenceSalesOrders($branchOccurrenceSaleOrders);
+            }
+        }
+
+        return $producerSalesOrders;
+    }
+
+
+
+    /**
      * Returns sales order of a producer for a branch occurrence
      *
      * @param Producer $producer

@@ -16,6 +16,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -174,8 +176,15 @@ class CartController extends Controller
             }
         }
 
+        $translator = $this->get('translator');
+
         if ($request->isXmlHttpRequest()) {
-            return new Response($this->container->get('translator')->trans('cart.unable_to_add_item'), 400);
+            return new JsonResponse(array(
+                'message' => $this->container->get('translator')->trans('cart.unable_to_add_item'),
+                'errors'  => array_map(function(FormError $error) use ($translator) {
+                    return $translator->trans($error->getMessage(), $error->getMessageParameters());
+                }, $form->getErrors())
+            ), 400);
         }
 
         return $this->redirect($this->generateUrl(
