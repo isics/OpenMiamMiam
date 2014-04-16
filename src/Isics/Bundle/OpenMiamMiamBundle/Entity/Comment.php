@@ -17,8 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Comment
  *
- * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Table(name="comment")
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\CommentRepository")
  */
 class Comment
 {
@@ -67,7 +67,7 @@ class Comment
      * 
      * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamUserBundle\Entity\User", inversedBy="writtenComments")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="writer_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $writer;

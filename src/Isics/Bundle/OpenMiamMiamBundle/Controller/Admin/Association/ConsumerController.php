@@ -17,6 +17,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CommentType;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -53,29 +54,39 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function editAction(Request $request, Association $association, User $consumer)
+    public function editAction(Association $association, User $consumer)
     {
         $this->secure($association);
         $this->secureConsumer($association, $consumer);
 
-        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
-            //To change to Comment, find a way to get Comments without error
-            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Payment')
-                ->getForConsumerAndAssociationQueryBuilder($association, $consumer)
-                ->getQuery()
-        ));
-        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumer_payments'));
+        $comment = new Comment;
+        $form = $this->createForm(new CommentType, $comment);
 
-        try {
-            $pagerfanta->setCurrentPage($request->query->get('page', 1));
-        } catch (NotValidCurrentPageException $e) {
-            throw $this->createNotFoundException();
+        $request = $this->getRequest();
+        if ($request->getMethod() == 'POST')
+        {
+            $form->bind($request);
+            if ($form->isValid())
+            {
+                $em = $this->getDoctrine()->getManager();
+                $comment->setWritingDate(new \Datetime);
+                $comment->setUser($consumer);
+                $comment->setWriter($this->get('security.context')->getToken()->getUser());
+                $comment->setIsProcessed(false);
+                $em->persist($comment);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.edit', array(
+                    'associationId' => $association->getId(),
+                    'consumerId'    => $consumer->getId(),
+                )));
+            }
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
             'association' => $association,
             'consumer'    => $consumer,
-            'comments'    => $pagerfanta
+            'form'        => $form->createView(),
         ));
     }
 

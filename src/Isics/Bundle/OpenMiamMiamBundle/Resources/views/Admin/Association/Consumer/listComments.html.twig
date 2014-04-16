@@ -18,22 +18,20 @@
         </div>
     </div>
 
-    {% if comments|length > 0 %}
+    {% if consumer.comments|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-sales-orders">
                 <thead>
                 <tr>
                     <th>{{ 'admin.association.consumers.comments.list.date'|trans }}</th>
-                    <th>{{ 'admin.association.consumers.comments.list.consumer'|trans }}</th>
                     <th>{{ 'admin.association.consumers.comments.list.writtenBy'|trans }}</th>
                     <th>{{ 'admin.association.consumers.comments.list.processed'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for comment in comments %}
+                {% for comment in consumer.comments %}
                     <tr>
                         <td>{{ comment.writingDate|format_date }}</td>
-                        <td>{{ comment.user }}</td>
                         <td>{{ comment.writer }}</td>
                         <td>{{ comment.isProcessed }}</td>
                     </tr>
@@ -44,11 +42,19 @@
                 </tbody>
             </table>
         </div>
-        {{ pagerfanta(comments, 'twitter_bootstrap3_translated') }}
 
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.payments.list.no_comment'|trans} %}
     {% endif %}
 
     <a href="{{ path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+
+    <h3>Ajouter un commentaire</h3>
+
+    <div>
+        <form method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+            <input type="submit" class="btn btn-success" value="Ajouter" />
+        </form>
+    </div>
 {% endblock %}
