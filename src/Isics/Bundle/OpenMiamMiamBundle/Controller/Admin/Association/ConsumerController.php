@@ -42,7 +42,7 @@ class ConsumerController extends BaseController
     }
 
     /**
-     * Edit a consumer
+     * Show a consumer
      *
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
@@ -54,7 +54,55 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function editAction(Association $association, User $consumer)
+    public function showAction(Association $association, User $consumer)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show.html.twig', array(
+            'association' => $association,
+            'consumer'    => $consumer,
+        ));
+    }
+
+    /**
+     * List a consumer's comments
+     *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * 
+     * @param Association $association
+     * @param User        $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function listCommentsAction(Association $association, User $consumer)
+    {
+        $this->secure($association);
+        $this->secure($association, $consumer);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
+            'association' => $association,
+            'consumer'    => $consumer,
+        ));
+    }
+
+    /**
+     * Add a comment on a consumer
+     *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * 
+     * @param Association $association
+     * @param User        $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function addCommentAction(Association $association, User $consumer)
     {
         $this->secure($association);
         $this->secureConsumer($association, $consumer);
@@ -76,14 +124,14 @@ class ConsumerController extends BaseController
                 $em->persist($comment);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.edit', array(
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.show', array(
                     'associationId' => $association->getId(),
                     'consumerId'    => $consumer->getId(),
                 )));
             }
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment.html.twig', array(
             'association' => $association,
             'consumer'    => $consumer,
             'form'        => $form->createView(),

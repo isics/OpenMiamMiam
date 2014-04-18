@@ -34,6 +34,6 @@ class CommentType extends AbstractType
      */
     public function getName()
     {
-        return 'isics_bundle_openmiammiambundle_comment';
+        return 'open_miam_miam_comment';
     }
 }

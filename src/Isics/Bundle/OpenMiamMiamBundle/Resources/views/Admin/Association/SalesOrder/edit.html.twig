@@ -34,61 +34,11 @@
 
     <div class="modal fade" id="add-products-dialog" tabindex="-1" role="dialog" aria-labelledby="Add products" aria-hidden="true"></div>
     <div class="modal fade" id="manage-payments-dialog" tabindex="-1" role="dialog" aria-labelledby="Manage payments" aria-hidden="true"></div>
-    
-    {% if comments|length > 0 %}
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped table-sales-orders">
-                <thead>
-                <tr>
-                    <th>{{ 'admin.association.consumers.comments.list.date'|trans }}</th>
-                    <th>{{ 'admin.association.consumers.comments.list.writtenBy'|trans }}</th>
-                    <th>{{ 'admin.association.consumers.comments.list.isProcessed'|trans }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for comment in comments %}
-                    <tr>
-                        <td>{{ comment.writingDate|format_date }}</td>
-                        <td>{{ comment.writer }}</td>
-                        <td>
-                            {% if comment.isProcessed %}
-                                <a class="btn btn-default btn-xs" title="{{'admin.association.consumers.comments.list.processed'|trans }}">
-                                    <span class="glyphicon glyphicon-ok" />
-                                </a>
-                            {% else %}
-                                <a href="{{ path('open_miam_miam.admin.association.consumer.processComment', {
-                                    'associationId': association.id,
-                                    'consumerId': order.user.id,
-                                    'commentId': comment.id
-                                }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
-                                    <span class="glyphicon glyphicon-cog" />
-                                </a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan=4>{{ comment.content|nl2br }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
 
-    {% else %}
-        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.payments.list.no_comment'|trans} %}
-    {% endif %}
-
-    <h3>{{ 'admin.association.consumers.comments.add.title'|trans }}</h3>
-
-    <div>
-        <form method="post" {{ form_enctype(commentForm) }}>
-            {{ form_errors(commentForm) }}
-            {{ form_widget(commentForm.content) }}
-            {{ form_rest(commentForm) }}
-            <br/><br/>
-            <input type="submit" class="btn btn-success" value="{{ 'admin.association.consumers.comments.add.button'|trans }}" />
-        </form>
-    </div>
+{{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:listComments', {
+    'associationId': association.id,
+    'consumerId': order.user.id,
+})) }}
 {% endblock %}
 
 {% block javascript %}
