@@ -19,27 +19,5 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class CommentRepository extends EntityRepository
 {
-    /**
-     * Returns query builder to find comments left on a user by an association
-     *
-     * @param Association $association
-     * @param User $user
-     * @param QueryBuilder $qb
-     *
-     * @return QueryBuilder
-     */
-    public function getForConsumerAndAssociationQueryBuilder(Association $association, User $user = null, QueryBuilder $qb = null)
-    {
-        $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
-
-        $qb->andWhere('p.association = :association')->setParameter('association', $association);
-
-        if (null === $user) {
-            $qb->andWhere($qb->expr()->isNull('p.user'));
-        } else {
-            $qb->andWhere('p.user = :user')->setParameter('user', $user);
-        }
-
-        return $qb->addOrderBy('p.date', 'DESC');
-    }
+    
 }
