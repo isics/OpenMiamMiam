@@ -5,7 +5,7 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% if consumer.comments|length > 0 %}
+{% if comments|length > 0 %}
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-sales-orders">
             <thead>
@@ -16,9 +16,9 @@
             </tr>
             </thead>
             <tbody>
-            {% for comment in consumer.comments %}
+            {% for comment in comments %}
                 <tr>
-                    <td>{{ comment.writingDate|format_date }}</td>
+                    <td>{{ comment.createdAt|format_date }}</td>
                     <td>{{ comment.writer }}</td>
                     <td>
                         {% if comment.isProcessed %}

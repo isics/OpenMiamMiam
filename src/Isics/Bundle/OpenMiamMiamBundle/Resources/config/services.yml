@@ -37,6 +37,7 @@ parameters:
     open_miam_miam.newsletter_manager.class:               'Isics\Bundle\OpenMiamMiamBundle\Manager\NewsletterManager'
     open_miam_miam.allocate_payment_manager.class:         'Isics\Bundle\OpenMiamMiamBundle\Manager\AllocatePaymentManager'
     open_miam_miam.subscription_manager.class:             'Isics\Bundle\OpenMiamMiamBundle\Manager\SubscriptionManager'
+    open_miam_miam.comment_manager.class:                  'Isics\Bundle\OpenMiamMiamBundle\Manager\CommentManager'
 
     open_miam_miam.menu_builder.class: 'Isics\Bundle\OpenMiamMiamBundle\Menu\Builder'
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
@@ -463,6 +464,11 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
 
+    open_miam_miam.comment_manager:
+        class: %open_miam_miam.comment_manager.class%
+        arguments:
+            - @open_miam_miam.repository.comment
+
     # Repositories
     open_miam_miam.repository.payment:
         class:           Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\PaymentRepository
@@ -477,6 +483,13 @@ services:
         factory_method:  "getRepository"
         arguments:
             - "IsicsOpenMiamMiamBundle:SalesOrder"
+
+    open_miam_miam.repository.comment:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\CommentRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Comment"
 
     # Models
     open_miam_miam.sales_order_statistics:

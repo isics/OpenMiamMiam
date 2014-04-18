@@ -41,14 +41,14 @@ class Comment
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="writingDate", type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $writingDate;
+    private $createdAt;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="isProcessed", type="boolean")
+     * @ORM\Column(name="is_processed", type="boolean")
      */
     private $isProcessed;
 
@@ -72,13 +72,22 @@ class Comment
      */
     private $writer;
 
+    /**
+     * @var Association
+     *
+     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Association")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="association_id", referencedColumnName="id", nullable=false)
+     * })
+     */
+    private $association;
 
     /**
      * Constructor
      */
-    public function __construc()
+    public function __construct()
     {
-        $this->writingdate = new \Datetime();
+        $this->createdAt = new \Datetime();
         $this->isProcessed = false;
     }
 
@@ -113,29 +122,6 @@ class Comment
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Set writingDate
-     *
-     * @param \DateTime $writingDate
-     * @return Comment
-     */
-    public function setWritingDate($writingDate)
-    {
-        $this->writingDate = $writingDate;
-    
-        return $this;
-    }
-
-    /**
-     * Get writingDate
-     *
-     * @return \DateTime 
-     */
-    public function getWritingDate()
-    {
-        return $this->writingDate;
     }
 
     /**
@@ -205,5 +191,37 @@ class Comment
     public function getWriter()
     {
         return $this->writer;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $association
+     */
+    public function setAssociation(Association $association)
+    {
+        $this->association = $association;
+    }
+
+    /**
+     * @return Association
+     */
+    public function getAssociation()
+    {
+        return $this->association;
     }
 }

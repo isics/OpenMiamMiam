@@ -1,15 +1,18 @@
 <h3>{{ 'admin.association.consumers.comments.add.title'|trans }}</h3>
 
-<div>
-    <form method="post" action="{{ path('open_miam_miam.admin.association.consumer.addComment', {
-            'associationId': association.id,
-            'consumerId': consumer.id
-        }) }}"{{ form_enctype(form) }}>
-
-        {{ form_errors(form) }}
-        {{ form_widget(form.content) }}
-        {{ form_rest(form) }}
-        <br/><br/>
-        <input type="submit" class="btn btn-success" value="{{ 'admin.association.consumers.comments.add.button'|trans }}" />
-    </form>
-</div>
+{% set formAction = path('open_miam_miam.admin.association.consumer.addComment', {
+'associationId': association.id,
+'consumerId': consumer.id
+}) %}
+<form method="post" action="{{ formAction }}" {{ form_enctype(form) }}>
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_errors(form) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control'} }) }}
+            {{ form_rest(form) }}
+        </div>
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-success btn-lg" value="{{ 'admin.association.consumers.comments.add.button'|trans }}" />
+        </div>
+    </div>
+</form>

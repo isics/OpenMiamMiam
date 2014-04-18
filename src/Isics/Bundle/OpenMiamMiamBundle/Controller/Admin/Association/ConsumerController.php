@@ -42,11 +42,25 @@ class ConsumerController extends BaseController
     }
 
     /**
+     * @param Association $association
+     * @param User        $user
+     * @param Comment     $comment
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function secureComment(Association $association, User $user, Comment $comment)
+    {
+        if ($association->getId() !== $comment->getAssociation()->getId() || $user->getId() !== $comment->getUser()->getId()) {
+            throw $this->createNotFoundException('Invalid comment for consumer and association');
+        }
+    }
+
+    /**
      * Show a consumer
      *
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
-     * 
+     *
      * @param Association $association
      * @param User        $consumer
      *
@@ -70,7 +84,7 @@ class ConsumerController extends BaseController
      *
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
-     * 
+     *
      * @param Association $association
      * @param User        $consumer
      *
@@ -83,9 +97,15 @@ class ConsumerController extends BaseController
         $this->secure($association);
         $this->secure($association, $consumer);
 
+        $comments = $this->get('open_miam_miam.comment_manager')->getNotProcessedCommentsForAssociationConsumer(
+            $association,
+            $consumer
+        );
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
             'association' => $association,
             'consumer'    => $consumer,
+            'comments'    => $comments
         ));
     }
 
@@ -94,7 +114,7 @@ class ConsumerController extends BaseController
      *
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
-     * 
+     *
      * @param Association $association
      * @param User        $consumer
      *
@@ -107,20 +127,19 @@ class ConsumerController extends BaseController
         $this->secure($association);
         $this->secureConsumer($association, $consumer);
 
-        $comment = new Comment;
-        $form = $this->createForm(new CommentType, $comment);
+        $comment = $this->get('open_miam_miam.comment_manager')->createComment(
+            $consumer,
+            $this->get('security.context')->getToken()->getUser(),
+            $association
+        );
+        $form    = $this->createForm(new CommentType, $comment);
 
         $request = $this->getRequest();
-        if ($request->getMethod() == 'POST')
-        {
-            $form->bind($request);
-            if ($form->isValid())
-            {
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
+
+            if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
-                $comment->setWritingDate(new \Datetime);
-                $comment->setUser($consumer);
-                $comment->setWriter($this->get('security.context')->getToken()->getUser());
-                $comment->setIsProcessed(false);
                 $em->persist($comment);
                 $em->flush();
 
@@ -144,7 +163,7 @@ class ConsumerController extends BaseController
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      * @ParamConverter("comment", class="IsicsOpenMiamMiamBundle:Comment", options={"mapping": {"commentId": "id"}})
-     * 
+     *
      * @param Association $association
      * @param User        $consumer
      * @param Comment     $comment
@@ -157,10 +176,10 @@ class ConsumerController extends BaseController
     {
         $this->secure($association);
         $this->secureConsumer($association, $consumer);
+        $this->secureComment($association, $consumer, $comment);
 
         $em = $this->getDoctrine()->getManager();
         $comment->setIsProcessed(true);
-        $em->persist($comment);
         $em->flush();
 
         return $this->redirect($this->getRequest()->headers->get('referer'));
