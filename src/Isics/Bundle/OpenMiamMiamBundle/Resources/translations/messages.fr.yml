@@ -378,17 +378,15 @@ admin.association.consumers.payments.allocations.list.delete:          "Supprime
 
 admin.association.consumers.payments.allocations.message.deleted:      "L'affectation a bien été supprimée."
 
-admin.association.consumers.comments.list.title:                     "Liste des commentaires à propos de %consumer%"
-admin.association.consumers.comments.list.no_comment:                "Il n'y a pas encore de commentaire pour ce consommateur."
-admin.association.consumers.comments.list.date:                      "Date"
-admin.association.consumers.comments.list.consumer:                  "Consommateur"
-admin.association.consumers.comments.list.writtenBy:                 "Ecrit par"
-admin.association.consumers.comments.list.isProcessed:               "Traité"
-admin.association.consumers.comments.list.process:                   "Traiter ce commentaire"
-admin.association.consumers.comments.list.processed:                 "Ce commentaire a été traité"
+admin.association.consumers.comment.title:             "Commentaire de %admin%"
 
-admin.association.consumers.comments.add.title:                      "Ajouter un commentaire"
-admin.association.consumers.comments.add.button:                     "Ajouter"
+admin.association.consumers.comments.list.title:       "Liste des commentaires à propos de %consumer%"
+admin.association.consumers.comments.list.no_comment:  "Il n'y a pas encore de commentaire pour ce consommateur."
+admin.association.consumers.comments.list.process:     "Traiter ce commentaire"
+admin.association.consumers.comments.list.processed:   "Ce commentaire a été traité"
+
+admin.association.consumers.comments.add.title:        "Ajouter un commentaire"
+admin.association.consumers.comments.add.button:       "Ajouter"
 
 admin.producer.consumers.message.payment_created:            "Le règlement a bien été ajouté."
 admin.producer.consumers.message.payment_updated:            "Le règlement a bien été mis à jour."

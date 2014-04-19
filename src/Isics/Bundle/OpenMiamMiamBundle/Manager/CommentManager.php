@@ -59,6 +59,7 @@ class CommentManager
             ->setParameter('association', $association)
             ->andWhere('c.user = :user')
             ->setParameter('user', $consumer)
+            ->andWhere('c.isProcessed = false')
             ->orderBy('c.createdAt', 'desc')
             ->getQuery()
             ->getResult();
