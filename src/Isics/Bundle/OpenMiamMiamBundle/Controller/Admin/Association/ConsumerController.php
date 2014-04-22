@@ -144,11 +144,6 @@ class ConsumerController extends BaseController
                 $em->flush();
 
                 return $this->redirect($request->headers->get('referer'));
-
-/*                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.show', array(
-                    'associationId' => $association->getId(),
-                    'consumerId'    => $consumer->getId(),
-                )));*/
             }
         }
 

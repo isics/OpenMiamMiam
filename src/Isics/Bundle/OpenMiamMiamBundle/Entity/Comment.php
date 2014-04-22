@@ -11,7 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User as User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -153,7 +153,7 @@ class Comment
      * @param \Isics\Bundle\openMiamMiamUserBundle\Entity\User $user
      * @return Comment
      */
-    public function setUser(\Isics\Bundle\openMiamMiamUserBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     
@@ -176,7 +176,7 @@ class Comment
      * @param \Isics\Bundle\openMiamMiamUserBundle\Entity\User $writer
      * @return Comment
      */
-    public function setWriter(\Isics\Bundle\openMiamMiamUserBundle\Entity\User $writer)
+    public function setWriter(User $writer)
     {
         $this->writer = $writer;
     

@@ -6,30 +6,30 @@
  # with this source code in the file LICENSE.
  #}
 {% if comments|length > 0 %}
-    {% for comment in comments %}
-        <div class="alert alert-warning association-comment">
-            <span class="glyphicon glyphicon-comment"></span>
-            <strong>{{ 'admin.association.consumers.comment.title'|trans({ '%admin%': format_user_identity(comment.writer) }) }}</strong>
-            <p class="pull-right">{{ comment.createdAt|date('d/m/y H:i:s') }}</p>
-            <div class="association-comment-content">
-                {{ comment.content|nl2br }}
-            {#</div>#}
-            {% if comment.isProcessed %} 
-                <a class="btn btn-success btn-xs" title="{{'admin.association.consumers.comments.list.processed'|trans }}">
-                    <span class="glyphicon glyphicon-ok" />
-                </a>
-            {% else %}
-                <a href="{{ path('open_miam_miam.admin.association.consumer.processComment', {
-                    'associationId': association.id,
-                    'consumerId': consumer.id,
-                    'commentId': comment.id
-                }) }}" class="btn btn-warning btn-xs pull-right" title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
-                    <span class="glyphicon glyphicon-ok" />
-                </a>
+    <div id="association-comments">
+        {% for comment in comments %}
+            <div class="alert alert-warning association-comment">
+                <span class="glyphicon glyphicon-comment"></span>
+                <strong>{{ 'admin.association.consumers.comment.title'|trans({ '%admin%': format_user_identity(comment.writer) }) }}</strong>
+                <p class="pull-right">{{ comment.createdAt|date('d/m/y H:i:s') }}</p>
+                <div class="association-comment-content">
+                    {{ comment.content|nl2br }}
+
+                    {% if comment.isProcessed %} 
+                        <a class="btn btn-success btn-xs" title="{{'admin.association.consumers.comments.list.processed'|trans }}">
+                            <span class="glyphicon glyphicon-ok" />
+                        </a>
+                    {% else %}
+                        <button class="btn btn-warning btn-xs pull-right" title="{{ 'admin.association.consumers.comments.list.process'|trans }}", onclick="
+                            console.log($('#association-comments'));
+                        "/>
+                            <span class="glyphicon glyphicon-ok" />
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% else %}
     {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.comments.list.no_comment'|trans} %}
 {% endif %}
