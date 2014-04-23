@@ -101,7 +101,7 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function listCommentsAction(Association $association, User $consumer = null)
+    public function listCommentsAction(Request $request, Association $association, User $consumer = null)
     {
         $this->secure($association);
 

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {% if consumer is not null %}
     {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment', {
         'associationId': association.id,
@@ -9,12 +8,7 @@
         'associationId': association.id
     }) %}
 {% endif %}
-=======
-{% set formAction = path('open_miam_miam.admin.association.consumer.add_comment', {
-'associationId': association.id,
-'consumerId': consumer.id
-}) %}
->>>>>>> Before rebase
+
 <form method="post" action="{{ formAction }}" {{ form_enctype(form) }}>
     <div class="row">
         <div class="col-md-8">
