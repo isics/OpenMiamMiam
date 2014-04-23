@@ -654,6 +654,7 @@ OpenMiamMiam.ConsumerComment = function() {
         add: function(content) {
             $.ajax({
                 url: this.addUrl,
+                data: { content: content }
                 type: 'post',
                 success: function() {
                     this.$container.trigger('refresh');
