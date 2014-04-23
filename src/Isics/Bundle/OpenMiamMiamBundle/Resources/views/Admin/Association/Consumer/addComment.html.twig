@@ -1,9 +1,13 @@
-<h3>{{ 'admin.association.consumers.comments.add.title'|trans }}</h3>
-
-{% set formAction = path('open_miam_miam.admin.association.consumer.addComment', {
-'associationId': association.id,
-'consumerId': consumer.id
-}) %}
+{% if consumer is not null %}
+    {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment', {
+        'associationId': association.id,
+        'consumerId': consumer.id
+    }) %}
+{% else %}
+    {% set formAction = path('open_miam_miam.admin.association.consumer.add_anonymous_comment', {
+        'associationId': association.id
+    }) %}
+{% endif %}
 <form method="post" action="{{ formAction }}" {{ form_enctype(form) }}>
     <div class="row">
         <div class="col-md-8">

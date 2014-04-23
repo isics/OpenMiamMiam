@@ -43,15 +43,21 @@ class ConsumerController extends BaseController
 
     /**
      * @param Association $association
-     * @param User        $user
      * @param Comment     $comment
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function secureComment(Association $association, User $user, Comment $comment)
+    public function secureComment(Association $association, Comment $comment, User $consumer = null)
     {
-        if ($association->getId() !== $comment->getAssociation()->getId() || $user->getId() !== $comment->getUser()->getId()) {
-            throw $this->createNotFoundException('Invalid comment for consumer and association');
+        $error = $this->createNotFoundException('Invalid comment for consumer and association');
+
+        if ($association->getId() !== $comment->getAssociation()->getId()) {
+            throw $error;
+        }
+
+        if (null !== $consumer && $consumer->getId() !== $comment->getUser()->getId()) {
+            throw $error;
         }
     }
 
@@ -68,10 +74,13 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function showAction(Association $association, User $consumer)
+    public function showAction(Association $association, User $consumer = null)
     {
         $this->secure($association);
-        $this->secureConsumer($association, $consumer);
+
+        if (null !== $consumer) {
+            $this->secureConsumer($association, $consumer);
+        }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show.html.twig', array(
             'association' => $association,
@@ -92,10 +101,13 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function listCommentsAction(Association $association, User $consumer)
+    public function listCommentsAction(Association $association, User $consumer = null)
     {
         $this->secure($association);
-        $this->secure($association, $consumer);
+
+        if (null !== $consumer) {
+            $this->secure($association, $consumer);
+        }
 
         $comments = $this->get('open_miam_miam.comment_manager')->getNotProcessedCommentsForAssociationConsumer(
             $association,
@@ -115,6 +127,7 @@ class ConsumerController extends BaseController
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      *
+     * @param Request     $request
      * @param Association $association
      * @param User        $consumer
      *
@@ -122,19 +135,21 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function addCommentAction(Association $association, User $consumer)
+    public function addCommentAction(Request $request, Association $association, User $consumer = null)
     {
         $this->secure($association);
-        $this->secureConsumer($association, $consumer);
+
+        if (null !== $consumer) {
+            $this->secureConsumer($association, $consumer);
+        }
 
         $comment = $this->get('open_miam_miam.comment_manager')->createComment(
-            $consumer,
+            $association,
             $this->get('security.context')->getToken()->getUser(),
-            $association
+            $consumer
         );
         $form    = $this->createForm(new CommentType, $comment);
 
-        $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
 
@@ -143,10 +158,7 @@ class ConsumerController extends BaseController
                 $em->persist($comment);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.show', array(
-                    'associationId' => $association->getId(),
-                    'consumerId'    => $consumer->getId(),
-                )));
+                return $this->redirect($request->headers->get('referer'));
             }
         }
 
@@ -165,18 +177,22 @@ class ConsumerController extends BaseController
      * @ParamConverter("comment", class="IsicsOpenMiamMiamBundle:Comment", options={"mapping": {"commentId": "id"}})
      *
      * @param Association $association
-     * @param User        $consumer
      * @param Comment     $comment
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
-    public function processCommentAction(Association $association, User $consumer, Comment $comment)
+    public function processCommentAction(Association $association, Comment $comment, User $consumer = null)
     {
         $this->secure($association);
-        $this->secureConsumer($association, $consumer);
-        $this->secureComment($association, $consumer, $comment);
+
+        if (null !== $consumer) {
+            $this->secureConsumer($association, $consumer);
+        }
+
+        $this->secureComment($association, $comment, $consumer);
 
         $em = $this->getDoctrine()->getManager();
         $comment->setIsProcessed(true);

@@ -27,19 +27,23 @@ class CommentManager
     /**
      * Create new comment
      *
-     * @param User        $consumer
-     * @param User        $writer
      * @param Association $association
+     * @param User        $writer
+     * @param User        $consumer
      *
      * @return Comment
      */
-    public function createComment(User $consumer, User $writer, Association $association)
+    public function createComment(Association $association, User $writer, User $consumer = null)
     {
         $comment = new Comment();
 
-        $comment->setUser($consumer);
-        $comment->setWriter($writer);
         $comment->setAssociation($association);
+        $comment->setWriter($writer);
+
+        // If consumer is null, comment refers to anonymous consumer of association
+        if (null !== $consumer) {
+            $comment->setUser($consumer);
+        }
 
         return $comment;
     }
@@ -52,15 +56,22 @@ class CommentManager
      *
      * @return array
      */
-    public function getNotProcessedCommentsForAssociationConsumer(Association $association, User $consumer)
+    public function getNotProcessedCommentsForAssociationConsumer(Association $association, User $consumer = null)
     {
-        return $this->commentRepository->createQueryBuilder('c')
+        $queryBuilder = $this->commentRepository->createQueryBuilder('c')
             ->where('c.association = :association')
             ->setParameter('association', $association)
-            ->andWhere('c.user = :user')
-            ->setParameter('user', $consumer)
-            ->orderBy('c.createdAt', 'desc')
-            ->getQuery()
-            ->getResult();
+            ->andWhere('c.isProcessed = :processed')
+            ->setParameter('processed', false)
+            ->orderBy('c.createdAt', 'desc');
+
+        if (null !== $consumer) {
+            $queryBuilder->andWhere('c.user = :user')
+                ->setParameter('user', $consumer);
+        } else {
+            $queryBuilder->andWhere('c.user IS NULL');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

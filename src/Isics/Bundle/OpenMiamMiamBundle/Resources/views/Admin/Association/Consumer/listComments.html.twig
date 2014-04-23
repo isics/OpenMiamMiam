@@ -6,49 +6,53 @@
  # with this source code in the file LICENSE.
  #}
 {% if comments|length > 0 %}
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sales-orders">
-            <thead>
-            <tr>
-                <th>{{ 'admin.association.consumers.comments.list.date'|trans }}</th>
-                <th>{{ 'admin.association.consumers.comments.list.writtenBy'|trans }}</th>
-                <th>{{ 'admin.association.consumers.comments.list.isProcessed'|trans }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for comment in comments %}
-                <tr>
-                    <td>{{ comment.createdAt|format_date }}</td>
-                    <td>{{ comment.writer }}</td>
-                    <td>
-                        {% if comment.isProcessed %}
-                            <a class="btn btn-default btn-xs" title="{{'admin.association.consumers.comments.list.processed'|trans }}">
-                                <span class="glyphicon glyphicon-ok" />
-                            </a>
-                        {% else %}
-                            <a href="{{ path('open_miam_miam.admin.association.consumer.processComment', {
-                                'associationId': association.id,
-                                'consumerId': consumer.id,
-                                'commentId': comment.id
-                            }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
-                                <span class="glyphicon glyphicon-cog" />
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan=4>{{ comment.content|nl2br }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% for comment in comments %}
+        <div class="alert alert-warning association-consumer-comment">
+            <div class="pull-right date">
+                {{ comment.createdAt|format_date }}
+            </div>
+            <div class="writer">
+                {{ format_user_identity(comment.writer) }}
+            </div>
+            <div class="content">
+                {{ comment.content|nl2br }}
+            </div>
+            <div class="actions">
+                {% if consumer is not null %}
+                    <a href="{{ path('open_miam_miam.admin.association.consumer.process_comment', {
+                        'associationId': association.id,
+                        'consumerId': consumer.id,
+                        'commentId': comment.id
+                    }) }}" class="btn btn-default btn-xs"
+                       title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
+                        <span class="glyphicon glyphicon-check"></span>
+                        {{ 'admin.association.consumers.comments.list.process'|trans }}
+                    </a>
+                {% else %}
+                    <a href="{{ path('open_miam_miam.admin.association.consumer.process_anonymous_comment', {
+                        'associationId': association.id,
+                        'commentId': comment.id
+                    }) }}" class="btn btn-default btn-xs"
+                       title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
+                        <span class="glyphicon glyphicon-check"></span>
+                        {{ 'admin.association.consumers.comments.list.process'|trans }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
 {% else %}
     {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.comments.list.no_comment'|trans} %}
 {% endif %}
 
-{{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+{% if consumer is not null %}
+    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
     'associationId': association.id,
     'consumerId': consumer.id,
-})) }}
+    })) }}
+{% else %}
+    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+    'associationId': association.id
+    })) }}
+{% endif %}
 

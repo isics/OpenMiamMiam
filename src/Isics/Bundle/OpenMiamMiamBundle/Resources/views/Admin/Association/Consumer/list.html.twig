@@ -36,38 +36,19 @@
                             <td>{{ user.city }} ({{ user.zipcode }})</td>
                             <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
                             <td>{% if user.phoneNumber %}{{ user.phoneNumber }}{% else %}-{% endif %}</td>
-                            <td class="consumer-credit-container nowrap"
-                                data-manage-url="{{ url('open_miam_miam.admin.association.payment.manage_user_payments', {
-                                    'id':     association.id,
-                                    'userId': user.id
-                                }) }}"
-                                data-refresh-url="{{ url('open_miam_miam.admin.association.payment.user_summary', {
-                                    'id':     association.id,
-                                    'userId': user.id
-                                }) }}">
+                            <td class="consumer-credit-container nowrap">
                                 {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Payment:userSummary', {
                                     'id':     association.id,
                                     'userId': user.id
                                 })) }}
                             </td>
                             <td class="nowrap">
-                                <a href="{{ path('open_miam_miam.admin.association.payment.manage_user_payments', {
-                                    'id': association.id,
-                                    'userId': user.id
-                                }) }}" class="btn btn-primary btn-xs manage" title="{{ 'admin.association.consumers.payments.manage' | trans }}">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {
-                                    'id': association.id,
-                                    'consumerId': user.id
-                                }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.list.payments'|trans }}">
-                                    <span class="glyphicon glyphicon-list"></span>
-                                </a>
                                 <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
                                     'associationId': association.id,
                                     'consumerId': user.id
                                 }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.list.comments'|trans }}">
-                                    <span class="glyphicon glyficon-list"></span>
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                    {{ 'admin.association.consumers.list.show_details'|trans }}
                                 </a>
                             </td>
                         {% else %}
@@ -76,27 +57,17 @@
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
-                            <td class="consumer-credit-container nowrap"
-                                data-manage-url="{{ url('open_miam_miam.admin.association.payment.manage_anonymous_payments', {
-                                    'id':     association.id
-                                }) }}"
-                                data-refresh-url="{{ url('open_miam_miam.admin.association.payment.anonymous_summary', {
-                                    'id':     association.id
-                                }) }}">
+                            <td class="consumer-credit-container nowrap">
                                 {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Payment:anonymousSummary', {
                                     'id': association.id
                                 })) }}
                             </td>
                             <td class="nowrap">
-                                <a href="{{ path('open_miam_miam.admin.association.payment.manage_anonymous_payments', {
-                                    'id': association.id
-                                }) }}" class="btn btn-primary btn-xs manage" title="{{ 'admin.association.consumers.payments.manage' | trans }}">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                <a href="{{ path('open_miam_miam.admin.association.consumer.list_anonymous_payments', {
-                                    'id': association.id
-                                }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.list.payments'|trans }}">
-                                    <span class="glyphicon glyphicon-list"></span>
+                                <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+                                    'associationId': association.id
+                                }) }}" class="btn btn-default btn-xs" title="{{ 'admin.association.consumers.list.comments'|trans }}">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                    {{ 'admin.association.consumers.list.show_details'|trans }}
                                 </a>
                             </td>
                         {% endif %}
@@ -109,24 +80,4 @@
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.list.no_consumer'|trans} %}
     {% endif %}
-
-    <div class="modal fade" id="manage-payments-dialog" tabindex="-1" role="dialog" aria-labelledby="Manage payments" aria-hidden="true"></div>
-{% endblock %}
-
-{% block javascript %}
-    {{ parent() }}
-    <script type="text/javascript">
-        $(function() {
-            $('.consumer-credit-container').each(function(){
-                var $container = $(this);
-
-                new OpenMiamMiam.AllocatePaymentModal(
-                    $container,
-                    $container.attr('data-refresh-url'),
-                    $container.attr('data-manage-url'),
-                    $container.parents('tr:first').find('a.manage')
-                );
-            });
-        });
-    </script>
 {% endblock %}

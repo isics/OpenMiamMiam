@@ -334,6 +334,11 @@ admin.association.consumers.list.anonymous:           "Anonyme"
 admin.association.consumers.list.payments:            "Liste des règlements"
 admin.association.consumers.list.payment_allocations: "Liste des affectations de ce règlement"
 admin.association.consumers.list.comments:            "Liste des commentaires"
+admin.association.consumers.list.show_details:        "Voir les détails"
+
+admin.association.consumers.show.title:           "Consommateur «%consumer%»"
+admin.association.consumers.show.anonymous_title: "Consommateur anonyme"
+admin.association.consumers.show.payments.title:  "Règlements"
 
 admin.association.consumers.payments.manage:                         "Gestion des règlements"
 admin.association.consumers.payments.list.title:                     "Liste des règlements de %consumer%"
@@ -378,13 +383,13 @@ admin.association.consumers.payments.allocations.list.delete:          "Supprime
 
 admin.association.consumers.payments.allocations.message.deleted:      "L'affectation a bien été supprimée."
 
-admin.association.consumers.comments.list.title:                     "Liste des commentaires à propos de %consumer%"
-admin.association.consumers.comments.list.no_comment:                "Il n'y a pas encore de commentaire pour ce consommateur."
+admin.association.consumers.comments.list.title:                     "Commentaires sur le consommateur"
+admin.association.consumers.comments.list.no_comment:                "Aucun commentaire."
 admin.association.consumers.comments.list.date:                      "Date"
 admin.association.consumers.comments.list.consumer:                  "Consommateur"
 admin.association.consumers.comments.list.writtenBy:                 "Ecrit par"
 admin.association.consumers.comments.list.isProcessed:               "Traité"
-admin.association.consumers.comments.list.process:                   "Traiter ce commentaire"
+admin.association.consumers.comments.list.process:                   "Traité"
 admin.association.consumers.comments.list.processed:                 "Ce commentaire a été traité"
 
 admin.association.consumers.comments.add.title:                      "Ajouter un commentaire"
@@ -482,6 +487,7 @@ admin.association.sales_orders.payment.allocate_payment:              "Affecter"
 admin.association.sales_orders.payment.form.new_payment:              "Nouveau règlement"
 admin.association.sales_orders.message.updated:                       "La commande a bien été mise à jour."
 admin.association.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
+
 
 # Admin / Association / Branch
 admin.association.branch.list.title:            "{0} Aucun comptoir|{1} 1 comptoir|]1,Inf] %nb% comptoirs"

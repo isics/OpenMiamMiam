@@ -221,15 +221,27 @@ open_miam_miam.admin.association.producer.export:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:export }
     #methods: [POST]
 
+open_miam_miam.admin.association.consumer.show_anonymous:
+    pattern:  /associations/{associationId}/consumers/anonymous/show
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show }
+
 open_miam_miam.admin.association.consumer.show:
     pattern:  /associations/{associationId}/consumers/{consumerId}/show
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show }
 
-open_miam_miam.admin.association.consumer.addComment:
+open_miam_miam.admin.association.consumer.add_anonymous_comment:
+    pattern:  /associations/{associationId}/consumers/anonymous/add_comment
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
+
+open_miam_miam.admin.association.consumer.add_comment:
     pattern:  /associations/{associationId}/consumers/{consumerId}/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
 
-open_miam_miam.admin.association.consumer.processComment:
+open_miam_miam.admin.association.consumer.process_anonymous_comment:
+    pattern:  /associations/{associationId}/consumers/anonymous/comments/{commentId}/process
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
+
+open_miam_miam.admin.association.consumer.process_comment:
     pattern:  /associations/{associationId}/consumers/{consumerId}/comments/{commentId}/process
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
 

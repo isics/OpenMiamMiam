@@ -62,5 +62,25 @@
             'id':           association.id,
             'salesOrderId': order.id
         })) }}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">
+                    {{ 'admin.association.consumers.comments.list.title'|trans }}
+                </h2>
+            </div>
+            <div class="panel-body">
+                {% if order.user is not null %}
+                    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:listComments', {
+                    'associationId': association.id,
+                    'consumerId': order.user.id,
+                    })) }}
+                {% else %}
+                    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:listComments', {
+                    'associationId': association.id
+                    })) }}
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
