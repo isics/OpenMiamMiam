@@ -637,26 +637,44 @@ OpenMiamMiam.Test = function() {
     return object;
 }();
 
-OpenMiamMiam.ProcessComment = function() {
-    var object = function(container, reloadContainerUrl){
+OpenMiamMiam.ConsumerComment = function() {
+    var object = function(container, addUrl, refreshUrl){
         this.$container = $(container);
-        this.reloadContainerUrl = reloadContainerUrl;
+        this.addUrl = addUrl;
+        this.refreshUrl = refreshUrl;
     }
 
     object.prototype = {
-        process: function(processCommentUrl){
-            var request = $.ajax({
-                url: processCommentUrl,
-                type: 'get',
-            });
-            request.done(function(){
-                this.reloadContainer();
-            }.bind(this));
+        initialize: function() {
+            this.$container.bind('add', this.add);
+            this.$container.bind('process', this.process);
+            this.$container.bind('refresh', this.refresh);
         },
 
-        reloadContainer: function(){
+        add: function() {
             $.ajax({
-                url: this.reloadContainerUrl,
+                url: this.addUrl,
+                type: 'get',
+                success: function() {
+                    this.$container.trigger('refresh');
+                }
+            });
+        },
+
+        process: function(processCommentUrl) {
+            console.log('Test process event');
+            $.ajax({
+                url: processCommentUrl,
+                type: 'get',
+                success: function() {
+                    this.$container.trigger('refresh');
+                }.bind(this)
+            });
+        },
+
+        refresh: function() {
+            $.ajax({
+                url: this.containerUrl,
                 type: 'get',
                 success: function(html){
                     this.$container.html(html);

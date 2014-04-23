@@ -56,3 +56,18 @@
     })) }}
 {% endif %}
 
+{% block javascript %}
+    <script type="text/javascript">
+        new OpenMiamMiam.ConsumerComment(
+            $('#consumer-comment'),
+            '{{ url('open_miam_miam.admin.association.consumer.add_comment', {
+                'associationId': association.id,
+                'consumerId':    consumer.id
+            }) }}',
+            '{{ url('open_miam_miam.admin.association.consumer.list_comments', {
+                'associationId': association.id,
+                'consumerId':    consumer.id
+            }) }}'
+        );
+    </script>
+{% endblock %}

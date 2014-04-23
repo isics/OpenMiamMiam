@@ -40,7 +40,6 @@
 {% block javascript %}
     {{ parent() }}
     <script type="text/javascript">
-        var processCommentObject;
         $(function() {
             new OpenMiamMiam.SalesOrderForm;
             new OpenMiamMiam.AllocatePaymentModal(
@@ -54,6 +53,6 @@
                     'salesOrderId': order.id
                 })|json_encode|raw }}
             );
-        };
+        });
     </script>
 {% endblock %}

@@ -101,7 +101,11 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
+<<<<<<< HEAD
     public function listCommentsAction(Association $association, User $consumer = null)
+=======
+    public function listCommentsAction(Request $request, Association $association, User $consumer)
+>>>>>>> Before rebase
     {
         $this->secure($association);
 
@@ -113,6 +117,10 @@ class ConsumerController extends BaseController
             $association,
             $consumer
         );
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response;
+        }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
             'association' => $association,

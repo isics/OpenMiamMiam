@@ -230,14 +230,21 @@ open_miam_miam.admin.association.consumer.show:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 open_miam_miam.admin.association.consumer.add_anonymous_comment:
     pattern:  /associations/{associationId}/consumers/anonymous/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
+=======
+open_miam_miam.admin.association.consumer.list_comments:
+    pattern:  /associations/{associationId}/consumers/{consumerId}/list_comment
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
+>>>>>>> Before rebase
 
 open_miam_miam.admin.association.consumer.add_comment:
     pattern:  /associations/{associationId}/consumers/{consumerId}/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
 
+<<<<<<< HEAD
 open_miam_miam.admin.association.consumer.list_comments:
     pattern:  /associations/{associationId}/consumers/{consumerId}/list_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
@@ -246,6 +253,8 @@ open_miam_miam.admin.association.consumer.process_anonymous_comment:
     pattern:  /associations/{associationId}/consumers/anonymous/comments/{commentId}/process
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
 
+=======
+>>>>>>> Before rebase
 open_miam_miam.admin.association.consumer.process_comment:
     pattern:  /associations/{associationId}/consumers/{consumerId}/comments/{commentId}/process
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
