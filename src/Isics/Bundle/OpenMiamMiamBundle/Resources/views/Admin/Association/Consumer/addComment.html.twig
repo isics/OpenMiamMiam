@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-8">
             {{ form_errors(form) }}
-            {{ form_widget(form.content, {'attr': {'class': 'form-control'} }) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control', 'placeholder': 'admin.association.consumers.comments.add.title'|trans } }) }}
             {{ form_rest(form) }}
         </div>
         <div class="col-md-4">

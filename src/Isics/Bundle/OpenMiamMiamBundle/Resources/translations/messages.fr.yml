@@ -385,10 +385,6 @@ admin.association.consumers.payments.allocations.message.deleted:      "L'affect
 
 admin.association.consumers.comments.list.title:                     "Commentaires sur le consommateur"
 admin.association.consumers.comments.list.no_comment:                "Aucun commentaire."
-admin.association.consumers.comments.list.date:                      "Date"
-admin.association.consumers.comments.list.consumer:                  "Consommateur"
-admin.association.consumers.comments.list.writtenBy:                 "Ecrit par"
-admin.association.consumers.comments.list.isProcessed:               "Traité"
 admin.association.consumers.comments.list.process:                   "Traité"
 admin.association.consumers.comments.list.processed:                 "Ce commentaire a été traité"
 

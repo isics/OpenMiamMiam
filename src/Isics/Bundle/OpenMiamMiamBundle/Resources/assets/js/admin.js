@@ -619,3 +619,51 @@ OpenMiamMiam.AllocatePaymentModal = function(){
 
     return object;
 }();
+
+OpenMiamMiam.Test = function() {
+
+    var object = function() {
+        this.handleErrors();
+    };
+
+    object.prototype = {
+        handleErrors: function() {
+            var panelsInError = $('.panel:has(.has-error)')
+                .removeClass('panel-primary')
+                .addClass('panel-danger');
+        }
+    };
+
+    return object;
+}();
+
+OpenMiamMiam.ProcessComment = function() {
+    var object = function(container, reloadContainerUrl){
+        this.$container = $(container);
+        this.reloadContainerUrl = reloadContainerUrl;
+    }
+
+    object.prototype = {
+        process: function(processCommentUrl){
+            var request = $.ajax({
+                url: processCommentUrl,
+                type: 'get',
+            });
+            request.done(function(){
+                this.reloadContainer();
+            }.bind(this));
+        },
+
+        reloadContainer: function(){
+            $.ajax({
+                url: this.reloadContainerUrl,
+                type: 'get',
+                success: function(html){
+                    this.$container.html(html);
+                }.bind(this)
+            });
+        }
+    }
+
+    return object;
+}();

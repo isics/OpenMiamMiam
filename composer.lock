@@ -1343,12 +1343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "d5e5f1c468a2983e0c70c7e4879f85a9cd0a5e5f"
+                "reference": "2be6f957694d06d6d2a3203ec16ecdbf0d849765"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d5e5f1c468a2983e0c70c7e4879f85a9cd0a5e5f",
-                "reference": "d5e5f1c468a2983e0c70c7e4879f85a9cd0a5e5f",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2be6f957694d06d6d2a3203ec16ecdbf0d849765",
+                "reference": "2be6f957694d06d6d2a3203ec16ecdbf0d849765",
                 "shasum": ""
             },
             "require": {
@@ -1405,7 +1405,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2014-04-10 12:24:47"
+            "time": "2014-04-14 19:53:55"
         },
         {
             "name": "monolog/monolog",
@@ -1944,12 +1944,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stfalcon/TinymceBundle.git",
-                "reference": "7d52006d55ab4ac086a163354ab3e4a49cbfa4df"
+                "reference": "2d78f28743e8c769d8cd8a164f34f16cc6595d7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stfalcon/TinymceBundle/zipball/7d52006d55ab4ac086a163354ab3e4a49cbfa4df",
-                "reference": "7d52006d55ab4ac086a163354ab3e4a49cbfa4df",
+                "url": "https://api.github.com/repos/stfalcon/TinymceBundle/zipball/2d78f28743e8c769d8cd8a164f34f16cc6595d7c",
+                "reference": "2d78f28743e8c769d8cd8a164f34f16cc6595d7c",
                 "shasum": ""
             },
             "require": {
@@ -1993,7 +1993,7 @@
                 "tinymce",
                 "wysiwyg"
             ],
-            "time": "2014-03-14 08:38:24"
+            "time": "2014-04-17 12:40:40"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
