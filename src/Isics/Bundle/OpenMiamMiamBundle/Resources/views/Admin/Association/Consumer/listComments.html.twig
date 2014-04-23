@@ -28,6 +28,16 @@
                         <span class="glyphicon glyphicon-check"></span>
                         {{ 'admin.association.consumers.comments.list.process'|trans }}
                     </a>
+                    <a class="btn btn-default btn-xs" onclick="
+                        $('#association-consumer-comment').trigger('process', '{{ url('open_miam_miam.admin.association.consumer.process_comment', {
+                            'associationId': association.id,
+                            'consumerId': consumer.id,
+                            'commentId': comment.id
+                        }) }}');
+                    ">
+                        <span class="glyphicon glyphicon-check"></span>
+                        {{ 'admin.association.consumers.comments.list.process'|trans }}
+                    </a>
                 {% else %}
                     <a href="{{ path('open_miam_miam.admin.association.consumer.process_anonymous_comment', {
                         'associationId': association.id,

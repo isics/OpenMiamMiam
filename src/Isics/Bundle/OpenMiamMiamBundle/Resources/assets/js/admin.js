@@ -651,10 +651,10 @@ OpenMiamMiam.ConsumerComment = function() {
             this.$container.bind('refresh', this.refresh);
         },
 
-        add: function() {
+        add: function(content) {
             $.ajax({
                 url: this.addUrl,
-                type: 'get',
+                type: 'post',
                 success: function() {
                     this.$container.trigger('refresh');
                 }

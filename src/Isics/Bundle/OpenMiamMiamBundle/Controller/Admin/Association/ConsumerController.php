@@ -152,7 +152,11 @@ class ConsumerController extends BaseController
             $this->get('security.context')->getToken()->getUser(),
             $consumer
         );
-        $form    = $this->createForm(new CommentType, $comment);
+        $form = $this->createForm(new CommentType, $comment);
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response;
+        }
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
