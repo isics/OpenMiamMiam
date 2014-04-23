@@ -101,11 +101,7 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-<<<<<<< HEAD
     public function listCommentsAction(Association $association, User $consumer = null)
-=======
-    public function listCommentsAction(Request $request, Association $association, User $consumer)
->>>>>>> Before rebase
     {
         $this->secure($association);
 
