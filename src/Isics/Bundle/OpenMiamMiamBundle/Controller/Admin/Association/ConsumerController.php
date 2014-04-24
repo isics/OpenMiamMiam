@@ -23,6 +23,7 @@ use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -114,10 +115,6 @@ class ConsumerController extends BaseController
             $consumer
         );
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response;
-        }
-
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
             'association' => $association,
             'consumer'    => $consumer,
@@ -141,6 +138,7 @@ class ConsumerController extends BaseController
      */
     public function addCommentAction(Request $request, Association $association, User $consumer = null)
     {
+
         $this->secure($association);
 
         if (null !== $consumer) {
@@ -152,11 +150,8 @@ class ConsumerController extends BaseController
             $this->get('security.context')->getToken()->getUser(),
             $consumer
         );
-        $form = $this->createForm(new CommentType, $comment);
 
-        if ($request->isXmlHttpRequest()) {
-            return new Response;
-        }
+        $form = $this->createForm(new CommentType, $comment);
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -166,7 +161,15 @@ class ConsumerController extends BaseController
                 $em->persist($comment);
                 $em->flush();
 
+                if ($request->isXmlHttpRequest()) {
+                    return new Response('', 204);
+                }
+
                 return $this->redirect($request->headers->get('referer'));
+            } else {
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse($form->getErrorsAsString(), 400);
+                }
             }
         }
 
@@ -184,6 +187,7 @@ class ConsumerController extends BaseController
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      * @ParamConverter("comment", class="IsicsOpenMiamMiamBundle:Comment", options={"mapping": {"commentId": "id"}})
      *
+     * @param Request     $request
      * @param Association $association
      * @param Comment     $comment
      * @param User        $consumer
@@ -192,7 +196,7 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function processCommentAction(Association $association, Comment $comment, User $consumer = null)
+    public function processCommentAction(Request $request, Association $association, Comment $comment, User $consumer = null)
     {
         $this->secure($association);
 
@@ -205,6 +209,10 @@ class ConsumerController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $comment->setIsProcessed(true);
         $em->flush();
+
+        if ($request->isXmlHttpRequest()) {
+            return new Response('', 204);
+        }
 
         return $this->redirect($this->getRequest()->headers->get('referer'));
     }

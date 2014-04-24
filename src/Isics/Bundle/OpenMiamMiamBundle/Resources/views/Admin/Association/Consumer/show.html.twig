@@ -151,6 +151,20 @@
                     $container.attr('data-manage-url'),
                     $container.find('a.manage')
             );
+
+            new OpenMiamMiam.ConsumerComment(
+                    $('#association-consumer-comments'),
+                    {% if consumer is not null %}
+                    {{ url('open_miam_miam.admin.association.consumer.list_comments', {
+                        'associationId': association.id,
+                        'consumerId':    consumer.id
+                    })|json_encode|raw }}
+                    {% else %}
+                    {{ url('open_miam_miam.admin.association.consumer.list_anonymous_comments', {
+                        'associationId': association.id
+                    })|json_encode|raw }}
+                    {% endif %}
+            );
         });
     </script>
 {% endblock %}

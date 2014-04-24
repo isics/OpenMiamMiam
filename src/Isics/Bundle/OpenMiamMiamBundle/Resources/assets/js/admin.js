@@ -620,69 +620,99 @@ OpenMiamMiam.AllocatePaymentModal = function(){
     return object;
 }();
 
-OpenMiamMiam.Test = function() {
-
-    var object = function() {
-        this.handleErrors();
-    };
-
-    object.prototype = {
-        handleErrors: function() {
-            var panelsInError = $('.panel:has(.has-error)')
-                .removeClass('panel-primary')
-                .addClass('panel-danger');
-        }
-    };
-
-    return object;
-}();
-
 OpenMiamMiam.ConsumerComment = function() {
-    var object = function(container, addUrl, refreshUrl){
-        this.$container = $(container);
-        this.addUrl = addUrl;
+
+    var onAddFormSubmit = function(form, consumerComment) {
+        $.ajax({
+            url:  form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            beforeSend: function() {
+                form.find(':input:not(:submit)').val('');
+            },
+            success: function() {
+                consumerComment.refreshList();
+            },
+            error: function(xhr){
+                alert(xhr.responseText);
+            }
+        });
+    };
+
+    var onProcessButtonClick = function($button, consumerComment) {
+        $.ajax({
+            url: $button.attr('href'),
+            type: 'get',
+            success: function() {
+                consumerComment.refreshList();
+            },
+            error: function(xhr) {
+                alert(xhr.responseText);
+            }
+        })
+    };
+
+    var object = function(listContainer, refreshUrl){
+        this.$listContainer = null;
+        this.$addForm = null;
         this.refreshUrl = refreshUrl;
-    }
+
+        this.setListContainer(listContainer);
+
+        this.initialize();
+    };
 
     object.prototype = {
         initialize: function() {
-            this.$container.bind('add', this.add);
-            this.$container.bind('process', this.process);
-            this.$container.bind('refresh', this.refresh);
+            this.addEventsListeners();
         },
 
-        add: function(content) {
+        setListContainer: function(listContainer) {
+            this.$listContainer = $(listContainer);
+            this.$addForm = this.$listContainer.find('.association-consumer-comment-add-form');
+        },
+
+        addEventsListeners: function() {
+            var that = this;
+
+            this.$addForm.submit(function(event){
+                event.preventDefault();
+
+                onAddFormSubmit($(this), that);
+            });
+
+            this.$listContainer.find('.association-consumer-comment-process').click(function(event){
+                event.preventDefault();
+
+                onProcessButtonClick($(this), that);
+            });
+        },
+
+        refreshList: function() {
+            var that = this;
+
             $.ajax({
-                url: this.addUrl,
-                data: { content: content }
-                type: 'post',
-                success: function() {
-                    this.$container.trigger('refresh');
+                url: that.refreshUrl,
+                type: 'get',
+                beforeSend: function(){
+                    // Loader
+                },
+                success: function(response){
+                    var $newListContainer = $(response);
+
+                    that.$listContainer.replaceWith($newListContainer);
+
+                    that.setListContainer($newListContainer);
+
+                    that.addEventsListeners();
+                },
+                error: function(xhr){
+                    // Show to user
+                   console.log(xhr.responseText);
                 }
             });
-        },
-
-        process: function(processCommentUrl) {
-            console.log('Test process event');
-            $.ajax({
-                url: processCommentUrl,
-                type: 'get',
-                success: function() {
-                    this.$container.trigger('refresh');
-                }.bind(this)
-            });
-        },
-
-        refresh: function() {
-            $.ajax({
-                url: this.containerUrl,
-                type: 'get',
-                success: function(html){
-                    this.$container.html(html);
-                }.bind(this)
-            });
         }
-    }
+    };
 
     return object;
 }();

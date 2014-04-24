@@ -5,79 +5,55 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% if comments|length > 0 %}
-    {% for comment in comments %}
-        <div class="alert alert-warning association-consumer-comment">
-            <div class="pull-right date">
-                {{ comment.createdAt|format_date }}
-            </div>
-            <div class="writer">
-                {{ format_user_identity(comment.writer) }}
-            </div>
-            <div class="content">
-                {{ comment.content|nl2br }}
-            </div>
-            <div class="actions">
-                {% if consumer is not null %}
-                    <a href="{{ path('open_miam_miam.admin.association.consumer.process_comment', {
-                        'associationId': association.id,
-                        'consumerId': consumer.id,
-                        'commentId': comment.id
-                    }) }}" class="btn btn-default btn-xs"
-                       title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
-                        <span class="glyphicon glyphicon-check"></span>
-                        {{ 'admin.association.consumers.comments.list.process'|trans }}
-                    </a>
-                    <a class="btn btn-default btn-xs" onclick="
-                        $('#association-consumer-comment').trigger('process', '{{ url('open_miam_miam.admin.association.consumer.process_comment', {
+<div id="association-consumer-comments">
+    {% if comments|length > 0 %}
+        {% for comment in comments %}
+            <div class="alert alert-warning association-consumer-comment">
+                <div class="pull-right date">
+                    {{ comment.createdAt|format_date }}
+                </div>
+                <div class="writer">
+                    {{ format_user_identity(comment.writer) }}
+                </div>
+                <div class="content">
+                    {{ comment.content|nl2br }}
+                </div>
+                <div class="actions">
+                    {% if consumer is not null %}
+                        <a href="{{ path('open_miam_miam.admin.association.consumer.process_comment', {
                             'associationId': association.id,
                             'consumerId': consumer.id,
                             'commentId': comment.id
-                        }) }}');
-                    ">
-                        <span class="glyphicon glyphicon-check"></span>
-                        {{ 'admin.association.consumers.comments.list.process'|trans }}
-                    </a>
-                {% else %}
-                    <a href="{{ path('open_miam_miam.admin.association.consumer.process_anonymous_comment', {
-                        'associationId': association.id,
-                        'commentId': comment.id
-                    }) }}" class="btn btn-default btn-xs"
-                       title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
-                        <span class="glyphicon glyphicon-check"></span>
-                        {{ 'admin.association.consumers.comments.list.process'|trans }}
-                    </a>
-                {% endif %}
+                        }) }}" class="btn btn-default btn-xs association-consumer-comment-process"
+                           title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
+                            <span class="glyphicon glyphicon-check"></span>
+                            {{ 'admin.association.consumers.comments.list.process'|trans }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('open_miam_miam.admin.association.consumer.process_anonymous_comment', {
+                            'associationId': association.id,
+                            'commentId': comment.id
+                        }) }}" class="btn btn-default btn-xs association-consumer-comment-process"
+                           title="{{ 'admin.association.consumers.comments.list.process'|trans }}">
+                            <span class="glyphicon glyphicon-check"></span>
+                            {{ 'admin.association.consumers.comments.list.process'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    {% endfor %}
-{% else %}
-    {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.comments.list.no_comment'|trans} %}
-{% endif %}
+        {% endfor %}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.comments.list.no_comment'|trans} %}
+    {% endif %}
 
-{% if consumer is not null %}
-    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
-    'associationId': association.id,
-    'consumerId': consumer.id,
-    })) }}
-{% else %}
-    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
-    'associationId': association.id
-    })) }}
-{% endif %}
-
-{% block javascript %}
-    <script type="text/javascript">
-        new OpenMiamMiam.ConsumerComment(
-            $('#consumer-comment'),
-            '{{ url('open_miam_miam.admin.association.consumer.add_comment', {
-                'associationId': association.id,
-                'consumerId':    consumer.id
-            }) }}',
-            '{{ url('open_miam_miam.admin.association.consumer.list_comments', {
-                'associationId': association.id,
-                'consumerId':    consumer.id
-            }) }}'
-        );
-    </script>
-{% endblock %}
+    {% if consumer is not null %}
+        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+            'associationId': association.id,
+            'consumerId': consumer.id,
+        })) }}
+    {% else %}
+        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+            'associationId': association.id
+        })) }}
+    {% endif %}
+</div>
