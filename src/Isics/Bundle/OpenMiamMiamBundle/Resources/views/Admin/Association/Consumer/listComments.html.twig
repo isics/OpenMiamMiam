@@ -6,6 +6,17 @@
  # with this source code in the file LICENSE.
  #}
 <div id="association-consumer-comments">
+    {% if consumer is not null %}
+        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+            'associationId': association.id,
+            'consumerId': consumer.id,
+        })) }}
+    {% else %}
+        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+            'associationId': association.id
+        })) }}
+    {% endif %}
+
     {% if comments|length > 0 %}
         {% for comment in comments %}
             <div class="alert alert-warning association-consumer-comment">
@@ -44,16 +55,5 @@
         {% endfor %}
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.comments.list.no_comment'|trans} %}
-    {% endif %}
-
-    {% if consumer is not null %}
-        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
-            'associationId': association.id,
-            'consumerId': consumer.id,
-        })) }}
-    {% else %}
-        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
-            'associationId': association.id
-        })) }}
     {% endif %}
 </div>

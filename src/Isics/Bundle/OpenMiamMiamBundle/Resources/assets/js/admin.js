@@ -623,6 +623,8 @@ OpenMiamMiam.AllocatePaymentModal = function(){
 OpenMiamMiam.ConsumerComment = function() {
 
     var onAddFormSubmit = function(form, consumerComment) {
+        form.find('#loader').css('visibility', 'visible');
+
         $.ajax({
             url:  form.attr('action'),
             type: form.attr('method'),
@@ -694,7 +696,7 @@ OpenMiamMiam.ConsumerComment = function() {
             $.ajax({
                 url: that.refreshUrl,
                 type: 'get',
-                beforeSend: function(){
+                beforeSend: function(){;
                     // Loader
                 },
                 success: function(response){

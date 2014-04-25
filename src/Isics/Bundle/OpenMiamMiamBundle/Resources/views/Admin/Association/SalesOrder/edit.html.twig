@@ -53,6 +53,19 @@
                     'salesOrderId': order.id
                 })|json_encode|raw }}
             );
+            new OpenMiamMiam.ConsumerComment(
+                    $('#association-consumer-comments'),
+                    {% if order.user is not null %}
+                    {{ url('open_miam_miam.admin.association.consumer.list_comments', {
+                        'associationId': association.id,
+                        'consumerId':    order.user.id
+                    })|json_encode|raw }}
+                    {% else %}
+                    {{ url('open_miam_miam.admin.association.consumer.list_anonymous_comments', {
+                        'associationId': association.id
+                    })|json_encode|raw }}
+                    {% endif %}
+            );
         });
     </script>
 {% endblock %}

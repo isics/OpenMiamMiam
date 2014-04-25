@@ -1343,12 +1343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "2be6f957694d06d6d2a3203ec16ecdbf0d849765"
+                "reference": "be933eb179b646eb747c4a0587d55c3371651bef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2be6f957694d06d6d2a3203ec16ecdbf0d849765",
-                "reference": "2be6f957694d06d6d2a3203ec16ecdbf0d849765",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/be933eb179b646eb747c4a0587d55c3371651bef",
+                "reference": "be933eb179b646eb747c4a0587d55c3371651bef",
                 "shasum": ""
             },
             "require": {
@@ -1405,20 +1405,20 @@
                 "image",
                 "imagine"
             ],
-            "time": "2014-04-14 19:53:55"
+            "time": "2014-04-24 07:10:20"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.8.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "392ef35fd470638e08d0160d6b1cbab63cb23174"
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/392ef35fd470638e08d0160d6b1cbab63cb23174",
-                "reference": "392ef35fd470638e08d0160d6b1cbab63cb23174",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
+                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
                 "shasum": ""
             },
             "require": {
@@ -1446,7 +1446,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -1473,7 +1473,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-03-23 19:50:26"
+            "time": "2014-04-24 13:29:03"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -2452,7 +2452,7 @@
             "source": {
                 "type": "git",
                 "url": "git://git.code.sf.net/p/tcpdf/code",
-                "reference": "ce07b409874a7ac0567b3401c765febef9efb413"
+                "reference": "2cf6cd032ee011214f0827650d3df677b9b86388"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -2501,7 +2501,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-04-10 16:47:45"
+            "time": "2014-04-22 20:56:54"
         },
         {
             "name": "twig/extensions",
