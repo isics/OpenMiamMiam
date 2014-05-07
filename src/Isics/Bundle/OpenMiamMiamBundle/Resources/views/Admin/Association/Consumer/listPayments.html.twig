@@ -70,7 +70,16 @@
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumers.payments.list.no_payment'|trans} %}
     {% endif %}
 
-    <a href="{{ path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% if consumer is defined %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+            'associationId': association.id,
+            'consumerId': consumer.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% else %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+            'associationId': association.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% endif %}
 {% endblock %}
 
 {% block javascript %}

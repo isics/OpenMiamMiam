@@ -10,7 +10,7 @@
 {% block content %}
     <h1>{{ 'admin.association.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} <small>- {{ order.date|format_datetime }}</small></h1>
 
-    {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'order': order, 'showConsumerComment': true } %}
+    {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'association': association, 'order': order, 'showConsumerComment': true } %}
 
     <p class="text-right">
         <a href="{{ path('open_miam_miam.admin.association.sales_order.add_products', {'id': association.id, 'salesOrderId': order.id}) }}" class="btn btn-primary btn-lg" id="add-products-link" data-toggle="modal" data-target="#add-products-dialog">
@@ -34,6 +34,7 @@
 
     <div class="modal fade" id="add-products-dialog" tabindex="-1" role="dialog" aria-labelledby="Add products" aria-hidden="true"></div>
     <div class="modal fade" id="manage-payments-dialog" tabindex="-1" role="dialog" aria-labelledby="Manage payments" aria-hidden="true"></div>
+
 {% endblock %}
 
 {% block javascript %}
@@ -51,6 +52,19 @@
                     'id':           association.id,
                     'salesOrderId': order.id
                 })|json_encode|raw }}
+            );
+            new OpenMiamMiam.ConsumerComment(
+                    $('#association-consumer-comments'),
+                    {% if order.user is not null %}
+                    {{ url('open_miam_miam.admin.association.consumer.list_comments', {
+                        'associationId': association.id,
+                        'consumerId':    order.user.id
+                    })|json_encode|raw }}
+                    {% else %}
+                    {{ url('open_miam_miam.admin.association.consumer.list_anonymous_comments', {
+                        'associationId': association.id
+                    })|json_encode|raw }}
+                    {% endif %}
             );
         });
     </script>

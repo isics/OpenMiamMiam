@@ -10,8 +10,8 @@ default:
         class: Isics\Bundle\OpenMiamMiamBundle\Behat\FeatureContext
     extensions:
         Behat\MinkExtension\Extension:
-            base_url:  'your_base_url'
-            goutte:    ~
+            base_url: 'your_base_url'
+            goutte: ~
         Behat\Symfony2Extension\Extension: ~
     paths:
         features: src/Isics/Bundle/OpenMiamMiamBundle/Resources

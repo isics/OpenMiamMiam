@@ -146,6 +146,7 @@ class BranchController extends Controller
             ->findAllNextForBranch($branch, false, $limit);
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showNextOccurrences.html.twig', array(
+            'branch'            => $branch,
             'branchOccurrences' => $branchOccurrences,
         ));
     }
@@ -184,5 +185,38 @@ class BranchController extends Controller
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducers.html.twig', array('producers'  => $producers, 'branch' => $branch));
+    }
+
+    /**
+     * Show the producers attendance for the next occurences of a branch
+     *
+     * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchSlug": "slug"}})
+     *
+     * @param Branch $branch
+     */
+    public function producersAttendanceAction($branch, $limit = 5)
+    {
+        if (null === $branch) {
+            throw new NotFoundHttpException('Branch not found');
+        }
+
+        $branchOccurrences = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
+            ->findAllNextForBranch($branch, false, $limit);
+
+        if (null === $branchOccurrences) {
+            throw new NotFoundHttpException('Occurences not found');
+        }
+
+        $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch);
+
+        if (null === $producers) {
+            throw new NotFoundHttpException('Producers not found');
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:producersAttendance.html.twig', array(
+            'branch'            => $branch,
+            'branchOccurrences' => $branchOccurrences,
+            'producers'         => $producers
+        ));
     }
 }

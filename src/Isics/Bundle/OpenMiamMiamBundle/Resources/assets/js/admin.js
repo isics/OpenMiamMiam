@@ -619,3 +619,100 @@ OpenMiamMiam.AllocatePaymentModal = function(){
 
     return object;
 }();
+
+OpenMiamMiam.ConsumerComment = function() {
+
+    var onAddFormSubmit = function(form, consumerComment) {
+        $.ajax({
+            url:  form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            beforeSend: function() {
+                form.find(':input:not(:submit)').val('');
+            },
+            success: function() {
+                consumerComment.refreshList();
+            },
+            error: function(xhr){
+                alert(xhr.responseText);
+            }
+        });
+    };
+
+    var onProcessButtonClick = function($button, consumerComment) {
+        $.ajax({
+            url: $button.attr('href'),
+            type: 'get',
+            success: function() {
+                consumerComment.refreshList();
+            },
+            error: function(xhr) {
+                alert(xhr.responseText);
+            }
+        })
+    };
+
+    var object = function(listContainer, refreshUrl){
+        this.$listContainer = null;
+        this.$addForm = null;
+        this.refreshUrl = refreshUrl;
+
+        this.setListContainer(listContainer);
+
+        this.initialize();
+    };
+
+    object.prototype = {
+        initialize: function() {
+            this.addEventsListeners();
+        },
+
+        setListContainer: function(listContainer) {
+            this.$listContainer = $(listContainer);
+            this.$addForm = this.$listContainer.find('.association-consumer-comment-add-form');
+        },
+
+        addEventsListeners: function() {
+            var that = this;
+
+            this.$addForm.submit(function(event){
+                event.preventDefault();
+
+                onAddFormSubmit($(this), that);
+            });
+
+            this.$listContainer.find('.association-consumer-comment-process').click(function(event){
+                event.preventDefault();
+
+                onProcessButtonClick($(this), that);
+            });
+        },
+
+        refreshList: function() {
+            var that = this;
+
+            $.ajax({
+                url: that.refreshUrl,
+                type: 'get',
+                beforeSend: function(){;
+                   that.$addForm.append('<img id="loader" src="/web/loader.gif" alt="Loading" />'); 
+                },
+                success: function(response){
+                    var $newListContainer = $(response);
+
+                    that.$listContainer.replaceWith($newListContainer);
+
+                    that.setListContainer($newListContainer);
+
+                    that.addEventsListeners();
+                },
+                error: function(xhr){
+                    // Show to user
+                   console.log(xhr.responseText);
+                }
+            });
+        }
+    };
+
+    return object;
+}();
