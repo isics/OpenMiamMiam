@@ -57,6 +57,11 @@ open_miam_miam.branch.producers:
     pattern:  /{branchSlug}/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:listProducers }
 
+open_miam_miam.branch.producers.attendance:
+    pattern:  /{branchSlug}/producers/attendance
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:producersAttendance }
+
+
 #
 # Cart
 #
