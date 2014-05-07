@@ -11,7 +11,7 @@
             <table class="table table-bordered table-striped table-branch-producers-attendance">
                 <thead>
                     <tr>
-                        <th>Producers</th>
+                        <th>{{ "producer"|trans }}</th>
                         {% for occurrence in branchOccurrences %}
                             <th class="text-center">{{ occurrence.begin|date("d/m") }}</th>
                         {% endfor %}

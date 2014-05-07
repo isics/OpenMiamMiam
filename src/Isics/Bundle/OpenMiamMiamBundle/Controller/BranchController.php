@@ -146,6 +146,7 @@ class BranchController extends Controller
             ->findAllNextForBranch($branch, false, $limit);
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showNextOccurrences.html.twig', array(
+            'branch'            => $branch,
             'branchOccurrences' => $branchOccurrences,
         ));
     }

@@ -25,4 +25,7 @@
         </li>
     {% endfor %}
     </ul>
+    <div class="panel-footer">
+        <a href="{{ path('open_miam_miam.branch.producers.attendance', { 'branchSlug': branch.slug }) }}">{{ 'zone.next_occurrences.footer'|trans }}</a>
+    </div>
 </div>
