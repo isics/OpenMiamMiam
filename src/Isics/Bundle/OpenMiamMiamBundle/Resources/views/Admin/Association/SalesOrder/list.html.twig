@@ -17,7 +17,7 @@
             <p>
                 <select class="form-control input-lg" data-type="url-switcher">
                     {% for _branchOccurrence in branchOccurrences %}
-                        <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} {{ _branchOccurrence.begin|format_date }}</option>
+                        <option value="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': _branchOccurrence.id}) }}"{% if branchOccurrence.id == _branchOccurrence.id %} selected="selected"{% endif %}>{{ _branchOccurrence.branch.name }} - {{ _branchOccurrence.begin|format_date }}</option>
                     {% endfor %}
                 </select>
             </p>

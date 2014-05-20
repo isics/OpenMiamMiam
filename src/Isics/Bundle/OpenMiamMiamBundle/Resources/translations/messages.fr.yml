@@ -51,7 +51,7 @@ zone.occurrence.no.next.date:      "Aucun comptoir planifié"
 zone.producers.title:              "Les producteurs"
 zone.producers.link:               "Tous les producteurs"
 zone.next_occurrences.title:       "Prochains comptoirs"
-zone.next_occurrences.footer:      "Voir les présences des producteurs"
+zone.next_occurrences.footer:      "Calendrier de présence"
 zone.location.title:               "S'y rendre"
 zone.location.route_link:          "Calculer l'itinéraire"
 zone.welcome.more:                 "En savoir +"
@@ -70,6 +70,11 @@ branch.producers.city:          "Ville"
 branch.producers.phone_number1: "Téléphone"
 branch.producers.phone_number2: "Portable"
 branch.producers.more:          "En savoir+"
+
+# Branch attendances
+branch_attendance_calendar.title:         "Calendrier de présence des producteurs"
+branch_attendance_calendar.no_producer:   "Aucun producteur"
+branch_attendance_calendar.no_occurrence: "Aucun prochain comptoir"
 
 # Producer
 producer.name:          "Nom"
@@ -394,7 +399,7 @@ admin.association.consumers.comments.add.button:                     "Ajouter"
 
 admin.association.consumers.comment.title:             "Commentaire de %admin%"
 
-admin.association.consumers.comments.list.process:     "Traiter ce commentaire"
+admin.association.consumers.comments.list.process:     "Masquer ce commentaire"
 admin.association.consumers.comments.list.processed:   "Ce commentaire a été traité"
 
 admin.association.consumers.comments.add.title:        "Ajouter un commentaire"

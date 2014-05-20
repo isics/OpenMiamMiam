@@ -656,6 +656,7 @@ OpenMiamMiam.ConsumerComment = function() {
         this.$listContainer = null;
         this.$addForm = null;
         this.refreshUrl = refreshUrl;
+        this.loader = $('<img class="loader" src="/bundles/isicsopenmiammiam/img/loader.gif" alt="Chargement..." />');
 
         this.setListContainer(listContainer);
 
@@ -694,8 +695,9 @@ OpenMiamMiam.ConsumerComment = function() {
             $.ajax({
                 url: that.refreshUrl,
                 type: 'get',
-                beforeSend: function(){;
-                   that.$addForm.append('<img id="loader" src="/web/loader.gif" alt="Loading" />'); 
+                beforeSend: function(){
+                    that.$listContainer.children().not(that.$addForm).remove();
+                    that.$addForm.append(that.loader.clone());
                 },
                 success: function(response){
                     var $newListContainer = $(response);

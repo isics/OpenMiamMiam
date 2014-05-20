@@ -58,9 +58,11 @@ class ProducerRepository extends EntityRepository
     /**
      *
      * @param Branch $branch
+     * @param boolean $randomize
+     *
      * @return array
      */
-    public function findAllProducer(Branch $branch)
+    public function findAllProducer(Branch $branch, $randomize = true)
     {
         // Retrieve all producers ids
         $ids = $this->findAllIds();
@@ -68,18 +70,18 @@ class ProducerRepository extends EntityRepository
             return array();
         }
 
-        // Randomize ids
-        shuffle($ids);
-
         // Retrieve producers
         $producers = $this->createQueryBuilder('p')
         ->where('p.id IN (:ids)')
         ->setParameter('ids', $ids)
+        ->orderBy('p.name')
         ->getQuery()
         ->getResult();
 
-        // Randomize producers
-        shuffle($producers);
+        // Randomize producers ?
+        if ((bool)$randomize) {
+            shuffle($producers);
+        }
 
         return $producers;
     }

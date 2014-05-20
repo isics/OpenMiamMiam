@@ -354,6 +354,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    twig.intl_extension:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
     # Menus
     open_miam_miam.menu_builder:
         class:     %open_miam_miam.menu_builder.class%

@@ -194,7 +194,7 @@ class BranchController extends Controller
      *
      * @param Branch $branch
      */
-    public function producersAttendanceAction($branch, $limit = 5)
+    public function showProducersAttendanceAction($branch, $limit = 5)
     {
         if (null === $branch) {
             throw new NotFoundHttpException('Branch not found');
@@ -203,17 +203,9 @@ class BranchController extends Controller
         $branchOccurrences = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
             ->findAllNextForBranch($branch, false, $limit);
 
-        if (null === $branchOccurrences) {
-            throw new NotFoundHttpException('Occurences not found');
-        }
+        $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllProducer($branch, false);
 
-        $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch);
-
-        if (null === $producers) {
-            throw new NotFoundHttpException('Producers not found');
-        }
-
-        return $this->render('IsicsOpenMiamMiamBundle:Branch:producersAttendance.html.twig', array(
+        return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducersAttendance.html.twig', array(
             'branch'            => $branch,
             'branchOccurrences' => $branchOccurrences,
             'producers'         => $producers

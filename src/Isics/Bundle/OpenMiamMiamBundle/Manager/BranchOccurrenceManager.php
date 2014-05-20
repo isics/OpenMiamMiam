@@ -403,7 +403,7 @@ class BranchOccurrenceManager
      *
      * @return bool
      */
-    public static function sortOccurrences(BranchOccurrence $occurrence1, BranchOccurrence $occurrence2)
+    public function sortOccurrences(BranchOccurrence $occurrence1, BranchOccurrence $occurrence2)
     {
         if ($occurrence1->getBegin() == $occurrence2->getBegin()) {
             return $occurrence1->getBranch()->getName() > $occurrence2->getBranch()->getName();
@@ -427,7 +427,7 @@ class BranchOccurrenceManager
         foreach ($association->getBranches() as $branch) {
             $nextBranchOccurrence = $repository->findOneNextNotClosedForBranch($branch);
 
-            if (!in_array($nextBranchOccurrence, $branchOccurrences)) {
+            if (null !== $nextBranchOccurrence && !in_array($nextBranchOccurrence, $branchOccurrences)) {
                 $branchOccurrences[] = $nextBranchOccurrence;
             }
         }

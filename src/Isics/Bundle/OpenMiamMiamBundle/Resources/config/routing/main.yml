@@ -59,7 +59,7 @@ open_miam_miam.branch.producers:
 
 open_miam_miam.branch.producers.attendance:
     pattern:  /{branchSlug}/producers/attendance
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:producersAttendance }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Branch:showProducersAttendance }
 
 
 #
