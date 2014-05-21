@@ -107,7 +107,7 @@ class ConsumerController extends BaseController
         $this->secure($association);
 
         if (null !== $consumer) {
-            $this->secure($association, $consumer);
+            $this->secureConsumer($association, $consumer);
         }
 
         $comments = $this->get('open_miam_miam.comment_manager')->getNotProcessedCommentsForAssociationConsumer(
