@@ -76,14 +76,23 @@
                                     <span class="glyphicon glyphicon-comment pull-right"></span>
                                 {% endif %}
                                 {% if salesOrder.user %}
-                                    {{ format_identity(salesOrder.lastname, salesOrder.firstname, '%lastname% %firstname_first_letter%') }}. ({{ salesOrder.user|format_consumer_ref }})
+                                    <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+                                        'associationId': association.id,
+                                        'consumerId':    salesOrder.user.id
+                                    }) }}">
+                                        {{ format_identity(salesOrder.lastname, salesOrder.firstname, '%lastname% %firstname_first_letter%') }}. ({{ salesOrder.user|format_consumer_ref }})
+                                    </a>
                                     {% if salesOrder.user.phoneNumber is not null %}
                                         <br />
                                         {{ 'admin.association.sales_orders.list.phone_number'|trans }}
                                         {{ salesOrder.user.phoneNumber }}
                                     {% endif %}
                                 {% else %}
-                                    {{ 'admin.association.sales_orders.anonymous'|trans }}
+                                    <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+                                        'associationId': association.id
+                                    }) }}">
+                                        {{ 'admin.association.sales_orders.anonymous'|trans }}
+                                    </a>
                                 {% endif %}
                             </td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
