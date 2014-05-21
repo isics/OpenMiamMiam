@@ -12,6 +12,8 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -204,6 +206,18 @@ class BranchController extends Controller
             ->findAllNextForBranch($branch, false, $limit);
 
         $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllProducer($branch, false);
+
+        // Remove producers that not having at least one attendance
+        $producers = array_filter($producers, function(Producer $producer) use ($branchOccurrences) {
+            foreach ($branchOccurrences as $branchOccurrence) {
+                /** @var BranchOccurrence $branchOccurrence */
+                if ($branchOccurrence->isProducerAttendee($producer)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
 
         return $this->render('IsicsOpenMiamMiamBundle:Branch:showProducersAttendance.html.twig', array(
             'branch'            => $branch,
