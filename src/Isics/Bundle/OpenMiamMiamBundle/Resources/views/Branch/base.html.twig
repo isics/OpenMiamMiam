@@ -28,7 +28,7 @@
             {{ render(controller('IsicsOpenMiamMiamBundle:Catalog:ShowCategories', {'branch': branch})) }}
             <div class="producers-show-attendance-container">
                 <a href="{{ path('open_miam_miam.branch.producers.attendance', { 'branchSlug': branch.slug }) }}"
-                   class="btn btn-default">
+                   class="btn btn-success">
                     <span class="glyphicon glyphicon-calendar"></span>
                     {{ 'zone.next_occurrences.footer'|trans }}
                 </a>
