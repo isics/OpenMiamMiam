@@ -26,6 +26,13 @@
     <div class="row">
         <div class="col-md-3" role="navigation">
             {{ render(controller('IsicsOpenMiamMiamBundle:Catalog:ShowCategories', {'branch': branch})) }}
+            <div class="producers-show-attendance-container">
+                <a href="{{ path('open_miam_miam.branch.producers.attendance', { 'branchSlug': branch.slug }) }}"
+                   class="btn btn-default">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    {{ 'zone.next_occurrences.footer'|trans }}
+                </a>
+            </div>
             {{ render(controller('IsicsOpenMiamMiamBundle:Branch:ShowRandomProducers', {'branch': branch, limit: 5})) }}
             {{ render(controller('IsicsOpenMiamMiamBundle:Branch:ShowNextOccurrences', {'branch': branch, limit: 3})) }}
             {% include 'IsicsOpenMiamMiamBundle:Branch:location.html.twig' with {'branch': branch} %}

@@ -35,13 +35,6 @@
                     {% else %}
                         {{ 'zone.occurrence.no.next.date'|trans }}
                     {% endif %}
-                    <div>
-                        <a href="{{ path('open_miam_miam.branch.producers.attendance', { 'branchSlug': branch.slug }) }}"
-                           class="btn btn-info">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            {{ 'zone.next_occurrences.footer'|trans }}
-                        </a>
-                    </div>
                 </div>
 
                 <div id="header-cart">
