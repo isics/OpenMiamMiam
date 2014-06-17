@@ -34,22 +34,34 @@
         <h2>{{ 'pdf.products_to_prepare.producer'|trans }} : {{ producer.name }}</h2>
 
         <table width="100%" border="1" cellpadding="3" cellspacing="0">
+            {% set sum = 0 %}
             <thead>
                 <tr>
-                    <th width="20%">{{ 'pdf.products_to_prepare.ref'|trans }}</th>
-                    <th width="60%">{{ 'pdf.products_to_prepare.name'|trans }}</th>
-                    <th width="20%" align="center">{{ 'pdf.products_to_prepare.quantity'|trans }}</th>
+                    <th width="15%">{{ 'pdf.products_to_prepare.ref'|trans }}</th>
+                    <th width="40%">{{ 'pdf.products_to_prepare.name'|trans }}</th>
+                    <th width="15%" align="right">{{ 'pdf.products_to_prepare.price'|trans }}</th>
+                    <th width="15%" align="center">{{ 'pdf.products_to_prepare.quantity'|trans }}</th>
+                    <th width="15%" align="right">{{ 'pdf.products_to_prepare.total'|trans }}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
                     <tr>
-                        <td width="20%">{{ product.row.ref }}</td>
-                        <td width="60%">{{ product.row.name }}</td>
-                        <td width="20%" align="center">{{ product.nb }}</td>
+                        <td width="15%">{{ product.row.ref }}</td>
+                        <td width="40%">{{ product.row.name }}</td>
+                        <td width="15%" align="right">{{ product.row.product.price|number_format_currency(open_miam_miam.currency) }}</td>
+                        <td width="15%" align="center">{{ product.nb }}</td>
+                        <td width="15%" align="right">{{ (product.row.product.price * product.nb)|number_format_currency(open_miam_miam.currency) }}</td>
+                        {% set sum = sum + product.row.product.price * product.nb %}
                     </tr>
                 {% endfor %}
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" width="85%" align="right">{{ 'pdf.products_to_prepare.total'|trans }}</td>
+                    <td width="15%" align="right">{{ sum|number_format_currency(open_miam_miam.currency) }}</td>
+                </tr>
+            </tfoot>
         </table>
     {% endspaceless %}
 {% endblock %}
