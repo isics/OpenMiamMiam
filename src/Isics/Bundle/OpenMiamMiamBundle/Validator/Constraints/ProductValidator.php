@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product as ProductEntity;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -76,6 +77,13 @@ class ProductValidator extends ConstraintValidator
         // Category is leaf
         if ($product->getCategory()->getRgt()-$product->getCategory()->getlft() > 1) {
             $this->context->addViolationAt('category', 'error.product.category_not_a_leaf');
+        }
+
+        // Product of the moment
+        if ($product->getIsOfTheMoment()) {
+            if ($product->getImage() === null && $product->getImageFile() === null) {
+                $this->context->addViolationAt('isOfTheMoment', 'error.product.need_photo');
+            }
         }
     }
 }

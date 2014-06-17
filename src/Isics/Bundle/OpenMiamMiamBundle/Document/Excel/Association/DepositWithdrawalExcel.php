@@ -365,18 +365,65 @@ class DepositWithdrawalExcel
             )
         );
 
+        $columnNumber = $currentColumn;
+        $stopLine = $line;
+
+        $line += 2;
+        $currentColumn = 0;
+        $commandNumberLine = $line;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.number_sales_order')
+        );
+
+        ++$currentColumn;
+
+        $commandsStartLine = $startLine + 1;
+        $commandsStopLine = $stopLine - 2;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=COUNTA(%s:%s)',
+                Tools::getColumnNameForNumber(1).$commandsStartLine,
+                Tools::getColumnNameForNumber(1).$commandsStopLine
+            )
+        );
+
+        $sheet->getRowDimension($line)->setRowHeight(30);
+
+        ++$line;
+        $currentColumn = 0;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.average_amout')
+        );
+
+        ++$currentColumn;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=%s/%s',
+                Tools::getColumnNameForNumber(3).$stopLine,
+                Tools::getColumnNameForNumber(1).$commandNumberLine
+            )
+        );
+
+        $sheet->getRowDimension($line)->setRowHeight(30);
+
         $column = 0;
 
         do {
             $sheet->getColumnDimension(Tools::getColumnNameForNumber($column))->setAutoSize(true);
             ++$column;
-        } while ($column != $currentColumn);
+        } while ($column != $columnNumber);
 
 
-        $sheet->getStyle(Tools::getColumnNameForNumber(0).$startLine.':'.Tools::getColumnNameForNumber($currentColumn).$line)
+        $sheet->getStyle(Tools::getColumnNameForNumber(0).$startLine.':'.Tools::getColumnNameForNumber($columnNumber).$stopLine)
             ->applyFromArray($this->styles['border']);
 
-        $sheet->getStyle(Tools::getColumnNameForNumber(1).($startLine+1).':'.Tools::getColumnNameForNumber($currentColumn).$line)
+        $sheet->getStyle(Tools::getColumnNameForNumber(1).($startLine+1).':'.Tools::getColumnNameForNumber($columnNumber).$stopLine)
             ->applyFromArray($this->styles['right']);
     }
 
