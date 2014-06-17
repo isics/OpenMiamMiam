@@ -900,5 +900,5 @@ excel.association.sales_orders.deposit_withdrawal.commission:                   
 excel.association.sales_orders.deposit_withdrawal.total_sales_order:            "Total TTC"
 excel.association.sales_orders.deposit_withdrawal.total_to_pay:                 "À régler"
 excel.association.sales_orders.deposit_withdrawal.total:                        "TOTAL"
-excel.association.sales_orders.deposit_withdrawal.number_sales_order:           "Nombre de\ncommandes"
-excel.association.sales_orders.deposit_withdrawal.average_amout:                "Montant moyen\npar commande"
+excel.association.sales_orders.deposit_withdrawal.number_sales_order:           "Nombre de commandes  "
+excel.association.sales_orders.deposit_withdrawal.average_amout:                "Montant moyen par commande  "

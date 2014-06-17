@@ -16,7 +16,7 @@ error.calendar.invalid_producer_attendance: "Présence invalide"
 
 error.product.invalid_branches:    "Au moins un comptoir est invalide."
 error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie."
-error.product.need_photo:                 "Un produit doit avoir une photo pour être désigné comme produit du moment."
+error.product.need_photo:          "Votre produit doit avoir une photo pour être désigné comme produit du moment."
 
 error.artificial_product.invalid: "Les deux champs doivent être renseignés"
 

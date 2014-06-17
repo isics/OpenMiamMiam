@@ -372,13 +372,19 @@ class DepositWithdrawalExcel
         $currentColumn = 0;
         $commandNumberLine = $line;
 
+        $sheet->mergeCells(
+            Tools::getColumnNameForNumber($currentColumn).$line
+            .':'.Tools::getColumnNameForNumber($currentColumn + 2).$line);
+
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn).$line,
             $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.number_sales_order')
         );
 
-        ++$currentColumn;
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['right']));
 
+        $currentColumn += 3;
         $commandsStartLine = $startLine + 1;
         $commandsStopLine = $stopLine - 2;
 
@@ -389,28 +395,37 @@ class DepositWithdrawalExcel
                 Tools::getColumnNameForNumber(1).$commandsStopLine
             )
         );
-
-        $sheet->getRowDimension($line)->setRowHeight(30);
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['center'], $this->styles['border']));
 
         ++$line;
         $currentColumn = 0;
+
+        $sheet->mergeCells(
+            Tools::getColumnNameForNumber($currentColumn).$line
+            .':'.Tools::getColumnNameForNumber($currentColumn + 2).$line);
 
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn).$line,
             $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.average_amout')
         );
 
-        ++$currentColumn;
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['right']));
 
-        $sheet->setCellValue(
+        $currentColumn += 3;
+
+        $this->writeCurrencyNumber(
+            $sheet,
             Tools::getColumnNameForNumber($currentColumn).$line,
             sprintf('=%s/%s',
                 Tools::getColumnNameForNumber(3).$stopLine,
-                Tools::getColumnNameForNumber(1).$commandNumberLine
+                Tools::getColumnNameForNumber(3).$commandNumberLine
             )
         );
 
-        $sheet->getRowDimension($line)->setRowHeight(30);
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['border']));
 
         $column = 0;
 
