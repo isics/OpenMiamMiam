@@ -38,7 +38,6 @@
                     </div>
 
                     <div class="table-responsive">
-                        {% set sum = 0 %}
                         <table class="table table-bordered table_condensed table-striped table-producer-sales-orders">
                             <thead>
                                 <tr>
@@ -71,7 +70,6 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
-                                        {% set sum = sum + producerSalesOrder.total %}
                                         <td>
                                             <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}"><span class="glyphicon glyphicon-pencil"></span></a>
                                         </td>
@@ -82,7 +80,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="3">{{ 'admin.association.sales_orders.list.total_amount'|trans }}</td>
-                                    <td>{{ sum|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td>{{ branchOccurrenceSalesOrders.sum|number_format_currency(open_miam_miam.currency) }}</td>
                                     <td></td>
                                 </tr>
                             </tfoot>

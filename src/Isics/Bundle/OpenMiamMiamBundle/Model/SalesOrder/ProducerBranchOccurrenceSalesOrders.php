@@ -96,4 +96,20 @@ class ProducerBranchOccurrenceSalesOrders
 
         $this->salesOrders[$order->getSalesOrder()->getId()] = $order;
     }
+
+    /**
+     * Get producer sales order sum
+     *
+     * @return float
+     */
+    public function getSum()
+    {
+        $sum = 0;
+
+        foreach ($this->getSalesOrders() as $salesOrder) {
+            $sum += $salesOrder->getTotal();
+        }
+
+        return $sum;
+    }
 }
