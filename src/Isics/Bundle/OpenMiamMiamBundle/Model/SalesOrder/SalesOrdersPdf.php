@@ -11,12 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
 
+use Isics\Bundle\OpenMiamMiamBundle\Document\OpenMiamMiamPDF;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class SalesOrdersPdf
 {
     /**
-     * @var \TCPDF $pdf
+     * @var OpenMiamMiamPDF $pdf
      */
     protected $pdf;
 
@@ -34,10 +35,10 @@ class SalesOrdersPdf
     /**
      * Constructs object
      *
-     * @param \TCPDF $pdf
+     * @param OpenMiamMiamPDF $pdf
      * @param EngineInterface $engine
      */
-    public function __construct(\TCPDF $pdf, EngineInterface $engine)
+    public function __construct(OpenMiamMiamPDF $pdf, EngineInterface $engine)
     {
         $this->pdf = $pdf;
         $this->engine = $engine;
@@ -64,6 +65,7 @@ class SalesOrdersPdf
                 $this->engine->render('IsicsOpenMiamMiamBundle:Pdf:salesOrder.html.twig', array('order' => $salesOrder))
             );
         }
+
     }
 
     /**

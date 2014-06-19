@@ -77,6 +77,7 @@ parameters:
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
     open_miam_miam.tcpdf.class:                     TCPDF
+    open_miam_miam.pdf.class:                       'Isics\Bundle\OpenMiamMiamBundle\Document\OpenMiamMiamPDF'
     open_miam_miam.sales_orders_pdf.class:          'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
     open_miam_miam.producer_sales_orders_pdf.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersPdf'
     open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
@@ -511,19 +512,24 @@ services:
         scope: prototype
         public: false
 
+    open_miam_miam.pdf:
+        class:      %open_miam_miam.pdf.class%
+        scope:      prototype
+        public:     false
+
     open_miam_miam.sales_orders_pdf:
         class:     %open_miam_miam.sales_orders_pdf.class%
-        arguments: [@open_miam_miam.tcpdf, @templating]
+        arguments: [@open_miam_miam.pdf, @templating]
         scope:     prototype
 
     open_miam_miam.producer_sales_orders_pdf:
         class:     %open_miam_miam.producer_sales_orders_pdf.class%
-        arguments: [@open_miam_miam.tcpdf, @templating]
+        arguments: [@open_miam_miam.pdf, @templating]
         scope:     prototype
 
     open_miam_miam.products_to_prepare_pdf:
         class:     %open_miam_miam.products_to_prepare_pdf.class%
-        arguments: [%open_miam_miam.product%, @open_miam_miam.tcpdf, @templating]
+        arguments: [%open_miam_miam.product%, @open_miam_miam.pdf, @templating]
         scope:     prototype
 
     open_miam_miam.mailer:

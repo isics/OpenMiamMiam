@@ -365,18 +365,80 @@ class DepositWithdrawalExcel
             )
         );
 
+        $columnNumber = $currentColumn;
+        $stopLine = $line;
+
+        $line += 2;
+        $currentColumn = 0;
+        $commandNumberLine = $line;
+
+        $sheet->mergeCells(
+            Tools::getColumnNameForNumber($currentColumn).$line
+            .':'.Tools::getColumnNameForNumber($currentColumn + 2).$line);
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.number_sales_order')
+        );
+
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['right']));
+
+        $currentColumn += 3;
+        $commandsStartLine = $startLine + 1;
+        $commandsStopLine = $stopLine - 2;
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=COUNTA(%s:%s)',
+                Tools::getColumnNameForNumber(1).$commandsStartLine,
+                Tools::getColumnNameForNumber(1).$commandsStopLine
+            )
+        );
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['center'], $this->styles['border']));
+
+        ++$line;
+        $currentColumn = 0;
+
+        $sheet->mergeCells(
+            Tools::getColumnNameForNumber($currentColumn).$line
+            .':'.Tools::getColumnNameForNumber($currentColumn + 2).$line);
+
+        $sheet->setCellValue(
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            $this->translator->trans('excel.association.sales_orders.deposit_withdrawal.average_amout')
+        );
+
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['right']));
+
+        $currentColumn += 3;
+
+        $this->writeCurrencyNumber(
+            $sheet,
+            Tools::getColumnNameForNumber($currentColumn).$line,
+            sprintf('=%s/%s',
+                Tools::getColumnNameForNumber(3).$stopLine,
+                Tools::getColumnNameForNumber(3).$commandNumberLine
+            )
+        );
+
+        $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
+            ->applyFromArray(array_merge($this->styles['border']));
+
         $column = 0;
 
         do {
             $sheet->getColumnDimension(Tools::getColumnNameForNumber($column))->setAutoSize(true);
             ++$column;
-        } while ($column != $currentColumn);
+        } while ($column != $columnNumber);
 
 
-        $sheet->getStyle(Tools::getColumnNameForNumber(0).$startLine.':'.Tools::getColumnNameForNumber($currentColumn).$line)
+        $sheet->getStyle(Tools::getColumnNameForNumber(0).$startLine.':'.Tools::getColumnNameForNumber($columnNumber).$stopLine)
             ->applyFromArray($this->styles['border']);
 
-        $sheet->getStyle(Tools::getColumnNameForNumber(1).($startLine+1).':'.Tools::getColumnNameForNumber($currentColumn).$line)
+        $sheet->getStyle(Tools::getColumnNameForNumber(1).($startLine+1).':'.Tools::getColumnNameForNumber($columnNumber).$stopLine)
             ->applyFromArray($this->styles['right']);
     }
 
