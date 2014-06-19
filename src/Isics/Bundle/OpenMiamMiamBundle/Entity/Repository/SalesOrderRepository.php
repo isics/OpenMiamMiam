@@ -102,16 +102,6 @@ class SalesOrderRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getForBranchOccurenceQueryBuilder(BranchOccurrence $branchOccurrence)
-    {
-        return $this->createQueryBuilder('so')
-            ->addSelect('sor')
-            ->leftJoin('so.salesOrderRows', 'sor')
-            ->andWhere('so.branchOccurrence = :branchOccurrence')
-            ->setParameter('branchOccurrence', $branchOccurrence)
-            ->addOrderBy('so.id');
-    }
-
     /**
      * Returns sales orders for a branch occurrence
      *
@@ -121,24 +111,33 @@ class SalesOrderRepository extends EntityRepository
      */
     public function findForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
-        return $this->getForBranchOccurenceQueryBuilder($branchOccurrence)
-                ->getQuery()
-                ->getResult();
+        return $this->createQueryBuilder('so')
+            ->addSelect('sor')
+            ->leftJoin('so.salesOrderRows', 'sor')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->addOrderBy('so.id')
+            ->getQuery()
+            ->getResult();
     }
 
+    /**
+     * Return number of consumer who have ordered in a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return mixed
+     */
     public function countForBranchOccurrenceGroupByConsumer(BranchOccurrence $branchOccurrence)
     {
-        var_dump($this->getForBranchOccurenceQueryBuilder($branchOccurrence)
-            ->select('COUNT(so)')
-            ->groupBy('so.user')
+        return $this
+            ->createQueryBuilder('so')
+            ->select('COUNT(DISTINCT u.id)')
+            ->innerJoin('so.user', 'u')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
             ->getQuery()
-            ->getResult());
-
-        return $this->getForBranchOccurenceQueryBuilder($branchOccurrence)
-            ->select('COUNT(so)')
-            ->groupBy('so.user')
-            ->getQuery()
-            ->getResult()[0][1];
+            ->getSingleScalarResult();
     }
 
     /**
