@@ -185,6 +185,11 @@ class AssociationManager
             ->getQuery()
             ->getResult();
 
-        return new ProducersDepositWithdrawal($branchOccurrence, $producersData, $this->artificial_product_ref);
+        return new ProducersDepositWithdrawal(
+            $branchOccurrence,
+            $producersData,
+            $this->artificial_product_ref,
+            $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
+        );
     }
 } 

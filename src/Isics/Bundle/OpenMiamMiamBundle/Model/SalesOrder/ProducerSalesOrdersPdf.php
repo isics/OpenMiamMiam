@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 class ProducerSalesOrdersPdf
 {
     /**
-     * @var \TCPDF $pdf
+     * @var TCPDF $pdf
      */
     protected $pdf;
 
@@ -34,7 +34,7 @@ class ProducerSalesOrdersPdf
     /**
      * Constructs object
      *
-     * @param \TCPDF $pdf
+     * @param TCPDF $pdf
      * @param EngineInterface $engine
      */
     public function __construct(\TCPDF $pdf, EngineInterface $engine)

@@ -31,7 +31,7 @@
                     <tbody>
                         {% for producer in producers %}
                             <tr>
-                                <td>{{ producer.name }}</td>
+                                <td><a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">{{ producer.name }}</a></td>
                                 {% for occurrence in branchOccurrences %}
                                     <td class="text-center">
                                         {% if occurrence.isProducerAttendee(producer) %}

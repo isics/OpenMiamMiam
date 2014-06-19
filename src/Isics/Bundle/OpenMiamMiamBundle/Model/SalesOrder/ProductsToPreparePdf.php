@@ -11,12 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
 
+use Isics\Bundle\OpenMiamMiamBundle\Document\OpenMiamMiamPDF;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductsToPreparePdf
 {
     /**
-     * @var \TCPDF $pdf
+     * @var TCPDF $pdf
      */
     protected $pdf;
 
@@ -46,7 +47,7 @@ class ProductsToPreparePdf
      * Constructs object
      *
      * @param array $productConfig
-     * @param \TCPDF $pdf
+     * @param TCPDF $pdf
      * @param EngineInterface $engine
      */
     public function __construct(array $productConfig, \TCPDF $pdf, EngineInterface $engine)
@@ -75,9 +76,10 @@ class ProductsToPreparePdf
 
         $this->pdf->AddPage();
         $this->pdf->writeHTML($this->engine->render('IsicsOpenMiamMiamBundle:Pdf:productsToPrepare.html.twig', array(
-            'producer' => $this->producerSalesOrders->getProducer(),
-            'products' => $this->products,
-            'branchOccurrence' => $this->producerSalesOrders->getBranchOccurrence()
+            'producer'          => $this->producerSalesOrders->getProducer(),
+            'products'          => $this->products,
+            'branchOccurrence'  => $this->producerSalesOrders->getBranchOccurrence(),
+            'sum'               =>$this->producerSalesOrders->getSum(),
         )));
     }
 

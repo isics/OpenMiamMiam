@@ -77,5 +77,12 @@ class ProductValidator extends ConstraintValidator
         if ($product->getCategory()->getRgt()-$product->getCategory()->getlft() > 1) {
             $this->context->addViolationAt('category', 'error.product.category_not_a_leaf');
         }
+
+        // Product of the moment
+        if ($product->getIsOfTheMoment()) {
+            if ($product->getImage() === null && $product->getImageFile() === null) {
+                $this->context->addViolationAt('isOfTheMoment', 'error.product.need_photo');
+            }
+        }
     }
 }

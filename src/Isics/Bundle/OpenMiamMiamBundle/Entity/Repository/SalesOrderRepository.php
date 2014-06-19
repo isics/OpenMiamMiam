@@ -131,13 +131,32 @@ class SalesOrderRepository extends EntityRepository
     public function findForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
         return $this->createQueryBuilder('so')
-                ->addSelect('sor')
-                ->leftJoin('so.salesOrderRows', 'sor')
-                ->andWhere('so.branchOccurrence = :branchOccurrence')
-                ->setParameter('branchOccurrence', $branchOccurrence)
-                ->addOrderBy('so.id')
-                ->getQuery()
-                ->getResult();
+            ->addSelect('sor')
+            ->leftJoin('so.salesOrderRows', 'sor')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->addOrderBy('so.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Return number of consumer who have ordered in a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return mixed
+     */
+    public function countForBranchOccurrenceGroupByConsumer(BranchOccurrence $branchOccurrence)
+    {
+        return $this
+            ->createQueryBuilder('so')
+            ->select('COUNT(DISTINCT u.id)')
+            ->innerJoin('so.user', 'u')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

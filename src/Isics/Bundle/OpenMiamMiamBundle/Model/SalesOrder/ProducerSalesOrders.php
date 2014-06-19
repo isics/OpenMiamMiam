@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 
 class ProducerSalesOrders
@@ -65,8 +66,7 @@ class ProducerSalesOrders
     {
         $count = 0;
         foreach ($this->branchOccurrencesSalesOrders as $branchOccurrenceSalesOrder) {
-            foreach ($branchOccurrenceSalesOrder->getSalesOrders() as $salesOrders)
-            $count += count($salesOrders);
+            $count += count($branchOccurrenceSalesOrder->getSalesOrders());
         }
 
         return $count;

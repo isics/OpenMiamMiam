@@ -75,7 +75,15 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">{{ 'admin.association.sales_orders.list.total_amount'|trans }}</td>
+                                    <td>{{ branchOccurrenceSalesOrders.sum|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 {% else %}
