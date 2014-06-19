@@ -11,9 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
@@ -73,6 +75,23 @@ class SalesOrderRepository extends EntityRepository
         }
 
         return $qb;
+    }
+
+    /**
+     * Filters sales orders by branch
+     *
+     * @param QueryBuilder $qb
+     * @param Branch $branch
+     *
+     * @return QueryBuilder
+     */
+    public function filterBranch(QueryBuilder $qb, ArrayCollection $branches)
+    {
+        return $qb
+            ->innerJoin('so.branchOccurrence', 'boc')
+            ->innerJoin('boc.branch', 'br')
+            ->add('where', $qb->expr()->in('br', ':branches'))
+            ->setParameter('branches', $branches);
     }
 
     /**

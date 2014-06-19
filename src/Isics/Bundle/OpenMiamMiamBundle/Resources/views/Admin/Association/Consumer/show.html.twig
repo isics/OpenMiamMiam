@@ -91,9 +91,9 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>{{ 'admin.association.consumer.commands.date'|trans }}</th>
-                                    <th>{{ 'admin.association.consumer.commands.branch'|trans }}</th>
-                                    <th>{{ 'admin.association.consumer.commands.amount'|trans }}</th>
+                                    <th>{{ 'admin.association.consumer.orders.date'|trans }}</th>
+                                    <th>{{ 'admin.association.consumer.orders.branch'|trans }}</th>
+                                    <th>{{ 'admin.association.consumer.orders.amount'|trans }}</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -109,6 +109,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        <a
+                            href="{{ path('open_miam_miam.admin.association.consumer.list_orders', {'associationId': association.id, 'consumerId': consumer.id}) }}"
+                            class="btn btn-primary manage">
+                            {{ 'admin.association.consumer.orders.complete_list'|trans }}
+                        </a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,43 @@
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>
+        {{ 'admin.association.consumer.orders.complete.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+    </h1>
+
+    {{ form(form) }}
+
+    {% if salesOrders|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped table-association-orders">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.association.consumer.orders.complete.ref'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.date'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.branch'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.amount'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salesOrder in salesOrders %}
+                        <tr>
+                            <td>{{ salesOrder.ref }}</td>
+                            <td>{{ salesOrder.date|format_datetime }}</td>
+                            <td>{{ salesOrder.branchOccurrence.branch.name }} - {{ salesOrder.branchOccurrence.date|format_date }}</td>
+                            <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
+                            <td>
+                                <a
+                                    href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}"
+                                    class="btn btn-primary btn-xs"
+                                ><span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+    {% endif %}
+{%  endblock %}

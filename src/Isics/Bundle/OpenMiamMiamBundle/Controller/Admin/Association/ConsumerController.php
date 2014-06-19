@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
@@ -91,6 +92,53 @@ class ConsumerController extends BaseController
             'association'       => $association,
             'consumer'          => $consumer,
             'historySalesOrder' => $historySalesOrders,
+        ));
+    }
+
+    /**
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     *
+     * @param Request $request
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function listOrdersAction(Request $request, Association $association, User $consumer = null)
+    {
+        $this->secure($association);
+
+        if (null != $consumer) {
+            $this->secureConsumer($association, $consumer);
+        }
+
+        $handler = $this->get('open_miam_miam.handler.association_sales_order_search');
+        $form = $handler->createSearchForm($association);
+        $queryBuilder = $handler->generateQueryBuilder($association, $consumer);
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            $data = $form->getData();
+            $handler->applyFormFilters($data, $queryBuilder);
+        }
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch (NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listOrders.html.twig', array(
+            'association' => $association,
+            'consumer'    => $consumer,
+            'salesOrders' => $pagerfanta,
+            'form'        => $form->createView(),
         ));
     }
 
