@@ -13,7 +13,6 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Validator\Constraints;
 
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product as ProductEntity;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

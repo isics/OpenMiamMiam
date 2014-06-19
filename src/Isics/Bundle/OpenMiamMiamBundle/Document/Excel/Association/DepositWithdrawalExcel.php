@@ -388,12 +388,11 @@ class DepositWithdrawalExcel
         $commandsStartLine = $startLine + 1;
         $commandsStopLine = $stopLine - 2;
 
+        $countOrders = $producerDepositWithdrawal->getOrdersCount();
+
         $sheet->setCellValue(
             Tools::getColumnNameForNumber($currentColumn).$line,
-            sprintf('=COUNTA(%s:%s)',
-                Tools::getColumnNameForNumber(1).$commandsStartLine,
-                Tools::getColumnNameForNumber(1).$commandsStopLine
-            )
+            $countOrders
         );
         $sheet->getStyle(Tools::getColumnNameForNumber($currentColumn).$line)
             ->applyFromArray(array_merge($this->styles['center'], $this->styles['border']));

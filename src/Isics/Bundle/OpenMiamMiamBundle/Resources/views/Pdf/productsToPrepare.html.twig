@@ -34,7 +34,6 @@
         <h2>{{ 'pdf.products_to_prepare.producer'|trans }} : {{ producer.name }}</h2>
 
         <table width="100%" border="1" cellpadding="3" cellspacing="0">
-            {% set sum = 0 %}
             <thead>
                 <tr>
                     <th width="15%">{{ 'pdf.products_to_prepare.ref'|trans }}</th>
@@ -51,8 +50,7 @@
                         <td width="40%">{{ product.row.name }}</td>
                         <td width="15%" align="right">{{ product.row.product.price|number_format_currency(open_miam_miam.currency) }}</td>
                         <td width="15%" align="center">{{ product.nb }}</td>
-                        <td width="15%" align="right">{{ (product.row.product.price * product.nb)|number_format_currency(open_miam_miam.currency) }}</td>
-                        {% set sum = sum + product.row.product.price * product.nb %}
+                        <td width="15%" align="right">{{ product.row.total|number_format_currency(open_miam_miam.currency) }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
