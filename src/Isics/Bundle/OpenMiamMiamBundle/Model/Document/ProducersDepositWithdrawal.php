@@ -69,7 +69,9 @@ class ProducersDepositWithdrawal
     }
 
     /**
-     * @return array
+     * Returns number of consumers who have ordered
+     *
+     * @return int
      */
     public function getOrdersCount()
     {

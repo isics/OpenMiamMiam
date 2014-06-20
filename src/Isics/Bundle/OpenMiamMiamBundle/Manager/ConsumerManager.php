@@ -78,8 +78,12 @@ class ConsumerManager
      * @param null $limit
      * @return mixed
      */
-    public function getLastSalesOrderForAssociationAndConsumer(Association $association, User $consumer, $limit = null)
+    public function getLastSalesOrderForAssociationAndConsumer(Association $association, User $consumer = null, $limit = null)
     {
+        if ($consumer === null) {
+            return array();
+        }
+
         return $this
             ->entityManager
             ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
