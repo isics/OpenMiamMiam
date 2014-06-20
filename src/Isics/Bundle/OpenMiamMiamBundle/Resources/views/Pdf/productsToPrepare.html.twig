@@ -50,7 +50,7 @@
                         <td width="40%">{{ product.row.name }}</td>
                         <td width="15%" align="right">{{ product.row.product.price|number_format_currency(open_miam_miam.currency) }}</td>
                         <td width="15%" align="center">{{ product.nb }}</td>
-                        <td width="15%" align="right">{{ product.row.total|number_format_currency(open_miam_miam.currency) }}</td>
+                        <td width="15%" align="right">{{ product.total|number_format_currency(open_miam_miam.currency) }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

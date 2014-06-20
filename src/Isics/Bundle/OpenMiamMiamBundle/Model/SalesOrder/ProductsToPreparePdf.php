@@ -94,14 +94,15 @@ class ProductsToPreparePdf
         foreach ($this->producerSalesOrders->getSalesOrders() as $producerSalesOrder) {
             foreach ($producerSalesOrder->getSalesOrderRows() as $row) {
                 if ($row->getRef() == $this->productConfig['artificial_product_ref']) {
-                    $this->products[] = array('nb' => $row->getQuantity(), 'row' => $row);
+                    $this->products[] = array('nb' => $row->getQuantity(), 'total' => $row->getTotal(), 'row' => $row);
                     continue;
                 }
 
                 if (!isset($this->products[$row->getRef()])) {
-                    $this->products[$row->getRef()] = array('nb' => $row->getQuantity(), 'row' => $row);
+                    $this->products[$row->getRef()] = array('nb' => $row->getQuantity(), 'total' => $row->getTotal(), 'row' => $row);
                 } else {
                     $this->products[$row->getRef()]['nb'] += $row->getQuantity();
+                    $this->products[$row->getRef()]['total'] += $row->getTotal();
                 }
             }
         }
