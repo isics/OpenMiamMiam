@@ -78,7 +78,7 @@ class ConsumerManager
      * @param null $limit
      * @return mixed
      */
-    public function getLastSalesOrderForAssociationAndConsumer(Association $association, User $consumer, $limit = null)
+    public function getLastSalesOrderForAssociationAndConsumer(Association $association, User $consumer = null, $limit = null)
     {
         return $this
             ->entityManager
