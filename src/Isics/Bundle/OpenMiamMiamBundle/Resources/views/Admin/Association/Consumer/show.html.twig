@@ -82,39 +82,6 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h2 class="panel-title">
-                            {{ 'admin.association.consumers.show.orders.title'|trans }}
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>{{ 'admin.association.consumer.commands.date'|trans }}</th>
-                                    <th>{{ 'admin.association.consumer.commands.branch'|trans }}</th>
-                                    <th>{{ 'admin.association.consumer.commands.amount'|trans }}</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    {% for salesOrder in historySalesOrder %}
-                                        <tr>
-                                            <td>{{ salesOrder.date|format_date }}</td>
-                                            <td>{{ salesOrder.branchOccurrence.branch.name }}<br/>{{ salesOrder.branchOccurrence.date|format_date }}</td>
-                                            <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
-                                            <td><a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
                         <h2 class="panel-title">{{ 'admin.association.consumers.show.payments.title'|trans }}</h2>
                     </div>
                     <div class="panel-body">
@@ -136,7 +103,8 @@
                         {% endif %}
                     </div>
                 </div>
-
+            </div>
+            <div class="col-md-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
