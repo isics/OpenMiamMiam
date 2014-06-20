@@ -32,6 +32,8 @@ class AssociationSalesOrderSearchHandler
     }
 
     /**
+     * Returns a form used to apply filters to a sales orders list
+     *
      * @param Journey $journey
      *
      * @return \Symfony\Component\Form\FormInterface
@@ -47,13 +49,33 @@ class AssociationSalesOrderSearchHandler
         );
     }
 
+    /**
+     * Generate a query builder to get sales orders linked to an association and a consumer
+     *
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @return mixed
+     */
     public function generateQueryBuilder(Association $association, User $consumer)
     {
         return $this->salesOrderRepository->getLastForAssociationAndConsumerQueryBuilder($association, $consumer);
     }
 
+    /**
+     * Applies filters to the query builder and returns it
+     *
+     * @param array $data
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
     public function applyFormFilters(array $data, QueryBuilder $qb)
     {
-        return $this->salesOrderRepository->filterBranch($qb, $data['branch']);
+        $this->salesOrderRepository->filterBranch($qb, $data['branch']);
+        $this->salesOrderRepository->filterDate($qb, $data['minDate'], $data['maxDate']);
+        $this->salesOrderRepository->filterTotal($qb, $data['minTotal'], $data['maxTotal']);
+
+        return $qb;
     }
 } 

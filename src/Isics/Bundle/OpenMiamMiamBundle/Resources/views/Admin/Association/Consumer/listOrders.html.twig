@@ -6,14 +6,26 @@
     </h1>
 
     <form method="post">
-        {{ form_label(form.branch, 'admin.association.consumer.orders.complete.filter.branch'|trans) }}
-        {{ form_widget(form.branch) }}
+        <div>
+            {{ form_label(form.branch, 'admin.association.consumer.orders.complete.filter.branch'|trans) }}
+            {{ form_widget(form.branch) }}
+        </div>
 
-        {{ form_label(form.minDate, 'admin.association.consumer.orders.complete.filter.minDate'|trans) }}
-        {{ form_widget(form.minDate) }}
+        <div>
+            {{ form_label(form.minDate, 'admin.association.consumer.orders.complete.filter.minDate'|trans) }}
+            {{ form_widget(form.minDate) }}
 
-        {{ form_label(form.maxDate, 'admin.association.consumer.orders.complete.filter.maxDate'|trans) }}
-        {{ form_widget(form.maxDate) }}
+            {{ form_label(form.maxDate, 'admin.association.consumer.orders.complete.filter.maxDate'|trans) }}
+            {{ form_widget(form.maxDate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.minTotal, 'admin.association.consumer.orders.complete.filter.minTotal'|trans) }}
+            {{ form_widget(form.minTotal) }}
+
+            {{ form_label(form.maxTotal, 'admin.association.consumer.orders.complete.filter.maxTotal'|trans) }}
+            {{ form_widget(form.maxTotal) }}
+        </div>
 
         <input class="btn btn-default" type="submit" value="{{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}">
     </form>

@@ -95,6 +95,58 @@ class SalesOrderRepository extends EntityRepository
     }
 
     /**
+     * Filters sales orders by min and max date values
+     *
+     * @param QueryBuilder $qb
+     * @param \DateTime $minDate
+     * @param \DateTime $maxDate
+     *
+     * @return QueryBuilder
+     */
+    public function filterDate(QueryBuilder $qb, \DateTime $minDate = null, \DateTime $maxDate = null)
+    {
+        if ($minDate !== null) {
+            $qb
+                ->addWhere('so.date >= :mindate')
+                ->setParameter('minDate', $minDate);
+        }
+
+        if ($maxDate !== null) {
+            $qb
+                ->addWhere('so.date <= :maxDate')
+                ->setParameter('maxDate', $maxDate);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters sales orders by min and max total values
+     *
+     * @param QueryBuilder $qb
+     * @param null $minTotal
+     * @param null $maxTotal
+     *
+     * @return QueryBuilder
+     */
+    public  function filterTotal(QueryBuilder $qb, $minTotal = null, $maxTotal = null)
+    {
+        if ($minTotal !== null) {
+            $qb
+                ->addWhere('so.total >= :minTotal')
+                ->setParameter('minTotal', $minTotal);
+        }
+
+        if ($maxTotal !== null) {
+            $qb
+                ->addWhere('so.total <= :maxTotal')
+                ->setParameter('maxTotal', $maxTotal);
+        }
+
+        return $qb;
+    }
+
+    /**
      * Returns sales orders for a producer (concerned by at least one row)
      *
      * @param Producer $producer

@@ -49,16 +49,32 @@ class AssociationSalesOrderSearchType extends AbstractType
                 'minDate',
                 'date',
                 array(
-                    'input'  => 'datetime',
-                    'widget' => 'choice',
+                    'input'     => 'datetime',
+                    'widget'    => 'choice',
+                    'required'  => false,
                 )
             )
             ->add(
                 'maxDate',
                 'date',
                 array(
-                    'input'  => 'datetime',
-                    'widget' => 'choice',
+                    'input'     => 'datetime',
+                    'widget'    => 'choice',
+                    'required'  => false,
+                )
+            )
+            ->add(
+                'minTotal',
+                'number',
+                array(
+                    'required'  => false,
+                )
+            )
+            ->add(
+                'maxTotal',
+                'number',
+                array(
+                    'required'  => false,
                 )
             )
             ->add('filter', 'submit');
