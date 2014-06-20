@@ -5,7 +5,20 @@
         {{ 'admin.association.consumer.orders.complete.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
     </h1>
 
-    {{ form(form) }}
+    <form method="post">
+        {{ form_label(form.branch, 'admin.association.consumer.orders.complete.filter.branch'|trans) }}
+        {{ form_widget(form.branch) }}
+
+        {{ form_label(form.minDate, 'admin.association.consumer.orders.complete.filter.minDate'|trans) }}
+        {{ form_widget(form.minDate) }}
+
+        {{ form_label(form.maxDate, 'admin.association.consumer.orders.complete.filter.maxDate'|trans) }}
+        {{ form_widget(form.maxDate) }}
+
+        <input class="btn btn-default" type="submit" value="{{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}">
+    </form>
+
+
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
@@ -38,6 +51,8 @@
                 </tbody>
             </table>
         </div>
+        {{ pagerfanta(salesOrders, 'twitter_bootstrap3_translated') }}
     {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumer.orders.complete.filter.no_order'|trans} %}
     {% endif %}
 {%  endblock %}

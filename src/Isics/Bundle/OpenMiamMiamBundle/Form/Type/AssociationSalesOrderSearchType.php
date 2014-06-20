@@ -8,9 +8,20 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AssociationSalesOrderSearchType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @see AbstractType
      */
@@ -23,13 +34,31 @@ class AssociationSalesOrderSearchType extends AbstractType
                 'branch',
                 'entity',
                 array(
-                    'multiple'      => true,
-                    'expanded'      => true,
+                    'multiple'      => false,
+                    'expanded'      => false,
+                    'required'      => false,
                     'class'         => 'IsicsOpenMiamMiamBundle:Branch',
                     'query_builder' =>  function(EntityRepository $er) use($association){
                             return $er->filterAssociation($association);
                         },
-                    'property'      => 'name'
+                    'property'      => 'name',
+                    'empty_value'   => $this->translator->trans('admin.association.consumer.orders.complete.filter.all_branches'),
+                )
+            )
+            ->add(
+                'minDate',
+                'date',
+                array(
+                    'input'  => 'datetime',
+                    'widget' => 'choice',
+                )
+            )
+            ->add(
+                'maxDate',
+                'date',
+                array(
+                    'input'  => 'datetime',
+                    'widget' => 'choice',
                 )
             )
             ->add('filter', 'submit');

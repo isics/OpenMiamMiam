@@ -358,6 +358,13 @@ admin.association.consumer.orders.complete.date:      "Date"
 admin.association.consumer.orders.complete.branch:    "Comptoir"
 admin.association.consumer.orders.complete.amount:    "Montant"
 
+admin.association.consumer.orders.complete.filter.all_branches:     "Tous les comptoirs"
+admin.association.consumer.orders.complete.filter.no_order:         "Aucune comptoir ne correspond à ces critères."
+admin.association.consumer.orders.complete.filter.filter:           "Filtrer"
+admin.association.consumer.orders.complete.filter.branch:           "Comptoir"
+admin.association.consumer.orders.complete.filter.minDate:          "Entre le"
+admin.association.consumer.orders.complete.filter.maxDate:          "et le"
+
 admin.association.consumers.payments.manage:                         "Gestion des règlements"
 admin.association.consumers.payments.list.title:                     "Liste des règlements de %consumer%"
 admin.association.consumers.payments.list.anonymous_title:           "Liste des règlements anonymes"
