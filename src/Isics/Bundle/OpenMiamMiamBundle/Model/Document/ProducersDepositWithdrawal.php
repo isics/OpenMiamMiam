@@ -69,7 +69,7 @@ class ProducersDepositWithdrawal
     }
 
     /**
-     * @return array
+     * @return int
      */
     public function getOrdersCount()
     {
