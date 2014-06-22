@@ -40,7 +40,15 @@ class AssociationConsumerSearchType extends AbstractType
             )
             ->add(
                 'creditor',
-                'choice'
+                'choice',
+                array(
+                    'choices' => array(
+                        true => 'creditor'
+                    ),
+                    'required' => false,
+                    'expanded' => true,
+                    'multiple' => true
+                )
             )
             ->add('filter', 'submit');
     }
