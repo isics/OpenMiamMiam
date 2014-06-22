@@ -230,6 +230,7 @@ class ConsumerController extends BaseController
     public function listAction(Request $request, Association $association)
     {
         $this->secure($association);
+        $form = $this->get('open_miam_miam.form.type.association_consumer_search');
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
@@ -246,7 +247,8 @@ class ConsumerController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list.html.twig', array(
             'association'   => $association,
-            'subscriptions' => $pagerfanta
+            'subscriptions' => $pagerfanta,
+            'form'          => $form->createView()
         ));
     }
 

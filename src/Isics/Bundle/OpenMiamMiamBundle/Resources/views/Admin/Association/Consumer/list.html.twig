@@ -13,7 +13,19 @@
     </h1>
 
     <form method="post">
+        {{ form_label(form.ref, 'admin.association.consumers.list.filter.ref'|trans) }}
+        {{ form_widget(form.ref) }}
 
+        {{ form_label(form.lastName, 'admin.association.consumers.list.filter.last_name'|trans) }}
+        {{ form_widget(form.lastName) }}
+
+        {{ form_label(form.firstName, 'admin.association.consumers.list.filter.first_name'|trans) }}
+        {{ form_widget(form.firstName) }}
+
+        {{ form_label(form.creditor, 'admin.association.consumers.list.filter.creditor'|trans) }}
+        {{ form_widget(form.creditor) }}
+
+        <input type="submit" value="admin.association.consumers.list.filter">
     </form>
 
     {% if subscriptions|length > 0 %}
