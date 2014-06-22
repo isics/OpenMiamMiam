@@ -57,17 +57,23 @@ class SalesOrderRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function getLastForAssociationAndConsumerQueryBuilder(Association $association, User $consumer, $limit = null)
+    public function getLastForAssociationAndConsumerQueryBuilder(Association $association, User $consumer = null, $limit = null)
     {
         $qb = $this->createQueryBuilder('so')
             ->innerJoin('so.branchOccurrence', 'bo')
             ->innerJoin('bo.branch', 'b')
             ->innerJoin('b.association', 'a')
-            ->where('a = :association')
-            ->andWhere('so.user = :consumer')
-            ->setParameter('consumer', $consumer)
-            ->setParameter('association', $association)
+            ->where('a.id = :associationId')
+            ->setParameter('associationId', $association->getId())
             ->orderBy('so.date', 'DESC');
+
+        if ($consumer !== null) {
+            $qb
+                ->setParameter('consumer', $consumer)
+                ->andWhere('so.user = :consumer');
+        } else {
+            $qb->andWhere('so.user IS NULL');
+        }
 
         if (null !== $limit) {
             $qb->setMaxResults($limit);

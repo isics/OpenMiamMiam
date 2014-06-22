@@ -2,7 +2,11 @@
 
 {% block content %}
     <h1>
-        {{ 'admin.association.consumer.orders.complete.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+        {% if consumer is not null %}
+            {{ 'admin.association.consumer.orders.complete.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+        {%  else %}
+            {{ 'admin.association.consumer.orders.complete.anonymous_title'|trans }}
+        {%  endif %}
     </h1>
 
     <form method="post">
@@ -30,8 +34,6 @@
         <input class="btn btn-default" type="submit" value="{{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}">
     </form>
 
-
-
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-condensed table-striped table-association-orders">
@@ -52,10 +54,13 @@
                             <td>{{ salesOrder.branchOccurrence.branch.name }} - {{ salesOrder.branchOccurrence.date|format_date }}</td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
                             <td>
-                                <a
-                                    href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}"
-                                    class="btn btn-primary btn-xs"
-                                ><span class="glyphicon glyphicon-pencil"></span>
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}"
+                                    class="btn btn-primary btn-xs">
+                                    {% if salesOrder.branchOccurrence.date > date() %}
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    {%  else %}
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    {%  endif %}
                                 </a>
                             </td>
                         </tr>

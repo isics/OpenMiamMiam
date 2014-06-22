@@ -57,7 +57,7 @@ class AssociationSalesOrderSearchHandler
      *
      * @return mixed
      */
-    public function generateQueryBuilder(Association $association, User $consumer)
+    public function generateQueryBuilder(Association $association, User $consumer = null)
     {
         return $this->salesOrderRepository->getLastForAssociationAndConsumerQueryBuilder($association, $consumer);
     }
