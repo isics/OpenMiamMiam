@@ -12,6 +12,10 @@
         {{ 'admin.association.consumers.list.title'|transchoice(subscriptions|length, {'%nb%': subscriptions|length}) }}
     </h1>
 
+    <form method="post">
+
+    </form>
+
     {% if subscriptions|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-condensed table-striped table-association-consumers">
