@@ -34,7 +34,7 @@ class AssociationSalesOrderSearchHandler
     /**
      * Returns a form used to apply filters to a sales orders list
      *
-     * @param Journey $journey
+     * @param Association $association
      *
      * @return \Symfony\Component\Form\FormInterface
      */
