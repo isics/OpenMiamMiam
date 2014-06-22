@@ -91,6 +91,7 @@ parameters:
 
     open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
 
+    open_miam_miam.handler.association_consumer.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\AssociationConsumerHandler'
 
 services:
     # Validators
@@ -597,3 +598,8 @@ services:
         arguments:
             - @form.factory
             - @open_miam_miam.repository.sales_order
+
+    open_miam_miam.handler.association_consumer:
+        class: %open_miam_miam.handler.association_consumer.class%
+        arguments:
+            - @form.factory

@@ -286,7 +286,8 @@ class ConsumerController extends BaseController
     public function listAction(Request $request, Association $association)
     {
         $this->secure($association);
-        $form = $this->get('open_miam_miam.form.type.association_consumer_search');
+        $handler = $this->get('open_miam_miam.handler.association_consumer');
+        $form = $handler->createSearchForm();
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
