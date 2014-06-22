@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\Document;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
 
 class ProducersDepositWithdrawal
 {
@@ -30,6 +31,11 @@ class ProducersDepositWithdrawal
      */
     protected $artificial_product_ref;
 
+    /**
+     * @var SalesOrderRepository
+     */
+    protected $salesOrderRepository;
+
 
     /**
      * Constructor
@@ -38,11 +44,18 @@ class ProducersDepositWithdrawal
      * @param array $salesOrderRowsData
      * @param $artificial_product_ref
      */
-    public function __construct(BranchOccurrence $branchOccurrence, array $salesOrderRowsData, $artificial_product_ref)
+    public function __construct
+    (
+        BranchOccurrence $branchOccurrence,
+        array $salesOrderRowsData,
+        $artificial_product_ref,
+        SalesOrderRepository $salesOrderRepository
+    )
     {
         $this->branchOccurrence = $branchOccurrence;
         $this->salesOrderRowsData = $salesOrderRowsData;
         $this->artificial_product_ref = $artificial_product_ref;
+        $this->salesOrderRepository   = $salesOrderRepository;
     }
 
     /**
@@ -53,6 +66,14 @@ class ProducersDepositWithdrawal
     public function getBranchOccurrence()
     {
         return $this->branchOccurrence;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrdersCount()
+    {
+        return $this->salesOrderRepository->countForBranchOccurrenceGroupByConsumer($this->branchOccurrence);
     }
 
     /**

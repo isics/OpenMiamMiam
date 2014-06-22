@@ -95,6 +95,7 @@ class ProductRepository extends EntityRepository
             ->select('p.id as product_id, pr.id as producer_id')
             ->innerJoin('p.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
             ->andWhere('p.isOfTheMoment = true')
+            ->andWhere('p.image IS NOT NULL')
             ->setParameter('branch', $branchOccurrence->getBranch())
             ->getQuery()
             ->getResult();

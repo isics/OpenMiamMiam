@@ -35,22 +35,22 @@
                         {% if consumer is not null %}
                             <div class="consumer-credit-container nowrap"
                                  data-manage-url="{{ url('open_miam_miam.admin.association.payment.manage_user_payments', {
-                                     'id':     association.id,
-                                     'userId': consumer.id
+                                 'id':     association.id,
+                                 'userId': consumer.id
                                  }) }}"
                                  data-refresh-url="{{ url('open_miam_miam.admin.association.payment.user_summary', {
-                                     'id':     association.id,
-                                     'userId': consumer.id
+                                 'id':     association.id,
+                                 'userId': consumer.id
                                  }) }}">
                                 <p class="left-to-pay">
                                     {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Payment:userSummary', {
-                                        'id':     association.id,
-                                        'userId': consumer.id
+                                    'id':     association.id,
+                                    'userId': consumer.id
                                     })) }}
                                 </p>
                                 <a href="{{ path('open_miam_miam.admin.association.payment.manage_user_payments', {
-                                    'id': association.id,
-                                    'userId': consumer.id
+                                'id': association.id,
+                                'userId': consumer.id
                                 }) }}" class="btn btn-primary manage">
                                     <span class="glyphicon glyphicon-edit"></span>
                                     {{ 'admin.association.consumers.payments.manage' | trans }}
@@ -59,18 +59,18 @@
                         {% else %}
                             <div class="consumer-credit-container nowrap"
                                  data-manage-url="{{ url('open_miam_miam.admin.association.payment.manage_anonymous_payments', {
-                                    'id':     association.id
+                                 'id':     association.id
                                  }) }}"
                                  data-refresh-url="{{ url('open_miam_miam.admin.association.payment.anonymous_summary', {
-                                    'id':     association.id
+                                 'id':     association.id
                                  }) }}">
                                 <p class="left-to-pay">
                                     {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Payment:anonymousSummary', {
-                                        'id': association.id
+                                    'id': association.id
                                     })) }}
                                 </p>
                                 <a href="{{ path('open_miam_miam.admin.association.payment.manage_anonymous_payments', {
-                                    'id': association.id
+                                'id': association.id
                                 }) }}" class="btn btn-primary manage">
                                     <span class="glyphicon glyphicon-edit"></span>
                                     {{ 'admin.association.consumers.payments.manage' | trans }}
@@ -87,15 +87,15 @@
                     <div class="panel-body">
                         {% if consumer is not null %}
                             <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {
-                                'id': association.id,
-                                'consumerId': consumer.id
+                            'id': association.id,
+                            'consumerId': consumer.id
                             }) }}" class="btn btn-default">
                                 <span class="glyphicon glyphicon-list"></span>
                                 {{ 'admin.association.consumers.list.payments'|trans }}
                             </a>
                         {% else %}
                             <a href="{{ path('open_miam_miam.admin.association.consumer.list_anonymous_payments', {
-                                'id': association.id
+                            'id': association.id
                             }) }}" class="btn btn-default">
                                 <span class="glyphicon glyphicon-list"></span>
                                 {{ 'admin.association.consumers.list.payments'|trans }}
@@ -114,12 +114,12 @@
                     <div class="panel-body">
                         {% if consumer is not null %}
                             {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:listComments', {
-                                'associationId': association.id,
-                                'consumerId': consumer.id,
+                            'associationId': association.id,
+                            'consumerId': consumer.id,
                             })) }}
                         {% else %}
                             {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:listComments', {
-                                'associationId': association.id
+                            'associationId': association.id
                             })) }}
                         {% endif %}
                     </div>

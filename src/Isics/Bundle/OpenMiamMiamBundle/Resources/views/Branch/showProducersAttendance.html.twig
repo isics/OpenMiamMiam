@@ -7,7 +7,10 @@
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch, 'homepage': false} %}
     {% block content %}
-        <h1>{{ 'branch_attendance_calendar.title'|trans }}</h1>
+        <h1>
+            <span class="glyphicon glyphicon-calendar"></span>
+            {{ 'branch_attendance_calendar.title'|trans }}
+        </h1>
 
         {% if producers|length == 0 %}
             {% include '@IsicsOpenMiamMiam/empty.html.twig' with {'message': 'branch_attendance_calendar.no_producer'|trans} %}
@@ -31,7 +34,7 @@
                     <tbody>
                         {% for producer in producers %}
                             <tr>
-                                <td>{{ producer.name }}</td>
+                                <td><a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">{{ producer.name }}</a></td>
                                 {% for occurrence in branchOccurrences %}
                                     <td class="text-center">
                                         {% if occurrence.isProducerAttendee(producer) %}

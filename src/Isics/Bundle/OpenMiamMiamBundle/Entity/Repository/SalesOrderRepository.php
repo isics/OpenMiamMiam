@@ -49,6 +49,33 @@ class SalesOrderRepository extends EntityRepository
     }
 
     /**
+     * Returns a query builder which selects last sales orders linked to an association and a consumer
+     *
+     * @param Association $association
+     * @param null $limit
+     *
+     * @return QueryBuilder
+     */
+    public function getLastForAssociationAndConsumerQueryBuilder(Association $association, User $consumer, $limit = null)
+    {
+        $qb = $this->createQueryBuilder('so')
+            ->innerJoin('so.branchOccurrence', 'bo')
+            ->innerJoin('bo.branch', 'b')
+            ->innerJoin('b.association', 'a')
+            ->where('a = :association')
+            ->andWhere('so.user = :consumer')
+            ->setParameter('consumer', $consumer)
+            ->setParameter('association', $association)
+            ->orderBy('so.date', 'DESC');
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb;
+    }
+
+    /**
      * Returns sales orders for a producer (concerned by at least one row)
      *
      * @param Producer $producer
@@ -85,13 +112,32 @@ class SalesOrderRepository extends EntityRepository
     public function findForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
         return $this->createQueryBuilder('so')
-                ->addSelect('sor')
-                ->leftJoin('so.salesOrderRows', 'sor')
-                ->andWhere('so.branchOccurrence = :branchOccurrence')
-                ->setParameter('branchOccurrence', $branchOccurrence)
-                ->addOrderBy('so.id')
-                ->getQuery()
-                ->getResult();
+            ->addSelect('sor')
+            ->leftJoin('so.salesOrderRows', 'sor')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->addOrderBy('so.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Return number of consumer who have ordered in a branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return mixed
+     */
+    public function countForBranchOccurrenceGroupByConsumer(BranchOccurrence $branchOccurrence)
+    {
+        return $this
+            ->createQueryBuilder('so')
+            ->select('COUNT(DISTINCT u.id)')
+            ->innerJoin('so.user', 'u')
+            ->andWhere('so.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

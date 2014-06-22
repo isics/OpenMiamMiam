@@ -84,8 +84,8 @@ class ConsumerController extends BaseController
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show.html.twig', array(
-            'association' => $association,
-            'consumer'    => $consumer,
+            'association'       => $association,
+            'consumer'          => $consumer,
         ));
     }
 
