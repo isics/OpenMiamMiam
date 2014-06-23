@@ -295,8 +295,10 @@ class ConsumerController extends BaseController
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            $data = $form->getData();
-            $handler->applyFormFilters($queryBuilder, $data);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $handler->applyFormFilters($queryBuilder, $data);
+            }
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
