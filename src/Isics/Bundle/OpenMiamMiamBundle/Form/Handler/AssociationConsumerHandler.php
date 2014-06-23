@@ -47,6 +47,7 @@ class AssociationConsumerHandler
         $this->repository->refFilter($qb, $data['ref']);
         $this->repository->lastNameFilter($qb, $data['lastName']);
         $this->repository->firstNameFilter($qb, $data['firstName']);
+        $this->repository->creditorFilter($qb, $data['creditor']);
 
         return $qb;
     }
