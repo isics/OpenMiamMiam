@@ -25,7 +25,7 @@
         {{ form_label(form.creditor, 'admin.association.consumers.list.filter.creditor'|trans) }}
         {{ form_widget(form.creditor) }}
 
-        <input type="submit" value="admin.association.consumers.list.filter">
+        <input type="submit" value={{'admin.association.consumers.list.filter'|trans }}>
     </form>
 
     {% if subscriptions|length > 0 %}

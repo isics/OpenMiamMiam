@@ -11,9 +11,20 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class AssociationConsumerSearchType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -43,7 +54,7 @@ class AssociationConsumerSearchType extends AbstractType
                 'choice',
                 array(
                     'choices' => array(
-                        true => 'creditor'
+                        true => $this->translator->trans('creditor')
                     ),
                     'required' => false,
                     'expanded' => true,

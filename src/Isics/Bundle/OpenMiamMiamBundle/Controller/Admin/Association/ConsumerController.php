@@ -232,12 +232,18 @@ class ConsumerController extends BaseController
         $this->secure($association);
         $handler = $this->get('open_miam_miam.handler.association_consumer');
         $form = $handler->createSearchForm();
+        $queryBuilder = $this
+            ->getDoctrine()
+            ->getRepository('IsicsOpenMiamMiamBundle:Subscription')
+            ->getForAssociationQueryBuilder($association);
 
-        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
-            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
-                ->getForAssociationQueryBuilder($association)
-                ->getQuery()
-        ));
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            $data = $form->getData();
+            $handler->applyFormFilters($queryBuilder, $data);
+        }
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
 
         try {

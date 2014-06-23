@@ -3,7 +3,10 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AssociationConsumerHandler
@@ -13,9 +16,18 @@ class AssociationConsumerHandler
      */
     protected $formFactory;
 
-    public function __construct(FormFactoryInterface $formFactory)
+    /**
+     * @var SubscriptionRepository $repository
+     */
+    protected $repository;
+
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        SubscriptionRepository $repository
+    )
     {
-        $this->formFactory = $formFactory;
+        $this->formFactory  = $formFactory;
+        $this->repository   = $repository;
     }
 
     /**
@@ -28,5 +40,14 @@ class AssociationConsumerHandler
     public function createSearchForm()
     {
         return $this->formFactory->create('open_miam_miam_association_consumer_search');
+    }
+
+    public function applyFormFilters(QueryBuilder $qb, $data)
+    {
+        $this->repository->refFilter($qb, $data['ref']);
+        $this->repository->lastNameFilter($qb, $data['lastName']);
+        $this->repository->firstNameFilter($qb, $data['firstName']);
+
+        return $qb;
     }
 } 
