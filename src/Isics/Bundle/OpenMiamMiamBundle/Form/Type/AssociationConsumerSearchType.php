@@ -30,7 +30,7 @@ class AssociationConsumerSearchType extends AbstractType
         $builder
             ->add(
                 'ref',
-                'text',
+                'integer',
                 array(
                     'required' => false
                 )
@@ -54,7 +54,7 @@ class AssociationConsumerSearchType extends AbstractType
                 'choice',
                 array(
                     'choices' => array(
-                        true => $this->translator->trans('creditor')
+                        true => $this->translator->trans('admin.association.consumers.list.filter.creditor')
                     ),
                     'required' => false,
                     'expanded' => true,
