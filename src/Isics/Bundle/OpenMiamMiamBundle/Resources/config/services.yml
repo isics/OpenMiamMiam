@@ -330,7 +330,8 @@ services:
         class: %open_miam_miam.form.type.association_consumer_search.class%
         tags:
             - { name: form.type, alias: open_miam_miam_association_consumer_search }
-            
+        arguments:
+            - @translator
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -512,6 +513,12 @@ services:
         arguments:
             - "IsicsOpenMiamMiamBundle:Comment"
 
+    open_miam_miam.repository.subcription:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Subscription"
 
     # Models
     open_miam_miam.sales_order_statistics:
@@ -603,3 +610,4 @@ services:
         class: %open_miam_miam.handler.association_consumer.class%
         arguments:
             - @form.factory
+            - @open_miam_miam.repository.subcription

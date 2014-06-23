@@ -33,4 +33,37 @@ class SubscriptionRepository extends EntityRepository
                 ->setParameter('association', $association)
                 ->addOrderBy('u.id');
     }
+
+    public function refFilter(QueryBuilder $qb, $ref)
+    {
+        if ($ref !== null) {
+            return $qb
+                ->andWhere('u.zipcode = :ref')
+                ->setParameter('ref', $ref);
+        }
+
+        return $qb;
+    }
+
+    public function lastNameFilter(QueryBuilder $qb, $lastName)
+    {
+        if ($lastName !== null) {
+            return $qb
+                ->andWhere('u.lastname = :lastName')
+                ->setParameter('lastName', $lastName);
+        }
+
+        return $qb;
+    }
+
+    public function firstNameFilter(QueryBuilder $qb, $firstName)
+    {
+        if ($firstName !== null) {
+            return $qb
+                ->andWhere('u.firstname = :firstName')
+                ->setParameter('firstName', $firstName);
+        }
+
+        return $qb;
+    }
 }
