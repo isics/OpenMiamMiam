@@ -85,8 +85,10 @@ class ConsumerController extends BaseController
         }
 
         $historySalesOrders = $this
-            ->get('open_miam_miam.consumer_manager')
-            ->getLastSalesOrderForAssociationAndConsumer($association, $consumer, 3);
+            ->get('open_miam_miam.handler.association_sales_order_search')
+            ->generateQueryBuilder($association, $consumer, 3)
+            ->getQuery()
+            ->getResult();
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show.html.twig', array(
             'association'       => $association,
@@ -107,7 +109,7 @@ class ConsumerController extends BaseController
      *
      * @return Response
      */
-    public function listOrdersAction(Request $request, Association $association, User $consumer = null)
+    public function listSalesOrdersAction(Request $request, Association $association, User $consumer = null)
     {
         $this->secure($association);
 
@@ -121,8 +123,10 @@ class ConsumerController extends BaseController
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            $data = $form->getData();
-            $handler->applyFormFilters($data, $queryBuilder);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $handler->applyFormFilters($data, $queryBuilder);
+            }
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
@@ -134,7 +138,7 @@ class ConsumerController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listOrders.html.twig', array(
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders.html.twig', array(
             'association' => $association,
             'consumer'    => $consumer,
             'salesOrders' => $pagerfanta,

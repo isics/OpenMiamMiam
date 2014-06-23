@@ -17,6 +17,11 @@ class AssociationSalesOrderSearchType extends AbstractType
      */
     protected $translator;
 
+    /**
+     * Constructor
+     *
+     * @param TranslatorInterface $translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -50,7 +55,7 @@ class AssociationSalesOrderSearchType extends AbstractType
                 'date',
                 array(
                     'input'     => 'datetime',
-                    'widget'    => 'choice',
+                    'widget'    => 'single_text',
                     'required'  => false,
                 )
             )
@@ -59,7 +64,7 @@ class AssociationSalesOrderSearchType extends AbstractType
                 'date',
                 array(
                     'input'     => 'datetime',
-                    'widget'    => 'choice',
+                    'widget'    => 'single_text',
                     'required'  => false,
                 )
             )

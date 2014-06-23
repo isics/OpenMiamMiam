@@ -72,27 +72,6 @@ class ConsumerManager
     }
 
     /**
-     * Returns last sales orders linked to an association and a consumer
-     *
-     * @param Association $association
-     * @param null $limit
-     * @return mixed
-     */
-    public function getLastSalesOrderForAssociationAndConsumer(Association $association, User $consumer = null, $limit = null)
-    {
-        if ($consumer === null) {
-            return array();
-        }
-
-        return $this
-            ->entityManager
-            ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
-            ->getLastForAssociationAndConsumerQueryBuilder($association, $consumer, $limit)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * Returns a subscription for an association
      *
      * @param Association $association

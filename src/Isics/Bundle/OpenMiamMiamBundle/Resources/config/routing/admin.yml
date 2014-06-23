@@ -231,11 +231,11 @@ open_miam_miam.admin.association.consumer.show:
 
 open_miam_miam.admin.association.consumer.list_anonymous_orders:
     pattern:  /associations/{associationId}/consumers/anonymous/list_orders
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listOrders }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders }
 
 open_miam_miam.admin.association.consumer.list_orders:
     pattern:  /associations/{associationId}/consumers/{consumerId}/list_orders
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listOrders }
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders }
 
 open_miam_miam.admin.association.consumer.add_anonymous_comment:
     pattern:  /associations/{associationId}/consumers/anonymous/add_comment

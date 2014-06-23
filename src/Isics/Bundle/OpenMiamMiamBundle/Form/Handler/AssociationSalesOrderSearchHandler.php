@@ -6,6 +6,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
@@ -17,15 +18,17 @@ class AssociationSalesOrderSearchHandler
     protected $formFactory;
 
     /**
-     * @var EntityRepository
+     * @var SalesOrderRepository
      */
     protected $salesOrderRepository;
 
-    public function __construct
-    (
-        FormFactoryInterface $formFactory,
-        EntityRepository $salesOrderRepository
-    )
+    /**
+     * Constructor
+     *
+     * @param FormFactoryInterface $formFactory
+     * @param SalesOrderRepository $salesOrderRepository
+     */
+    public function __construct(FormFactoryInterface $formFactory, SalesOrderRepository $salesOrderRepository)
     {
         $this->formFactory          = $formFactory;
         $this->salesOrderRepository = $salesOrderRepository;
@@ -54,12 +57,13 @@ class AssociationSalesOrderSearchHandler
      *
      * @param Association $association
      * @param User $consumer
+     * @param int $limit
      *
-     * @return mixed
+     * @return QueryBuilder
      */
-    public function generateQueryBuilder(Association $association, User $consumer = null)
+    public function generateQueryBuilder(Association $association, User $consumer = null, $limit = null)
     {
-        return $this->salesOrderRepository->getLastForAssociationAndConsumerQueryBuilder($association, $consumer);
+        return $this->salesOrderRepository->getLastForAssociationAndConsumerQueryBuilder($association, $consumer, $limit);
     }
 
     /**
