@@ -49,18 +49,7 @@ class AssociationConsumerSearchType extends AbstractType
                     'required' => false
                 )
             )
-            ->add(
-                'creditor',
-                'choice',
-                array(
-                    'choices' => array(
-                        true => $this->translator->trans('admin.association.consumers.list.filter.creditor')
-                    ),
-                    'required' => false,
-                    'expanded' => true,
-                    'multiple' => true
-                )
-            )
+            ->add('creditor', 'checkbox', ['required' => false])
             ->add('filter', 'submit');
     }
 
