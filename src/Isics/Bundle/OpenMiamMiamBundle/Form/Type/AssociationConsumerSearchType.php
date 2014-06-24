@@ -54,8 +54,7 @@ class AssociationConsumerSearchType extends AbstractType
                     'required' => false
                 )
             )
-            ->add('creditor', 'checkbox', ['required' => false])
-            ->add('filter', 'submit');
+            ->add('creditor', 'checkbox', ['required' => false]);
     }
 
     /**
