@@ -57,6 +57,7 @@ class AssociationSalesOrderSearchType extends AbstractType
                     'input'     => 'datetime',
                     'widget'    => 'single_text',
                     'required'  => false,
+                    'format'    => 'dd/MM/yyyy'
                 )
             )
             ->add(
@@ -66,6 +67,7 @@ class AssociationSalesOrderSearchType extends AbstractType
                     'input'     => 'datetime',
                     'widget'    => 'single_text',
                     'required'  => false,
+                    'format'    => 'dd/MM/yyyy'
                 )
             )
             ->add(
@@ -91,6 +93,9 @@ class AssociationSalesOrderSearchType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver
+            ->setDefaults(array(
+                'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\AssociationConsumerSalesOrdersFilter',
+            ))
             ->setRequired(['association'])
             ->setAllowedTypes(['association' => Association::class]);
     }

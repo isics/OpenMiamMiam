@@ -113,13 +113,13 @@ class SalesOrderRepository extends EntityRepository
     {
         if ($minDate !== null) {
             $qb
-                ->addWhere('so.date >= :mindate')
+                ->andWhere('so.date >= :mindate')
                 ->setParameter('minDate', $minDate);
         }
 
         if ($maxDate !== null) {
             $qb
-                ->addWhere('so.date <= :maxDate')
+                ->andWhere('so.date <= :maxDate')
                 ->setParameter('maxDate', $maxDate);
         }
 
@@ -139,13 +139,13 @@ class SalesOrderRepository extends EntityRepository
     {
         if ($minTotal !== null) {
             $qb
-                ->addWhere('so.total >= :minTotal')
+                ->andWhere('so.total >= :minTotal')
                 ->setParameter('minTotal', $minTotal);
         }
 
         if ($maxTotal !== null) {
             $qb
-                ->addWhere('so.total <= :maxTotal')
+                ->andWhere('so.total <= :maxTotal')
                 ->setParameter('maxTotal', $maxTotal);
         }
 

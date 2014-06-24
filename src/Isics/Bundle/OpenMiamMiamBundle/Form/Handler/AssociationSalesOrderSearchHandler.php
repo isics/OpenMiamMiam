@@ -2,11 +2,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 
-
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\AssociationConsumerSalesOrdersFilter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
@@ -74,11 +73,11 @@ class AssociationSalesOrderSearchHandler
      *
      * @return QueryBuilder
      */
-    public function applyFormFilters(array $data, QueryBuilder $qb)
+    public function applyFormFilters(AssociationConsumerSalesOrdersFilter $data, QueryBuilder $qb)
     {
-        $this->salesOrderRepository->filterBranch($qb, $data['branch']);
-        $this->salesOrderRepository->filterDate($qb, $data['minDate'], $data['maxDate']);
-        $this->salesOrderRepository->filterTotal($qb, $data['minTotal'], $data['maxTotal']);
+        $this->salesOrderRepository->filterBranch($qb, $data->getBranch());
+        $this->salesOrderRepository->filterDate($qb, $data->getMinDate(), $data->getMaxDate());
+        $this->salesOrderRepository->filterTotal($qb, $data->getMinTotal(), $data->getMaxTotal());
 
         return $qb;
     }
