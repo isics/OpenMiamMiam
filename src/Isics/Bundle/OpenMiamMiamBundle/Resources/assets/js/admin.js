@@ -11,12 +11,14 @@ OpenMiamMiam.SalesOrderFilterForm = function() {
         initialize: function() {
             $('#min-date-picker').datepicker({
                 format: 'dd/mm/yyyy',
-                language: 'fr'
+                language: 'fr',
+                autoclose: true
             });
 
             $('#max-date-picker').datepicker({
                 format: 'dd/mm/yyyy',
-                language: 'fr'
+                language: 'fr',
+                autoclose: true
             });
         }
     };

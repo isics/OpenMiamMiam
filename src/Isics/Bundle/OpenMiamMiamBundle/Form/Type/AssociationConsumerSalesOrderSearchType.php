@@ -84,8 +84,7 @@ class AssociationConsumerSalesOrderSearchType extends AbstractType
                 array(
                     'required'  => false,
                 )
-            )
-            ->add('filter', 'submit');
+            );
     }
 
     /**
