@@ -129,7 +129,7 @@ class ConsumerController extends BaseController
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
-        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.sales_orders'));
 
         try {
             $pagerfanta->setCurrentPage($request->query->get('page', 1));
