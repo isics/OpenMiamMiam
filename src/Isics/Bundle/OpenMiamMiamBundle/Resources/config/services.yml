@@ -89,6 +89,8 @@ parameters:
 
     open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
 
+    open_miam_miam.handler.producer_sales_order_history.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Handler'
+
 
 services:
     # Validators
@@ -576,3 +578,8 @@ services:
         tags:
             - { name: jms_serializer.event_listener, event: serializer.post_serialize, class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User, format: json, method: onPostSerialize }
 
+    # Handlers
+    open_miam_miam.handler.producer_sales_order_history:
+        class: %open_miam_miam.handler.producer_sales_order_history.class%
+        arguments:
+            - @open_miam_miam.repository.sales_order

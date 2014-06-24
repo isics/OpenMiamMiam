@@ -100,6 +100,14 @@ class SalesOrderController extends BaseController
         ));
     }
 
+    public function listSalesOrderHistoryAction(Producer $producer)
+    {
+        $this->secure($producer);
+
+        $handler = $this->get('open_miam_miam.handler.producer_sales_order_history');
+
+    }
+
     /**
      * Update a sales order
      *
