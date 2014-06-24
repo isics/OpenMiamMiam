@@ -11,6 +11,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AssociationConsumerSearchType extends AbstractType
@@ -25,9 +26,13 @@ class AssociationConsumerSearchType extends AbstractType
         $this->translator = $translator;
     }
 
+    /**
+     * @see AbstractType
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setMethod('GET')
             ->add(
                 'ref',
                 'integer',
@@ -51,6 +56,17 @@ class AssociationConsumerSearchType extends AbstractType
             )
             ->add('creditor', 'checkbox', ['required' => false])
             ->add('filter', 'submit');
+    }
+
+    /**
+     * @see AbstractType
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver
+            ->setDefaults(array(
+                'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\AssociationConsumerFilter',
+        ));
     }
 
     /**
