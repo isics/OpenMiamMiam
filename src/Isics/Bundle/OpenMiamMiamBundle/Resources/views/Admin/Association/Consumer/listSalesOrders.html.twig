@@ -1,4 +1,5 @@
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+{% form_theme form '@IsicsOpenMiamMiam/form.html.twig' %}
 
 {% block content %}
     <h1>
@@ -33,40 +34,53 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ form_widget(form.branch) }}</td>
                                 <td>
-                                    {{ form_label(form.minDate, 'admin.association.consumer.orders.complete.filter.minDate'|trans) }}
-                                    <div class="input-group-inline">
-                                        <div class="input-group date datepicker" id="min-date-picker">
-                                            {{ form_widget(form.minDate, {'attr': {'class': 'form-control'}}) }}
-                                            <span class="input-group-addon">
+                                    {{ form_errors(form.branch) }}
+                                    {{ form_widget(form.branch) }}
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        {{ form_errors(form.minDate) }}
+                                        {{ form_label(form.minDate, 'admin.association.consumer.orders.complete.filter.minDate'|trans) }}
+                                        <div class="input-group-inline">
+                                            <div class="input-group date datepicker" id="min-date-picker">
+                                                {{ form_widget(form.minDate) }}
+                                                <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    {{ form_label(form.maxDate, 'admin.association.consumer.orders.complete.filter.maxDate'|trans) }}
-                                    <div class="input-group-inline">
-                                        <div class="input-group date datepicker" id="max-date-picker">
-                                            {{ form_widget(form.maxDate, {'attr': {'class': 'form-control'}}) }}
-                                            <span class="input-group-addon">
+                                    <div class="form-group">
+                                        {{ form_errors(form.maxDate) }}
+                                        {{ form_label(form.maxDate, 'admin.association.consumer.orders.complete.filter.maxDate'|trans) }}
+                                        <div class="input-group-inline">
+                                            <div class="input-group date datepicker" id="max-date-picker">
+                                                {{ form_widget(form.maxDate) }}
+                                                <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    {{ form_label(form.minTotal, 'admin.association.consumer.orders.complete.filter.minTotal'|trans) }}
-                                    <div class="input-group-inline input-total">
-                                        <div class="input-group">
-                                            {{ form_widget(form.minTotal, {'attr': {'id': 'min-date-input', 'class': 'filter-input form-control'}}) }}
+                                    <div class="form-group">
+                                        {{ form_errors(form.minTotal) }}
+                                        {{ form_label(form.minTotal, 'admin.association.consumer.orders.complete.filter.minTotal'|trans) }}
+                                        <div class="input-group-inline input-total">
+                                            <div class="input-group">
+                                                {{ form_widget(form.minTotal) }}
+                                            </div>
                                         </div>
                                     </div>
-
-                                    {{ form_label(form.maxTotal, 'admin.association.consumer.orders.complete.filter.maxTotal'|trans) }}
-                                    <div class="input-group-inline input-total">
-                                        <div class="input-group">
-                                            {{ form_widget(form.maxTotal, {'attr': {'id': 'max-date-input', 'class': 'filter-input form-control'}}) }}
+                                    <div class="form-group">
+                                        {{ form_errors(form.maxTotal) }}
+                                        {{ form_label(form.maxTotal, 'admin.association.consumer.orders.complete.filter.maxTotal'|trans) }}
+                                        <div class="input-group-inline input-total">
+                                            <div class="input-group">
+                                                {{ form_widget(form.maxTotal) }}
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
