@@ -73,7 +73,7 @@ parameters:
     open_miam_miam.form.type.allocate_payment.class:                      'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentType'
     open_miam_miam.form.type.payments_for_allocate_payment.class:         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentsForAllocatePaymentType'
     open_miam_miam.form.type.sales_orders_for_allocate_payment.class:     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrdersForAllocatePaymentType'
-    open_miam_miam.form.type.association_sales_order_search.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationSalesOrderSearchType'
+    open_miam_miam.form.type.association_sales_order_search.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSalesOrderSearchType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
