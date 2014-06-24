@@ -121,12 +121,11 @@ class ConsumerController extends BaseController
         $form = $handler->createSearchForm($association);
         $queryBuilder = $handler->generateQueryBuilder($association, $consumer);
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $handler->applyFormFilters($data, $queryBuilder);
-            }
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+
+            $handler->applyFormFilters($data, $queryBuilder);
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
