@@ -10,7 +10,16 @@
     </h1>
 
     <div class="panel panel-default panel-sales-orders-filter">
-        <form method="post">
+        {% if consumer is not null %}
+            <form action="{{ path('open_miam_miam.admin.association.consumer.list_orders', {
+                'associationId': association.id,
+                'consumerId':    consumer.id
+            }) }}" method="get">
+        {% else %}
+            <form action="{{ path('open_miam_miam.admin.association.consumer.list_anonymous_orders', {
+                'associationId': association.id
+            }) }}" method="get">
+        {% endif %}
             <div class="panel-body">
                 <h4>Filtres</h4>
                 <div class="table-responsive">
@@ -64,6 +73,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    {{ form_rest(form) }}
                     <input class="pull-right btn btn-primary" id="submit-filter-button" type="submit" value="{{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}">
                 </div>
             </div>

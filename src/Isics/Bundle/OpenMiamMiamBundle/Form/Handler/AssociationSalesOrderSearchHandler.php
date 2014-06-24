@@ -44,7 +44,7 @@ class AssociationSalesOrderSearchHandler
     {
         return $this->formFactory->create(
             'open_miam_miam_association_sales_order_search',
-            null,
+            new AssociationConsumerSalesOrdersFilter(),
             [
                 'association' => $association,
             ]

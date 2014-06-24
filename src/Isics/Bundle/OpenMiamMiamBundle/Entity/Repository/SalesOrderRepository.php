@@ -113,7 +113,7 @@ class SalesOrderRepository extends EntityRepository
     {
         if ($minDate !== null) {
             $qb
-                ->andWhere('so.date >= :mindate')
+                ->andWhere('so.date >= :minDate')
                 ->setParameter('minDate', $minDate);
         }
 
