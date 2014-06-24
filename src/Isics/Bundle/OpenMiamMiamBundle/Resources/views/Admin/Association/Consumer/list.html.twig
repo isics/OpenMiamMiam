@@ -14,7 +14,7 @@
 
 
     <div class="panel panel-default panel-sales-orders-filter">
-        <form method="post">
+        <form action="{{ path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) }}" method="get">
             <div class="panel-body">
                 <h4>Filtres</h4>
                 <div class="table-responsive">

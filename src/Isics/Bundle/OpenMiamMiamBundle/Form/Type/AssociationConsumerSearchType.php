@@ -32,7 +32,7 @@ class AssociationConsumerSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setMethod('GET')
+            ->setMethod('get')
             ->add(
                 'ref',
                 'integer',
