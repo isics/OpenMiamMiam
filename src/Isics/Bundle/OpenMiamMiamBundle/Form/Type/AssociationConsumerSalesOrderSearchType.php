@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class AssociationSalesOrderSearchType extends AbstractType
+class AssociationConsumerSalesOrderSearchType extends AbstractType
 {
     /**
      * @var TranslatorInterface $translator

@@ -127,9 +127,6 @@ class ConsumerController extends BaseController
                 $data = $form->getData();
                 $handler->applyFormFilters($data, $queryBuilder);
             }
-            else {
-                var_dump($form->getData());die;
-            }
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
