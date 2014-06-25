@@ -36,6 +36,7 @@ class AssociationConsumerSalesOrderSearchType extends AbstractType
 
         $builder
             ->setMethod('GET')
+            ->add('ref', 'text', array('required' => false))
             ->add(
                 'branch',
                 'entity',

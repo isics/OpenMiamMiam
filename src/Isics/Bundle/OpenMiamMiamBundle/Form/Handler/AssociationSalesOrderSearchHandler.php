@@ -68,13 +68,14 @@ class AssociationSalesOrderSearchHandler
     /**
      * Applies filters to the query builder and returns it
      *
-     * @param array $data
+     * @param AssociationConsumerSalesOrdersFilter $data
      * @param QueryBuilder $qb
      *
      * @return QueryBuilder
      */
     public function applyFormFilters(AssociationConsumerSalesOrdersFilter $data, QueryBuilder $qb)
     {
+        $this->salesOrderRepository->filterRef($qb, $data->getRef());
         $this->salesOrderRepository->filterBranch($qb, $data->getBranch());
         $this->salesOrderRepository->filterDate($qb, $data->getMinDate(), $data->getMaxDate());
         $this->salesOrderRepository->filterTotal($qb, $data->getMinTotal(), $data->getMaxTotal());

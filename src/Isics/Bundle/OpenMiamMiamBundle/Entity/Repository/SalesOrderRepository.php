@@ -83,6 +83,23 @@ class SalesOrderRepository extends EntityRepository
     }
 
     /**
+     * Filters sales orders by ref
+     *
+     * @param QueryBuilder $qb
+     * @param              $ref
+     *
+     * @return QueryBuilder
+     */
+    public function filterRef(QueryBuilder $qb, $ref)
+    {
+        if (null !== $ref) {
+            $qb->andWhere($qb->expr()->like('so.ref', $qb->expr()->literal('%'.$ref.'%')));
+        }
+
+        return $qb;
+    }
+
+    /**
      * Filters sales orders by branch
      *
      * @param QueryBuilder $qb

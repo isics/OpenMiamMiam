@@ -14,6 +14,11 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 class AssociationConsumerSalesOrdersFilter
 {
     /**
+     * @var string
+     */
+    protected $ref;
+
+    /**
      * @var Branch $branch
      */
     protected $branch;
@@ -37,6 +42,22 @@ class AssociationConsumerSalesOrdersFilter
      * @var int $maxTotal
      */
     protected $maxTotal;
+
+    /**
+     * @param string $ref
+     */
+    public function setRef($ref)
+    {
+        $this->ref = $ref;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRef()
+    {
+        return $this->ref;
+    }
 
     /**
      * @return Branch
