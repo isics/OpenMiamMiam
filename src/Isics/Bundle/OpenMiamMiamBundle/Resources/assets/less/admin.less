@@ -30,6 +30,13 @@ h1 {
     }
 }
 
+form.filter {
+    background-color: #f9f9f9;
+    padding: 1em;
+    overflow: hidden;
+    margin-bottom: 1em;
+}
+
 //
 // Menu
 //
@@ -290,6 +297,38 @@ h1 {
         }
     }
 }
+
+.table-association-consumer-sales-orders {
+    th {
+        text-align: center;
+    }
+
+    td:nth-child(4),
+    td:nth-child(5) {
+        text-align: right;
+    }
+
+    td:nth-child(6) {
+        text-align: center;
+    }
+}
+
+.association-consumer-sales-orders-filter {
+    .input-group-inline {
+        display: inline-block;
+        width: 150px;
+        vertical-align: middle;
+
+        &.input-total {
+            padding: 0;
+        }
+    }
+
+    .datepicker {
+        width: 150px;
+    }
+}
+
 
 //
 // Association / Producer
