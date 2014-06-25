@@ -11,6 +11,17 @@
 
     {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/listSalesOrdersFilter.html.twig' with {'form': form} %}
 
+    {% if consumer is not null %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+            'associationId': association.id,
+            'consumerId': consumer.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% else %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+            'associationId': association.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% endif %}
+
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
             <table class="table table-bordered table-condensed table-striped table-association-consumer-sales-orders">
@@ -59,6 +70,18 @@
                 </tbody>
             </table>
         </div>
+
+        {% if consumer is not null %}
+            <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+                'associationId': association.id,
+                'consumerId': consumer.id
+            }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+        {% else %}
+            <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+                'associationId': association.id
+            }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+        {% endif %}
+
         {{ pagerfanta(salesOrders, 'twitter_bootstrap3_translated') }}
     {% else %}
         {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumer.orders.complete.filter.no_order'|trans} %}
