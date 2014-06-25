@@ -3,6 +3,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 
 
+use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchOccurrenceRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
@@ -42,5 +43,10 @@ class ProducerSalesOrderHistoryHandler
     public function generateQueryBuilder(Producer $producer)
     {
         return $this->branchOccurrenceRepository->getBranchOccurrencesForProducer($producer);
+    }
+
+    public function applyFormFilters(QueryBuilder $queryBuilder, ProducerSalesOrdersFilter $filter)
+    {
+
     }
 } 

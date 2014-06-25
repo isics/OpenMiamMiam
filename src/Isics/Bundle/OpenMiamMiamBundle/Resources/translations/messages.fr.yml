@@ -675,6 +675,7 @@ admin.producer.sales_orders.message.product_added:              "Le produit a bi
 admin.producer.sales_orders.history.title:                      "Historique des commandes"
 admin.producer.sales_orders.history.view:                       "Voir la commande"
 admin.producer.sales_orders.history.view_all:                   "Voir l'historique complet"
+admin.producer.sales_orders.list_history.title:                 "Historique des commandes"
 
 
 admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"

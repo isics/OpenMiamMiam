@@ -10,7 +10,7 @@ class ProducerSalesOrdersFilter
     /**
      * @var BranchOccurrence $branchOccurrence
      */
-    protected $branchOccurrence;
+    protected $branch;
 
     /**
      * @var \DateTime $minDate
@@ -35,17 +35,17 @@ class ProducerSalesOrdersFilter
     /**
      * @return BranchOccurrence
      */
-    public function getBranchOccurrence()
+    public function getBranch()
     {
-        return $this->branchOccurrence;
+        return $this->branch;
     }
 
     /**
-     * @param BranchOccurrence $branchOccurrence
+     * @param Branch $branch
      */
-    public function setBranchOccurrence(BranchOccurrence $branchOccurrence)
+    public function setBranchOccurrence(Branch $branch)
     {
-        $this->branchOccurrence = $branchOccurrence;
+        $this->branch = $branch;
     }
 
     /**
@@ -78,37 +78,5 @@ class ProducerSalesOrdersFilter
     public function setMaxDate(\DateTime $maxDate)
     {
         $this->maxDate = $maxDate;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMinTotal()
-    {
-        return $this->minTotal;
-    }
-
-    /**
-     * @param float $minTotal
-     */
-    public function setMinTotal($minTotal)
-    {
-        $this->minTotal = $minTotal;
-    }
-
-    /**
-     * @return float
-     */
-    public function getMaxTotal()
-    {
-        return $this->maxTotal;
-    }
-
-    /**
-     * @param float $maxTotal
-     */
-    public function setMaxTotal($maxTotal)
-    {
-        $this->maxTotal = $maxTotal;
     }
 } 

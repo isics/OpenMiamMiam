@@ -64,6 +64,25 @@ class ProducerBranchOccurrenceSalesOrders
     }
 
     /**
+     * Return sales orders sorted by date
+     *
+     * @return array
+     */
+    public function getSortedSalesOrder()
+    {
+        $salesOrders = $this->getSalesOrders();
+
+        usort($salesOrders, function(ProducerSalesOrder $salesOrder1, ProducerSalesOrder $salesOrder2){
+            if ($salesOrder1->getSalesOrder()->getDate() < $salesOrder2->getSalesOrder()->getDate()) {
+                return 1;
+            }
+            return -1;
+        });
+
+        return $salesOrders;
+    }
+
+    /**
      * @return array
      */
     public function getSalesOrders()

@@ -21,11 +21,13 @@ class ProducerSalesOrdersSearchType extends AbstractType
         $builder
             ->setMethod('get')
             ->add(
-                'branchOccurrence',
+                'branch',
                 'entity',
                 array(
-                    'class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence',
-                    'required' => false,
+                    'class'     => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Branch',
+                    'required'  => false,
+                    'property'  => 'name',
+                    'empty_data' => 'Tous les comptoirs'
                 )
             )
             ->add(
@@ -35,7 +37,7 @@ class ProducerSalesOrdersSearchType extends AbstractType
                     'widget'   => 'single_text',
                     'format'   => 'dd-MM-yyyy',
                     'input'    => 'datetime',
-                    'required' => false,
+                    'required' => false
                 )
             )
             ->add(
@@ -45,21 +47,7 @@ class ProducerSalesOrdersSearchType extends AbstractType
                     'widget'   => 'single_text',
                     'format'   => 'dd-MM-yyyy',
                     'input'    => 'datetime',
-                    'required' => false,
-                )
-            )
-            ->add(
-                'minTotal',
-                'money',
-                array(
-                    'required' => false,
-                )
-            )
-            ->add(
-                'maxTotal',
-                'money',
-                array(
-                    'required' => false,
+                    'required' => false
                 )
             );
     }

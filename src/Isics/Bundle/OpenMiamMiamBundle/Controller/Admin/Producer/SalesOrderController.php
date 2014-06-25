@@ -111,8 +111,14 @@ class SalesOrderController extends BaseController
         $form = $handler->createSearchForm($producer);
         $qb = $handler->generateQueryBuilder($producer);
 
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+
+        }
+
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($qb));
-        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.producer.sales_orders.pagination.branch_occurrences'));
 
         try {
             $pagerfanta->setCurrentPage($request->query->get('page', 1));
@@ -120,8 +126,10 @@ class SalesOrderController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:listSalesOrderHistory.html.twig', array(
-            'producer' => $producer,
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:listHistory.html.twig', array(
+            'producer'          => $producer,
+            'branchOccurrences' => $pagerfanta,
+            'form'              => $form->createView()
         ));
     }
 

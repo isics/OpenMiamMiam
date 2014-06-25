@@ -1,0 +1,93 @@
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>
+        {{ 'admin.producer.sales_orders.list_history.title'|trans }}
+    </h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Comptoir</th>
+                    <th>Dates</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            {{ form_errors(form.branch) }}
+                            {{ form_widget(form.branch, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ form_errors(form.minDate) }}
+                            {{ form_label(form.minDate, 'De') }}
+                            <div class="input-group">
+                                {{ form_widget(form.minDate, {'attr': {'class': 'form-control'}}) }}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+
+                            {{ form_errors(form.maxDate) }}
+                            {{ form_label(form.maxDate, 'à') }}
+                            <div class="input-group">
+                                {{ form_widget(form.maxDate, {'attr': {'class': 'form-control'}}) }}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% if branchOccurrences|length > 0 %}
+        {% for branchOccurrence in branchOccurrences %}
+            <h3>{{ branchOccurrence.branch.name }} - {{ branchOccurrence.begin|format_date }}</h3>
+            {% set producerBranchOccurrenceSalesOrders = get_producer_sales_orders_for_branch_occurrence(producer, branchOccurrence) %}
+            {% if producerBranchOccurrenceSalesOrders.salesOrders|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ref</th>
+                                <th>Date</th>
+                                <th>Consommateur</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producerSalesOrder in producerBranchOccurrenceSalesOrders.sortedSalesOrder %}
+                                <tr>
+                                    <td>{{ producerSalesOrder.salesOrder.ref }}</td>
+                                    <td>{{ producerSalesOrder.salesOrder.date|format_datetime }}</td>
+                                    <td>{{ producerSalesOrder.salesOrder.user }}</td>
+                                    <td>{{ producerSalesOrder.salesOrder.total }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                Pas de commandes
+            {%  endif %}
+
+            {#
+
+
+            {% for salesOrder in salesOrders %}
+                Test
+            {% endfor %}
+            #}
+        {% endfor %}
+        {{ pagerfanta(branchOccurrences, 'twitter_bootstrap3_translated') }}
+    {% else %}
+        Pas d'occurrences
+    {% endif %}
+{%  endblock content %}

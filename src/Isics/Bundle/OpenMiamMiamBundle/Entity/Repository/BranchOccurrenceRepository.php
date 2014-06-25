@@ -34,37 +34,15 @@ class BranchOccurrenceRepository extends EntityRepository
             sprintf('PT%sS', $branch->getAssociation()->getOpeningDelay())
         ));
         */
-        /*
+
         return $this
-            ->createQueryBuilder('bo')
-            ->select('pa')
-            ->from('IsicsOpenMiamMiamBundle:ProducerAttendance', 'pa')
-            ->andWhere('p = :producer')
-            ->setParameter('producer', $producer)
-            ->innerJoin('pa.branchOccurrence', 'bo')
-            ->innerJoin('pa.producer', 'p')
-            ->andWhere('bo.end < :date')
-            ->setParameter('date', $date)
-            ->orderBy('bo.begin', 'DESC')
-            ->select('bo');
-        */
-
-
-
-
-
-
-        var_dump($this
             ->createQueryBuilder('bo')
             ->innerJoin('bo.salesOrders', 'so')
             ->innerJoin('so.salesOrderRows', 'sor', 'with', 'sor.producer = :producer')
             ->andWhere('bo.end < :date')
             ->orderBy('bo.begin', 'DESC')
             ->setParameter('date', $date)
-            ->setParameter('producer', $producer)
-            ->getQuery()
-            ->getResult()
-        );die;
+            ->setParameter('producer', $producer);
     }
 
     /**
