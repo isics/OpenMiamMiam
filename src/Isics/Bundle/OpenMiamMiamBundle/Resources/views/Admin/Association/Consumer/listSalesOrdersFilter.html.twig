@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-row form-group col-md-6">
+        <div class="form-row form-group col-md-5">
             {{ form_errors(form.minDate) }}
             {{ form_errors(form.maxDate) }}
             <div>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="form-row form-group col-md-6">
+        <div class="form-row form-group col-md-5">
             {{ form_errors(form.minTotal) }}
             {{ form_errors(form.maxTotal) }}
             <div class="input-group-inline input-total">
@@ -66,17 +66,19 @@
                 </div>
             </div>
         </div>
+
+        <div class="form-row form-group col-md-2">
+            <div class="btn-group pull-right">
+                <a href="{{ currentPath }}" class="btn btn-default" title="{{ 'admin.association.consumer.orders.complete.filter.clear'|trans }}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}
+                </button>
+            </div>
+        </div>
     </div>
 
     {{ form_rest(form) }}
 
-    <div class="btn-group pull-right">
-        <a href="{{ currentPath }}" class="btn btn-default" title="{{ 'admin.association.consumer.orders.complete.filter.clear'|trans }}">
-            <span class="glyphicon glyphicon-remove"></span>
-        </a>
-        <button type="submit" class="btn btn-primary">
-            <span class="glyphicon glyphicon-filter"></span>
-            {{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}
-        </button>
-    </div>
 </form>

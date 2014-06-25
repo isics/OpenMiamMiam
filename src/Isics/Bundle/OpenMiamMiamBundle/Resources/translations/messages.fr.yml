@@ -358,6 +358,7 @@ admin.association.consumer.orders.complete.ref:                 "Référence"
 admin.association.consumer.orders.complete.date:                "Date"
 admin.association.consumer.orders.complete.branch:              "Comptoir"
 admin.association.consumer.orders.complete.amount:              "Montant"
+admin.association.consumer.orders.complete.credit:              "Reste à payer"
 
 admin.association.consumer.orders.complete.filter.all_branches:     "Tous les comptoirs"
 admin.association.consumer.orders.complete.filter.no_order:         "Aucun comptoir ne correspond à ces critères."

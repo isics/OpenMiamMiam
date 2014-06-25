@@ -13,13 +13,14 @@
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
-            <table class="table table-bordered table-condensed table-striped table-association-orders">
+            <table class="table table-bordered table-condensed table-striped table-association-consumer-sales-orders">
                 <thead>
                     <tr>
                         <th>{{ 'admin.association.consumer.orders.complete.ref'|trans }}</th>
                         <th>{{ 'admin.association.consumer.orders.complete.branch'|trans }}</th>
                         <th>{{ 'admin.association.consumer.orders.complete.date'|trans }}</th>
                         <th>{{ 'admin.association.consumer.orders.complete.amount'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.credit'|trans }}</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -27,9 +28,22 @@
                     {% for salesOrder in salesOrders %}
                         <tr>
                             <td>{{ salesOrder.ref }}</td>
-                            <td>{{ salesOrder.branchOccurrence.branch.name }} - {{ salesOrder.branchOccurrence.date|format_date }}</td>
+                            <td>
+                                {{ salesOrder.branchOccurrence.branch.name }}
+                                <div class="branch-occurrence-date">{{ salesOrder.branchOccurrence.date|format_date }}</div>
+                            </td>
                             <td>{{ salesOrder.date|format_datetime }}</td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
+                            <td>
+                                {% if (salesOrder.credit < 0) %}
+                                    <span class="text-danger">
+                                        {{ salesOrder.credit|abs|number_format_currency(open_miam_miam.currency)}}
+                                    </span>
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </td>
                             <td>
                                 <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}"
                                     class="btn btn-primary btn-xs">
