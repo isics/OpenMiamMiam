@@ -1,5 +1,4 @@
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
-{% form_theme form '@IsicsOpenMiamMiam/form.html.twig' %}
 
 {% block content %}
     <h1>
@@ -10,89 +9,7 @@
         {%  endif %}
     </h1>
 
-    <div class="panel panel-default panel-sales-orders-filter">
-        {% if consumer is not null %}
-            <form action="{{ path('open_miam_miam.admin.association.consumer.list_orders', {
-                'associationId': association.id,
-                'consumerId':    consumer.id
-            }) }}" method="get">
-        {% else %}
-            <form action="{{ path('open_miam_miam.admin.association.consumer.list_anonymous_orders', {
-                'associationId': association.id
-            }) }}" method="get">
-        {% endif %}
-            <div class="panel-body">
-                <h4>Filtres</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <td>{{ 'admin.association.consumer.orders.complete.filter.branch'|trans }}</td>
-                                <td>{{ 'admin.association.consumer.orders.complete.filter.dates'|trans }}</td>
-                                <td>{{ 'admin.association.consumer.orders.complete.filter.total'|trans }}</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    {{ form_errors(form.branch) }}
-                                    {{ form_widget(form.branch) }}
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        {{ form_errors(form.minDate) }}
-                                        {{ form_label(form.minDate, 'admin.association.consumer.orders.complete.filter.minDate'|trans) }}
-                                        <div class="input-group-inline">
-                                            <div class="input-group date datepicker" id="min-date-picker">
-                                                {{ form_widget(form.minDate) }}
-                                                <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form_errors(form.maxDate) }}
-                                        {{ form_label(form.maxDate, 'admin.association.consumer.orders.complete.filter.maxDate'|trans) }}
-                                        <div class="input-group-inline">
-                                            <div class="input-group date datepicker" id="max-date-picker">
-                                                {{ form_widget(form.maxDate) }}
-                                                <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        {{ form_errors(form.minTotal) }}
-                                        {{ form_label(form.minTotal, 'admin.association.consumer.orders.complete.filter.minTotal'|trans) }}
-                                        <div class="input-group-inline input-total">
-                                            <div class="input-group">
-                                                {{ form_widget(form.minTotal) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        {{ form_errors(form.maxTotal) }}
-                                        {{ form_label(form.maxTotal, 'admin.association.consumer.orders.complete.filter.maxTotal'|trans) }}
-                                        <div class="input-group-inline input-total">
-                                            <div class="input-group">
-                                                {{ form_widget(form.maxTotal) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    {{ form_rest(form) }}
-                    <input class="pull-right btn btn-primary" id="submit-filter-button" type="submit" value="{{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}">
-                </div>
-            </div>
-        </form>
-    </div>
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/listSalesOrdersFilter.html.twig' with {'form': form} %}
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">
@@ -100,8 +17,8 @@
                 <thead>
                     <tr>
                         <th>{{ 'admin.association.consumer.orders.complete.ref'|trans }}</th>
-                        <th>{{ 'admin.association.consumer.orders.complete.date'|trans }}</th>
                         <th>{{ 'admin.association.consumer.orders.complete.branch'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.date'|trans }}</th>
                         <th>{{ 'admin.association.consumer.orders.complete.amount'|trans }}</th>
                         <th>&nbsp;</th>
                     </tr>
@@ -110,8 +27,8 @@
                     {% for salesOrder in salesOrders %}
                         <tr>
                             <td>{{ salesOrder.ref }}</td>
-                            <td>{{ salesOrder.date|format_datetime }}</td>
                             <td>{{ salesOrder.branchOccurrence.branch.name }} - {{ salesOrder.branchOccurrence.date|format_date }}</td>
+                            <td>{{ salesOrder.date|format_datetime }}</td>
                             <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
                             <td>
                                 <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}"
