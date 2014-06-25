@@ -387,6 +387,10 @@ open_miam_miam.admin.producer.sales_order.list:
     pattern:  /producers/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list }
 
+open_miam_miam.admin.producer.sales_order.history:
+    pattern:  /producers/{id}/sales_orders_history
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:listSalesOrderHistory }
+
 open_miam_miam.admin.producer.sales_order.get_products_to_prepare_pdf_for_branch_occurrence:
     pattern:  /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/products_to_prepare
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:getProductsToPreparePdfForBranchOccurrence }

@@ -4,19 +4,28 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchOccurrenceRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrders;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class ProducerSalesOrderHistoryHandler
 {
     /**
-     * @var SalesOrderRepository $salesOrderRepository
+     * @var BranchOccurrenceRepository $branchOccurrenceRepository
      */
-    protected $salesOrderRepository;
+    protected $branchOccurrenceRepository;
 
-    public function __construct(SalesOrderRepository $salesOrderRepository)
+    /**
+     * @var FormFactoryInterface $formFactory
+     */
+    protected $formFactory;
+
+    public function __construct(BranchOccurrenceRepository $branchOccurrenceRepository, FormFactoryInterface $formFactory)
     {
-        $this->salesOrderRepository = $salesOrderRepository;
+        $this->branchOccurrenceRepository = $branchOccurrenceRepository;
+        $this->formFactory = $formFactory;
     }
 
     public function createSearchForm(Producer $producer)
@@ -28,5 +37,10 @@ class ProducerSalesOrderHistoryHandler
                 'producer' => $producer,
             ]
         );
+    }
+
+    public function generateQueryBuilder(Producer $producer)
+    {
+        return $this->branchOccurrenceRepository->getBranchOccurrencesForProducer($producer);
     }
 } 

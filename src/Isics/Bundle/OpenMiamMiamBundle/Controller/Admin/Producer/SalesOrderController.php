@@ -18,6 +18,9 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,12 +103,26 @@ class SalesOrderController extends BaseController
         ));
     }
 
-    public function listSalesOrderHistoryAction(Producer $producer)
+    public function listSalesOrderHistoryAction(Request $request, Producer $producer)
     {
         $this->secure($producer);
 
         $handler = $this->get('open_miam_miam.handler.producer_sales_order_history');
+        $form = $handler->createSearchForm($producer);
+        $qb = $handler->generateQueryBuilder($producer);
 
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($qb));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch (NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:listSalesOrderHistory.html.twig', array(
+            'producer' => $producer,
+        ));
     }
 
     /**

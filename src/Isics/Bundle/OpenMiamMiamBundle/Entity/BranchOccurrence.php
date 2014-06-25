@@ -62,6 +62,13 @@ class BranchOccurrence
      */
     private $producerAttendances;
 
+    /**
+     * @var Doctrine\Common\Collections\Collection $salesOrders
+     *
+     * @ORM\OneToMany(targetEntity="SalesOrder", mappedBy="branchOccurrence")
+     */
+    private $salesOrders;
+
 
 
     /**
@@ -251,6 +258,36 @@ class BranchOccurrence
     public function getProducerAttendances()
     {
         return $this->producerAttendances;
+    }
+
+    /**
+     * Get sales orders
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSalesOrders()
+    {
+        return $this->salesOrders;
+    }
+
+    /**
+     * Add a sales order
+     *
+     * @param SalesOrder $salesOrder
+     */
+    public function addSalesOrder(SalesOrder $salesOrder)
+    {
+        $this->salesOrders[] = $salesOrder;
+    }
+
+    /**
+     * Remove a sales order
+     *
+     * @param SalesOrder $salesOrder
+     */
+    public function removeSalesOrder(SalesOrder $salesOrder)
+    {
+        $this->salesOrders->removeElement($salesOrder);
     }
 
     /**

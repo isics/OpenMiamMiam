@@ -90,7 +90,7 @@ parameters:
 
     open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
 
-    open_miam_miam.handler.producer_sales_order_history.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Handler'
+    open_miam_miam.handler.producer_sales_order_history.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\ProducerSalesOrderHistoryHandler'
 
 
 services:
@@ -505,6 +505,13 @@ services:
         arguments:
             - "IsicsOpenMiamMiamBundle:Comment"
 
+    open_miam_miam.repository.branch_occurrence:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchOccurrenceRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:BranchOccurrence"
+
     # Models
     open_miam_miam.sales_order_statistics:
         class:     %open_miam_miam.sales_order_statistics.class%
@@ -588,4 +595,5 @@ services:
     open_miam_miam.handler.producer_sales_order_history:
         class: %open_miam_miam.handler.producer_sales_order_history.class%
         arguments:
-            - @open_miam_miam.repository.sales_order
+            - @open_miam_miam.repository.branch_occurrence
+            - @form.factory

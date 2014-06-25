@@ -9,8 +9,10 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProducerSalesOrdersSearchType extends AbstractType
 {
@@ -22,9 +24,8 @@ class ProducerSalesOrdersSearchType extends AbstractType
                 'branchOccurrence',
                 'entity',
                 array(
+                    'class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence',
                     'required' => false,
-                    'multiple' => false,
-                    'extended' => false,
                 )
             )
             ->add(
@@ -35,8 +36,6 @@ class ProducerSalesOrdersSearchType extends AbstractType
                     'format'   => 'dd-MM-yyyy',
                     'input'    => 'datetime',
                     'required' => false,
-                    'multiple' => false,
-                    'extended' => false,
                 )
             )
             ->add(
@@ -47,8 +46,6 @@ class ProducerSalesOrdersSearchType extends AbstractType
                     'format'   => 'dd-MM-yyyy',
                     'input'    => 'datetime',
                     'required' => false,
-                    'multiple' => false,
-                    'extended' => false,
                 )
             )
             ->add(
@@ -67,9 +64,17 @@ class ProducerSalesOrdersSearchType extends AbstractType
             );
     }
 
-    public function getDefaultOptions(array $options)
+    /**
+     * @see AbstractType
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter');
+        $resolver
+            ->setDefaults(array(
+                'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter',
+            ))
+            ->setRequired(['producer'])
+            ->setAllowedTypes(['producer' => Producer::class]);
     }
 
     public function getName()
