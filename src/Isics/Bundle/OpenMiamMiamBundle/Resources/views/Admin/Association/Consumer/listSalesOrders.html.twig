@@ -1,0 +1,98 @@
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>
+        {% if consumer is not null %}
+            {{ 'admin.association.consumer.orders.complete.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+        {%  else %}
+            {{ 'admin.association.consumer.orders.complete.anonymous_title'|trans }}
+        {%  endif %}
+    </h1>
+
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/listSalesOrdersFilter.html.twig' with {'form': form} %}
+
+    {% if consumer is not null %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+            'associationId': association.id,
+            'consumerId': consumer.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% else %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+            'associationId': association.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% endif %}
+
+    {% if salesOrders|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped table-association-consumer-sales-orders">
+                <thead>
+                    <tr>
+                        <th>{{ 'admin.association.consumer.orders.complete.ref'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.branch'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.date'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.amount'|trans }}</th>
+                        <th>{{ 'admin.association.consumer.orders.complete.credit'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salesOrder in salesOrders %}
+                        <tr>
+                            <td>{{ salesOrder.ref }}</td>
+                            <td>
+                                {{ salesOrder.branchOccurrence.branch.name }}
+                                <div class="branch-occurrence-date">{{ salesOrder.branchOccurrence.date|format_date }}</div>
+                            </td>
+                            <td>{{ salesOrder.date|format_datetime }}</td>
+                            <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
+                            <td>
+                                {% if (salesOrder.credit < 0) %}
+                                    <span class="text-danger">
+                                        {{ salesOrder.credit|abs|number_format_currency(open_miam_miam.currency)}}
+                                    </span>
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}"
+                                    class="btn btn-primary btn-xs">
+                                    {% if salesOrder.branchOccurrence.date > date() %}
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    {%  else %}
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    {%  endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if consumer is not null %}
+            <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+                'associationId': association.id,
+                'consumerId': consumer.id
+            }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+        {% else %}
+            <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+                'associationId': association.id
+            }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+        {% endif %}
+
+        {{ pagerfanta(salesOrders, 'twitter_bootstrap3_translated') }}
+    {% else %}
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.association.consumer.orders.complete.filter.no_order'|trans} %}
+    {% endif %}
+{%  endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.SalesOrderFilterForm();
+        });
+    </script>
+{% endblock %}

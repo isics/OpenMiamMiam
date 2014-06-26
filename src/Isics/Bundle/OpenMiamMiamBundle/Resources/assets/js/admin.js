@@ -2,9 +2,31 @@ if (undefined === OpenMiamMiam) {
     var OpenMiamMiam = {};
 }
 
+OpenMiamMiam.SalesOrderFilterForm = function() {
+    var object = function() {
+        this.initialize();
+    };
+
+    object.prototype = {
+        initialize: function() {
+            $('#min-date-picker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'fr',
+                autoclose: true
+            });
+
+            $('#max-date-picker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'fr',
+                autoclose: true
+            });
+        }
+    };
+
+    return object;
+}();
 
 OpenMiamMiam.ActionInSelectForm = function() {
-
     var object = function() {
         this.handleSubmit();
     };

@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
@@ -56,20 +57,113 @@ class SalesOrderRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function getLastForAssociationAndConsumerQueryBuilder(Association $association, User $consumer, $limit = null)
+    public function getLastForAssociationAndConsumerQueryBuilder(Association $association, User $consumer = null, $limit = null)
     {
         $qb = $this->createQueryBuilder('so')
             ->innerJoin('so.branchOccurrence', 'bo')
             ->innerJoin('bo.branch', 'b')
             ->innerJoin('b.association', 'a')
-            ->where('a = :association')
-            ->andWhere('so.user = :consumer')
-            ->setParameter('consumer', $consumer)
-            ->setParameter('association', $association)
+            ->where('a.id = :associationId')
+            ->setParameter('associationId', $association->getId())
             ->orderBy('so.date', 'DESC');
+
+        if ($consumer !== null) {
+            $qb
+                ->setParameter('consumer', $consumer)
+                ->andWhere('so.user = :consumer');
+        } else {
+            $qb->andWhere('so.user IS NULL');
+        }
 
         if (null !== $limit) {
             $qb->setMaxResults($limit);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters sales orders by ref
+     *
+     * @param QueryBuilder $qb
+     * @param              $ref
+     *
+     * @return QueryBuilder
+     */
+    public function filterRef(QueryBuilder $qb, $ref)
+    {
+        if (null !== $ref) {
+            $qb->andWhere($qb->expr()->like('so.ref', $qb->expr()->literal('%'.$ref.'%')));
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters sales orders by branch
+     *
+     * @param QueryBuilder $qb
+     * @param Branch $branch
+     *
+     * @return QueryBuilder
+     */
+    public function filterBranch(QueryBuilder $qb, Branch $branch = null)
+    {
+        if ($branch !== null) {
+            $qb
+                ->andWhere('b = :branch')
+                ->setParameter('branch', $branch);
+        }
+        return $qb;
+    }
+
+    /**
+     * Filters sales orders by min and max date values
+     *
+     * @param QueryBuilder $qb
+     * @param \DateTime $minDate
+     * @param \DateTime $maxDate
+     *
+     * @return QueryBuilder
+     */
+    public function filterDate(QueryBuilder $qb, \DateTime $minDate = null, \DateTime $maxDate = null)
+    {
+        if ($minDate !== null) {
+            $qb
+                ->andWhere('so.date >= :minDate')
+                ->setParameter('minDate', $minDate);
+        }
+
+        if ($maxDate !== null) {
+            $qb
+                ->andWhere('so.date <= :maxDate')
+                ->setParameter('maxDate', $maxDate);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters sales orders by min and max total values
+     *
+     * @param QueryBuilder $qb
+     * @param null $minTotal
+     * @param null $maxTotal
+     *
+     * @return QueryBuilder
+     */
+    public  function filterTotal(QueryBuilder $qb, $minTotal = null, $maxTotal = null)
+    {
+        if ($minTotal !== null) {
+            $qb
+                ->andWhere('so.total >= :minTotal')
+                ->setParameter('minTotal', $minTotal);
+        }
+
+        if ($maxTotal !== null) {
+            $qb
+                ->andWhere('so.total <= :maxTotal')
+                ->setParameter('maxTotal', $maxTotal);
         }
 
         return $qb;

@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
@@ -83,9 +84,64 @@ class ConsumerController extends BaseController
             $this->secureConsumer($association, $consumer);
         }
 
+        $historySalesOrders = $this
+            ->get('open_miam_miam.handler.association_sales_order_search')
+            ->generateQueryBuilder($association, $consumer, 3)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show.html.twig', array(
             'association'       => $association,
             'consumer'          => $consumer,
+            'historySalesOrder' => $historySalesOrders
+        ));
+    }
+
+    /**
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     *
+     * @param Request $request
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return Response
+     */
+    public function listSalesOrdersAction(Request $request, Association $association, User $consumer = null)
+    {
+        $this->secure($association);
+
+        if (null != $consumer) {
+            $this->secureConsumer($association, $consumer);
+        }
+
+        $handler = $this->get('open_miam_miam.handler.association_sales_order_search');
+        $form = $handler->createSearchForm($association);
+        $queryBuilder = $handler->generateQueryBuilder($association, $consumer);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+
+            $handler->applyFormFilters($data, $queryBuilder);
+        }
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
+        $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.sales_orders'));
+
+        try {
+            $pagerfanta->setCurrentPage($request->query->get('page', 1));
+        } catch (NotValidCurrentPageException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders.html.twig', array(
+            'association' => $association,
+            'consumer'    => $consumer,
+            'salesOrders' => $pagerfanta,
+            'form'        => $form->createView(),
         ));
     }
 
@@ -230,12 +286,17 @@ class ConsumerController extends BaseController
     public function listAction(Request $request, Association $association)
     {
         $this->secure($association);
+        $handler = $this->get('open_miam_miam.handler.association_consumer');
+        $form = $handler->createSearchForm();
+        $qb = $handler->generateQueryBuilder($association);
 
-        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
-            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
-                ->getForAssociationQueryBuilder($association)
-                ->getQuery()
-        ));
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $handler->applyFormFilters($qb, $data);
+        }
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($qb->getQuery()));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
 
         try {
@@ -246,7 +307,8 @@ class ConsumerController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list.html.twig', array(
             'association'   => $association,
-            'subscriptions' => $pagerfanta
+            'subscriptions' => $pagerfanta,
+            'form'          => $form->createView()
         ));
     }
 

@@ -82,6 +82,56 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="panel-title">
+                            {{ 'admin.association.consumers.show.orders.title'|trans }}
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>{{ 'admin.association.consumer.orders.date'|trans }}</th>
+                                    <th>{{ 'admin.association.consumer.orders.branch'|trans }}</th>
+                                    <th>{{ 'admin.association.consumer.orders.amount'|trans }}</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for salesOrder in historySalesOrder %}
+                                        <tr>
+                                            <td>{{ salesOrder.date|format_date }}</td>
+                                            <td>{{ salesOrder.branchOccurrence.branch.name }}<br/>{{ salesOrder.branchOccurrence.date|format_date }}</td>
+                                            <td>{{ salesOrder.total|number_format_currency(open_miam_miam.currency)}}</td>
+                                            <td>
+                                                <a href="{{ path('open_miam_miam.admin.association.sales_order.edit', {'id': association.id, 'salesOrderId': salesOrder.id}) }}" class="btn btn-primary btn-xs">
+                                                    {% if salesOrder.branchOccurrence.date > date() %}
+                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                    {%  else %}
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    {%  endif %}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <a
+                            {% if consumer is not null %}
+                                href="{{ path('open_miam_miam.admin.association.consumer.list_orders', {'associationId': association.id, 'consumerId': consumer.id}) }}"
+                            {%  else %}
+                                href="{{ path('open_miam_miam.admin.association.consumer.list_anonymous_orders', {'associationId': association.id}) }}"
+                            {% endif %}
+                            class="btn btn-primary manage">
+                            {{ 'admin.association.consumer.orders.complete_list'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="panel-title">{{ 'admin.association.consumers.show.payments.title'|trans }}</h2>
                     </div>
                     <div class="panel-body">

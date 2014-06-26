@@ -36,13 +36,13 @@ class ProducersDepositWithdrawal
      */
     protected $salesOrderRepository;
 
-
     /**
      * Constructor
      *
-     * @param BranchOccurrence $branchOccurrence
-     * @param array $salesOrderRowsData
-     * @param $artificial_product_ref
+     * @param BranchOccurrence     $branchOccurrence
+     * @param array                $salesOrderRowsData
+     * @param string               $artificial_product_ref
+     * @param SalesOrderRepository $salesOrderRepository
      */
     public function __construct
     (
@@ -52,8 +52,8 @@ class ProducersDepositWithdrawal
         SalesOrderRepository $salesOrderRepository
     )
     {
-        $this->branchOccurrence = $branchOccurrence;
-        $this->salesOrderRowsData = $salesOrderRowsData;
+        $this->branchOccurrence       = $branchOccurrence;
+        $this->salesOrderRowsData     = $salesOrderRowsData;
         $this->artificial_product_ref = $artificial_product_ref;
         $this->salesOrderRepository   = $salesOrderRepository;
     }
@@ -69,6 +69,8 @@ class ProducersDepositWithdrawal
     }
 
     /**
+     * Returns number of consumers who have ordered
+     *
      * @return int
      */
     public function getOrdersCount()
@@ -84,10 +86,11 @@ class ProducersDepositWithdrawal
     public function getProducers()
     {
         $producers = array();
-        foreach($this->salesOrderRowsData as $salesOrderRowData) {
+        foreach ($this->salesOrderRowsData as $salesOrderRowData) {
             $producers[$salesOrderRowData['producer_id']] = $salesOrderRowData['producer_name'];
         }
         asort($producers);
+
         return $producers;
     }
 
@@ -98,9 +101,9 @@ class ProducersDepositWithdrawal
     {
         $commissions = array();
 
-        foreach ($this->getProducers() as $producerId => $producerName){
-            foreach ($this->getGroupedCommissionDataForProducerId($producerId) as $commissionRate => $commissionAmount){
-                if (!isset($commissions[$commissionRate])){
+        foreach ($this->getProducers() as $producerId => $producerName) {
+            foreach ($this->getGroupedCommissionDataForProducerId($producerId) as $commissionRate => $commissionAmount) {
+                if (!isset($commissions[$commissionRate])) {
                     $commissions[$commissionRate] = $commissionAmount;
                 } else {
                     $commissions[$commissionRate] += $commissionAmount;
@@ -117,26 +120,27 @@ class ProducersDepositWithdrawal
      * Get grouped sales order rows data for branch
      *
      * @param int $producerId
+     *
      * @return array
      */
     public function getGroupedSalesOrderRowsMiscellaneousData($producerId)
     {
         $groups = array();
 
-        foreach($this->getSalesOrderRowsDataForProducerId($producerId) as $salesOrderRowData){
+        foreach ($this->getSalesOrderRowsDataForProducerId($producerId) as $salesOrderRowData) {
             $groupKey = $this->getGroupKeySalesOrderRow($salesOrderRowData);
 
-            if($salesOrderRowData['product_ref'] == $this->artificial_product_ref) {
+            if ($salesOrderRowData['product_ref'] == $this->artificial_product_ref) {
                 if (!array_key_exists($groupKey, $groups)) {
                     $groups[$groupKey] = $salesOrderRowData;
-                }
-                else {
+                } else {
                     $group =& $groups[$groupKey];
                     $group['product_quantity'] += $salesOrderRowData['product_quantity'];
                     $group['product_total'] += $salesOrderRowData['product_total'];
                 }
             }
         }
+
         return $groups;
     }
 
@@ -144,11 +148,12 @@ class ProducersDepositWithdrawal
      * Get sales order rows data for producer id
      *
      * @param $producerId
+     *
      * @return array
      */
     public function getSalesOrderRowsDataForProducerId($producerId)
     {
-        return array_filter($this->salesOrderRowsData, function($salesOrderRowData) use ($producerId) {
+        return array_filter($this->salesOrderRowsData, function ($salesOrderRowData) use ($producerId) {
             return $salesOrderRowData['producer_id'] == $producerId;
         });
     }
@@ -157,21 +162,21 @@ class ProducersDepositWithdrawal
      * Get grouped sales order rows data for producer id
      *
      * @param $producerId
+     *
      * @return array
      */
     public function getGroupedSalesOrderRowsDataForProducerId($producerId)
     {
         $groups = array();
 
-        foreach($this->getSalesOrderRowsDataForProducerId($producerId) as $salesOrderRowData){
+        foreach ($this->getSalesOrderRowsDataForProducerId($producerId) as $salesOrderRowData) {
 
             $groupKey = $this->getGroupKeySalesOrderRow($salesOrderRowData);
 
-            if($salesOrderRowData['product_ref'] != $this->artificial_product_ref) {
+            if ($salesOrderRowData['product_ref'] != $this->artificial_product_ref) {
                 if (!array_key_exists($groupKey, $groups)) {
                     $groups[$groupKey] = $salesOrderRowData;
-                }
-                else {
+                } else {
                     $group =& $groups[$groupKey];
                     $group['product_quantity'] += $salesOrderRowData['product_quantity'];
                     $group['product_total'] += $salesOrderRowData['product_total'];
@@ -188,12 +193,13 @@ class ProducersDepositWithdrawal
      * Get group key sales order row
      *
      * @param $salesOrderRowData
+     *
      * @return string
      */
     private function getGroupKeySalesOrderRow($salesOrderRowData)
     {
         return strtr('%ref%_at_%price%', array(
-            '%ref%' => $salesOrderRowData['product_ref'],
+            '%ref%'   => $salesOrderRowData['product_ref'],
             '%price%' => $salesOrderRowData['product_unit_price']
         ));
     }
@@ -202,20 +208,20 @@ class ProducersDepositWithdrawal
      * get grouped commission data for producer id
      *
      * @param $producerId
+     *
      * @return array
      */
     public function getGroupedCommissionDataForProducerId($producerId)
     {
         $groups = array();
 
-        foreach($this->getSalesOrderRowsDataForProducerId($producerId) as $salesOrderRowData){
+        foreach ($this->getSalesOrderRowsDataForProducerId($producerId) as $salesOrderRowData) {
 
             if (!array_key_exists($salesOrderRowData['product_commission'], $groups)) {
-                $groups[$salesOrderRowData['product_commission']] = $salesOrderRowData['product_total'] * $salesOrderRowData['product_commission']/100;
-            }
-            else {
+                $groups[$salesOrderRowData['product_commission']] = $salesOrderRowData['product_total'] * $salesOrderRowData['product_commission'] / 100;
+            } else {
                 $group =& $groups[$salesOrderRowData['product_commission']];
-                $group += $salesOrderRowData['product_total'] * $salesOrderRowData['product_commission']/100;
+                $group += $salesOrderRowData['product_total'] * $salesOrderRowData['product_commission'] / 100;
             }
         }
 
@@ -228,16 +234,18 @@ class ProducersDepositWithdrawal
      * Get total for producer id
      *
      * @param $producerId
+     *
      * @return int
      */
     public function getTotalForProducerId($producerId)
     {
-        $groups = $this->getGroupedSalesOrderRowsDataForProducerId($producerId);
+        $groups        = $this->getGroupedSalesOrderRowsDataForProducerId($producerId);
         $totalProducer = 0;
 
-        foreach($groups as $group) {
+        foreach ($groups as $group) {
             $totalProducer = $totalProducer + $group['product_total'];
         }
+
         return $totalProducer;
     }
 
@@ -245,14 +253,15 @@ class ProducersDepositWithdrawal
      * Get branch total for producer id
      *
      * @param $producerId
+     *
      * @return float
      */
     public function getBranchOccurrenceTotalForProducerId($producerId)
     {
-        $groups = $this->getGroupedSalesOrderRowsMiscellaneousData($producerId);
+        $groups      = $this->getGroupedSalesOrderRowsMiscellaneousData($producerId);
         $totalBranch = 0;
 
-        foreach($groups as $group) {
+        foreach ($groups as $group) {
             $totalBranch = $totalBranch + $group['product_total'];
         }
 
@@ -263,6 +272,7 @@ class ProducersDepositWithdrawal
      * Get total
      *
      * @param $producerId
+     *
      * @return float
      */
     public function getTotal($producerId)
@@ -274,13 +284,14 @@ class ProducersDepositWithdrawal
      * Get total to pay
      *
      * @param $producerId
+     *
      * @return float
      */
     public function getTotalToPay($producerId)
     {
         $totalCommission = 0;
 
-        foreach ($this->getGroupedCommissionDataForProducerId($producerId) as  $commission => $productsTotal) {
+        foreach ($this->getGroupedCommissionDataForProducerId($producerId) as $commission => $productsTotal) {
             $totalCommission = $totalCommission + $productsTotal;
         }
 
@@ -296,7 +307,7 @@ class ProducersDepositWithdrawal
     {
         $total = 0;
 
-        foreach (array_keys($this->getProducers()) as $producerId){
+        foreach (array_keys($this->getProducers()) as $producerId) {
             $total += $this->getTotalForProducerId($producerId);
         }
 
@@ -312,7 +323,7 @@ class ProducersDepositWithdrawal
     {
         $total = 0;
 
-        foreach (array_keys($this->getProducers()) as $producerId){
+        foreach (array_keys($this->getProducers()) as $producerId) {
             $total += $this->getBranchOccurrenceTotalForProducerId($producerId);
         }
 
@@ -328,7 +339,7 @@ class ProducersDepositWithdrawal
     {
         $total = 0;
 
-        foreach (array_keys($this->getProducers()) as $producerId){
+        foreach (array_keys($this->getProducers()) as $producerId) {
             $total += $this->getTotal($producerId);
         }
 
@@ -344,11 +355,10 @@ class ProducersDepositWithdrawal
     {
         $total = 0;
 
-        foreach (array_keys($this->getProducers()) as $producerId){
+        foreach (array_keys($this->getProducers()) as $producerId) {
             $total += $this->getTotalToPay($producerId);
         }
 
         return $total;
     }
-
 }

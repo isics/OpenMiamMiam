@@ -1,0 +1,84 @@
+{% form_theme form '@IsicsOpenMiamMiam/form.html.twig' %}
+
+{% if consumer is not null %}
+    {% set currentPath = path('open_miam_miam.admin.association.consumer.list_orders', {
+        'associationId': association.id,
+        'consumerId':    consumer.id
+    }) %}
+{% else %}
+    {% set currentPath = path('open_miam_miam.admin.association.consumer.list_anonymous_orders', {
+        'associationId': association.id
+    }) %}
+{% endif %}
+
+<form action="{{ currentPath }}" method="get" class="filter association-consumer-sales-orders-filter">
+    <div class="row">
+        <div class="form-row form-group col-md-6">
+            {{ form_errors(form.ref) }}
+            {{ form_widget(form.ref, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.ref'|trans}}) }}
+        </div>
+        <div class="form-row form-group col-md-6">
+            {{ form_errors(form.branch) }}
+            {{ form_widget(form.branch) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.minDate) }}
+            {{ form_errors(form.maxDate) }}
+            <div>
+                <div class="input-group-inline">
+                    <div class="input-group date datepicker" id="min-date-picker">
+                        {{ form_widget(form.minDate, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.minDate'|trans}}) }}
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="input-group-inline">
+                    <div class="input-group date datepicker" id="max-date-picker">
+                        {{ form_widget(form.maxDate, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.maxDate'|trans}}) }}
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.minTotal) }}
+            {{ form_errors(form.maxTotal) }}
+            <div class="input-group-inline input-total">
+                <div class="input-group">
+                    {{ form_widget(form.minTotal, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.minTotal'|trans}}) }}
+                    <span class="input-group-addon">
+                        {{ open_miam_miam.currency }}
+                    </span>
+                </div>
+            </div>
+            <div class="input-group-inline input-total">
+                <div class="input-group">
+                    {{ form_widget(form.maxTotal, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.maxTotal'|trans}}) }}
+                    <span class="input-group-addon">
+                        {{ open_miam_miam.currency }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row form-group col-md-2">
+            <div class="btn-group pull-right">
+                <a href="{{ currentPath }}" class="btn btn-default" title="{{ 'admin.association.consumer.orders.complete.filter.clear'|trans }}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {{ 'admin.association.consumer.orders.complete.filter.filter'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+
+</form>
