@@ -330,8 +330,6 @@ services:
         class: %open_miam_miam.form.type.association_consumer_search.class%
         tags:
             - { name: form.type, alias: open_miam_miam_association_consumer_search }
-        arguments:
-            - @translator
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:

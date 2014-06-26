@@ -1,13 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 22/06/14
- * Time: 23:57
+
+/*
+ * This file is part of the OpenMiamMiam project.
+ *
+ * (c) Isics <contact@isics.fr>
+ *
+ * This source file is subject to the AGPL v3 license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
-
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,16 +18,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class AssociationConsumerSearchType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface $translator
-     */
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * @see AbstractType
      */
