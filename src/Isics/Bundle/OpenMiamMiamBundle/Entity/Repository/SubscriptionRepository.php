@@ -33,4 +33,78 @@ class SubscriptionRepository extends EntityRepository
                 ->setParameter('association', $association)
                 ->addOrderBy('u.id');
     }
+
+    /**
+     * Filters users by id
+     *
+     * @param QueryBuilder $qb
+     * @param integer $ref
+     *
+     * @return QueryBuilder
+     */
+    public function refFilter(QueryBuilder $qb, $ref)
+    {
+        if ($ref !== null) {
+            return $qb
+                ->andWhere('u.id = :ref')
+                ->setParameter('ref', $ref);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users by last name
+     *
+     * @param QueryBuilder $qb
+     * @param string $lastName
+     *
+     * @return QueryBuilder
+     */
+    public function lastNameFilter(QueryBuilder $qb, $lastName)
+    {
+        if ($lastName !== null) {
+            return $qb
+                ->andWhere('u.lastname LIKE :lastName')
+                ->setParameter('lastName', '%'.$lastName.'%');
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users by first name
+     *
+     * @param QueryBuilder $qb
+     * @param $firstName
+     *
+     * @return QueryBuilder
+     */
+    public function firstNameFilter(QueryBuilder $qb, $firstName)
+    {
+        if ($firstName !== null) {
+            return $qb
+                ->andWhere('u.firstname LIKE :firstName')
+                ->setParameter('firstName', '%'.$firstName.'%');
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users and returns the creditors
+     *
+     * @param QueryBuilder $qb
+     * @param boolean $creditor
+     *
+     * @return QueryBuilder
+     */
+    public function creditorFilter(QueryBuilder $qb, $creditor)
+    {
+        if ($creditor == true) {
+            return $qb->andWhere('s.credit < 0');
+        }
+
+        return $qb;
+    }
 }

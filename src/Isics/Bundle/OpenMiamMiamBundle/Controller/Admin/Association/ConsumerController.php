@@ -286,12 +286,17 @@ class ConsumerController extends BaseController
     public function listAction(Request $request, Association $association)
     {
         $this->secure($association);
+        $handler = $this->get('open_miam_miam.handler.association_consumer');
+        $form = $handler->createSearchForm();
+        $qb = $handler->generateQueryBuilder($association);
 
-        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
-            $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Subscription')
-                ->getForAssociationQueryBuilder($association)
-                ->getQuery()
-        ));
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $handler->applyFormFilters($qb, $data);
+        }
+
+        $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($qb->getQuery()));
         $pagerfanta->setMaxPerPage($this->container->getParameter('open_miam_miam.association.pagination.consumers'));
 
         try {
@@ -302,7 +307,8 @@ class ConsumerController extends BaseController
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list.html.twig', array(
             'association'   => $association,
-            'subscriptions' => $pagerfanta
+            'subscriptions' => $pagerfanta,
+            'form'          => $form->createView()
         ));
     }
 

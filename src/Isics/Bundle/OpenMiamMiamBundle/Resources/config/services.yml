@@ -74,6 +74,7 @@ parameters:
     open_miam_miam.form.type.payments_for_allocate_payment.class:         'Isics\Bundle\OpenMiamMiamBundle\Form\Type\PaymentsForAllocatePaymentType'
     open_miam_miam.form.type.sales_orders_for_allocate_payment.class:     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SalesOrdersForAllocatePaymentType'
     open_miam_miam.form.type.association_sales_order_search.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSalesOrderSearchType'
+    open_miam_miam.form.type.association_consumer_search.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSearchType'
 
     open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                  PHPExcel
@@ -90,6 +91,7 @@ parameters:
 
     open_miam_miam.factory.allocate_payment.class: 'Isics\Bundle\OpenMiamMiamBundle\Factory\AllocatePaymentFactory'
 
+    open_miam_miam.handler.association_consumer.class: 'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\AssociationConsumerHandler'
 
 services:
     # Validators
@@ -324,6 +326,11 @@ services:
         tags:
             - { name: form.type, alias: open_miam_miam_association_sales_order_search }
 
+    open_miam_miam.form.type.association_consumer_search:
+        class: %open_miam_miam.form.type.association_consumer_search.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_association_consumer_search }
+
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\OpenMiamMiamExtension
@@ -504,6 +511,12 @@ services:
         arguments:
             - "IsicsOpenMiamMiamBundle:Comment"
 
+    open_miam_miam.repository.subcription:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Subscription"
 
     # Models
     open_miam_miam.sales_order_statistics:
@@ -590,3 +603,9 @@ services:
         arguments:
             - @form.factory
             - @open_miam_miam.repository.sales_order
+
+    open_miam_miam.handler.association_consumer:
+        class: %open_miam_miam.handler.association_consumer.class%
+        arguments:
+            - @form.factory
+            - @open_miam_miam.repository.subcription
