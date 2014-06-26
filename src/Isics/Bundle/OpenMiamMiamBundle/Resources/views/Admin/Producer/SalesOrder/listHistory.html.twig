@@ -43,3 +43,12 @@
         Pas d'occurrences
     {% endif %}
 {%  endblock content %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            new OpenMiamMiam.ProducerSalesOrderFilterForm();
+        });
+    </script>
+{% endblock %}

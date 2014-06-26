@@ -396,7 +396,7 @@ open_miam_miam.admin.producer.sales_order.list:
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list }
 
 open_miam_miam.admin.producer.sales_order.history:
-    pattern:  /producers/{id}/sales_orders_history
+    pattern:  /producers/{id}/sales_orders/history
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:listSalesOrderHistory }
 
 open_miam_miam.admin.producer.sales_order.get_products_to_prepare_pdf_for_branch_occurrence:

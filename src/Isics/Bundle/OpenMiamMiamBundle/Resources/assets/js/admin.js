@@ -9,13 +9,13 @@ OpenMiamMiam.AssociationConsumerSalesOrderFilterForm = function() {
 
     object.prototype = {
         initialize: function() {
-            $('#min-date-picker').datepicker({
+            $('#association-consumer-sales-order-min-date-picker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'fr',
                 autoclose: true
             });
 
-            $('#max-date-picker').datepicker({
+            $('#association-consumer-sales-order-max-date-picker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'fr',
                 autoclose: true
@@ -29,7 +29,7 @@ OpenMiamMiam.AssociationConsumerSalesOrderFilterForm = function() {
 OpenMiamMiam.ProducerSalesOrderFilterForm = function() {
     var object = function() {
         this.initialize();
-    }
+    };
 
     object.prototype = {
         initialize: function() {

@@ -91,80 +91,14 @@
                 {% endif %}
             {% endfor %}
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h1 class="panel-title">{{ 'admin.producer.sales_orders.history.title'|trans }}</h1>
-        </div>
-
-        <div class="panel-body">
-            {% for branchOccurrenceSalesOrders in historySalesOrders.branchOccurrencesSalesOrders %}
-                <h2>
-                    {{ branchOccurrenceSalesOrders.branchOccurrence.branch.name }}
-                    - {{ branchOccurrenceSalesOrders.branchOccurrence.begin|format_date }}
-                </h2>
-
-                {% if branchOccurrenceSalesOrders.salesOrders|length > 0 %}
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table_condensed table-striped table-producer-sales-orders">
-                            <thead>
-                                <tr>
-                                    <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
-                                    <th>{{ 'admin.producer.sales_orders.list.date'|trans }}</th>
-                                    <th>{{ 'admin.producer.sales_orders.list.consumer'|trans }}</th>
-                                    <th>{{ 'admin.producer.sales_orders.list.producer_total'|trans }}</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
-                                    <tr>
-                                        <td>
-                                            <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}">
-                                                {{ producerSalesOrder.salesOrder.ref }}
-                                            </a>
-                                        </td>
-                                        <td>{{ producerSalesOrder.salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
-                                        <td>
-                                            {% if producerSalesOrder.salesOrder.user %}
-                                                {{ format_identity(producerSalesOrder.salesOrder.lastname, producerSalesOrder.salesOrder.firstname, '%lastname% %firstname_first_letter%') }}.({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})
-                                                {% if producerSalesOrder.salesOrder.user.phoneNumber is not null %}
-                                                    <br />
-                                                    {{ 'admin.producer.sales_orders.list.phone_number'|trans }}
-                                                    {{ producerSalesOrder.salesOrder.user.phoneNumber }}
-                                                {% endif %}
-                                            {% else %}
-                                                {{ 'admin.association.sales_orders.anonymous'|trans }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
-                                        <td>
-                                            <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {
-                                            'id': producer.id,
-                                            'salesOrderId': producerSalesOrder.salesOrder.id
-                                            }) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.history.view'|trans }}">
-                                                <span class="glyphicon glyphicon-eye-open"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% else %}
-                    {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.list.no_order'|trans} %}
-                {% endif %}
-            {% endfor %}
-
-            {#<a href="" class="btn btn-primary">#}
-                {#<span class="glyphicon glyphicon-list"></span>#}
-                {#{{ 'admin.producer.sales_orders.history.view_all'|trans }}#}
-            {#</a>#}
+        <div class="panel-footer producer-sales-order-history-button">
+            <a href="{{ path('open_miam_miam.admin.producer.sales_order.history', {'id': producer.id}) }}"
+                class="btn btn-primary pull-right">
+                {{ 'admin.producer.sales_orders.history.view_all'|trans }}
+            </a>
         </div>
     </div>
-
 {% endblock %}
 
 {% block javascript %}

@@ -702,9 +702,7 @@ admin.producer.sales_orders.message.payment_allocation_deleted: "Le règlement a
 admin.producer.sales_orders.message.updated:                    "La commande a bien été mise à jour."
 admin.producer.sales_orders.message.product_added:              "Le produit a bien été ajouté à la commande"
 
-admin.producer.sales_orders.history.title:                      "Historique des commandes"
-admin.producer.sales_orders.history.view:                       "Voir la commande"
-admin.producer.sales_orders.history.view_all:                   "Voir l'historique complet"
+admin.producer.sales_orders.history.view_all:                   "Voir l'historique des commandes"
 
 admin.producer.sales_orders.list_history.title:                 "Historique des commandes"
 admin.producer.sales_orders.list_history.filter.all_branches:   "Tous les comptoirs"
