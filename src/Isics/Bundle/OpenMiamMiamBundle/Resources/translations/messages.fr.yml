@@ -344,11 +344,11 @@ admin.association.consumers.list.show_details:        "Voir les détails"
 
 admin.association.consumers.list.filter:                "Filtrer"
 admin.association.consumers.list.filter.clear:          "Nettoyer les filtres"
-admin.association.consumers.list.filter.ref:            "Identifiant(numéro de référence)"
+admin.association.consumers.list.filter.ref:            "Identifiant (numéro de référence)"
 admin.association.consumers.list.filter.ref_title:      "Par exemple, pour CU000017, entrez simplement 17."
 admin.association.consumers.list.filter.last_name:      "Nom"
 admin.association.consumers.list.filter.first_name:     "Prénom"
-admin.association.consumers.list.filter.creditor:       "Créancier"
+admin.association.consumers.list.filter.creditor:       "Débiteur"
 
 admin.association.consumers.show.title:           "Consommateur «%consumer%»"
 admin.association.consumers.show.anonymous_title: "Consommateur anonyme"
