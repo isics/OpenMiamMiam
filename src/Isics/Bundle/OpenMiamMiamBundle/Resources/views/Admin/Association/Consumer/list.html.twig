@@ -12,53 +12,7 @@
         {{ 'admin.association.consumers.list.title'|transchoice(subscriptions|length, {'%nb%': subscriptions|length}) }}
     </h1>
 
-
-    <div class="panel panel-default panel-sales-orders-filter">
-        <form action="{{ path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) }}" method="get">
-            <div class="panel-body">
-                <h4>Filtres</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <td title="{{'admin.association.consumers.list.filter.ref_title'|trans}}">
-                                {{ 'admin.association.consumers.list.filter.ref'|trans }}</td>
-                            <td>{{ 'admin.association.consumers.list.filter.last_name'|trans }}</td>
-                            <td>{{ 'admin.association.consumers.list.filter.first_name'|trans }}</td>
-                            <td>{{ 'admin.association.consumers.list.filter.creditor'|trans }}</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <div class="input-group">
-                                    {{ form_widget(form.ref) }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    {{ form_widget(form.lastName) }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    {{ form_widget(form.firstName) }}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    {{ form_widget(form.creditor) }}
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    {{ form_rest(form) }}
-                    <input class="pull-right btn btn-primary" id="submit-filter-button" type="submit" value="{{ 'admin.association.consumers.list.filter'|trans }}">
-                </div>
-            </div>
-        </form>
-    </div>
+    {% include '' %}
 
     {% if subscriptions|length > 0 %}
         <div class="table-responsive">
