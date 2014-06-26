@@ -5,64 +5,7 @@
         {{ 'admin.producer.sales_orders.list_history.title'|trans }}
     </h1>
 
-
-
-
-    <div class="panel panel-default panel-branch-occurrences-filter">
-        <form action="{{ path('open_miam_miam.admin.producer.sales_order.history', {
-        'id': producer.id
-        }) }}" method="get">
-            <div class="panel-body">
-                <h4>Filtres</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <td>Comptoir</td>
-                            <td>Dates</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                {{ form_errors(form.branch) }}
-                                {{ form_widget(form.branch, {'attr': {'class': 'form-control'}}) }}
-                            </td>
-                            <td>
-                                <div class="form-group">
-                                    {{ form_errors(form.minDate) }}
-                                    {{ form_label(form.minDate, 'De') }}
-                                    <div class="input-group-inline">
-                                        <div class="input-group date datepicker" id="min-date-picker">
-                                            {{ form_widget(form.minDate, {'attr': {'class': 'form-control'}}) }}
-                                            <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_errors(form.maxDate) }}
-                                    {{ form_label(form.maxDate, 'A') }}
-                                    <div class="input-group-inline">
-                                        <div class="input-group date datepicker" id="max-date-picker">
-                                            {{ form_widget(form.maxDate, {'attr': {'class': 'form-control'}}) }}
-                                            <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    {{ form_rest(form) }}
-                    <input class="pull-right btn btn-primary" id="submit-filter-button" type="submit" value="Filtrer">
-                </div>
-            </div>
-        </form>
-    </div>
+    {% include '@IsicsOpenMiamMiam/Admin/Producer/SalesOrder/listHistoryFilter.html.twig' with {'form': form} %}
 
     {% if branchOccurrences|length > 0 %}
         {% for branchOccurrence in branchOccurrences %}
@@ -94,14 +37,6 @@
             {% else %}
                 Pas de commandes
             {%  endif %}
-
-            {#
-
-
-            {% for salesOrder in salesOrders %}
-                Test
-            {% endfor %}
-            #}
         {% endfor %}
         {{ pagerfanta(branchOccurrences, 'twitter_bootstrap3_translated') }}
     {% else %}

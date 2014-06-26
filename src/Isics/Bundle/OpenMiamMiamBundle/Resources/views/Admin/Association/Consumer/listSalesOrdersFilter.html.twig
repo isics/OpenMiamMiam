@@ -29,7 +29,7 @@
             <div>
                 <div class="input-group-inline">
                     <div class="input-group date datepicker" id="min-date-picker">
-                        {{ form_widget(form.minDate, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.minDate'|trans}}) }}
+                        {{ form_widget(form.minDate, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.min_date'|trans}}) }}
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="input-group-inline">
                     <div class="input-group date datepicker" id="max-date-picker">
-                        {{ form_widget(form.maxDate, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.maxDate'|trans}}) }}
+                        {{ form_widget(form.maxDate, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.max_date'|trans}}) }}
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -51,7 +51,7 @@
             {{ form_errors(form.maxTotal) }}
             <div class="input-group-inline input-total">
                 <div class="input-group">
-                    {{ form_widget(form.minTotal, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.minTotal'|trans}}) }}
+                    {{ form_widget(form.minTotal, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.min_total'|trans}}) }}
                     <span class="input-group-addon">
                         {{ open_miam_miam.currency }}
                     </span>
@@ -59,7 +59,7 @@
             </div>
             <div class="input-group-inline input-total">
                 <div class="input-group">
-                    {{ form_widget(form.maxTotal, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.maxTotal'|trans}}) }}
+                    {{ form_widget(form.maxTotal, {'attr': {'placeholder': 'admin.association.consumer.orders.complete.filter.max_total'|trans}}) }}
                     <span class="input-group-addon">
                         {{ open_miam_miam.currency }}
                     </span>

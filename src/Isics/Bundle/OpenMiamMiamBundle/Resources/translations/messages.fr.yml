@@ -375,11 +375,11 @@ admin.association.consumer.orders.complete.filter.filter:           "Filtrer"
 admin.association.consumer.orders.complete.filter.ref:              "Référence"
 admin.association.consumer.orders.complete.filter.branch:           "Comptoir"
 admin.association.consumer.orders.complete.filter.dates:            "Dates"
-admin.association.consumer.orders.complete.filter.minDate:          "Du"
-admin.association.consumer.orders.complete.filter.maxDate:          "Au"
+admin.association.consumer.orders.complete.filter.min_date:         "Du"
+admin.association.consumer.orders.complete.filter.max_date:         "Au"
 admin.association.consumer.orders.complete.filter.total:            "Montant"
-admin.association.consumer.orders.complete.filter.minTotal:         "De"
-admin.association.consumer.orders.complete.filter.maxTotal:         "À"
+admin.association.consumer.orders.complete.filter.min_total:        "De"
+admin.association.consumer.orders.complete.filter.max_total:        "À"
 
 admin.association.consumers.payments.manage:                         "Gestion des règlements"
 admin.association.consumers.payments.list.title:                     "Liste des règlements de %consumer%"
@@ -705,8 +705,11 @@ admin.producer.sales_orders.message.product_added:              "Le produit a bi
 admin.producer.sales_orders.history.title:                      "Historique des commandes"
 admin.producer.sales_orders.history.view:                       "Voir la commande"
 admin.producer.sales_orders.history.view_all:                   "Voir l'historique complet"
-admin.producer.sales_orders.list_history.title:                 "Historique des commandes"
 
+admin.producer.sales_orders.list_history.title:                 "Historique des commandes"
+admin.producer.sales_orders.list_history.filter.all_branches:   "Tous les comptoirs"
+admin.producer.sales_orders.list_history.filter.min_date:       "Du"
+admin.producer.sales_orders.list_history.filter.max_date:       "Au"
 
 admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 

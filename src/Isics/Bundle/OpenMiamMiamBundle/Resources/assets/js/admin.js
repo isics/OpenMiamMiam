@@ -2,7 +2,7 @@ if (undefined === OpenMiamMiam) {
     var OpenMiamMiam = {};
 }
 
-OpenMiamMiam.SalesOrderFilterForm = function() {
+OpenMiamMiam.AssociationConsumerSalesOrderFilterForm = function() {
     var object = function() {
         this.initialize();
     };
@@ -16,6 +16,30 @@ OpenMiamMiam.SalesOrderFilterForm = function() {
             });
 
             $('#max-date-picker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'fr',
+                autoclose: true
+            });
+        }
+    };
+
+    return object;
+}();
+
+OpenMiamMiam.ProducerSalesOrderFilterForm = function() {
+    var object = function() {
+        this.initialize();
+    }
+
+    object.prototype = {
+        initialize: function() {
+            $('#producer-sales-order-history-min-date-picker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'fr',
+                autoclose: true
+            });
+
+            $('#producer-sales-order-history-max-date-picker').datepicker({
                 format: 'dd/mm/yyyy',
                 language: 'fr',
                 autoclose: true

@@ -3,12 +3,12 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder;
 
 
-use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 
 class ProducerSalesOrdersFilter
 {
     /**
-     * @var BranchOccurrence $branchOccurrence
+     * @var Branch $branch
      */
     protected $branch;
 
@@ -43,7 +43,7 @@ class ProducerSalesOrdersFilter
     /**
      * @param Branch $branch
      */
-    public function setBranchOccurrence(Branch $branch)
+    public function setBranch(Branch $branch = null)
     {
         $this->branch = $branch;
     }
@@ -59,7 +59,7 @@ class ProducerSalesOrdersFilter
     /**
      * @param \DateTime $minDate
      */
-    public function setMinDate(\DateTime $minDate)
+    public function setMinDate(\DateTime $minDate = null)
     {
         $this->minDate = $minDate;
     }
@@ -75,7 +75,7 @@ class ProducerSalesOrdersFilter
     /**
      * @param \DateTime $maxDate
      */
-    public function setMaxDate(\DateTime $maxDate)
+    public function setMaxDate(\DateTime $maxDate = null)
     {
         $this->maxDate = $maxDate;
     }

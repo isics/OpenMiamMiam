@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
@@ -26,7 +27,7 @@ class BranchOccurrenceRepository extends EntityRepository
      * @param Branch $branch
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getBranchOccurrencesForProducer(Producer $producer)
+    public function getBranchOccurrencesForProducerQueryBuilder(Producer $producer)
     {
         $date = new \DateTime();
         /*
@@ -43,6 +44,51 @@ class BranchOccurrenceRepository extends EntityRepository
             ->orderBy('bo.begin', 'DESC')
             ->setParameter('date', $date)
             ->setParameter('producer', $producer);
+    }
+
+    /**
+     * Filter branch occurrences by branch
+     *
+     * @param QueryBuilder $qb
+     * @param Branch $branch
+     *
+     * @return QueryBuilder
+     */
+    public function filterBranch(QueryBuilder $qb, Branch $branch = null)
+    {
+        if ($branch !== null) {
+            return $qb
+                ->innerJoin('bo.branch', 'b')
+                ->andWhere('b = :branch')
+                ->setParameter('branch', $branch);
+        }
+        return $qb;
+    }
+
+    /**
+     * Filters branch occurrences by min and max date values
+     *
+     * @param QueryBuilder $qb
+     * @param \DateTime $minDate
+     * @param \DateTime $maxDate
+     *
+     * @return QueryBuilder
+     */
+    public function filterDate(QueryBuilder $qb, \DateTime $minDate = null, \DateTime $maxDate = null)
+    {
+        if ($minDate !== null) {
+            $qb
+                ->andWhere('bo.begin >= :minDate')
+                ->setParameter('minDate', $minDate);
+        }
+
+        if ($maxDate !== null) {
+            $qb
+                ->andWhere('bo.begin <= :maxDate')
+                ->setParameter('maxDate', $maxDate);
+        }
+
+        return $qb;
     }
 
     /**

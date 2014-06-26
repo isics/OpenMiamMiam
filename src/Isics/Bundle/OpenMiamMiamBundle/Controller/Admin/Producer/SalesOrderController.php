@@ -114,7 +114,7 @@ class SalesOrderController extends BaseController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
-
+            $qb = $handler->applyFormFilters($data, $qb);
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($qb));

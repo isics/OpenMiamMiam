@@ -324,6 +324,8 @@ services:
 
     open_miam_miam.form.type.producer_sales_order_search:
         class: %open_miam_miam.form.type.sales_orders_search.class%
+        arguments:
+            - @translator
         tags:
             - { name: form.type, alias: open_miam_miam_producer_sales_order_search }
 

@@ -13,9 +13,23 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ProducerSalesOrdersSearchType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface $translator
+     */
+    protected $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -24,10 +38,10 @@ class ProducerSalesOrdersSearchType extends AbstractType
                 'branch',
                 'entity',
                 array(
-                    'class'     => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Branch',
-                    'required'  => false,
-                    'property'  => 'name',
-                    'empty_data' => 'Tous les comptoirs'
+                    'class'       => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Branch',
+                    'required'    => false,
+                    'property'    => 'name',
+                    'empty_value' => $this->translator->trans('admin.producer.sales_orders.list_history.filter.all_branches'),
                 )
             )
             ->add(

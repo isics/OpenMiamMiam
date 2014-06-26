@@ -42,11 +42,14 @@ class ProducerSalesOrderHistoryHandler
 
     public function generateQueryBuilder(Producer $producer)
     {
-        return $this->branchOccurrenceRepository->getBranchOccurrencesForProducer($producer);
+        return $this->branchOccurrenceRepository->getBranchOccurrencesForProducerQueryBuilder($producer);
     }
 
-    public function applyFormFilters(QueryBuilder $queryBuilder, ProducerSalesOrdersFilter $filter)
+    public function applyFormFilters(ProducerSalesOrdersFilter $data, QueryBuilder $qb)
     {
+        $this->branchOccurrenceRepository->filterBranch($qb, $data->getBranch());
+        $this->branchOccurrenceRepository->filterDate($qb, $data->getMinDate(), $data->getMaxDate());
 
+        return $qb;
     }
 } 
