@@ -12,7 +12,7 @@
         {{ 'admin.association.consumers.list.title'|transchoice(subscriptions|length, {'%nb%': subscriptions|length}) }}
     </h1>
 
-    {% include '' %}
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/listFilter.html.twig' with {'form': form} %}
 
     {% if subscriptions|length > 0 %}
         <div class="table-responsive">
