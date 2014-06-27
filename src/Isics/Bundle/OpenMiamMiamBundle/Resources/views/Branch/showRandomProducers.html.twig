@@ -13,7 +13,7 @@
     {% for producer in producers %}
         <li class="list-group-item">
             <a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">
-                {{ producer }}
+                {{ producer }} <span class="badge">{{ producer.specialty }}</span>
             </a>
         </li>
     {% endfor %}

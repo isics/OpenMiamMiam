@@ -180,6 +180,13 @@ class Producer
      */
     private $salesOrderRows;
 
+    /**
+     * @var string $specialty
+     *
+     * @ORM\Column(name="specialty", type="string", length=32, nullable=true)
+     */
+    private $specialty;
+
 
     /**
      * Constructor
@@ -841,5 +848,25 @@ class Producer
     public function getSalesOrderRows()
     {
         return $this->salesOrderRows;
+    }
+
+    /**
+     * Set specialty
+     *
+     * @param $specialty
+     */
+    public function setSpecialty($specialty)
+    {
+        $this->specialty = $specialty;
+    }
+
+    /**
+     * Get specialty
+     *
+     * @return string
+     */
+    public function getSpecialty()
+    {
+        return $this->specialty;
     }
 }

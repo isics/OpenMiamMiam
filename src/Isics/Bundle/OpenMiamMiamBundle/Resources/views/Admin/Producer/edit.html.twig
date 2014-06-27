@@ -12,7 +12,15 @@
     <div class="producer_form">
         <h1>{{ 'admin.producer.infos.title'|trans }}</h1>
         {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_producer_form', 'novalidate': ''}}) }}
-        {{ form_row(form.name, {'label': 'admin.producer.infos.name'|trans}) }}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.name, {'label': 'admin.producer.infos.name'|trans}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.specialty, 'admin.producer.infos.specialty') }} - {{ 'admin.producer.infos.specialty_length'|trans }}
+                {{ form_widget(form.specialty) }}
+            </div>
+        </div>
         {{ form_row(form.address1, {'label': 'admin.producer.infos.address1'|trans}) }}
         {{ form_errors(form.address2) }}
         {{ form_row(form.address2, {'label': 'admin.producer.infos.address2'|trans}) }}

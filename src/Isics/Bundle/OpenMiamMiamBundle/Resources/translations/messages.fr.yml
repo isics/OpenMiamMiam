@@ -642,6 +642,8 @@ admin.producer.dashboard.attendances_to_confirm: "[0,1]date à confirmer|]1,Inf]
 admin.producer.infos.title:              "Informations producteur"
 admin.producer.infos.message.updated:    "Les informations du producteur ont bien été mises à jour."
 admin.producer.infos.name:               "Nom"
+admin.producer.infos.specialty:          "Spécialité"
+admin.producer.infos.specialty_length:   "32 caractères maximum"
 admin.producer.infos.address1:           "Adresse"
 admin.producer.infos.address2:           "Complément d'adresse"
 admin.producer.infos.phone_number1:      "Téléphone"

@@ -34,7 +34,7 @@
                     <tbody>
                         {% for producer in producers %}
                             <tr>
-                                <td><a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">{{ producer.name }}</a></td>
+                                <td><a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">{{ producer.name }} <span class="badge">{{ producer.specialty }}</span></a></td>
                                 {% for occurrence in branchOccurrences %}
                                     <td class="text-center">
                                         {% if occurrence.isProducerAttendee(producer) %}
