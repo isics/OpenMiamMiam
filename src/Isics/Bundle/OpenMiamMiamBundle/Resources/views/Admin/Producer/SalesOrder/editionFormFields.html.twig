@@ -62,7 +62,11 @@
         </tfoot>
     </table>
 
-    <a href="{{ path('open_miam_miam.admin.producer.sales_order.list', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% if not mustRemoveFormControls %}
+        <a href="{{ path('open_miam_miam.admin.producer.sales_order.list', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% else %}
+        <a href="{{ path('open_miam_miam.admin.producer.sales_order.history', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% endif %}
 
     {% if not mustRemoveFormControls %}
         <button type="submit" class="btn btn-primary btn-lg">
