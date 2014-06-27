@@ -38,7 +38,7 @@ class SalesOrder
     /**
      * @var BranchOccurrence
      *
-     * @ORM\ManyToOne(targetEntity="BranchOccurrence")
+     * @ORM\ManyToOne(targetEntity="BranchOccurrence", inversedBy="salesOrders")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="branch_occurrence_id", referencedColumnName="id", nullable=false)
      * })

@@ -9,7 +9,7 @@
 
     {% if branchOccurrences|length > 0 %}
         {% for branchOccurrence in branchOccurrences %}
-            <h3>{{ branchOccurrence.branch.name }} - {{ branchOccurrence.begin|format_date }}</h3>
+            <h2>{{ branchOccurrence.branch.name }} - {{ branchOccurrence.begin|format_date }}</h2>
             {% set producerBranchOccurrenceSalesOrders = get_producer_sales_orders_for_branch_occurrence(producer, branchOccurrence) %}
             {% if producerBranchOccurrenceSalesOrders.salesOrders|length > 0 %}
                 <div class="table-responsive">
