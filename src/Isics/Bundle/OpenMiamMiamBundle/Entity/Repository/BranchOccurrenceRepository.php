@@ -78,13 +78,13 @@ class BranchOccurrenceRepository extends EntityRepository
     {
         if ($minDate !== null) {
             $qb
-                ->andWhere('bo.begin >= :minDate')
+                ->andWhere('DATE(bo.begin) >= :minDate')
                 ->setParameter('minDate', $minDate);
         }
 
         if ($maxDate !== null) {
             $qb
-                ->andWhere('bo.begin <= :maxDate')
+                ->andWhere('DATE(bo.begin) <= :maxDate')
                 ->setParameter('maxDate', $maxDate);
         }
 

@@ -707,6 +707,7 @@ admin.producer.sales_orders.list_history.title:                 "Historique des 
 admin.producer.sales_orders.list_history.filter.all_branches:   "Tous les comptoirs"
 admin.producer.sales_orders.list_history.filter.min_date:       "Du"
 admin.producer.sales_orders.list_history.filter.max_date:       "Au"
+admin.producer.sales_orders.list_history.no_order:              "Il n'y a pas eu de commande pour ce comptoir"
 
 admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 

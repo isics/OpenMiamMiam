@@ -13,29 +13,57 @@
             {% set producerBranchOccurrenceSalesOrders = get_producer_sales_orders_for_branch_occurrence(producer, branchOccurrence) %}
             {% if producerBranchOccurrenceSalesOrders.salesOrders|length > 0 %}
                 <div class="table-responsive">
-                    <table class="table table-bordered table-condensed table-striped">
+                    <table class="table table-bordered table-condensed table-striped table-producer-sales-orders">
                         <thead>
                             <tr>
-                                <th>Ref</th>
-                                <th>Date</th>
-                                <th>Consommateur</th>
-                                <th>Total</th>
+                                <th>{{ 'admin.producer.sales_orders.list.ref'|trans }}</th>
+                                <th>{{ 'admin.producer.sales_orders.list.date'|trans }}</th>
+                                <th>{{ 'admin.producer.sales_orders.list.consumer'|trans }}</th>
+                                <th>{{ 'admin.producer.sales_orders.list.producer_total'|trans }}</th>
+                                <th>&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for producerSalesOrder in producerBranchOccurrenceSalesOrders.sortedSalesOrder %}
                                 <tr>
-                                    <td>{{ producerSalesOrder.salesOrder.ref }}</td>
-                                    <td>{{ producerSalesOrder.salesOrder.date|format_datetime }}</td>
-                                    <td>{{ producerSalesOrder.salesOrder.user }}</td>
-                                    <td>{{ producerSalesOrder.salesOrder.total }}</td>
+                                    <td>
+                                        <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}">
+                                            {{ producerSalesOrder.salesOrder.ref }}
+                                        </a>
+                                    </td>
+                                    <td>{{ producerSalesOrder.salesOrder.date|format_datetime(null, null, null, constant('IntlDateFormatter::SHORT')) }}</td>
+                                    <td>
+                                        {% if producerSalesOrder.salesOrder.user %}
+                                            {{ format_identity(producerSalesOrder.salesOrder.lastname, producerSalesOrder.salesOrder.firstname, '%lastname% %firstname_first_letter%') }}.({{ producerSalesOrder.salesOrder.user|format_consumer_ref }})
+                                            {% if producerSalesOrder.salesOrder.user.phoneNumber is not null %}
+                                                <br />
+                                                {{ 'admin.producer.sales_orders.list.phone_number'|trans }}
+                                                {{ producerSalesOrder.salesOrder.user.phoneNumber }}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ 'admin.association.sales_orders.anonymous'|trans }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ producerSalesOrder.total|number_format_currency(open_miam_miam.currency) }}</td>
+                                    <td>
+                                        <a href="{{ path('open_miam_miam.admin.producer.sales_order.edit', {'id': producer.id, 'salesOrderId': producerSalesOrder.salesOrder.id}) }}" class="btn btn-primary btn-xs" title="{{ 'admin.producer.sales_orders.list.edit'|trans }}">
+                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">{{ 'admin.association.sales_orders.list.total_amount'|trans }}</td>
+                                <td>{{ producerBranchOccurrenceSalesOrders.sum|number_format_currency(open_miam_miam.currency) }}</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             {% else %}
-                Pas de commandes
+                {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.list_history.no_order'|trans} %}
             {%  endif %}
         {% endfor %}
         {{ pagerfanta(branchOccurrences, 'twitter_bootstrap3_translated') }}

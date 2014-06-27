@@ -23,12 +23,25 @@ class ProducerSalesOrderHistoryHandler
      */
     protected $formFactory;
 
+    /**
+     * Constructor
+     *
+     * @param BranchOccurrenceRepository $branchOccurrenceRepository
+     * @param FormFactoryInterface       $formFactory
+     */
     public function __construct(BranchOccurrenceRepository $branchOccurrenceRepository, FormFactoryInterface $formFactory)
     {
         $this->branchOccurrenceRepository = $branchOccurrenceRepository;
         $this->formFactory = $formFactory;
     }
 
+    /**
+     * Create search form
+     *
+     * @param Producer $producer
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
     public function createSearchForm(Producer $producer)
     {
         return $this->formFactory->create(
@@ -40,11 +53,26 @@ class ProducerSalesOrderHistoryHandler
         );
     }
 
+    /**
+     * Generate QueryBuilder for search
+     *
+     * @param Producer $producer
+     *
+     * @return QueryBuilder
+     */
     public function generateQueryBuilder(Producer $producer)
     {
         return $this->branchOccurrenceRepository->getBranchOccurrencesForProducerQueryBuilder($producer);
     }
 
+    /**
+     * Applies filter values
+     *
+     * @param ProducerSalesOrdersFilter $data
+     * @param QueryBuilder              $qb
+     *
+     * @return QueryBuilder
+     */
     public function applyFormFilters(ProducerSalesOrdersFilter $data, QueryBuilder $qb)
     {
         $this->branchOccurrenceRepository->filterBranch($qb, $data->getBranch());

@@ -49,7 +49,7 @@ class ProducerSalesOrdersSearchType extends AbstractType
                 'date',
                 array(
                     'widget'   => 'single_text',
-                    'format'   => 'dd-MM-yyyy',
+                    'format'   => 'dd/MM/yyyy',
                     'input'    => 'datetime',
                     'required' => false
                 )
@@ -59,7 +59,7 @@ class ProducerSalesOrdersSearchType extends AbstractType
                 'date',
                 array(
                     'widget'   => 'single_text',
-                    'format'   => 'dd-MM-yyyy',
+                    'format'   => 'dd/MM/yyyy',
                     'input'    => 'datetime',
                     'required' => false
                 )
