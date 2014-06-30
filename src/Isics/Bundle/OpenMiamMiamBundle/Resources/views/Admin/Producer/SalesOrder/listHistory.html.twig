@@ -68,7 +68,7 @@
         {% endfor %}
         {{ pagerfanta(branchOccurrences, 'twitter_bootstrap3_translated') }}
     {% else %}
-        Pas d'occurrences
+        {% include 'IsicsOpenMiamMiamBundle:Admin:empty.html.twig' with {'message': 'admin.producer.sales_orders.list_history.no_branch_occurrence'|trans} %}
     {% endif %}
 {%  endblock content %}
 
