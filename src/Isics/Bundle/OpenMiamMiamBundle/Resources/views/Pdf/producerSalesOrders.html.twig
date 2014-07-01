@@ -11,16 +11,18 @@
     {% spaceless %}
         {% set branchOccurrence=branchOccurrenceSalesOrders.branchOccurrence %}
         {% set branch=branchOccurrence.branch %}
+        <br class="no-spacing"/>
         <table width="100%">
             <tbody>
                 <tr>
                     <td>
-                        <h1>{{ open_miam_miam.title }}</h1>
+                        <h1 class="half-spacing">{{ open_miam_miam.title }}</h1>
+                        <h2 class="half-spacing">{{ 'pdf.producer_sales_orders.producer'|trans }} {{ producer.name }}</h2>
                     </td>
                     <td align="right">
-                        <h1>{{ 'pdf.producer_sales_orders.title'|trans }}</h1>
-                        <h2>{{ branch.name }}</h2>
-                        <h3>
+                        <h1 class="half-spacing">{{ 'pdf.producer_sales_orders.title'|trans }}</h1>
+                        <h2 class="half-spacing">{{ branch.name }}</h2>
+                        <h3 class="half-spacing">
                             {{ branchOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::LONG')) }}
                             {{ branchOccurrence.begin|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
                             -
@@ -30,34 +32,30 @@
                 </tr>
             </tbody>
         </table>
-
-        <p>&nbsp;</p>
-
-        <h2>{{ 'pdf.producer_sales_orders.producer'|trans }} {{ producer.name }}</h2>
-
-        <p>&nbsp;</p>
-
+        <p></p>
         {% for producerSalesOrder in branchOccurrenceSalesOrders.salesOrders %}
             {% set order=producerSalesOrder.salesOrder %}
 
             <table width="100%">
                 <tbody>
                     <tr>
-                        <td><strong>{{ format_identity(order.lastname, order.firstname) }} {% if order.user is not null %}({{ order.user|format_consumer_ref }}){% endif %}</strong>
+                        <td><strong>{{ format_identity(order.lastname, order.firstname) }}
+                                {% if order.user is not null %}({{ order.user|format_consumer_ref }})
+                                    {% if order.user.phoneNumber is not null %}
+                                        - {{ order.user.phoneNumber }}
+                                    {% endif %}
+                                {% endif %}
+                            </strong>
                             {% if order.user is defined %}
                                 <br />{{ order.user.zipcode }} {{ order.user.city }}
-                                {% if order.user.phoneNumber is not null %}
-                                    <br />
-                                    {{ 'pdf.sales_order.consumer.phone_number'|trans }} {{ order.user.phoneNumber }}
-                                {% endif %}
                             {% endif %}
                         </td>
                         <td align="right">
-                            <strong>{{ 'pdf.sales_order.title'|trans({'%ref%': order.ref})  }}</strong>
+                            <br/><br/><strong>{{ 'pdf.sales_order.title'|trans({'%ref%': order.ref})  }}</strong>
                         </td>
                     </tr>
                 </tbody>
-            </table><br /><br />
+            </table><br/><br class="half-spacing"/>
 
             <table width="100%" border="1" cellpadding="3" cellspacing="0">
                 <thead>
@@ -85,8 +83,7 @@
                     </tr>
                 </tfoot>
             </table>
-
-            <p>&nbsp;</p>
+            <div class="spacing"></div>
         {% endfor %}
     {% endspaceless %}
 {% endblock %}
