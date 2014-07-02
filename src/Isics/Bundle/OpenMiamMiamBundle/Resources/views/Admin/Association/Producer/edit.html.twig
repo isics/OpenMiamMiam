@@ -12,6 +12,7 @@
 {% block content %}
     <h1>{{ 'admin.association.producers.edit.title'|trans({'%producer_name%': associationHasProducer.producer.name}) }}</h1>
 
+    <a href="{{ path('open_miam_miam.admin.association.producer.list', {'id': associationHasProducer.association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
     {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
         <div class="row-fluid control-group">

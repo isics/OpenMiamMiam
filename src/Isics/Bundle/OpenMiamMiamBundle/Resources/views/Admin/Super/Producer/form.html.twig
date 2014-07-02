@@ -9,6 +9,7 @@
 
 {% set producerWithOwner = form.vars.data %}
 
+<a href="{{ path('open_miam_miam.admin.super.producer.list') }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 {{ form_start(form) }}
 
     {{ form_errors(form) }}

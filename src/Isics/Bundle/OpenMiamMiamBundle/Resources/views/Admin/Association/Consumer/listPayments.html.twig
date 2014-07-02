@@ -21,6 +21,7 @@
     </div>
 
     {% if payments|length > 0 %}
+        {{ pagerfanta(payments, 'twitter_bootstrap3_translated') }}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-sales-orders">
                 <thead>

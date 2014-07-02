@@ -23,6 +23,7 @@
     {% endif %}
 
     {% if salesOrders|length > 0 %}
+        {{ pagerfanta(salesOrders, 'twitter_bootstrap3_translated') }}
         <div class="table-responsive">
             <table class="table table-bordered table-condensed table-striped table-association-consumer-sales-orders">
                 <thead>
