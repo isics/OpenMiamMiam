@@ -149,12 +149,44 @@ class SalesOrder
      */
     private $paymentAllocations;
 
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder", mappedBy="salesOrder")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $comments;
 
 
     public function __construct()
     {
         $this->salesOrderRows = new ArrayCollection();
         $this->paymentAllocations = new ArrayCollection();
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function addComment(Comment $comment)
+    {
+        $comment->setSalesOrder($this);
+        $this->comments[] = $comment;
+    }
+
+    /**
+     * @param Comment $comment
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
     }
 
     /**

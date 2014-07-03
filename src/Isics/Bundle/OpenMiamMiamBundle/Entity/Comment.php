@@ -83,6 +83,17 @@ class Comment
     private $association;
 
     /**
+     * @var SalesOrder
+     *
+     * @ORM\ManyToOne(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder", inversedBy="comments")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sales_order_id", referencedColumnName="id", nullable=true)
+     * })
+     */
+    private $salesOrder;
+
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -99,6 +110,28 @@ class Comment
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set sales order
+     *
+     * @param SalesOrder $salesOrder
+     */
+    public function setSalesOrder(SalesOrder $salesOrder = null)
+    {
+        $this->salesOrder = $salesOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get sales order
+     *
+     * @return SalesOrder
+     */
+    public function getSalesOrder()
+    {
+        return $this->salesOrder;
     }
 
     /**
