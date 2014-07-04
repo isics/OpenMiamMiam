@@ -13,6 +13,9 @@
             <img src="{{ asset(get_producer_profile_image_path(producer))|imagine_filter('s') }}" class="img-circle" alt="{{ producer.name }}" />
         {% endif %}
         {{ producer.name }}
+        <span class="badge">
+            {{ producer.specialty }}
+        </span>
     </h1>
 
     <div class="row">
