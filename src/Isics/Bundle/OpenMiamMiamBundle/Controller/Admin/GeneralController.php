@@ -45,4 +45,9 @@ class GeneralController extends Controller
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin:index.html.twig');
     }
+
+    public function goToUserSwitchAction()
+    {
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.user_switch.list'));
+    }
 }
