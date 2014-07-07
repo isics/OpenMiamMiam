@@ -12,7 +12,7 @@ open_miam_miam.admin:
     pattern:  /
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:index }
 
-open_miam_miam.admin.got_to_user_switch:
+open_miam_miam.admin.go_to_user_switch:
     pattern:  /go_to_user_switch
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:goToUserSwitch }
 
