@@ -151,6 +151,8 @@ class ConsumerController extends BaseController
         $em = $this->getDoctrine()->getManager();
 
         $consumer->setLocked(true);
+        $consumer->setIsNewsletterSubscriber(false);
+        $consumer->setIsOrdersOpenNotificationSubscriber(false);
         $em->persist($consumer);
         $em->flush();
 
