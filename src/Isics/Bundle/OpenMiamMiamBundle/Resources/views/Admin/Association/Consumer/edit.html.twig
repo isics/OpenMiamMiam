@@ -1,0 +1,51 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>
+        {{ 'admin.association.consumers.edit.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+    </h1>
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <form method="post" action="{{ path('open_miam_miam.admin.association.consumer.edit', {
+                'associationId': association.id,
+                'consumerId':    consumer.id
+            }) }}">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.firstname, {'label': 'user.edit.firstname', 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.lastname, {'label': 'user.edit.lastname', 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            {{ form_row(form.address1, {'label': 'user.edit.address1', 'attr': {'class': 'form-control'}}) }}
+            {{ form_row(form.address2, {'label': 'user.edit.address2', 'attr': {'class': 'form-control'}}) }}
+            <div class="row">
+                <div class="col-md-4">
+                    {{ form_row(form.zipcode, {'label': 'user.edit.zipcode', 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-8">
+                    {{ form_row(form.city, {'label': 'user.edit.city', 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            {{ form_row(form.phoneNumber, {'label': 'user.edit.phone_number', 'attr': {'class': 'form-control'}}) }}
+            {{ form_row(form.isNewsletterSubscriber, {'label': 'user.edit.is_newsletter_subscriber'}) }}
+            {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'user.edit.is_orders_open_notification_subscriber'}) }}
+            <div class="well">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    {{ 'user.edit.submit'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+    {{ form(form) }}
+{% endblock content %}

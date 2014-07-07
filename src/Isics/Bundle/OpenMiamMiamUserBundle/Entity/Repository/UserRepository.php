@@ -46,7 +46,10 @@ class UserRepository extends EntityRepository
      */
     public function getForAssociationQueryBuilder(Association $association, QueryBuilder $qb = null)
     {
-        $qb = null === $qb ? $this->createQueryBuilder('u') : $qb;
+        if (null === $qb) {
+            $qb = $this->createQueryBuilder('u')
+                ->where('u.locked = 0');
+        }
 
         return $qb->innerJoin('u.subscriptions', 's')
                 ->andWhere('s.association = :association')
@@ -357,7 +360,8 @@ QUERY;
      */
     public function getConsumersForBranchesQueryBuilder($branches, $lastOrderNbDaysConsideringCustomer = null)
     {
-        $qb = $this->createQueryBuilder('u');
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.locked = 0');
 
         $branchesIds = array();
         foreach ($branches as $branch) {
@@ -371,7 +375,7 @@ QUERY;
         if (null !== $lastOrderNbDaysConsideringCustomer) {
             $now = new \DateTime();
             $begin = new \DateTime("-".$lastOrderNbDaysConsideringCustomer." day");
-            $qb->where('so.date > :from')
+            $qb->andWhere('so.date > :from')
                 ->andWhere('so.date < :to')
                 ->setParameter('from', $begin)
                 ->setParameter('to', $now);
@@ -389,6 +393,7 @@ QUERY;
     {
 
         return $this->createQueryBuilder('u')
+                    ->where('u.locked = 0')
                     ->leftJoin('u.salesOrders', 'so')
                     ->andWhere('so.id IS NULL');
     }

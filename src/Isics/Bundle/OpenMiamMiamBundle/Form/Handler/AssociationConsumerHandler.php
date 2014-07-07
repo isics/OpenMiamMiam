@@ -15,6 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\AssociationConsumerFilter;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AssociationConsumerHandler
@@ -52,6 +53,21 @@ class AssociationConsumerHandler
         return $this->formFactory->create(
             'open_miam_miam_association_consumer_search',
             new AssociationConsumerFilter()
+        );
+    }
+
+    /**
+     * Returns a user profile form
+     *
+     * @param User $consumer
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createProfileForm(User $consumer)
+    {
+        return $this->formFactory->create(
+            'open_miam_miam_user_profile',
+            $consumer
         );
     }
 

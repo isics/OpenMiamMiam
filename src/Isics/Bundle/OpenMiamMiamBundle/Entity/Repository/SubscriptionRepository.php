@@ -29,6 +29,7 @@ class SubscriptionRepository extends EntityRepository
         $qb = null === $qb ? $this->createQueryBuilder('s') : $qb;
 
         return $qb->leftJoin('s.user', 'u')
+                ->andWhere('u.locked = 0')
                 ->andWhere('s.association = :association')
                 ->setParameter('association', $association)
                 ->addOrderBy('u.id');
