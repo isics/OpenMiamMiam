@@ -92,7 +92,7 @@ class Builder
         $menuName = 'admin';
 
         $menu->addChild($menuName, array(
-            'route' => 'open_miam_miam.admin.super.user_switch.list',
+            'route' => 'open_miam_miam.admin.super.show_dashboard',
             'label' => sprintf($this->translator->trans($resource->getType())),
         ));
         $menu[$menuName]->addChild('Dashboard', array(
