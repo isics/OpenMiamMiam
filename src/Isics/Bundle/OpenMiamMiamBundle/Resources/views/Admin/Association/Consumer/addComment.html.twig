@@ -1,15 +1,9 @@
-{% if salesOrder is not null %}
-    {% set salesOrderId = salesOrder.id %}
-{% else %}
-    {% set salesOrderId = null %}
-{% endif %}
-
 {% if consumer is not null %}
     {% if salesOrder is not null %}
         {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment_on_sales_order', {
             'associationId' : association.id,
             'consumerId'    : consumer.id,
-            'salesOrderId'  : salesOrderId
+            'salesOrderId'  : salesOrder.id
         }) %}
     {% else %}
         {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment', {
@@ -21,7 +15,7 @@
     {% if salesOrder is not null %}
         {% set formAction = path('open_miam_miam.admin.association.consumer.add_anonymous_comment_on_sales_order', {
             'associationId' : association.id,
-            'salesOrderId'  : salesOrderId
+            'salesOrderId'  : salesOrder.id
         }) %}
     {% else %}
         {% set formAction = path('open_miam_miam.admin.association.consumer.add_anonymous_comment', {
