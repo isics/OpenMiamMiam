@@ -90,6 +90,4 @@ class CommentManager
 
         return $queryBuilder->getQuery()->getResult();
     }
-    //$queryBuilder->andWhere('c.salesOrder = :salesOrder'),
-    //$queryBuilder->andWhere('c.salesOrder IS NULL')
 }
