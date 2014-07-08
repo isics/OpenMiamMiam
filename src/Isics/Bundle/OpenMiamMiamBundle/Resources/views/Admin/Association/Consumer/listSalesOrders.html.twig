@@ -9,6 +9,8 @@
         {%  endif %}
     </h1>
 
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': consumer } %}
+
     {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/listSalesOrdersFilter.html.twig' with {'form': form} %}
 
     {% if consumer is not null %}
@@ -21,6 +23,7 @@
             'associationId': association.id
         }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
     {% endif %}
+    <br/>
 
     {% if salesOrders|length > 0 %}
         <div class="table-responsive">

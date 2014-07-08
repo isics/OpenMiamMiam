@@ -29,7 +29,6 @@ class SubscriptionRepository extends EntityRepository
         $qb = null === $qb ? $this->createQueryBuilder('s') : $qb;
 
         return $qb->leftJoin('s.user', 'u')
-                ->andWhere('u.locked = 0')
                 ->andWhere('s.association = :association')
                 ->setParameter('association', $association)
                 ->addOrderBy('u.id');
@@ -104,6 +103,22 @@ class SubscriptionRepository extends EntityRepository
     {
         if ($creditor == true) {
             return $qb->andWhere('s.credit < 0');
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users and returns the users who are not deleted
+     *
+     * @param QueryBuilder $qb
+     * @param $deleted
+     * @return QueryBuilder
+     */
+    public function deletedFilter(QueryBuilder $qb, $deleted)
+    {
+        if ($deleted == false) {
+            $qb->andWhere('u.locked = 0');
         }
 
         return $qb;

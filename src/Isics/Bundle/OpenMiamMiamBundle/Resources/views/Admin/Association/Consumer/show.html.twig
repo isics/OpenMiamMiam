@@ -14,19 +14,25 @@
         <h1>{{ 'admin.association.consumers.show.anonymous_title'|trans }}</h1>
     {% endif %}
 
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': consumer } %}
+
     <div id="consumer-show-container">
         <div class="row">
             <div class="col-md-6">
-                <a href="{{ path('open_miam_miam.admin.association.consumer.edit', {
-                'associationId': association.id,
-                'consumerId':    consumer.id
-                }) }}" class="btn btn-warning">{{ 'admin.association.consumers.show.edit_consumer'|trans }}
-                </a>
-                <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete', {
-                'associationId': association.id,
-                'consumerId':    consumer.id
-                }) }}" data-toggle="modal" href="#delete-dialog" class="btn btn-danger">{{ 'admin.association.consumers.show.delete_consumer'|trans }}
-                </a>
+                {% if consumer is not null %}
+                    <a href="{{ path('open_miam_miam.admin.association.consumer.edit', {
+                    'associationId': association.id,
+                    'consumerId':    consumer.id
+                    }) }}" class="btn btn-warning">{{ 'admin.association.consumers.show.edit_consumer'|trans }}
+                    </a>
+                    {% if consumer.locked == false %}
+                        <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete', {
+                        'associationId': association.id,
+                        'consumerId':    consumer.id
+                        }) }}" data-toggle="modal" href="#delete-dialog" class="btn btn-danger">{{ 'admin.association.consumers.show.delete_consumer'|trans }}
+                        </a>
+                    {% endif %}
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <a href="{{ path('open_miam_miam.admin.association.consumer.list', {

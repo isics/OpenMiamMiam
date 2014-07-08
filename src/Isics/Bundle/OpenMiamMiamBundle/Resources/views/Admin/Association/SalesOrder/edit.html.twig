@@ -10,6 +10,8 @@
 {% block content %}
     <h1>{{ 'admin.association.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} <small>- {{ order.date|format_datetime }}</small></h1>
 
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': order.user } %}
+
     {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'association': association, 'order': order, 'showConsumerComment': true } %}
 
     <p class="text-right">

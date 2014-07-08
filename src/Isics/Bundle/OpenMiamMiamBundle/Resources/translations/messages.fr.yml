@@ -328,6 +328,8 @@ admin.association.producers.form.branches:          "Comptoirs"
 admin.association.producers.form.commission.helper: "Laissez ce champ vide pour garder la commission par défaut (%default_commission% %)"
 
 # Admin / Association / Consumer
+admin.association.consumer.deleted:                   "Attention, ce consommateur est supprimé."
+
 admin.association.consumers.list.title:               "{0} Aucun consommateur|{1} 1 consommateur|]1,Inf] %nb% consommateurs"
 admin.association.consumers.list.no_consumer:         "Il n'y a pas encore de consommateur."
 admin.association.consumers.list.ref:                 "Réf"
@@ -348,6 +350,7 @@ admin.association.consumers.list.filter.ref:            "Identifiant (numéro de
 admin.association.consumers.list.filter.last_name:      "Nom"
 admin.association.consumers.list.filter.first_name:     "Prénom"
 admin.association.consumers.list.filter.creditor:       "Débiteur"
+admin.association.consumers.list.filter.deleted:        "Montrer les consommateurs supprimés"
 
 admin.association.consumers.show.title:           "Consommateur «%consumer%»"
 admin.association.consumers.show.anonymous_title: "Consommateur anonyme"

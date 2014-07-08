@@ -97,7 +97,13 @@ class AssociationConsumerHandler
         $this->repository->lastNameFilter($qb, $data->getLastName());
         $this->repository->firstNameFilter($qb, $data->getFirstName());
         $this->repository->creditorFilter($qb, $data->isCreditor());
+        $this->repository->deletedFilter($qb, $data->isDeleted());
 
         return $qb;
+    }
+
+    public function applyDefaultFilters(QueryBuilder $qb)
+    {
+        $this->repository->deletedFilter($qb, false);
     }
 } 

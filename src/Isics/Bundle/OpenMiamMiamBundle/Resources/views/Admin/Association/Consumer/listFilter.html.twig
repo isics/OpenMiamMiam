@@ -3,14 +3,19 @@
 {% set currentPath = path('open_miam_miam.admin.association.consumer.list', {'id': association.id}) %}
 <form action="{{ currentPath }}" method="get" class="filter association-consumers-filter">
     <div class="row">
-        <div class="form-row form-group col-md-8">
+        <div class="form-row form-group col-md-5">
             {{ form_errors(form.ref) }}
             {{ form_widget(form.ref, {'attr': {'placeholder': 'admin.association.consumers.list.filter.ref'|trans}}) }}
         </div>
-        <div class="form-row form-group col-md-4">
+        <div class="form-row form-group col-md-2">
             {{ form_errors(form.creditor) }}
             {{ form_widget(form.creditor, {'attr': {'placeholder': 'admin.association.consumers.list.filter.creditor'|trans}}) }}
             {{ form_label(form.creditor, 'admin.association.consumers.list.filter.creditor'|trans) }}
+        </div>
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.deleted) }}
+            {{ form_widget(form.deleted) }}
+            {{ form_label(form.deleted, 'admin.association.consumers.list.filter.deleted'|trans) }}
         </div>
     </div>
     <div class="row">
