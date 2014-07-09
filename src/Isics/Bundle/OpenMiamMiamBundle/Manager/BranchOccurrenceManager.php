@@ -409,7 +409,7 @@ class BranchOccurrenceManager
             return $occurrence1->getBranch()->getName() > $occurrence2->getBranch()->getName();
         }
 
-        return $occurrence1->getBegin() > $occurrence2->getBegin();
+        return $occurrence1->getBegin() < $occurrence2->getBegin();
     }
 
     /**
