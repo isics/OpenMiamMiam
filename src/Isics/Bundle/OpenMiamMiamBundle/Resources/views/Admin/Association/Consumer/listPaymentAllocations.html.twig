@@ -20,6 +20,23 @@
         </div>
     </div>
 
+    {% if consumer is not null %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.list_payments', {
+        'id':         association.id,
+        'consumerId': consumer.id
+        }) }}"
+           class="pull-right">
+            {{ 'admin.return'|trans }}
+        </a>
+    {% else %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.list_anonymous_payments', {
+        'id': association.id
+        }) }}"
+           class="pull-right">
+            {{ 'admin.return'|trans }}
+        </a>
+    {% endif %}
+
     {# Payment #}
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-sales-orders">

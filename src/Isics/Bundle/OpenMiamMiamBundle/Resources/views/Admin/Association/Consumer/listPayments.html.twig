@@ -20,6 +20,17 @@
         </div>
     </div>
 
+    {% if consumer is defined %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
+        'associationId': association.id,
+        'consumerId': consumer.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% else %}
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show_anonymous', {
+        'associationId': association.id
+        }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    {% endif %}
+
     {% if payments|length > 0 %}
         {{ pagerfanta(payments, 'twitter_bootstrap3_translated') }}
         <div class="table-responsive">
