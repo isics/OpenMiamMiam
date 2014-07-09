@@ -15,6 +15,7 @@
     {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/listFilter.html.twig' with {'form': form} %}
 
     {% if subscriptions|length > 0 %}
+        {{ pagerfanta(subscriptions, 'twitter_bootstrap3_translated') }}
         <div class="table-responsive">
             <table class="table table-bordered table-condensed table-striped table-association-consumers">
                 <thead>

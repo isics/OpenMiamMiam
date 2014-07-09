@@ -7,6 +7,8 @@
  #}
 {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
+<a href="{{ path('open_miam_miam.admin.association.article.list', {'id': association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+
 {% set article = form.vars.data %}
 
 {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_article_form'}}) }}

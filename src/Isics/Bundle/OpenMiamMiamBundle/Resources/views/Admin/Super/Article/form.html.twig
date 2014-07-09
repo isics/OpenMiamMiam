@@ -9,6 +9,7 @@
 
 {% set article = form.vars.data %}
 
+<a href="{{ path('open_miam_miam.admin.super.article.list') }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_article_form'}}) }}
 
     {{ form_errors(form) }}

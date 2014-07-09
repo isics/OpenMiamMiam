@@ -21,6 +21,7 @@
     </div>
 
     {% if producers|length > 0 %}
+        {{ pagerfanta(producers, 'twitter_bootstrap3_translated') }}
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-super-producers">
                 <thead>

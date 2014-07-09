@@ -8,6 +8,11 @@
 {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
 {% set product = form.vars.data %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{{ path('open_miam_miam.admin.producer.product.list', {'id': producer.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+    </div>
+</div>
 
 {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_product_form', 'novalidate': ''}}) }}
 

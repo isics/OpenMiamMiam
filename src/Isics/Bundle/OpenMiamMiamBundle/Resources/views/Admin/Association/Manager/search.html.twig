@@ -12,6 +12,7 @@
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\Manager\\searchForm.html.twig' with {'form': form} %}
 
+    {{ pagerfanta(users, 'twitter_bootstrap3_translated') }}
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-association-managers">
             <thead>

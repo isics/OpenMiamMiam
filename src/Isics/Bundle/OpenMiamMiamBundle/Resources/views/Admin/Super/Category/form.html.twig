@@ -9,6 +9,7 @@
 
 {% set categoryNode = form.vars.data %}
 
+<a href="{{ path('open_miam_miam.admin.super.category.list') }}" class="pull-right">{{ 'admin.return'|trans }}</a>
 {{ form_start(form, {'attr': {'id': 'open_miam_miam_admin_category_form'}}) }}
 
     {{ form_errors(form) }}

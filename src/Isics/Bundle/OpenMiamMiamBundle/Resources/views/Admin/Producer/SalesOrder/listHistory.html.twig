@@ -8,6 +8,7 @@
     {% include '@IsicsOpenMiamMiam/Admin/Producer/SalesOrder/listHistoryFilter.html.twig' with {'form': form} %}
 
     {% if branchOccurrences|length > 0 %}
+        {{ pagerfanta(branchOccurrences, 'twitter_bootstrap3_translated') }}
         {% for branchOccurrence in branchOccurrences %}
             <h2>{{ branchOccurrence.branch.name }} - {{ branchOccurrence.begin|format_date }}</h2>
             {% set producerBranchOccurrenceSalesOrders = get_producer_sales_orders_for_branch_occurrence(producer, branchOccurrence) %}

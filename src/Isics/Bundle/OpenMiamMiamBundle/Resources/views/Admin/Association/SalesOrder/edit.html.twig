@@ -9,6 +9,11 @@
 
 {% block content %}
     <h1>{{ 'admin.association.sales_orders.form.edit_title'|trans({'%ref%': order.ref}) }} <small>- {{ order.date|format_datetime }}</small></h1>
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{ path('open_miam_miam.admin.association.sales_order.list_for_branch_occurrence', {'id': association.id, 'branchOccurrenceId': order.branchOccurrence.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+        </div>
+    </div>
 
     {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'association': association, 'order': order, 'showConsumerComment': true } %}
 
