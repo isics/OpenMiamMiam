@@ -5,6 +5,8 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
+{% import "IsicsOpenMiamMiamBundle:Macro:producer.html.twig" as producer_macro %}
+
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch, 'homepage': false} %}
     {% block content %}
         <h1>
@@ -34,7 +36,7 @@
                     <tbody>
                         {% for producer in producers %}
                             <tr>
-                                <td><a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">{{ producer.name }}</a></td>
+                                <td><a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">{{ producer.name }} {{ producer_macro.specialty(producer) }}</a></td>
                                 {% for occurrence in branchOccurrences %}
                                     <td class="text-center">
                                         {% if occurrence.isProducerAttendee(producer) %}

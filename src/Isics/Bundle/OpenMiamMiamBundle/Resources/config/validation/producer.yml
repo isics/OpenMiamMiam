@@ -47,3 +47,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Producer:
                 maxSize: 5120k
         deletePresentationImage:
             - Type: bool
+        specialty:
+            - Length:
+                max: 32

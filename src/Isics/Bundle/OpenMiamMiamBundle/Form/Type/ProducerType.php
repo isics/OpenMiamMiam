@@ -28,6 +28,7 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', 'text')
+                ->add('specialty', 'text')
                 ->add('profileImageFile', 'file', array(
                         'required' => false
                 ))
