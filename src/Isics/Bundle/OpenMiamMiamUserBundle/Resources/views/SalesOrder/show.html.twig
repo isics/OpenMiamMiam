@@ -8,11 +8,6 @@
 {% extends 'IsicsOpenMiamMiamUserBundle:Profile:base.html.twig' %}
 
 {% block content %}
-    <ul class="nav nav-tabs">
-        <li><a href="{{ path('fos_user_profile_edit') }}">{{ 'user.edit.title'|trans }}</a></li>
-        <li class="active"><a href="{{ path('fos_user_profile_orders') }}">{{ 'user.orders.title'|trans }}</a></li>
-    </ul>
-
     <h1>{{ 'user.orders.title'|trans }}</h1>
 
     {% if salesOrders|length > 0 %}
