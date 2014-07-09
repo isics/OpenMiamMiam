@@ -45,4 +45,14 @@ class GeneralController extends Controller
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin:index.html.twig');
     }
+
+    /**
+     * Proxy method to go to switch user page (avoid securityChecker order bug)
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function goToUserSwitchAction()
+    {
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.super.user_switch.list'));
+    }
 }
