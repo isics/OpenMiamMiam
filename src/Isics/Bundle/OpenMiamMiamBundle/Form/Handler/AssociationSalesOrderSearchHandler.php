@@ -60,9 +60,9 @@ class AssociationSalesOrderSearchHandler
      *
      * @return QueryBuilder
      */
-    public function generateQueryBuilder(Association $association, User $consumer = null, $limit = null)
+    public function generateQueryBuilder(Association $association, User $consumer = null, $limit = null, $orderByDesc = true)
     {
-        return $this->salesOrderRepository->getLastForAssociationAndConsumerQueryBuilder($association, $consumer, $limit);
+        return $this->salesOrderRepository->getForAssociationAndConsumerQueryBuilder($association, $consumer, $limit, $orderByDesc);
     }
 
     /**

@@ -57,7 +57,7 @@ class SalesOrderRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function getLastForAssociationAndConsumerQueryBuilder(Association $association, User $consumer = null, $limit = null)
+    public function getForAssociationAndConsumerQueryBuilder(Association $association, User $consumer = null, $limit = null, $orderByDesc = true)
     {
         $qb = $this->createQueryBuilder('so')
             ->innerJoin('so.branchOccurrence', 'bo')
@@ -65,7 +65,7 @@ class SalesOrderRepository extends EntityRepository
             ->innerJoin('b.association', 'a')
             ->where('a.id = :associationId')
             ->setParameter('associationId', $association->getId())
-            ->orderBy('so.date', 'DESC');
+            ->orderBy('so.date', ($orderByDesc ? 'DESC' : 'ASC'));
 
         if ($consumer !== null) {
             $qb

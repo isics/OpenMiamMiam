@@ -358,6 +358,7 @@ admin.association.consumer.orders.date:           "Date"
 admin.association.consumer.orders.branch:         "Comptoir"
 admin.association.consumer.orders.amount:         "Montant"
 admin.association.consumer.orders.complete_list:  "Accéder à la liste complète"
+admin.association.consumer.orders.first.date:     "Première commande le %date%"
 
 admin.association.consumer.orders.complete.title:               "Liste des commandes de «%consumer%»"
 admin.association.consumer.orders.complete.anonymous_title :    "Liste des commandes anonymes"
