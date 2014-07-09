@@ -34,33 +34,31 @@
                 <ul id="header-nav" class="nav nav-pills pull-right">
                     {% if app.user %}
                         <li>
-                            <div class="btn-group account-name">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    {{ app.user }}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                    <li>
-                                        <a href="{{ path('fos_user_profile_edit') }}">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                            {{ 'my_profile'|trans }}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('fos_user_profile_orders') }}">
-                                            <span class="glyphicon glyphicon-list"></span>
-                                            {{ 'my_sales_orders'|trans }}
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="{{ path('fos_user_security_logout') }}">
-                                            <span class="glyphicon glyphicon-off"></span>
-                                            {{ 'logout'|trans }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ app.user }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li>
+                                    <a href="{{ path('fos_user_profile_edit') }}">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        {{ 'my_profile'|trans }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('fos_user_profile_orders') }}">
+                                        <span class="glyphicon glyphicon-list"></span>
+                                        {{ 'my_sales_orders'|trans }}
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="{{ path('fos_user_security_logout') }}">
+                                        <span class="glyphicon glyphicon-off"></span>
+                                        {{ 'logout'|trans }}
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     {% else %}
                         <li>
