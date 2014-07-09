@@ -5,7 +5,7 @@
  # This source file is subject to the AGPL v3 license that is bundled
  # with this source code in the file LICENSE.
  #}
-{% import "IsicsOpenMiamMiamBundle:Macro:specialty.html.twig" as specialty_macro %}
+{% import "IsicsOpenMiamMiamBundle:Macro:producer.html.twig" as producer_macro %}
 
 <div id="producers" class="panel panel-default">
     <div class="panel-heading">
@@ -15,7 +15,7 @@
     {% for producer in producers %}
         <li class="list-group-item">
             <a href="{{ path('open_miam_miam.producer', {'producerSlug': producer.slug}) }}">
-                {{ producer }} {{ specialty_macro.badge(producer) }}
+                {{ producer }} {{ producer_macro.specialty(producer) }}
             </a>
         </li>
     {% endfor %}
