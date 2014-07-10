@@ -15,6 +15,7 @@ use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\AssociationConsumerFilter;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AssociationConsumerHandler
@@ -56,6 +57,21 @@ class AssociationConsumerHandler
     }
 
     /**
+     * Returns a user profile form
+     *
+     * @param User $consumer
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createProfileForm(User $consumer)
+    {
+        return $this->formFactory->create(
+            'open_miam_miam_user_profile',
+            $consumer
+        );
+    }
+
+    /**
      * Generate the QueryBuilder for search form
      *
      * @param Association $association
@@ -81,7 +97,13 @@ class AssociationConsumerHandler
         $this->repository->lastNameFilter($qb, $data->getLastName());
         $this->repository->firstNameFilter($qb, $data->getFirstName());
         $this->repository->creditorFilter($qb, $data->isCreditor());
+        $this->repository->deletedFilter($qb, $data->isDeleted());
 
         return $qb;
+    }
+
+    public function applyDefaultFilters(QueryBuilder $qb)
+    {
+        $this->repository->deletedFilter($qb, false);
     }
 } 

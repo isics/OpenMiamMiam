@@ -17,6 +17,8 @@
                     {{ 'admin.association.consumers.payments.list.anonymous_title'|trans }}
                 {% endif %}
             </h1>
+
+            {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': consumer } %}
         </div>
     </div>
 

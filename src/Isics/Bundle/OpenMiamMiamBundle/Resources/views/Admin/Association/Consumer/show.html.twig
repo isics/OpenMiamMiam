@@ -14,17 +14,47 @@
         <h1>{{ 'admin.association.consumers.show.anonymous_title'|trans }}</h1>
     {% endif %}
 
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': consumer } %}
+
     <div id="consumer-show-container">
         <div class="row">
             <div class="col-md-12">
                 <a href="{{ path('open_miam_miam.admin.association.consumer.list', {
                     'id': association.id,
-                }) }}" class="pull-right">{{ 'admin.return'|trans }}</a>
+                }) }}" class="pull-right">{{ 'admin.return'|trans }}
+                </a>
             </div>
         </div>
 
+        {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\Consumer\\deleteConsumerDialog.html.twig' %}
+
         <div class="row">
             <div class="col-md-6">
+                {% if consumer is not null %}
+                    <div class="row consumer-links">
+                        <div class="col-md-6">
+                            <a href="{{ path('open_miam_miam.admin.association.consumer.edit', {
+                                'associationId': association.id,
+                                'consumerId':    consumer.id
+                            }) }}" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                {{ 'admin.association.consumers.show.edit_consumer'|trans }}
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            {% if not consumer.locked %}
+                                <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete', {
+                                    'associationId': association.id,
+                                    'consumerId':    consumer.id
+                                }) }}" data-toggle="modal" href="#delete-dialog" class="btn btn-danger">
+                                    <span class="glyphicon glyphicon-ban-circle"></span>
+                                    {{ 'admin.association.consumers.show.delete_consumer'|trans }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
@@ -215,6 +245,8 @@
                     })|json_encode|raw }}
                     {% endif %}
             );
+
+            new OpenMiamMiam.DeleteDialog();
         });
     </script>
 {% endblock %}

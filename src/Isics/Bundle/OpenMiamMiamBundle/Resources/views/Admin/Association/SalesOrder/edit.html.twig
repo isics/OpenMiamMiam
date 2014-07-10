@@ -15,6 +15,8 @@
         </div>
     </div>
 
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': order.user } %}
+
     {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\SalesOrder\\salesOrderHeader.html.twig' with { 'association': association, 'order': order, 'showConsumerComment': true } %}
 
     <p class="text-right">

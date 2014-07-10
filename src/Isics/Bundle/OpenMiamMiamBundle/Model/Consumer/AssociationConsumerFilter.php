@@ -34,6 +34,11 @@ class AssociationConsumerFilter
     protected $creditor;
 
     /**
+     * @var bool $deleted
+     */
+    protected $deleted;
+
+    /**
      * @return int
      */
     public function getRef()
@@ -95,5 +100,21 @@ class AssociationConsumerFilter
     public function setCreditor($creditor)
     {
         $this->creditor = $creditor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param bool $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
     }
 }

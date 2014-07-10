@@ -76,6 +76,9 @@
                                     <span class="glyphicon glyphicon-comment pull-right"></span>
                                 {% endif %}
                                 {% if salesOrder.user %}
+                                    {% if salesOrder.user.locked %}
+                                        <div class="badge alert-danger"><span class="glyphicon glyphicon-ban-circle" title="{{ 'admin.association.consumer.deleted'|trans }}"></span></div>
+                                    {% endif %}
                                     <a href="{{ path('open_miam_miam.admin.association.consumer.show', {
                                         'associationId': association.id,
                                         'consumerId':    salesOrder.user.id

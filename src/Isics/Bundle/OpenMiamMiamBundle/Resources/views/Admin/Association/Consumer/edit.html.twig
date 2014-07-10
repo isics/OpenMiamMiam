@@ -1,0 +1,67 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% form_theme form 'IsicsOpenMiamMiamBundle::form.html.twig' %}
+
+{% block content %}
+    <h1>
+        {{ 'admin.association.consumers.edit.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+    </h1>
+
+    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': consumer } %}
+
+    <form method="post" action="{{ path('open_miam_miam.admin.association.consumer.edit', {
+        'associationId': association.id,
+        'consumerId':    consumer.id
+    }) }}">
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.firstname, {'label': 'user.edit.firstname', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.lastname, {'label': 'user.edit.lastname', 'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        {{ form_row(form.address1, {'label': 'user.edit.address1', 'attr': {'class': 'form-control'}}) }}
+        {{ form_row(form.address2, {'label': 'user.edit.address2', 'attr': {'class': 'form-control'}}) }}
+        <div class="row">
+            <div class="col-md-4">
+                {{ form_row(form.zipcode, {'label': 'user.edit.zipcode', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_row(form.city, {'label': 'user.edit.city', 'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        {{ form_row(form.phoneNumber, {'label': 'user.edit.phone_number', 'attr': {'class': 'form-control'}}) }}
+
+        {% if consumer.locked %}
+            {{ form_row(form.isNewsletterSubscriber, {'label': 'user.edit.is_newsletter_subscriber', 'attr': {
+                'disabled': true
+            }}) }}
+            {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'user.edit.is_orders_open_notification_subscriber', 'attr': {
+                'disabled': true
+            }}) }}
+        {% else %}
+            {{ form_row(form.isNewsletterSubscriber, {'label': 'admin.association.consumer.edit.is_newsletter_subscriber'}) }}
+            {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'admin.association.consumer.edit.is_orders_open_notification_subscriber'}) }}
+        {% endif %}
+
+        <a href="{{ path('open_miam_miam.admin.association.consumer.show', {'associationId': association.id, 'consumerId': consumer.id}) }}" class="pull-right">
+            {{ 'admin.return'|trans }}
+        </a>
+
+        {{ form_rest(form) }}
+
+        <button type="submit" class="btn btn-primary btn-lg" />
+            <span class="glyphicon glyphicon-floppy-save"></span>
+            {{ 'admin.save'|trans }}
+        </button>
+    </form>
+    {{ form_rest(form) }}
+{% endblock content %}

@@ -98,6 +98,76 @@ class ConsumerController extends BaseController
     }
 
     /**
+     * Edit a consumer
+     *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     *
+     * @param Request $request
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Association $association, User $consumer)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        $handler = $this->get('open_miam_miam.handler.association_consumer');
+        $form = $handler->createProfileForm($consumer);
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($consumer);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.show', array(
+                    'associationId' => $association->getId(),
+                    'consumerId'    => $consumer->getId()
+                )));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:edit.html.twig', array(
+            'association'   => $association,
+            'consumer'      => $consumer,
+            'form'          => $form->createView()
+        ));
+    }
+
+    /**
+     * Delete a consumer
+     *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
+     * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     *
+     * @param Association $association
+     * @param User $consumer
+     *
+     * @return Response
+     */
+    public function deleteAction(Association $association, User $consumer)
+    {
+        $this->secure($association);
+        $this->secureConsumer($association, $consumer);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $consumer->setLocked(true);
+        $consumer->setIsNewsletterSubscriber(false);
+        $consumer->setIsOrdersOpenNotificationSubscriber(false);
+        $em->persist($consumer);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.list', array(
+            'id' => $association->getId()
+        )));
+    }
+
+    /**
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      *
@@ -294,6 +364,8 @@ class ConsumerController extends BaseController
         if ($form->isValid()) {
             $data = $form->getData();
             $handler->applyFormFilters($qb, $data);
+        } else {
+            $handler->applyDefaultFilters($qb);
         }
 
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter($qb->getQuery()));
