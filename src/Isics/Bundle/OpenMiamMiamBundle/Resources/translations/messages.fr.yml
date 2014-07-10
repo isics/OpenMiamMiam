@@ -356,11 +356,14 @@ admin.association.consumers.show.title:           "Consommateur «%consumer%»"
 admin.association.consumers.show.anonymous_title: "Consommateur anonyme"
 admin.association.consumers.show.payments.title:  "Règlements"
 admin.association.consumers.show.orders.title:    "Commandes"
-admin.association.consumers.show.edit_consumer:   "Éditer ce consommateur"
-admin.association.consumers.show.delete_consumer: "Supprimer ce consommateur"
+admin.association.consumers.show.edit_consumer:   "Éditer"
+admin.association.consumers.show.delete_consumer: "Supprimer"
 
-admin.association.consumers.edit.title:           "Éditer «%consumer%»"
+admin.association.consumers.edit.title:           "Édition de «%consumer%»"
 admin.association.consumers.delete.content:       "Êtes-vous vraiment certain de vouloir supprimer ce consommateur ?"
+
+admin.association.consumer.edit.is_newsletter_subscriber:               "Souhaite recevoir la newsletter"
+admin.association.consumer.edit.is_orders_open_notification_subscriber: "Souhaite recevoir un e-mail à l'ouverture des commandes"
 
 admin.association.consumer.orders.date:           "Date"
 admin.association.consumer.orders.branch:         "Comptoir"
