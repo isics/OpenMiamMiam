@@ -44,6 +44,26 @@ class ConsumerController extends BaseController
     }
 
     /**
+     * Secure sales order
+     *
+     * @param Association $association
+     * @param SalesOrder  $salesOrder
+     * @param User        $consumer
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function secureSalesOrder(Association $association, SalesOrder $salesOrder, User $consumer = null)
+    {
+        if ($salesOrder->getBranchOccurrence()->getBranch()->getAssociation() != $association) {
+            throw $this->createNotFoundException('Invalid sales order for association');
+        }
+
+        if ($salesOrder->getUser() !== null && $salesOrder->getUser() != $consumer) {
+            throw $this->createNotFoundException('Invalid sales order for consumer');
+        }
+    }
+
+    /**
      * @param Association $association
      * @param Comment     $comment
      * @param User        $consumer
@@ -171,9 +191,9 @@ class ConsumerController extends BaseController
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      *
-     * @param Request $request
+     * @param Request     $request
      * @param Association $association
-     * @param User $consumer
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
@@ -187,8 +207,8 @@ class ConsumerController extends BaseController
             $this->secureConsumer($association, $consumer);
         }
 
-        $handler = $this->get('open_miam_miam.handler.association_sales_order_search');
-        $form = $handler->createSearchForm($association);
+        $handler      = $this->get('open_miam_miam.handler.association_sales_order_search');
+        $form         = $handler->createSearchForm($association);
         $queryBuilder = $handler->generateQueryBuilder($association, $consumer);
 
         $form->handleRequest($request);
@@ -220,15 +240,17 @@ class ConsumerController extends BaseController
      *
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("salesOrder", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping":{"salesOrderId": "id"}})
      *
      * @param Association $association
      * @param User        $consumer
+     * @param SalesOrder  $salesOrder
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
-    public function listCommentsAction(Request $request, Association $association, User $consumer = null)
+    public function listCommentsAction(Request $request, Association $association, User $consumer = null, SalesOrder $salesOrder = null)
     {
         $this->secure($association);
 
@@ -236,15 +258,21 @@ class ConsumerController extends BaseController
             $this->secureConsumer($association, $consumer);
         }
 
+        if (null !== $salesOrder) {
+            $this->secureSalesOrder($association, $salesOrder, $consumer);
+        }
+
         $comments = $this->get('open_miam_miam.comment_manager')->getNotProcessedCommentsForAssociationConsumer(
             $association,
-            $consumer
+            $consumer,
+            $salesOrder
         );
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments.html.twig', array(
             'association' => $association,
             'consumer'    => $consumer,
-            'comments'    => $comments
+            'comments'    => $comments,
+            'salesOrder'  => $salesOrder
         ));
     }
 
@@ -253,28 +281,34 @@ class ConsumerController extends BaseController
      *
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
+     * @ParamConverter("salesOrder", class="IsicsOpenMiamMiamBundle:SalesOrder", options={"mapping":{"salesOrderId": "id"}})
      *
      * @param Request     $request
      * @param Association $association
      * @param User        $consumer
+     * @param SalesOrder  $salesOrder
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return Response
      */
-    public function addCommentAction(Request $request, Association $association, User $consumer = null)
+    public function addCommentAction(Request $request, Association $association, User $consumer = null, SalesOrder $salesOrder = null)
     {
-
         $this->secure($association);
 
         if (null !== $consumer) {
             $this->secureConsumer($association, $consumer);
         }
 
+        if (null !== $salesOrder) {
+            $this->secureSalesOrder($association, $salesOrder, $consumer);
+        }
+
         $comment = $this->get('open_miam_miam.comment_manager')->createComment(
             $association,
             $this->get('security.context')->getToken()->getUser(),
-            $consumer
+            $consumer,
+            $salesOrder
         );
 
         $form = $this->createForm(new CommentType, $comment);
@@ -284,6 +318,7 @@ class ConsumerController extends BaseController
 
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+
                 $em->persist($comment);
                 $em->flush();
 
@@ -303,6 +338,7 @@ class ConsumerController extends BaseController
             'association' => $association,
             'consumer'    => $consumer,
             'form'        => $form->createView(),
+            'salesOrder'  => $salesOrder
         ));
     }
 
@@ -357,8 +393,8 @@ class ConsumerController extends BaseController
     {
         $this->secure($association);
         $handler = $this->get('open_miam_miam.handler.association_consumer');
-        $form = $handler->createSearchForm();
-        $qb = $handler->generateQueryBuilder($association);
+        $form    = $handler->createSearchForm();
+        $qb      = $handler->generateQueryBuilder($association);
 
         $form->handleRequest($request);
         if ($form->isValid()) {

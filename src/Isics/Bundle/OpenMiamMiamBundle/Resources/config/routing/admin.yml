@@ -247,6 +247,14 @@ open_miam_miam.admin.association.consumer.list_orders:
     pattern:  /associations/{associationId}/consumers/{consumerId}/list_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders }
 
+open_miam_miam.admin.association.consumer.add_anonymous_comment_on_sales_order:
+    pattern:  /associations/{associationId}/consumers/anonymous/sales_order/{salesOrderId}/add_comment/
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
+
+open_miam_miam.admin.association.consumer.add_comment_on_sales_order:
+    pattern:  /associations/{associationId}/consumers/{consumerId}/sales_order/{salesOrderId}/add_comment/
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
+
 open_miam_miam.admin.association.consumer.add_anonymous_comment:
     pattern:  /associations/{associationId}/consumers/anonymous/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
@@ -254,6 +262,14 @@ open_miam_miam.admin.association.consumer.add_anonymous_comment:
 open_miam_miam.admin.association.consumer.add_comment:
     pattern:  /associations/{associationId}/consumers/{consumerId}/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
+
+open_miam_miam.admin.association.consumer.list_anonymous_comments_for_sales_order:
+    pattern:  /associations/{associationId}/consumers/anonymous/sales_order/{salesOrderId}/list_comment
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
+
+open_miam_miam.admin.association.consumer.list_comments_for_sales_order:
+    pattern:  /associations/{associationId}/consumers/{consumerId}/sales_order/{salesOrderId}/list_comment
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
 
 open_miam_miam.admin.association.consumer.list_anonymous_comments:
     pattern:  /associations/{associationId}/consumers/anonymous/list_comment

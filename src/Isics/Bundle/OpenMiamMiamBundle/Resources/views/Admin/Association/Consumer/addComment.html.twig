@@ -1,12 +1,27 @@
 {% if consumer is not null %}
-    {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment', {
-        'associationId': association.id,
-        'consumerId': consumer.id
-    }) %}
+    {% if salesOrder is not null %}
+        {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment_on_sales_order', {
+            'associationId' : association.id,
+            'consumerId'    : consumer.id,
+            'salesOrderId'  : salesOrder.id
+        }) %}
+    {% else %}
+        {% set formAction = path('open_miam_miam.admin.association.consumer.add_comment', {
+            'associationId' : association.id,
+            'consumerId'    : consumer.id
+        }) %}
+    {% endif %}
 {% else %}
-    {% set formAction = path('open_miam_miam.admin.association.consumer.add_anonymous_comment', {
-        'associationId': association.id
-    }) %}
+    {% if salesOrder is not null %}
+        {% set formAction = path('open_miam_miam.admin.association.consumer.add_anonymous_comment_on_sales_order', {
+            'associationId' : association.id,
+            'salesOrderId'  : salesOrder.id
+        }) %}
+    {% else %}
+        {% set formAction = path('open_miam_miam.admin.association.consumer.add_anonymous_comment', {
+            'associationId' : association.id
+        }) %}
+    {% endif %}
 {% endif %}
 
 <form method="post" action="{{ formAction }}" {{ form_enctype(form) }} class="association-consumer-comment-add-form">

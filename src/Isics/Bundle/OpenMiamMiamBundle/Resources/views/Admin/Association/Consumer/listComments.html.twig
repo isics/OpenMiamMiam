@@ -7,15 +7,22 @@
  #}
 <div id="association-consumer-comments">
     {% if consumer is not null %}
-        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
-            'associationId': association.id,
-            'consumerId': consumer.id,
-        })) }}
+        {% set consumerId = consumer.id %}
     {% else %}
-        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
-            'associationId': association.id
-        })) }}
+        {% set consumerId = null %}
     {% endif %}
+
+    {% if salesOrder is not null %}
+        {% set salesOrderId = salesOrder.id %}
+    {% else %}
+        {% set salesOrderId = null %}
+    {% endif %}
+
+    {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/Consumer:addComment', {
+        'associationId' : association.id,
+        'consumerId'    : consumerId,
+        'salesOrderId'  : salesOrderId
+    })) }}
 
     {% if comments|length > 0 %}
         {% for comment in comments %}

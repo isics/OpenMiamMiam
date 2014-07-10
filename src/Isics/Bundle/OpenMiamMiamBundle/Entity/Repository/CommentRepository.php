@@ -12,10 +12,6 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class CommentRepository extends EntityRepository
 {

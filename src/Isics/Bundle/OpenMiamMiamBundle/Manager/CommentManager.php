@@ -5,6 +5,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\CommentRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class CommentManager
@@ -30,10 +31,11 @@ class CommentManager
      * @param Association $association
      * @param User        $writer
      * @param User        $consumer
+     * @param SalesOrder  $salesOrder
      *
      * @return Comment
      */
-    public function createComment(Association $association, User $writer, User $consumer = null)
+    public function createComment(Association $association, User $writer, User $consumer = null, SalesOrder $salesOrder = null)
     {
         $comment = new Comment();
 
@@ -43,6 +45,10 @@ class CommentManager
         // If consumer is null, comment refers to anonymous consumer of association
         if (null !== $consumer) {
             $comment->setUser($consumer);
+        }
+
+        if (null !== $salesOrder) {
+            $comment->setSalesOrder($salesOrder);
         }
 
         return $comment;
@@ -56,7 +62,7 @@ class CommentManager
      *
      * @return array
      */
-    public function getNotProcessedCommentsForAssociationConsumer(Association $association, User $consumer = null)
+    public function getNotProcessedCommentsForAssociationConsumer(Association $association, User $consumer = null, SalesOrder $salesOrder = null)
     {
         $queryBuilder = $this->commentRepository->createQueryBuilder('c')
             ->where('c.association = :association')
@@ -70,6 +76,16 @@ class CommentManager
                 ->setParameter('user', $consumer);
         } else {
             $queryBuilder->andWhere('c.user IS NULL');
+        }
+
+        if (null !== $salesOrder) {
+            $queryBuilder
+                ->leftJoin('c.salesOrder', 'so')
+                ->andWhere($queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('so.id', ':salesOrderId'),
+                    $queryBuilder->expr()->isNull('so.id')
+                ))
+                ->setParameter('salesOrderId', $salesOrder->getId());
         }
 
         return $queryBuilder->getQuery()->getResult();
