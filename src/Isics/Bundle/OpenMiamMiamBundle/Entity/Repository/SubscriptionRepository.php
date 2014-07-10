@@ -112,13 +112,17 @@ class SubscriptionRepository extends EntityRepository
      * Filters users and returns the users who are not deleted
      *
      * @param QueryBuilder $qb
-     * @param $deleted
+     * @param boolean      $showDeleted
+     *
      * @return QueryBuilder
      */
-    public function deletedFilter(QueryBuilder $qb, $deleted)
+    public function deletedFilter(QueryBuilder $qb, $showDeleted = false)
     {
-        if ($deleted == false) {
-            $qb->andWhere('u.locked = 0');
+        if (false === $showDeleted) {
+            $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->isNull('u'),
+                $qb->expr()->eq('u.locked', 0)
+            ));
         }
 
         return $qb;
