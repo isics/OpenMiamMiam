@@ -40,6 +40,7 @@ class ProductRepository extends EntityRepository
             ->where('p.availability != :availability')
             ->andWhere('b = :branch')
             ->andWhere('p.category = :category')
+            ->andWhere('pr.deletedAt is null')
             ->addOrderBy('p.name')
             ->setParameter('availability', Product::AVAILABILITY_UNAVAILABLE)
             ->setParameter('branch', $branch)

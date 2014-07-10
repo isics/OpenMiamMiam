@@ -46,6 +46,7 @@ class AssociationHasProducerManager {
             ->addSelect('p')
             ->leftJoin('p.branches', 'b')
             ->addSelect('b')
+            ->andWhere('p.deletedAt is null')
             ->addOrderBy('p.name', 'ASC')
             ->getQuery()
             ->getResult();

@@ -36,6 +36,7 @@ class ProducerController extends Controller
         $pagerfanta = new Pagerfanta(new DoctrineORMAdapter(
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')
                 ->createQueryBuilder('p')
+                ->where('p.deletedAt is null')
                 ->addOrderBy('p.name')
                 ->getQuery()
         ));

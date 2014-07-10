@@ -31,6 +31,7 @@ class BranchRepository extends EntityRepository
         return $this->filterAssociation($association)
             ->addSelect('COUNT(p.id) AS nbProducers')
             ->leftJoin('b.producers', 'p')
+            ->andWhere('p.deletedAt is null')
             ->groupBy('b.id')
             ->orderBy('b.name');
     }

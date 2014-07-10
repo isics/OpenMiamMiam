@@ -97,7 +97,8 @@ class ProducerRepository extends EntityRepository
      */
     public function findAllIds(Branch $branch = null)
     {
-        $qb = $this->createQueryBuilder('p')->select('p.id');
+        $qb = $this->createQueryBuilder('p')->select('p.id')
+            ->where('p.deletedAt is null');
         if (null !== $branch) {
             $qb->innerJoin('p.branches', 'b')
                 ->andWhere('b.id = :branchId')
@@ -223,7 +224,8 @@ class ProducerRepository extends EntityRepository
     public function getIdsForBranchQueryBuilder($branch)
     {
         return $this->filterBranch($branch)
-            ->select('DISTINCT p.id');
+            ->select('DISTINCT p.id')
+            ->andWhere('p.deletedAt is null');
     }
 
     /**

@@ -112,6 +112,13 @@ class Producer
     private $facebook;
 
     /**
+     * @var \DateTime $deletedAt
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
      * @var integer $productRefCounter
      *
      * @ORM\Column(name="product_ref_counter", type="integer", nullable=false)
@@ -468,6 +475,30 @@ class Producer
     public function getFacebook()
     {
         return $this->facebook;
+    }
+
+    /**
+     * Set deletedAt
+     *
+     * @param \DateTime $deletedAt
+     *
+     * @return Producer
+     */
+    public function setDeletedAt(\DateTime $deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get deletedAt
+     *
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
     }
 
     /**

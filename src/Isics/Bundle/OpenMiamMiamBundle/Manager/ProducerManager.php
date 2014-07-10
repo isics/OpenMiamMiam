@@ -185,17 +185,9 @@ class ProducerManager
     public function delete(Producer $producer)
     {
         // Save object
-        $this->entityManager->remove($producer);
+        $producer->setDeletedAt(new \DateTime('now'));
+        $this->entityManager->persist($producer);
         $this->entityManager->flush();
-
-        // Remove images
-        if (null !== $producer->getProfileImage()) {
-            $this->doRemoveProfileImage($producer);
-        }
-
-        if (null !== $producer->getPresentationImage()) {
-            $this->doRemovePresentationImage($producer);
-        }
     }
 
     /**
