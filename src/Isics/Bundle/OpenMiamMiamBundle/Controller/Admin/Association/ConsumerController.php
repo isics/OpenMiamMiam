@@ -47,7 +47,8 @@ class ConsumerController extends BaseController
      * Secure sales order
      *
      * @param Association $association
-     * @param SalesOrder $salesOrder
+     * @param SalesOrder  $salesOrder
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -120,9 +121,9 @@ class ConsumerController extends BaseController
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      *
-     * @param Request $request
+     * @param Request     $request
      * @param Association $association
-     * @param User $consumer
+     * @param User        $consumer
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
@@ -136,8 +137,8 @@ class ConsumerController extends BaseController
             $this->secureConsumer($association, $consumer);
         }
 
-        $handler = $this->get('open_miam_miam.handler.association_sales_order_search');
-        $form = $handler->createSearchForm($association);
+        $handler      = $this->get('open_miam_miam.handler.association_sales_order_search');
+        $form         = $handler->createSearchForm($association);
         $queryBuilder = $handler->generateQueryBuilder($association, $consumer);
 
         $form->handleRequest($request);
@@ -230,7 +231,7 @@ class ConsumerController extends BaseController
         }
 
         if (null !== $salesOrder) {
-            $this->secureSalesOrder($association,$salesOrder, $consumer);
+            $this->secureSalesOrder($association, $salesOrder, $consumer);
         }
 
         $comment = $this->get('open_miam_miam.comment_manager')->createComment(
@@ -322,8 +323,8 @@ class ConsumerController extends BaseController
     {
         $this->secure($association);
         $handler = $this->get('open_miam_miam.handler.association_consumer');
-        $form = $handler->createSearchForm();
-        $qb = $handler->generateQueryBuilder($association);
+        $form    = $handler->createSearchForm();
+        $qb      = $handler->generateQueryBuilder($association);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
