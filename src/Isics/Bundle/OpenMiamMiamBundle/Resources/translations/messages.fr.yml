@@ -364,6 +364,7 @@ admin.association.consumers.delete.content:       "Êtes-vous vraiment certain d
 
 admin.association.consumer.edit.is_newsletter_subscriber:               "Souhaite recevoir la newsletter"
 admin.association.consumer.edit.is_orders_open_notification_subscriber: "Souhaite recevoir un e-mail à l'ouverture des commandes"
+admin.association.consumer.edit.flash.success:                          "Le consommateur a été édité avec succès"
 
 admin.association.consumer.orders.date:           "Date"
 admin.association.consumer.orders.branch:         "Comptoir"

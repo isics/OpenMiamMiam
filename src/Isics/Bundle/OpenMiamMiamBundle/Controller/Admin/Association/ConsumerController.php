@@ -103,6 +103,7 @@ class ConsumerController extends BaseController
      * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("consumer", class="IsicsOpenMiamMiamUserBundle:User", options={"mapping": {"consumerId": "id"}})
      *
+     * @param Request $request
      * @param Association $association
      * @param User $consumer
      *
@@ -122,6 +123,11 @@ class ConsumerController extends BaseController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($consumer);
                 $em->flush();
+
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.consumer.show', array(
+                    'associationId' => $association->getId(),
+                    'consumerId'    => $consumer->getId()
+                )));
             }
         }
 
