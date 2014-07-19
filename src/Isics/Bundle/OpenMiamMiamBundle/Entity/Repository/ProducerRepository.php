@@ -17,6 +17,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 
 class ProducerRepository extends EntityRepository
 {
@@ -186,6 +187,28 @@ class ProducerRepository extends EntityRepository
 
         $qb->leftJoin('p.branches', 'b')
             ->andWhere('b.id IS NULL');
+
+        return $qb;
+    }
+
+    /**
+     * Return producers who are attendees or not
+     *
+     * @param QueryBuilder $qb
+     * @param null $isAttendee
+     *
+     * @return QueryBuilder
+     */
+    public function filterAttendances(BranchOccurrence $branchOccurrence, $isAttendee, QueryBuilder $qb = null)
+    {
+        $qb = ($qb === null ? $this->createQueryBuilder('p') : $qb);
+
+        $qb
+            ->leftJoin('p.producerAttendances', 'pa')
+            ->andWhere('pa.branchOccurrence = :branchOccurrence')
+            ->setParameter('branchOccurrence', $branchOccurrence)
+            ->andWhere('pa.isAttendee = :isAttendee')
+            ->setParameter('isAttendee', $isAttendee);
 
         return $qb;
     }

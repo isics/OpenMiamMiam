@@ -202,6 +202,10 @@ open_miam_miam.admin.association.branch.edit_calendar:
     pattern:  /associations/{id}/branches/{branchId}/calendar
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:editCalendar }
 
+open_miam_miam.admin.association.branch.occurrence.list_attendances:
+    pattern:  /associations/{id}/branches/occurrences/{branchOccurrenceId}/list_attendances
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:listAttendances }
+
 open_miam_miam.admin.association.branch.delete_occurrence:
     pattern:  /associations/{id}/branches/{branchId}/calendar/{branchOccurrenceId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:deleteOccurrence }

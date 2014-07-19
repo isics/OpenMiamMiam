@@ -582,10 +582,17 @@ admin.association.branch.calendar.date:                  "Le"
 admin.association.branch.calendar.from:                  "De"
 admin.association.branch.calendar.to:                    "A"
 admin.association.branch.calendar.attendees:             "Présents"
+admin.association.branch.calendar.attendees.list:        "Voir les présences des producteurs"
 admin.association.branch.calendar.delete:                "Supprimer l'occurrence"
 admin.association.branch.calendar.message.created:       "L'occurrence a bien été ajoutée."
 admin.association.branch.calendar.message.deleted:       "L'occurrence a bien été supprimée."
 admin.association.branch.calendar.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cette occurrence ?"
+
+# Admin / Association / Branch occurrences producers' attendances
+
+admin.association.branch.occurrences.attendances.not_answered_yet:  "Producteurs n'ayant pas encore confirmé leur présence ou leur abscence"
+admin.association.branch.occurrences.attendances.agree:             "Producteurs ayant confirmé leur présence"
+admin.association.branch.occurrences.attendances.disagree:          "Producteurs ayant confirmé leur absence"
 
 # Admin / Association / Article
 admin.association.articles.list.title:            "Actualité"

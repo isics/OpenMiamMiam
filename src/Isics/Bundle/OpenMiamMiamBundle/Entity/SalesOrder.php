@@ -152,7 +152,7 @@ class SalesOrder
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder", mappedBy="salesOrder")
+     * @ORM\OneToMany(targetEntity="Isics\Bundle\OpenMiamMiamBundle\Entity\Comment", mappedBy="salesOrder")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $comments;

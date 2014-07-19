@@ -1,0 +1,57 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h4>{{ 'admin.association.branch.occurrences.attendances.not_answered_yet'|trans }}</h4>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for producer in producersNotAnswered %}
+                            <li class="list-group-item">{{ producer.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5>{{ 'admin.association.branch.occurrences.attendances.agree'|trans }}</h5>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for producer in producersAgree %}
+                            <li class="list-group-item">{{ producer.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h5>{{ 'admin.association.branch.occurrences.attendances.disagree'|trans }}</h5>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for producer in producersDisagree %}
+                            <li class="list-group-item">{{ producer.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

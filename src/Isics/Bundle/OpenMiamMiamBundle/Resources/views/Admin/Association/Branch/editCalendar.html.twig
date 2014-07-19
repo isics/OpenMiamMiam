@@ -29,19 +29,29 @@
                     {% for branchOccurrence in branchOccurrences %}
                         <tr>
                             <td>
-                                {{ branchOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL'))|capitalize }}
+                                {{ branchOccurrence['branchOccurrence'].begin|format_date(null, null, null, constant('IntlDateFormatter::FULL'))|capitalize }}
                             </td>
                             <td>
-                                {{ branchOccurrence.begin|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                                {{ branchOccurrence['branchOccurrence'].begin|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
                             </td>
                             <td>
-                                {{ branchOccurrence.end|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
+                                {{ branchOccurrence['branchOccurrence'].end|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
                             </td>
                             <td>
-                                ?
+                                <a href="{{ path('open_miam_miam.admin.association.branch.occurrence.list_attendances', {
+                                        'id':                   association.id,
+                                        'branchOccurrenceId':   branchOccurrence['branchOccurrence'].id
+                                    }) }}" title="{{ 'admin.association.branch.calendar.attendees.list'|trans }}">
+                                    {{ branchOccurrence['yesCount'] }}
+                                    {% if branchOccurrence['unknownCount'] != 0 %}
+                                        <span class="text-danger">
+                                            ({{ branchOccurrence['unknownCount'] }})
+                                        </span>
+                                    {% endif %}
+                                </a>
                             </td>
                             <td>
-                                <a data-url="{{ path('open_miam_miam.admin.association.branch.delete_occurrence', {'id': branchOccurrence.branch.association.id, 'branchId': branchOccurrence.branch.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.branch.calendar.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.association.branch.delete_occurrence', {'id': branchOccurrence['branchOccurrence'].branch.association.id, 'branchId': branchOccurrence['branchOccurrence'].branch.id, 'branchOccurrenceId': branchOccurrence['branchOccurrence'].id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.branch.calendar.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
                             </td>
                         </tr>
                     {% endfor %}
