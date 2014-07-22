@@ -104,16 +104,23 @@ class ConsumerController extends BaseController
             $this->secureConsumer($association, $consumer);
         }
 
-        $historySalesOrders = $this
-            ->get('open_miam_miam.handler.association_sales_order_search')
+        $handler = $this->get('open_miam_miam.handler.association_sales_order_search');
+
+        $historySalesOrders = $handler
             ->generateQueryBuilder($association, $consumer, 3)
             ->getQuery()
             ->getResult();
 
+        $firstSalesOrder = $handler
+            ->generateQueryBuilder($association, $consumer, 1, 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult();
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show.html.twig', array(
             'association'       => $association,
             'consumer'          => $consumer,
-            'historySalesOrder' => $historySalesOrders
+            'historySalesOrder' => $historySalesOrders,
+            'firstSalesOrder'   => $firstSalesOrder
         ));
     }
 

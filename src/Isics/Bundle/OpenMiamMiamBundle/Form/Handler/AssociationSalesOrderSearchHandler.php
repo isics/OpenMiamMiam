@@ -55,14 +55,15 @@ class AssociationSalesOrderSearchHandler
      * Generate a query builder to get sales orders linked to an association and a consumer
      *
      * @param Association $association
-     * @param User $consumer
-     * @param int $limit
+     * @param User        $consumer
+     * @param int         $limit
+     * @param string      $orderBy
      *
      * @return QueryBuilder
      */
-    public function generateQueryBuilder(Association $association, User $consumer = null, $limit = null)
+    public function generateQueryBuilder(Association $association, User $consumer = null, $limit = null, $orderBy = 'desc')
     {
-        return $this->salesOrderRepository->getLastForAssociationAndConsumerQueryBuilder($association, $consumer, $limit);
+        return $this->salesOrderRepository->getForAssociationAndConsumerQueryBuilder($association, $consumer, $limit, $orderBy);
     }
 
     /**
