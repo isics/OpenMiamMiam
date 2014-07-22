@@ -92,7 +92,7 @@ class ConsumerController extends BaseController
             ->getResult();
 
         $firstSalesOrder = $handler
-            ->generateQueryBuilder($association, $consumer, 1, false)
+            ->generateQueryBuilder($association, $consumer, 1, 'ASC')
             ->getQuery()
             ->getOneOrNullResult();
 

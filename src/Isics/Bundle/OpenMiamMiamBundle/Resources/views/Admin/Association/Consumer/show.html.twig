@@ -88,7 +88,7 @@
                     </div>
                     <div class="panel-body">
                         {% if firstSalesOrder is not null %}
-                            <p>{{ 'admin.association.consumer.orders.first.date'|trans({ '%date%': firstSalesOrder.branchOccurrence.date|format_date }) }}</p>
+                            <p>{{ 'admin.association.consumer.orders.first.date'|trans({ '%date%': firstSalesOrder.date|format_date }) }}</p>
                         {% endif %}
                         <div class="table-responsive">
                             <table class="table table-bordered">
