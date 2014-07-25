@@ -15,6 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Model\BranchOccurrence\BranchOccurrenceProducersAttendances;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -156,37 +157,7 @@ class BranchController extends BaseController
             ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
             ->findAllNextForBranch($branch, false, null);
 
-        $branchOccurrencesProducersAttendances = $this->getDoctrine()
-            ->getRepository('IsicsOpenMiamMiamBundle:ProducerAttendance')
-            ->findForBranchOccurrences($branchOccurrences);
-
-        $branchOccurrencesWithCount = array();
-
-        foreach ($branchOccurrences as $branchOccurrence) {
-            $branchOccurrenceWithCount = array();
-
-            $branchOccurrenceWithCount['branchOccurrence'] = $branchOccurrence;
-            $branchOccurrenceWithCount['unknownCount'] = 0;
-            $branchOccurrenceWithCount['yesCount'] = 0;
-            $branchOccurrenceWithCount['noCount'] = 0;
-
-            foreach ($branchOccurrencesProducersAttendances as $branchOccurrencesProducersAttendance) {
-
-                if ($branchOccurrencesProducersAttendance->getBranchOccurrence() == $branchOccurrence) {
-                    if ($branchOccurrencesProducersAttendance->getIsAttendee() == true) {
-                        $branchOccurrenceWithCount['yesCount']++;
-                    } else {
-                        $branchOccurrenceWithCount['noCount']++;
-                    }
-                }
-            }
-
-
-            $branchOccurrenceWithCount['unknownCount'] = count($branchOccurrence->getBranch()->getProducers())
-                - $branchOccurrenceWithCount['yesCount'] - $branchOccurrenceWithCount['noCount'];
-
-            $branchOccurrencesWithCount[] = $branchOccurrenceWithCount;
-        }
+        $branchOccurrenceProducersAttendances = $this->get('open_miam_miam.branch_occurrence.producers_attendances');
 
         $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
 
@@ -216,10 +187,11 @@ class BranchController extends BaseController
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:editCalendar.html.twig', array(
-            'branch'            => $branch,
-            'branchOccurrences' => $branchOccurrencesWithCount,
-            'form'              => $form->createView(),
-            'association'       => $association
+            'branch'                               => $branch,
+            'branchOccurrences'                    => $branchOccurrences,
+            'branchOccurrenceProducersAttendances' => $branchOccurrenceProducersAttendances,
+            'form'                                 => $form->createView(),
+            'association'                          => $association
         ));
     }
 
@@ -238,20 +210,12 @@ class BranchController extends BaseController
         $this->secure($association);
         $this->secureBranch($association, $branchOccurrence->getBranch());
 
-        $producerRepository = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer');
-        $producersAgree = $producerRepository->filterAttendances($branchOccurrence, true)->getQuery()->getResult();
-        $producersDisagree = $producerRepository->filterAttendances($branchOccurrence, false)->getQuery()->getResult();
-
-        $producersNotAnswered = array_diff(
-            $producerRepository->filterBranch($branchOccurrence->getBranch())->getQuery()->getResult(),
-            $producersAgree,
-            $producersDisagree
-        );
+        $branchOccurrenceProducersAttendances = $this->get('open_miam_miam.branch_occurrence.producers_attendances');
+        $branchOccurrenceProducersAttendances->setBranchOccurrence($branchOccurrence);
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:listAttendances.html.twig', array(
-            'producersNotAnswered'  => $producersNotAnswered,
-            'producersAgree'        => $producersAgree,
-            'producersDisagree'     => $producersDisagree
+            'branchOccurrence'                     => $branchOccurrence,
+            'branchOccurrenceProducersAttendances' => $branchOccurrenceProducersAttendances
         ));
     }
 

@@ -77,14 +77,15 @@ parameters:
     open_miam_miam.form.type.association_sales_order_search.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSalesOrderSearchType'
     open_miam_miam.form.type.association_consumer_search.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSearchType'
 
-    open_miam_miam.sales_order_statistics.class:    'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
-    open_miam_miam.phpexcel.class:                  PHPExcel
-    open_miam_miam.tcpdf.class:                     TCPDF
-    open_miam_miam.pdf.class:                       'Isics\Bundle\OpenMiamMiamBundle\Document\OpenMiamMiamPDF'
-    open_miam_miam.sales_orders_pdf.class:          'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
-    open_miam_miam.producer_sales_orders_pdf.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersPdf'
-    open_miam_miam.products_to_prepare_pdf.class:   'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
-    open_miam_miam.mailer.class:                    'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
+    open_miam_miam.sales_order_statistics.class:                  'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
+    open_miam_miam.phpexcel.class:                                PHPExcel
+    open_miam_miam.tcpdf.class:                                   TCPDF
+    open_miam_miam.pdf.class:                                     'Isics\Bundle\OpenMiamMiamBundle\Document\OpenMiamMiamPDF'
+    open_miam_miam.sales_orders_pdf.class:                        'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrdersPdf'
+    open_miam_miam.producer_sales_orders_pdf.class:               'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersPdf'
+    open_miam_miam.products_to_prepare_pdf.class:                 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProductsToPreparePdf'
+    open_miam_miam.mailer.class:                                  'Isics\Bundle\OpenMiamMiamBundle\Model\Mailer'
+    open_miam_miam.branch_occurrence.producers_attendances.class: 'Isics\Bundle\OpenMiamMiamBundle\Model\BranchOccurrence\BranchOccurrenceProducersAttendances'
 
     open_miam_miam.association.producer.transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Producer\TransferExcel'
     open_miam_miam.association.deposit_withdrawal.class: 'Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Association\DepositWithdrawalExcel'
@@ -542,6 +543,13 @@ services:
         arguments:
             - "IsicsOpenMiamMiamBundle:Subscription"
 
+    open_miam_miam.repository.producer:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\ProducerRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Producer"
+
     # Models
     open_miam_miam.sales_order_statistics:
         class:     %open_miam_miam.sales_order_statistics.class%
@@ -596,6 +604,11 @@ services:
             - @translator
             - %open_miam_miam.currency%
         scope: prototype
+
+    open_miam_miam.branch_occurrence.producers_attendances:
+        class: %open_miam_miam.branch_occurrence.producers_attendances.class%
+        arguments:
+            - @open_miam_miam.repository.producer
 
     # Workflows
     open_miam_miam.sales_order_workflow:

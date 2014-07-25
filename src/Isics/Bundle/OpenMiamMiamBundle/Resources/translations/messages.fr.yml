@@ -589,10 +589,11 @@ admin.association.branch.calendar.message.deleted:       "L'occurrence a bien é
 admin.association.branch.calendar.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cette occurrence ?"
 
 # Admin / Association / Branch occurrences producers' attendances
-
-admin.association.branch.occurrences.attendances.not_answered_yet:  "Producteurs n'ayant pas encore confirmé leur présence ou leur abscence"
-admin.association.branch.occurrences.attendances.agree:             "Producteurs ayant confirmé leur présence"
-admin.association.branch.occurrences.attendances.disagree:          "Producteurs ayant confirmé leur absence"
+admin.association.branch.occurrences.attendances.title:                  "Présence des producteurs au comptoir"
+admin.association.branch.occurrences.attendances.alert.not_answered_yet: "Certains producteurs n'ont pas encore donné leur décision concernant leur présence au comptoir"
+admin.association.branch.occurrences.attendances.not_answered_yet:       "Indécis"
+admin.association.branch.occurrences.attendances.agree:                  "Présents"
+admin.association.branch.occurrences.attendances.disagree:               "Absents"
 
 # Admin / Association / Article
 admin.association.articles.list.title:            "Actualité"
