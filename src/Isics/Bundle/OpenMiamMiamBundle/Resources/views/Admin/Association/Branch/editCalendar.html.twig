@@ -27,6 +27,7 @@
                 </thead>
                 <tbody>
                     {% for branchOccurrence in branchOccurrences %}
+                        {{ branchOccurrenceProducersAttendances.setBranchOccurrence(branchOccurrence) }}
                         <tr>
                             <td>
                                 {{ branchOccurrence.begin|format_date(null, null, null, constant('IntlDateFormatter::FULL'))|capitalize }}
@@ -38,10 +39,39 @@
                                 {{ branchOccurrence.end|format_time(null, null, null, constant('IntlDateFormatter::SHORT')) }}
                             </td>
                             <td>
-                                ?
+                                <a href="{{ path('open_miam_miam.admin.association.branch.occurrence.list_attendances', {
+                                    'id':                   association.id,
+                                    'branchOccurrenceId':   branchOccurrence.id
+                                }) }}" title="{{ 'admin.association.branch.calendar.attendees.list'|trans }}">
+                                    {% if branchOccurrenceProducersAttendances.producersAttendanceUnknown|length > 0 %}
+                                        <span class="text-danger" title="{{ 'admin.association.branch.occurrences.attendances.not_answered_yet'|trans }}">
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            {{ branchOccurrenceProducersAttendances.producersAttendanceUnknown|length }}
+                                        </span>
+                                    {% endif %}
+
+                                    <span class="text-success" title="{{ 'admin.association.branch.occurrences.attendances.agree'|trans }}">
+                                        <span class="glyphicon glyphicon-ok-sign"></span>
+                                        {{ branchOccurrenceProducersAttendances.producersAttendanceYes|length }}
+                                    </span>
+
+                                    <span class="text-default" title="{{ 'admin.association.branch.occurrences.attendances.disagree'|trans }}">
+                                        <span class="glyphicon glyphicon-remove-sign"></span>
+                                        {{ branchOccurrenceProducersAttendances.producersAttendanceNo|length }}
+                                    </span>
+                                </a>
                             </td>
                             <td>
-                                <a data-url="{{ path('open_miam_miam.admin.association.branch.delete_occurrence', {'id': branchOccurrence.branch.association.id, 'branchId': branchOccurrence.branch.id, 'branchOccurrenceId': branchOccurrence.id}) }}" class="btn btn-danger btn-xs" title="{{ 'admin.association.branch.calendar.delete'|trans }}" data-toggle="modal" href="#delete-dialog"><span class="glyphicon glyphicon-trash"></span></a>
+                                <a data-url="{{ path('open_miam_miam.admin.association.branch.delete_occurrence', {
+                                    'id': branchOccurrence.branch.association.id,
+                                    'branchId': branchOccurrence.branch.id,
+                                    'branchOccurrenceId': branchOccurrence.id
+                                }) }}" class="btn btn-danger btn-xs"
+                                   title="{{ 'admin.association.branch.calendar.delete'|trans }}"
+                                   data-toggle="modal"
+                                   href="#delete-dialog">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}

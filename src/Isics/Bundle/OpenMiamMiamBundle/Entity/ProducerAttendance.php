@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Isics\OpenMiamMiamBundle\Entity\ProducerAttendance
  *
  * @ORM\Table(name="producer_attendance")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\ProducerAttendanceRepository")
  */
 class ProducerAttendance
 {

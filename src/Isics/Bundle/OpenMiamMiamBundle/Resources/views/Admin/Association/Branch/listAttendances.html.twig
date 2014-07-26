@@ -1,0 +1,78 @@
+{#
+ # This file is part of the OpenMiamMiam project.
+ # (c) Isics <contact@isics.fr>
+ #
+ # This source file is subject to the AGPL v3 license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+{% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
+
+{% block content %}
+    <h1>
+        {{ 'admin.association.branch.occurrences.attendances.title'|trans }}
+        <br />
+        {{ branchOccurrence.branch.name }}
+        -
+        {{ branchOccurrence.date|format_date }}
+    </h1>
+
+    {% if branchOccurrenceProducersAttendances.producersAttendanceUnknown|length > 0 %}
+        {% set colWidth = 4 %}
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            {{ 'admin.association.branch.occurrences.attendances.alert.not_answered_yet'|trans }}
+        </div>
+    {% else %}
+        {% set colWidth = 6 %}
+    {% endif %}
+
+    <div class="row producers-attendances">
+        {% if branchOccurrenceProducersAttendances.producersAttendanceUnknown|length > 0 %}
+            <div class="col-md-{{ colWidth }}">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        {{ 'admin.association.branch.occurrences.attendances.not_answered_yet'|trans }}
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            {% for producer in branchOccurrenceProducersAttendances.producersAttendanceUnknown %}
+                                <li class="list-group-item">{{ producer.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-md-{{ colWidth }}">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    {{ 'admin.association.branch.occurrences.attendances.agree'|trans }}
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for producer in branchOccurrenceProducersAttendances.producersAttendanceYes %}
+                            <li class="list-group-item">{{ producer.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-{{ colWidth }}">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    {{ 'admin.association.branch.occurrences.attendances.disagree'|trans }}
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for producer in branchOccurrenceProducersAttendances.producersAttendanceNo %}
+                            <li class="list-group-item">{{ producer.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -15,6 +15,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Model\BranchOccurrence\BranchOccurrenceProducersAttendances;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -150,10 +151,13 @@ class BranchController extends BaseController
     public function editCalendarAction(Request $request, Association $association, Branch $branch)
     {
         $this->secure($association);
+        $this->secureBranch($association, $branch);
 
         $branchOccurrences = $this->getDoctrine()
             ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
             ->findAllNextForBranch($branch, false, null);
+
+        $branchOccurrenceProducersAttendances = $this->get('open_miam_miam.branch_occurrence.producers_attendances');
 
         $branchOccurrenceManager = $this->get('open_miam_miam.branch_occurrence_manager');
 
@@ -183,9 +187,35 @@ class BranchController extends BaseController
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:editCalendar.html.twig', array(
-            'branch'            => $branch,
-            'branchOccurrences' => $branchOccurrences,
-            'form'              => $form->createView(),
+            'branch'                               => $branch,
+            'branchOccurrences'                    => $branchOccurrences,
+            'branchOccurrenceProducersAttendances' => $branchOccurrenceProducersAttendances,
+            'form'                                 => $form->createView(),
+            'association'                          => $association
+        ));
+    }
+
+    /**
+     * List producers attendances for a branch occurrence
+     *
+     * @ParamConverter("branchOccurrence", class="IsicsOpenMiamMiamBundle:BranchOccurrence", options={"mapping": {"branchOccurrenceId": "id"}})
+     *
+     * @param Association $association
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return Response
+     */
+    public function listAttendancesAction(Association $association, BranchOccurrence $branchOccurrence)
+    {
+        $this->secure($association);
+        $this->secureBranch($association, $branchOccurrence->getBranch());
+
+        $branchOccurrenceProducersAttendances = $this->get('open_miam_miam.branch_occurrence.producers_attendances');
+        $branchOccurrenceProducersAttendances->setBranchOccurrence($branchOccurrence);
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Branch:listAttendances.html.twig', array(
+            'branchOccurrence'                     => $branchOccurrence,
+            'branchOccurrenceProducersAttendances' => $branchOccurrenceProducersAttendances
         ));
     }
 
