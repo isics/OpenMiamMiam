@@ -1,0 +1,25 @@
+{% macro tile (tile) %}
+    <div class="panel panel-{{ tile.tileClass }} text-{{ tile.tileClass }}">
+        <div class="panel-body">
+            {% if tile.link is defined and tile.link is not null %}
+                <a href="{{ tile.link }}">
+            {% endif %}
+
+            {% if tile.header is not null %}
+                <span class="tile-header">
+                    {{ tile.header }}
+                </span>
+            {% endif %}
+
+            <span class="glyphicon glyphicon-{{ tile.iconClass }}"></span>
+            <strong>
+                {{ tile.value }}
+            </strong>
+            {{ tile.description|transchoice(tile.value) }}
+
+            {% if tile.link is defined and tile.link is not null %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

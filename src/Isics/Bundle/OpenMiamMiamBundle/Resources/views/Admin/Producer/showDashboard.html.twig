@@ -7,48 +7,20 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
+{% import '@IsicsOpenMiamMiam/Admin/dashboardMacro.html.twig' as dashboardMacro %}
+
 {% block content %}
     <h1>{{ 'admin.producer.dashboard.title'|trans }}</h1>
 
-    <div id="producer-dashboard" class="row">
-        <div class="col-md-4">
-            <div class="panel panel-success">
-                <div class="panel-body">
-                    <a href="{{ path('open_miam_miam.admin.producer.sales_order.list', {'id': producer.id}) }}">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>
-                        <strong>
-                            {{ nbSalesOrderToPrepare }}
-                        </strong>
-                        {{ 'admin.producer.dashboard.orders_to_prepare'|transchoice(nbSalesOrderToPrepare) }}
-                    </a>
+    {% for row in tiles|batch(3) %}
+        <div id="producer-dashboard" class="row">
+            {% for tile in row %}
+                <div class="col-md-4">
+                    {% if tile is not null %}
+                        {{ dashboardMacro.tile(tile) }}
+                    {% endif %}
                 </div>
-            </div>
+            {% endfor %}
         </div>
-        <div class="col-md-4">
-            <div class="panel panel-{% if nbOutOfStockProducts > 0 %}danger{% else %}success{% endif %}">
-                <div class="panel-body">
-                    <a href="{{ path('open_miam_miam.admin.producer.product.list', {'id': producer.id}) }}">
-                        <span class="glyphicon glyphicon-list"></span>
-                        <strong>
-                            {{ nbOutOfStockProducts }}
-                        </strong>
-                        {{ 'admin.producer.dashboard.products_out_of_stock'|transchoice(nbOutOfStockProducts) }}
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-{% if nbUnknownAttendances > 0 %}danger{% else %}success{% endif %}">
-                <div class="panel-body">
-                    <a href="{{ path('open_miam_miam.admin.producer.calendar.edit', {'id': producer.id}) }}">
-                        <span class="glyphicon glyphicon-time"></span>
-                        <strong>
-                            {{ nbUnknownAttendances }}
-                        </strong>
-                        {{ 'admin.producer.dashboard.attendances_to_confirm'|transchoice(nbUnknownAttendances) }}
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 {% endblock %}

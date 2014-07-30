@@ -194,7 +194,10 @@ admin.super.menu.manager:       "Gestionnaires"
 
 
 # Admin / Super / Dashboard
-admin.super.dashboard.title: "Tableau de bord"
+admin.super.dashboard.title:                    "Tableau de bord"
+admin.super.dashboard.button.switch_user:       "Usurpation d'identité"
+admin.super.dashboard.button.create_article:    "Créer un article"
+admin.super.dashboard.button.create_newsletter: "Créer une lettre d'info."
 
 # Admin / Super / User switch
 admin.super.user_switch.title:          "Usurpateur d'identité"
@@ -314,7 +317,13 @@ admin.association.menu.newsletter: "Lettre d'information"
 admin.association.menu.managers:   "Gestionnaires"
 
 # Admin / Association / Dashboard
-admin.association.dashboard.title: "Tableau de bord"
+admin.association.dashboard.title:                    "Tableau de bord"
+admin.association.dashboard.no_occurrence:            "Aucun comptoir planifié"
+admin.association.dashboard.branch_planned_dates:     "[0,1] date à venir planifiée|]1,Inf] dates à venir planifiées"
+admin.association.dashboard.producer_to_call:         "[0,1] producteur à relancer|]1,Inf] producteurs à relancer"
+admin.association.dashboard.sales_orders:             "[0,1] commande|]1,Inf] commandes"
+admin.association.dashboard.button.create_article:    "Créer un article"
+admin.association.dashboard.button.create_newsletter: "Créer une lettre d'information"
 
 # Admin / Association / Producer
 admin.association.producers.list.title:             "{0} Aucun producteur|{1} 1 producteur|]1,Inf] %nb% producteurs"

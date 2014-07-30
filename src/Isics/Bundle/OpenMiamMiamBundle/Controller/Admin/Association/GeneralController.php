@@ -28,8 +28,12 @@ class GeneralController extends BaseController
     {
         $this->secure($association);
 
+        $branches = $this->get('open_miam_miam.dashboard.association.tiles_builder')
+            ->buildForAssociation($association);
+
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association:showDashboard.html.twig', array(
-            'association'=> $association,
+            'association'             => $association,
+            'branches'                => $branches
         ));
     }
 }

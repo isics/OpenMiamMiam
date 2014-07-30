@@ -451,7 +451,11 @@ services:
 
     open_miam_miam.association_manager:
         class: %open_miam_miam.association_manager.class%
-        arguments: [@doctrine.orm.entity_manager, %open_miam_miam.artificial_product_ref%]
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %open_miam_miam.artificial_product_ref%]
+            - @open_miam_miam.branch_occurrence_manager
+            - @open_miam_miam.repository.branch
 
     open_miam_miam.association_has_producer_manager:
         class: %open_miam_miam.association_has_producer_manager.class%
@@ -529,6 +533,13 @@ services:
         arguments:
             - "IsicsOpenMiamMiamBundle:Comment"
 
+    open_miam_miam.repository.branch:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Branch"
+
     open_miam_miam.repository.branch_occurrence:
         class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchOccurrenceRepository
         factory_service: doctrine.orm.entity_manager
@@ -549,6 +560,13 @@ services:
         factory_method:  "getRepository"
         arguments:
             - "IsicsOpenMiamMiamBundle:Producer"
+
+    open_miam_miam.repository.product:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\ProductRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Product"
 
     # Models
     open_miam_miam.sales_order_statistics:
@@ -633,6 +651,62 @@ services:
             - @open_miam_miam.twig.user_formatter
         tags:
             - { name: jms_serializer.event_listener, event: serializer.post_serialize, class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\User, format: json, method: onPostSerialize }
+
+    # Dashboard
+    open_miam_miam.dashboard.association.tiles_builder:
+        class: Isics\Bundle\OpenMiamMiamBundle\Dashboard\AssociationDashboardTilesBuilder
+        arguments:
+            - @open_miam_miam.branch_occurrence_manager
+            - @open_miam_miam.repository.branch
+            - @event_dispatcher
+
+    open_miam_miam.dashboard.producer.tiles_builder:
+        class: Isics\Bundle\OpenMiamMiamBundle\Dashboard\ProducerDashboardTilesBuilder
+        arguments:
+            - @event_dispatcher
+
+    open_miam_miam.listener.association.dashboard.tiles:
+        class: Isics\Bundle\OpenMiamMiamBundle\Dashboard\Tile\Association\Tiles
+        arguments:
+            - @open_miam_miam.repository.branch_occurrence
+            - @open_miam_miam.branch_occurrence.producers_attendances
+            - @sonata.intl.templating.helper.number
+            - %open_miam_miam.currency%
+            - @router
+        tags:
+            -
+                name: kernel.event_listener
+                event: open_miam_miam.admin.association.dashboard.collect_tiles
+                method: addBranchPlannedDatesTile
+            -
+                name: kernel.event_listener
+                event: open_miam_miam.admin.association.dashboard.collect_tiles
+                method: addProducersToCallTile
+            -
+                name: kernel.event_listener
+                event: open_miam_miam.admin.association.dashboard.collect_tiles
+                method: addSalesOrdersTile
+
+    open_miam_miam.listener.producer.dashboard.tiles:
+        class: Isics\Bundle\OpenMiamMiamBundle\Dashboard\Tile\Producer\Tiles
+        arguments:
+            - @open_miam_miam.producer_sales_order_manager
+            - @open_miam_miam.repository.product
+            - @open_miam_miam.producer_attendances_manager
+            - @router
+        tags:
+            -
+                name: kernel.event_listener
+                event: open_miam_miam.admin.producer.dashboard.collect_tiles
+                method: addOrdersToPrepare
+            -
+                name: kernel.event_listener
+                event: open_miam_miam.admin.producer.dashboard.collect_tiles
+                method: addProductsOutOfStock
+            -
+                name: kernel.event_listener
+                event: open_miam_miam.admin.producer.dashboard.collect_tiles
+                method: addAttendancesToConfirm
 
     # Handlers
     open_miam_miam.handler.producer_sales_order_history:

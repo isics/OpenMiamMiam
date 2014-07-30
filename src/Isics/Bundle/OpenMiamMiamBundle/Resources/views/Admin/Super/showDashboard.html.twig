@@ -10,5 +10,26 @@
 {% block content %}
     <h1>{{ 'admin.super.dashboard.title'|trans }}</h1>
 
+    <div class="row dashboard-buttons">
+        <div class="col-md-4">
+            <a class="btn btn-danger btn-lg" href="{{ path('open_miam_miam.admin.super.user_switch.list') }}">
+                <span class="glyphicon glyphicon-transfer"></span>
+                {{ 'admin.super.dashboard.button.switch_user'|trans }}
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-primary btn-lg" href="{{ path('open_miam_miam.admin.super.article.create') }}">
+                <span class="glyphicon glyphicon-bullhorn"></span>
+                {{ 'admin.super.dashboard.button.create_article'|trans }}
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-primary btn-lg" href="{{ path('open_miam_miam.admin.super.newsletter.create') }}">
+                <span class="glyphicon glyphicon-envelope"></span>
+                {{ 'admin.super.dashboard.button.create_newsletter'|trans }}
+            </a>
+        </div>
+    </div>
+
     {#% include 'IsicsOpenMiamMiamBundle:Admin:activityStream.html.twig' %#}
 {% endblock %}

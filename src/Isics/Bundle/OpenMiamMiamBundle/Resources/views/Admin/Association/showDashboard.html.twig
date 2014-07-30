@@ -7,6 +7,53 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle:Admin:admin.html.twig' %}
 
+{% import '@IsicsOpenMiamMiam/Admin/dashboardMacro.html.twig' as dashboardMacro %}
+
 {% block content %}
     <h1>{{ 'admin.association.dashboard.title'|trans }}</h1>
+
+    <div class="row dashboard-buttons">
+        <div class="col-md-6">
+            <a class="btn btn-primary btn-lg" href="{{ path('open_miam_miam.admin.association.article.create', {
+                'id': association.id
+            }) }}">
+                <span class="glyphicon glyphicon-bullhorn"></span>
+                {{ 'admin.association.dashboard.button.create_article'|trans }}
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-primary btn-lg" href="{{ path('open_miam_miam.admin.association.newsletter.create', {
+                'id': association.id
+            }) }}">
+                <span class="glyphicon glyphicon-envelope"></span>
+                {{ 'admin.association.dashboard.button.create_newsletter'|trans }}
+            </a>
+        </div>
+    </div>
+
+    <div id="association-dashboard">
+
+        {% for branchData in branches %}
+
+            {% if branchData['branch_occurrence'] is null %}
+                <h2>{{ branchData['branch'].name }}</h2>
+
+                {% include '@IsicsOpenMiamMiam/Admin/empty.html.twig' with {'message': 'admin.association.dashboard.no_occurrence'|trans} %}
+            {% else %}
+                <h2>{{ branchData['branch'].name }} - {{ branchData['branch_occurrence'].date|format_date }}</h2>
+
+                {% for row in branchData['tiles']|batch(3) %}
+                    <div class="row">
+                        {% for tile in row %}
+                            <div class="col-md-4">
+                                {% if tile is not null %}
+                                    {{ dashboardMacro.tile(tile) }}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}

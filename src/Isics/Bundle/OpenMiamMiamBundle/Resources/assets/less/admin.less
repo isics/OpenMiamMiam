@@ -543,8 +543,9 @@ form.filter {
 }
 
 //
-// Producer dashboard
+// Dashboard
 //
+#association-dashboard,
 #producer-dashboard {
     .panel {
         border-width: 5px;
@@ -555,6 +556,12 @@ form.filter {
         span {
             font-size: 50px;
             text-align: right;
+
+            &.tile-header {
+                font-size: 16px;
+                float: right;
+                line-height: 22px;
+            }
         }
 
         strong {
@@ -581,12 +588,26 @@ form.filter {
         }
     }
 
+    .panel-warning a {
+        color: @alert-warning-text;
+
+        &:hover {
+            color: darken(@alert-warning-text, 15%);
+        }
+    }
+
     .panel-danger a {
         color: @alert-danger-text;
 
         &:hover {
             color: darken(@alert-danger-text, 15%);
         }
+    }
+}
+
+.dashboard-buttons {
+    .btn {
+        width: 100%;
     }
 }
 

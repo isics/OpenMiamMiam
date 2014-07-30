@@ -28,23 +28,19 @@ class GeneralController extends BaseController
     {
         $this->secure($producer);
 
-        $attendancesManager = $this->get('open_miam_miam.producer_attendances_manager');
-        $producerSalesOrderManager = $this->get('open_miam_miam.producer_sales_order_manager');
-
-        $salesOrders = $producerSalesOrderManager->getForNextBranchOccurrences($producer);
+        $tiles = $this->get('open_miam_miam.dashboard.producer.tiles_builder')
+            ->buildForProducer($producer);
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:showDashboard.html.twig', array(
-            'producer'              => $producer,
-            'nbUnknownAttendances'  => $attendancesManager->getNbUnknownAttendances($attendancesManager->getNextAttendancesOf($producer)),
-            'nbOutOfStockProducts'  => $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Product')->countOutOfStockProductsForProducer($producer),
-            'nbSalesOrderToPrepare' => $salesOrders->countSalesOrders()
+            'producer' => $producer,
+            'tiles'    => $tiles
         ));
     }
 
     /**
      * Edits producer informations
      *
-     * @param Request $request
+     * @param Request  $request
      * @param Producer $producer
      *
      * @return Response
@@ -55,7 +51,7 @@ class GeneralController extends BaseController
 
         // @todo Replace all new types by a call to service
         $producerManager = $this->get('open_miam_miam.producer_manager');
-        $form = $this->createForm(
+        $form            = $this->createForm(
             $this->get('open_miam_miam.form.type.producer'),
             $producer,
             array(
@@ -76,7 +72,7 @@ class GeneralController extends BaseController
         }
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:edit.html.twig', array(
-            'form' => $form->createView(),
+            'form'     => $form->createView(),
             'producer' => $producer
         ));
     }

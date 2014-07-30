@@ -44,7 +44,7 @@ class ProducerSalesOrderManager
      *
      * @param Producer $producer
      *
-     * @return array
+     * @return ProducerSalesOrders
      */
     public function getForNextBranchOccurrences(Producer $producer)
     {

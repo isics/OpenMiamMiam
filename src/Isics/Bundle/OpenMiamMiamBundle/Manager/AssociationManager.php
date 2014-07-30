@@ -11,10 +11,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersTransfer;
 
@@ -34,12 +34,12 @@ class AssociationManager
      * Constructs object
      *
      * @param EntityManager $entityManager
-     * @param String $artificial_product_ref
+     * @param String        $artificial_product_ref
      */
     public function __construct(EntityManager $entityManager, $artificial_product_ref)
     {
-        $this->entityManager   = $entityManager;
-        $this->artificial_product_ref   = $artificial_product_ref;
+        $this->entityManager           = $entityManager;
+        $this->artificial_product_ref  = $artificial_product_ref;
     }
 
     /**
@@ -69,9 +69,9 @@ class AssociationManager
 
         if (count($branchOccurrenceIds) == 0) {
             $producersData = array();
-            $producers = array();
+            $producers     = array();
         } else {
-            $producersDataQueryBuilder = $this->entityManager->createQueryBuilder();
+            $producersDataQueryBuilder       = $this->entityManager->createQueryBuilder();
             $producersWithSalesOrderRowsData = $producersDataQueryBuilder
                 ->select('p.id AS producer_id')
                 ->addSelect('p.name AS producer_name')
@@ -98,7 +98,7 @@ class AssociationManager
             $producersIdsWithSalesOrderRows = array_unique($producersIdsWithSalesOrderRows);
 
             $producersDataQueryBuilder = $this->entityManager->createQueryBuilder();
-            $producersAttendeesData = $producersDataQueryBuilder
+            $producersAttendeesData    = $producersDataQueryBuilder
                 ->select('p.id AS producer_id')
                 ->addSelect('p.name AS producer_name')
                 ->addSelect('bo.id AS branch_occurrence_id')
@@ -120,7 +120,7 @@ class AssociationManager
 
             $producersData = array_merge($producersWithSalesOrderRowsData, $producersAttendeesData);
 
-            usort($producersData, function($producerData1, $producerData2){
+            usort($producersData, function ($producerData1, $producerData2) {
                 if ($producerData1['producer_name'] < $producerData2['producer_name']) {
                     return -1;
                 } elseif ($producerData1['producer_name'] > $producerData2['producer_name']) {
@@ -143,7 +143,7 @@ class AssociationManager
             } else {
                 $producersQueryBuilder = $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Producer')
                     ->createQueryBuilder('p');
-                $producers = $producersQueryBuilder
+                $producers             = $producersQueryBuilder
                     ->where($producersQueryBuilder->expr()->in('p.id', $producerIds))
                     ->orderBy('p.name')
                     ->getQuery()
@@ -157,7 +157,7 @@ class AssociationManager
     /**
      * Get producers transfer object for branch occurence
      *
-     * @param BranchOccurrence  $branchOccurrence
+     * @param BranchOccurrence $branchOccurrence
      *
      * @return ProducersDepositWithdrawal
      */
@@ -165,7 +165,7 @@ class AssociationManager
     {
 
         $producersDataQueryBuilder = $this->entityManager->createQueryBuilder();
-        $producersData = $producersDataQueryBuilder
+        $producersData             = $producersDataQueryBuilder
             ->select('p.id AS producer_id')
             ->addSelect('p.name AS producer_name')
             ->addSelect('pr.name AS product_name')

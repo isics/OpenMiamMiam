@@ -191,6 +191,26 @@ class BranchOccurrenceRepository extends EntityRepository
     }
 
     /**
+     * Find next occurrence of branch occurrence
+     *
+     * @param BranchOccurrence $branchOccurrence
+     *
+     * @return BranchOccurrence
+     */
+    public function findOneNextForBranchOccurrence(BranchOccurrence $branchOccurrence)
+    {
+        return $this->createQueryBuilder('bo')
+            ->where('bo.branch = :branch')
+            ->andWhere('bo.begin > :date')
+            ->orderBy('bo.begin', 'ASC')
+            ->setParameter('branch', $branchOccurrence->getBranch())
+            ->setParameter('date', $branchOccurrence->getBegin())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * Finds next occurrence for a branch
      *
      * @param Branch  $branch Branch
