@@ -55,5 +55,19 @@
                 {% endfor %}
             {% endif %}
         {% endfor %}
+
+        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Association/General:statistics', {'association': association})) }}
     </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $(function(){
+            new OpenMiamMiam.DashboardStatistics(
+                    $('#association-statistics-form'),
+                    $('#association-statistics-graph-container')
+            );
+        });
+    </script>
 {% endblock %}

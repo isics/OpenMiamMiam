@@ -764,3 +764,172 @@ OpenMiamMiam.ConsumerComment = function() {
 
     return object;
 }();
+
+OpenMiamMiam.DashboardStatistics = function(){
+
+    var object = function($form, $graphContainer) {
+        this.$form = $form;
+        this.$graphContainer = $graphContainer;
+        this.$graphLegend = this.buildGraphLegend();
+        this.$loader = $('<img src="/bundles/isicsopenmiammiam/img/loader.gif" class="loader" alt="loading"/>');
+
+        var that = this;
+
+        $form.find(':submit').hide();
+
+        var onRadioClick = function($radio) {
+            $radio.parent().addClass('active').siblings().removeClass('active');
+        };
+
+        this.$form.find('.statistics-mode :radio').hide();
+
+        var selectedRadio = this.$form.find('.statistics-mode :radio:checked');
+
+        if (selectedRadio.size()) {
+            onRadioClick(selectedRadio);
+        }
+
+        this.$form.find(':radio, :checkbox').click(function(event){
+            onRadioClick($(this));
+
+            that.$form.submit();
+        });
+
+        this.$form.find('select').change(function(event){
+            that.$form.submit();
+        });
+
+        this.$form.submit(function(event){
+            event.preventDefault();
+
+            that.submitForm.apply(that, [event]);
+        });
+    };
+
+    object.prototype = {
+        submitForm: function() {
+            var that = this;
+
+            $.ajax({
+                'url': this.$form.attr('data-submit'),
+                'type': 'post',
+                'data': this.$form.serialize(),
+                'dataType': 'json',
+                'beforeSend': function() {
+                    that.loadGraph();
+                },
+                'success': function(data) {
+                    that.drawGraph(data);
+                },
+                'error': function(xhr) {
+                    that.onError(xhr.responseText);
+                }
+            });
+        },
+
+        buildGraphLegend: function() {
+            var $graphLegend = $('<div class="graph-legend row"></div>');
+
+            var $container = $('<div class="col-md-3"></div>');
+
+            var $container1 = $container.clone();
+            $container1.append($('<div class="current-year-container"></div>'));
+            var $container2 = $container.clone();
+            $container2.append($('<div class="current-year-value-container"></div>'));
+            var $container3 = $container.clone();
+            $container3.append($('<div class="last-year-container"></div>'));
+            var $container4 = $container.clone();
+            $container4.append($('<div class="last-year-value-container"></div>'));
+
+            $graphLegend.append($container1);
+            $graphLegend.append($container2);
+            $graphLegend.append($container3);
+            $graphLegend.append($container4);
+
+            return $graphLegend;
+        },
+
+        drawGraphLegend: function(data) {
+            this.$graphContainer.after(this.$graphLegend);
+
+            this.$graphLegend.find('.current-year-container').text(data.currentYear);
+            this.$graphLegend.find('.current-year-value-container').text(data.currentYearValue);
+            this.$graphLegend.find('.last-year-container').text(data.lastYear);
+            this.$graphLegend.find('.last-year-value-container').text(data.lastYearValue);
+        },
+
+        loadGraph: function() {
+            this.$graphContainer.empty();
+            this.$graphLegend.remove();
+
+            this.$graphContainer.append(this.$loader.clone());
+
+            this.$graphLegend = this.buildGraphLegend();
+        },
+
+        drawGraph: function(data) {
+            var chartData = new google.visualization.DataTable();
+            chartData.addColumn('date', 'Date');
+            chartData.addColumn('number', data.lastYear);
+            chartData.addColumn('number', data.currentYear);
+
+            $.each(data.lastYearData, function(index, lastYearDatum) {
+                chartData.addRow([
+                    new Date(data.currentYear, parseInt(lastYearDatum.month)-1, lastYearDatum.day),
+                    parseFloat(lastYearDatum.value),
+                    undefined
+                ]);
+            });
+
+            $.each(data.currentYearData, function(index, currentYearDatum) {
+                chartData.addRow([
+                    new Date(data.currentYear, parseInt(currentYearDatum.month)-1, currentYearDatum.day),
+                    undefined,
+                    parseFloat(currentYearDatum.value)
+                ]);
+            });
+
+            var options = {
+                curveType:        'function',
+                chartArea:        {
+                    left: 50,
+                    top: 50,
+                    width: '100%',
+                    height: '80%'
+                },
+                vAxis:            {
+                    viewWindow: {
+                        min: 0
+                    }
+                },
+                hAxis:            {
+                    viewWindow: {
+                        min: new Date(data.currentYear, 0, 1),
+                        max: new Date(data.currentYear, 11, 31)
+                    }
+                },
+                series: {
+                    0: {
+                        color: '#9ac1e2'
+                    },
+                    1: {
+                        color: '#3276b1'
+                    }
+                },
+                interpolateNulls: true,
+                pointSize:        3
+            };
+
+            var chart = new google.visualization.LineChart(this.$graphContainer[0]);
+            chart.draw(chartData, options);
+
+            this.drawGraphLegend(data);
+        },
+
+        onError: function(error) {
+            alert(error);
+        }
+    };
+
+    return object;
+}();

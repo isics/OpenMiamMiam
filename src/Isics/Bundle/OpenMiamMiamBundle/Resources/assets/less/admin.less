@@ -611,6 +611,55 @@ form.filter {
     }
 }
 
+.statistics {
+    .nav-pills {
+        li {
+            color: #468847;
+            line-height: 16px;
+            padding: 0;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &.active {
+                color: #FFFFFF;
+                background-color: #468847;
+            }
+
+            label {
+                margin-bottom: 0;
+                cursor: pointer;
+                padding: 10px;
+            }
+        }
+    }
+
+    .graph-container {
+        .graph {
+            height: 300px;
+        }
+
+        .last-year-container,
+        .current-year-container {
+            text-align: right;
+        }
+
+        .last-year-value-container,
+        .current-year-value-container {
+            text-align: center;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+        .current-year-value-container {
+            background-color: #3276b1;
+        }
+
+        .last-year-value-container {
+            background-color: lighten(#3276b1, 30%);
+        }
+    }
+}
+
 //
 // Producer / Orders
 //

@@ -325,6 +325,13 @@ admin.association.dashboard.sales_orders:             "[0,1] commande|]1,Inf] co
 admin.association.dashboard.button.create_article:    "Créer un article"
 admin.association.dashboard.button.create_newsletter: "Créer une lettre d'information"
 
+admin.association.dashboard.statistics.mode.turnover:     "Chiffre d'affaire"
+admin.association.dashboard.statistics.mode.commission:   "Commission"
+admin.association.dashboard.statistics.mode.sales_orders: "Commandes"
+admin.association.dashboard.statistics.mode.average_cart: "Panier moyen"
+admin.association.dashboard.statistics.all_branches:      "Tous les comptoirs"
+admin.association.dashboard.statistics.form_errors:       "Le formulaire présente des erreurs"
+
 # Admin / Association / Producer
 admin.association.producers.list.title:             "{0} Aucun producteur|{1} 1 producteur|]1,Inf] %nb% producteurs"
 admin.association.producers.list.edit:              "Modifier le producteur"

@@ -138,6 +138,10 @@ open_miam_miam.admin.association.show_dashboard:
     pattern:  /associations/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:showDashboard }
 
+open_miam_miam.admin.association.statistics:
+    pattern:  /associations/{id}/dashboard/statistics
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:statistics }
+
 open_miam_miam.admin.association.sales_order.list:
     pattern:  /associations/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:list }
