@@ -779,20 +779,14 @@ OpenMiamMiam.DashboardStatistics = function(){
 
         var onRadioClick = function($radio) {
             $radio.parent().addClass('active').siblings().removeClass('active');
+
+            that.$form.submit();
         };
 
         this.$form.find('.statistics-mode :radio').hide();
 
-        var selectedRadio = this.$form.find('.statistics-mode :radio:checked');
-
-        if (selectedRadio.size()) {
-            onRadioClick(selectedRadio);
-        }
-
         this.$form.find(':radio, :checkbox').click(function(event){
             onRadioClick($(this));
-
-            that.$form.submit();
         });
 
         this.$form.find('select').change(function(event){
@@ -804,6 +798,17 @@ OpenMiamMiam.DashboardStatistics = function(){
 
             that.submitForm.apply(that, [event]);
         });
+
+        var selectedRadio = this.$form.find('.statistics-mode :radio:checked');
+
+        if (!selectedRadio.size()) {
+            this.$form.find('.statistics-mode :radio:first').attr('checked', 'checked');
+            selectedRadio = this.$form.find('.statistics-mode :radio:checked');
+        }
+
+        if (selectedRadio.size()) {
+            onRadioClick(selectedRadio);
+        }
     };
 
     object.prototype = {
