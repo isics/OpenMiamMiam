@@ -677,6 +677,12 @@ admin.producer.dashboard.orders_to_prepare:      "[0,1]commande à préparer|]1,
 admin.producer.dashboard.products_out_of_stock:  "[0,1]produit en rupture|]1,Inf]produits en rupture"
 admin.producer.dashboard.attendances_to_confirm: "[0,1]date à confirmer|]1,Inf]dates à confirmer"
 
+admin.producer.dashboard.statistics.mode.turnover:     "Chiffre d'affaire"
+admin.producer.dashboard.statistics.mode.sales_orders: "Commandes"
+admin.producer.dashboard.statistics.mode.average_cart: "Panier moyen"
+admin.producer.dashboard.statistics.all_branches:      "Tous les comptoirs"
+admin.producer.dashboard.statistics.form_errors:       "Le formulaire présente des erreurs"
+
 # Admin / Producer / Infos
 admin.producer.infos.title:              "Informations producteur"
 admin.producer.infos.message.updated:    "Les informations du producteur ont bien été mises à jour."

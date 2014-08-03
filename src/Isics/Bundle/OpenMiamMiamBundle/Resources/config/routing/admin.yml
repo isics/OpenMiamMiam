@@ -401,6 +401,10 @@ open_miam_miam.admin.producer.show_dashboard:
     pattern:  /producers/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:showDashboard }
 
+open_miam_miam.admin.producer.statistics:
+    pattern:  /producers/{id}/dashboard/statistics
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:statistics }
+
 open_miam_miam.admin.producer.edit:
     pattern:  /producers/{id}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:edit }

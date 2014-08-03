@@ -77,6 +77,7 @@ parameters:
     open_miam_miam.form.type.association_sales_order_search.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSalesOrderSearchType'
     open_miam_miam.form.type.association_consumer_search.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSearchType'
     open_miam_miam.form.type.association_statistics.class:                'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationStatisticsType'
+    open_miam_miam.form.type.producer_statistics.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerStatisticsType'
 
     open_miam_miam.sales_order_statistics.class:                  'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\Statistics'
     open_miam_miam.phpexcel.class:                                PHPExcel
@@ -98,6 +99,7 @@ parameters:
     open_miam_miam.handler.association_sales_order_search:      'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\AssociationSalesOrderSearchHandler'
     open_miam_miam.handler.association_consumer.class:          'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\AssociationConsumerHandler'
     open_miam_miam.handler.association_statistics.class:        'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\AssociationStatisticsHandler'
+    open_miam_miam.handler.producer_statistics.class:           'Isics\Bundle\OpenMiamMiamBundle\Form\Handler\ProducerStatisticsHandler'
 
 services:
     # Validators
@@ -350,6 +352,13 @@ services:
             - @translator
         tags:
             - { name: form.type, alias: open_miam_miam_association_statistics }
+
+    open_miam_miam.form.type.producer_statistics:
+        class: %open_miam_miam.form.type.producer_statistics.class%
+        arguments:
+            - @translator
+        tags:
+            - { name: form.type, alias: open_miam_miam_producer_statistics }
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_extension:
@@ -738,6 +747,13 @@ services:
 
     open_miam_miam.handler.association_statistics:
         class: %open_miam_miam.handler.association_statistics.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @sonata.intl.templating.helper.number
+            - %open_miam_miam.currency%
+
+    open_miam_miam.handler.producer_statistics:
+        class: %open_miam_miam.handler.producer_statistics.class%
         arguments:
             - @doctrine.orm.entity_manager
             - @sonata.intl.templating.helper.number

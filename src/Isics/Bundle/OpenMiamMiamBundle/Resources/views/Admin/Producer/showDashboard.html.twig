@@ -12,15 +12,31 @@
 {% block content %}
     <h1>{{ 'admin.producer.dashboard.title'|trans }}</h1>
 
-    {% for row in tiles|batch(3) %}
-        <div id="producer-dashboard" class="row">
-            {% for tile in row %}
-                <div class="col-md-4">
-                    {% if tile is not null %}
-                        {{ dashboardMacro.tile(tile) }}
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    {% endfor %}
+    <div id="producer-dashboard">
+        {% for row in tiles|batch(3) %}
+            <div class="row">
+                {% for tile in row %}
+                    <div class="col-md-4">
+                        {% if tile is not null %}
+                            {{ dashboardMacro.tile(tile) }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        {{ render(controller('IsicsOpenMiamMiamBundle:Admin/Producer/General:statistics', {'producer': producer})) }}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $(function(){
+            new OpenMiamMiam.DashboardStatistics(
+                    $('#producer-statistics-form'),
+                    $('#producer-statistics-graph-container')
+            );
+        });
+    </script>
 {% endblock %}

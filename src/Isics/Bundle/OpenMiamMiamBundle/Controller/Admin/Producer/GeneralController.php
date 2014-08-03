@@ -13,7 +13,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GeneralController extends BaseController
 {
@@ -74,6 +76,51 @@ class GeneralController extends BaseController
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Producer:edit.html.twig', array(
             'form'     => $form->createView(),
             'producer' => $producer
+        ));
+    }
+
+    /**
+     * @param Request  $request
+     * @param Producer $producer
+     *
+     * @return Response
+     */
+    public function statisticsAction(Request $request, Producer $producer)
+    {
+        $form = $this->createForm(
+            'open_miam_miam_producer_statistics',
+            null,
+            array(
+                'producer' => $producer
+            )
+        );
+
+        $data = null;
+
+        if ($request->isMethod('post')) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $data = $this->get('open_miam_miam.handler.producer_statistics')
+                    ->getData($producer, $form->getData());
+
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse($data->toArray());
+                }
+            } elseif ($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest()) {
+                    return new Response(
+                        $this->get('translator')->trans('admin.producer.dashboard.statistics.form_errors'),
+                        '400'
+                    );
+                }
+            }
+        }
+
+        return $this->render('@IsicsOpenMiamMiam/Admin/Producer/statistics.html.twig', array(
+            'producer' => $producer,
+            'form'     => $form->createView(),
+            'data'     => $data
         ));
     }
 }
