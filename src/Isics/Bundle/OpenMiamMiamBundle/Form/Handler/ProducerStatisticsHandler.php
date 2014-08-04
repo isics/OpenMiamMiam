@@ -251,7 +251,7 @@ SQL;
         $statistics->setCurrentYearValue(array_sum($currentYearData));
         $statistics->setCurrentYearValue($this->numberHelper->formatCurrency(array_sum(array_map(function ($row) {
                 return $row['value'];
-            }, $currentYearData)) / count($lastYearData), $this->currency));
+            }, $currentYearData)) / count($currentYearData), $this->currency));
 
         return $statistics;
     }
