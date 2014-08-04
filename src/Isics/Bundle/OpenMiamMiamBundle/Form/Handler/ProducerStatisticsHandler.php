@@ -204,7 +204,7 @@ SQL;
             SELECT
                 MONTH(bo.begin) AS month,
                 DAY(bo.begin) AS day,
-                SUM(so.total) / COUNT(so.id) AS value
+                SUM(sor.total) / COUNT(DISTINCT(so.id)) AS value
             FROM
                 sales_order_row sor
             INNER JOIN sales_order so ON (sor.sales_order_id = so.id)
