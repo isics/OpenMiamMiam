@@ -67,6 +67,10 @@ class ProducerController extends BaseController
      */
     public function editAction(Request $request, AssociationHasProducer $associationHasProducer)
     {
+        if (null !== $associationHasProducer->getProducer()->getDeletedAt()) {
+            throw $this->createNotFoundException();
+        }
+
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.association_has_producer'),
             $associationHasProducer
