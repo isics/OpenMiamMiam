@@ -41,6 +41,8 @@ class ProducerSalesOrdersPdf
     {
         $this->pdf = $pdf;
         $this->engine = $engine;
+
+        $pdf->setPrintHeader(false);
     }
 
     /**
