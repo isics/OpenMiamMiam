@@ -157,6 +157,8 @@ class ProducerRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
+        $qb->andWhere('p.deletedAt IS NULL');
+
         if ($branch instanceof \ArrayAccess) {
             $branchesIds = array();
             foreach ($branch as $_branch) {
@@ -209,7 +211,8 @@ class ProducerRepository extends EntityRepository
             ->andWhere('pa.branchOccurrence = :branchOccurrence')
             ->setParameter('branchOccurrence', $branchOccurrence)
             ->andWhere('pa.isAttendee = :isAttendee')
-            ->setParameter('isAttendee', $isAttendee);
+            ->setParameter('isAttendee', $isAttendee)
+            ->andWhere('p.deletedAt IS NULL');
 
         return $qb;
     }
