@@ -5,6 +5,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Dashboard\Tile\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Dashboard\Tile\Tile;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchOccurrenceRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Model\BranchOccurrence\BranchOccurrenceProducersAttendances;
+use Sonata\IntlBundle\Templating\Helper\DateTimeHelper;
 use Sonata\IntlBundle\Templating\Helper\NumberHelper;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -36,23 +37,31 @@ class Tiles
     protected $router;
 
     /**
+     * @var DateTimeHelper
+     */
+    protected $dateTimeHelper;
+
+    /**
      * @param BranchOccurrenceRepository           $branchOccurrenceRepository
      * @param BranchOccurrenceProducersAttendances $branchOccurrenceProducersAttendances
      * @param NumberHelper                         $numberHelper
      * @param string                               $currency
      * @param RouterInterface                      $router
+     * @param DateTimeHelper                       $dateTimeHelper
      */
     public function __construct(BranchOccurrenceRepository $branchOccurrenceRepository,
                                 BranchOccurrenceProducersAttendances $branchOccurrenceProducersAttendances,
                                 NumberHelper $numberHelper,
                                 $currency,
-                                RouterInterface $router)
+                                RouterInterface $router,
+                                DateTimeHelper $dateTimeHelper)
     {
         $this->branchOccurrenceRepository           = $branchOccurrenceRepository;
         $this->branchOccurrenceProducersAttendances = $branchOccurrenceProducersAttendances;
         $this->numberHelper                         = $numberHelper;
         $this->currency                             = $currency;
         $this->router                               = $router;
+        $this->dateTimeHelper                       = $dateTimeHelper;
     }
 
     /**
@@ -114,7 +123,7 @@ class Tiles
         $tile->setDescription('admin.association.dashboard.producer_to_call');
 
         $tile->setTileClass('danger');
-        $tile->setHeader($branchOccurrence->getDate()->format('d / m'));
+        $tile->setHeader($this->dateTimeHelper->format($branchOccurrence->getDate(), 'dd MMMM'));
         $tile->setValue($nb);
         $tile->setLink($this->router->generate('open_miam_miam.admin.association.branch.occurrence.list_attendances', array(
             'id'                 => $association->getId(),

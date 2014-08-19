@@ -638,9 +638,19 @@ form.filter {
             height: 300px;
         }
 
+        .last-year-data-container,
+        .current-year-data-container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
         .last-year-container,
         .current-year-container {
-            text-align: right;
+            text-align: left;
+            font-size: 0.8em;
+            line-height: 0.8em;
+            color: #FFFFFF;
         }
 
         .last-year-value-container,
@@ -648,13 +658,15 @@ form.filter {
             text-align: center;
             font-weight: bold;
             color: #FFFFFF;
+            font-size: 1.5em;
+            line-height: 1.5em;
         }
 
-        .current-year-value-container {
+        .current-year-data-container {
             background-color: #3276b1;
         }
 
-        .last-year-value-container {
+        .last-year-data-container {
             background-color: lighten(#3276b1, 30%);
         }
     }

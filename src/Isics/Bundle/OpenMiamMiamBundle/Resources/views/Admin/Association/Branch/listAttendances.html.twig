@@ -18,10 +18,6 @@
 
     {% if branchOccurrenceProducersAttendances.producersAttendanceUnknown|length > 0 %}
         {% set colWidth = 4 %}
-        <div class="alert alert-danger">
-            <span class="glyphicon glyphicon-exclamation-sign"></span>
-            {{ 'admin.association.branch.occurrences.attendances.alert.not_answered_yet'|trans }}
-        </div>
     {% else %}
         {% set colWidth = 6 %}
     {% endif %}
@@ -29,9 +25,9 @@
     <div class="row producers-attendances">
         {% if branchOccurrenceProducersAttendances.producersAttendanceUnknown|length > 0 %}
             <div class="col-md-{{ colWidth }}">
-                <div class="panel panel-danger">
+                <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        <span class="glyphicon glyphicon-question-sign"></span>
                         {{ 'admin.association.branch.occurrences.attendances.not_answered_yet'|trans }}
                     </div>
                     <div class="panel-body">
@@ -60,7 +56,7 @@
             </div>
         </div>
         <div class="col-md-{{ colWidth }}">
-            <div class="panel panel-default">
+            <div class="panel panel-danger">
                 <div class="panel-heading">
                     <span class="glyphicon glyphicon-remove-sign"></span>
                     {{ 'admin.association.branch.occurrences.attendances.disagree'|trans }}

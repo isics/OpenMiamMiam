@@ -44,8 +44,8 @@
                                     'branchOccurrenceId':   branchOccurrence.id
                                 }) }}" title="{{ 'admin.association.branch.calendar.attendees.list'|trans }}">
                                     {% if branchOccurrenceProducersAttendances.producersAttendanceUnknown|length > 0 %}
-                                        <span class="text-danger" title="{{ 'admin.association.branch.occurrences.attendances.not_answered_yet'|trans }}">
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        <span class="text-warning" title="{{ 'admin.association.branch.occurrences.attendances.not_answered_yet'|trans }}">
+                                            <span class="glyphicon glyphicon-question-sign"></span>
                                             {{ branchOccurrenceProducersAttendances.producersAttendanceUnknown|length }}
                                         </span>
                                     {% endif %}
@@ -55,7 +55,7 @@
                                         {{ branchOccurrenceProducersAttendances.producersAttendanceYes|length }}
                                     </span>
 
-                                    <span class="text-default" title="{{ 'admin.association.branch.occurrences.attendances.disagree'|trans }}">
+                                    <span class="text-danger" title="{{ 'admin.association.branch.occurrences.attendances.disagree'|trans }}">
                                         <span class="glyphicon glyphicon-remove-sign"></span>
                                         {{ branchOccurrenceProducersAttendances.producersAttendanceNo|length }}
                                     </span>

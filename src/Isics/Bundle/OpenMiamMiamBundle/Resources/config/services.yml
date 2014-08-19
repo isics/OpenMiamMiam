@@ -691,6 +691,7 @@ services:
             - @sonata.intl.templating.helper.number
             - %open_miam_miam.currency%
             - @router
+            - @sonata.intl.templating.helper.datetime
         tags:
             -
                 name: kernel.event_listener

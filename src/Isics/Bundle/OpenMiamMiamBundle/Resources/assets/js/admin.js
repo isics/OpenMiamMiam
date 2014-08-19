@@ -821,7 +821,7 @@ OpenMiamMiam.DashboardStatistics = function(){
                 'data': this.$form.serialize(),
                 'dataType': 'json',
                 'beforeSend': function() {
-                    that.loadGraph();
+                    that.graphLoading();
                 },
                 'success': function(data) {
                     that.drawGraph(data);
@@ -835,21 +835,20 @@ OpenMiamMiam.DashboardStatistics = function(){
         buildGraphLegend: function() {
             var $graphLegend = $('<div class="graph-legend row"></div>');
 
-            var $container = $('<div class="col-md-3"></div>');
+            var $firstCell = $('<div class="col-md-6"></div>');
+            var $currentYearContainer = $('<div class="current-year-data-container"></div>');
+            $currentYearContainer.append($('<div class="current-year-container"></div>'));
+            $currentYearContainer.append($('<div class="current-year-value-container"></div>'));
+            $firstCell.append($currentYearContainer);
 
-            var $container1 = $container.clone();
-            $container1.append($('<div class="current-year-container"></div>'));
-            var $container2 = $container.clone();
-            $container2.append($('<div class="current-year-value-container"></div>'));
-            var $container3 = $container.clone();
-            $container3.append($('<div class="last-year-container"></div>'));
-            var $container4 = $container.clone();
-            $container4.append($('<div class="last-year-value-container"></div>'));
+            var $secondCell = $('<div class="col-md-6"></div>');
+            var $lastYearContainer = $('<div class="last-year-data-container"></div>');
+            $lastYearContainer.append($('<div class="last-year-container"></div>'));
+            $lastYearContainer.append($('<div class="last-year-value-container"></div>'));
+            $secondCell.append($lastYearContainer);
 
-            $graphLegend.append($container1);
-            $graphLegend.append($container2);
-            $graphLegend.append($container3);
-            $graphLegend.append($container4);
+            $graphLegend.append($firstCell);
+            $graphLegend.append($secondCell);
 
             return $graphLegend;
         },
@@ -863,7 +862,7 @@ OpenMiamMiam.DashboardStatistics = function(){
             this.$graphLegend.find('.last-year-value-container').text(data.lastYearValue);
         },
 
-        loadGraph: function() {
+        graphLoading: function() {
             this.$graphContainer.empty();
             this.$graphLegend.remove();
 
@@ -895,19 +894,36 @@ OpenMiamMiam.DashboardStatistics = function(){
             });
 
             var options = {
-                curveType:        'function',
-                chartArea:        {
+                curveType: 'function',
+                chartArea: {
                     left: 50,
                     top: 50,
                     width: '100%',
-                    height: '80%'
+//                    height: '80%'
+                    height: '70%'
                 },
-                vAxis:            {
+                vAxis: {
                     viewWindow: {
                         min: 0
                     }
                 },
-                hAxis:            {
+                hAxis: {
+                    gridlines: { count: 4, color: 'transparent' },
+                    format: 'MMM',
+                    ticks: [
+                        new Date(2014,0,15),
+                        new Date(2014,1,15),
+                        new Date(2014,2,15),
+                        new Date(2014,3,15),
+                        new Date(2014,4,15),
+                        new Date(2014,5,15),
+                        new Date(2014,6,15),
+                        new Date(2014,7,15),
+                        new Date(2014,8,15),
+                        new Date(2014,9,15),
+                        new Date(2014,10,15),
+                        new Date(2014,11,15)
+                    ],
                     viewWindow: {
                         min: new Date(data.currentYear, 0, 1),
                         max: new Date(data.currentYear, 11, 31)
@@ -925,6 +941,14 @@ OpenMiamMiam.DashboardStatistics = function(){
                 pointSize:        3
             };
 
+
+            var dateFormatter = new google.visualization.DateFormat({pattern: 'dd MMMM'});
+            dateFormatter.format(chartData, 0);
+
+            var currencyFormatter = new google.visualization.NumberFormat({pattern: '###,###.## €'});
+            currencyFormatter.format(chartData, 1);
+            currencyFormatter.format(chartData, 2);
+
             var chart = new google.visualization.LineChart(this.$graphContainer[0]);
             chart.draw(chartData, options);
 
@@ -932,7 +956,7 @@ OpenMiamMiam.DashboardStatistics = function(){
         },
 
         onError: function(error) {
-            alert(error);
+
         }
     };
 
