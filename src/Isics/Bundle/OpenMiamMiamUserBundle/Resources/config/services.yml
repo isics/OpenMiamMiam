@@ -29,6 +29,14 @@ services:
             - %open_miam_miam_user.last_order_nb_days_considering_customer%
             - @security.acl.provider
 
+    # Repositories
+    open_miam_miam.repository.user:
+        class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamUserBundle:User"
+
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_user_extension:
         class:     Isics\Bundle\OpenMiamMiamUserBundle\Twig\OpenMiamMiamUserExtension

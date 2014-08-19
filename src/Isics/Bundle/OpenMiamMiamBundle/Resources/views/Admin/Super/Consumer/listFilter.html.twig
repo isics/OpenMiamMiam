@@ -1,0 +1,37 @@
+{% form_theme form '@IsicsOpenMiamMiam/form.html.twig' %}
+
+{% set currentPath = path('open_miam_miam.admin.super.consumer.list') %}
+<form action="{{ currentPath }}" method="get" class="filter association-consumers-filter">
+    <div class="row">
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.ref) }}
+            {{ form_widget(form.ref, {'attr': {'placeholder': 'admin.super.consumers.list.filter.ref'|trans}}) }}
+        </div>
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.deleted) }}
+            {{ form_widget(form.deleted) }}
+            {{ form_label(form.deleted, 'admin.super.consumers.list.filter.deleted'|trans) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.firstName) }}
+            {{ form_widget(form.firstName, {'attr': {'placeholder': 'admin.super.consumers.list.filter.first_name'|trans}}) }}
+        </div>
+        <div class="form-row form-group col-md-5">
+            {{ form_errors(form.lastName) }}
+            {{ form_widget(form.lastName, {'attr': {'placeholder': 'admin.super.consumers.list.filter.last_name'|trans}}) }}
+        </div>
+        <div class="form-row form-group col-md-2">
+            <div class="btn-group pull-right">
+                <a href="{{ currentPath }}" class="btn btn-default" title="{{ 'admin.super.consumers.list.filter.clear'|trans }}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {{ 'admin.super.consumers.list.filter'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+    {{ form_rest(form) }}
+</form>

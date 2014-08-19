@@ -20,7 +20,6 @@
             <table class="table table-bordered table-condensed table-striped table-association-consumers">
                 <thead>
                     <tr>
-                        <th>&nbsp;</th>
                         <th>{{ 'admin.association.consumers.list.ref'|trans }}</th>
                         <th>{{ 'admin.association.consumers.list.name'|trans }}</th>
                         <th>{{ 'admin.association.consumers.list.city'|trans }}</th>
@@ -33,15 +32,8 @@
                 <tbody>
                 {% for subscription in subscriptions %}
                     {% set user = subscription.user %}
-                    <tr>
+                    <tr {% if user and user.locked %}class="deleted"{% endif %}>
                         {% if user %}
-                            <td>
-                                {% if user.locked %}
-                                    <div class="btn btn-xs btn-danger" title="{{ 'admin.association.consumer.deleted'|trans }}">
-                                        <span class="glyphicon glyphicon-ban-circle"></span>
-                                    </div>
-                                {% endif %}
-                            </td>
                             <td>{{ user|format_consumer_ref }}</td>
                             <td>{{ format_user_identity(user) }}</td>
                             <td>{{ user.city }} ({{ user.zipcode }})</td>
@@ -63,7 +55,6 @@
                                 </a>
                             </td>
                         {% else %}
-                            <td></td>
                             <td>-</td>
                             <td>{{ 'admin.association.consumers.list.anonymous'|trans }}</td>
                             <td>-</td>

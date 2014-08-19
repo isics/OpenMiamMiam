@@ -11,13 +11,12 @@
 
 {% block content %}
     <h1>
-        {{ 'admin.association.consumers.edit.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
+        {{ 'admin.super.consumers.edit.title'|trans({'%consumer%': format_user_identity(consumer)}) }}
     </h1>
 
-    {% include '@IsicsOpenMiamMiam/Admin/Association/Consumer/deleted.html.twig' with {'consumer': consumer } %}
+    {% include '@IsicsOpenMiamMiam/Admin/Super/Consumer/deleted.html.twig' with {'consumer': consumer } %}
 
-    <form method="post" action="{{ path('open_miam_miam.admin.association.consumer.edit', {
-        'associationId': association.id,
+    <form method="post" action="{{ path('open_miam_miam.admin.super.consumer.edit', {
         'consumerId':    consumer.id
     }) }}">
         <div class="row">
@@ -52,7 +51,7 @@
             {{ form_row(form.isOrdersOpenNotificationSubscriber, {'label': 'admin.association.consumer.edit.is_orders_open_notification_subscriber'}) }}
         {% endif %}
 
-        <a href="{{ path('open_miam_miam.admin.association.consumer.show', {'associationId': association.id, 'consumerId': consumer.id}) }}" class="pull-right">
+        <a href="{{ path('open_miam_miam.admin.super.consumer.list') }}" class="pull-right">
             {{ 'admin.return'|trans }}
         </a>
 

@@ -131,6 +131,19 @@ open_miam_miam.admin.super.manager.demote:
 
 
 
+open_miam_miam.admin.super.consumer.list:
+    pattern:  /super/consumers
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Consumer:list }
+
+open_miam_miam.admin.super.consumer.edit:
+    pattern:  /super/consumers/{consumerId}/edit
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Consumer:edit }
+
+open_miam_miam.admin.super.consumer.delete:
+    pattern:  /super/consumers/{consumerId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Consumer:delete }
+
+
 #
 # Admin Association
 #
@@ -238,14 +251,6 @@ open_miam_miam.admin.association.consumer.show_anonymous:
 open_miam_miam.admin.association.consumer.show:
     pattern:  /associations/{associationId}/consumers/{consumerId}/show
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show }
-
-open_miam_miam.admin.association.consumer.edit:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/edit
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:edit }
-
-open_miam_miam.admin.association.consumer.delete:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/delete
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:delete }
 
 open_miam_miam.admin.association.consumer.list_anonymous_orders:
     pattern:  /associations/{associationId}/consumers/anonymous/list_orders

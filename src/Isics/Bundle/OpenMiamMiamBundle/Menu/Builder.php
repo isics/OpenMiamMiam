@@ -111,6 +111,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.newsletter.create',
             'label' => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.super.menu.newsletter')),
         ));
+        $menu[$menuName]->addChild('Consumer', array(
+            'route' => 'open_miam_miam.admin.super.consumer.list',
+            'label' => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.super.menu.consumer')),
+        ));
         $menu[$menuName]->addChild('Producer', array(
             'route' => 'open_miam_miam.admin.super.producer.list',
             'label' => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.super.menu.producer')),

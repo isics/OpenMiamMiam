@@ -59,6 +59,7 @@ class CommentManager
      *
      * @param Association $association
      * @param User        $consumer
+     * @param SalesOrder  $salesOrder
      *
      * @return array
      */

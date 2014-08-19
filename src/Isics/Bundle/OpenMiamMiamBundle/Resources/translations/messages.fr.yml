@@ -188,6 +188,7 @@ admin.super.menu.dashboard:     "Tableau de bord"
 admin.super.menu.user_switch:   "Usurpateur d'identité"
 admin.super.menu.news:          "Actualité"
 admin.super.menu.newsletter:    "Lettre d'information"
+admin.super.menu.consumer:      "Consommateurs"
 admin.super.menu.producer:      "Producteurs"
 admin.super.menu.category:      "Catégories produits"
 admin.super.menu.manager:       "Gestionnaires"
@@ -304,7 +305,32 @@ admin.super.manager.demote :            "Révoquer"
 admin.super.manager.message.promoted:   "L'utilisateur a bien été promu gestionnaire."
 admin.super.manager.message.demoted:    "L'utilisateur a bien été révoqué des gestionnaires."
 
+# Admin / Super / Consumer
+admin.super.consumer.deleted:                   "Attention, ce consommateur est supprimé."
 
+admin.super.consumers.list.title:               "{0} Aucun consommateur|{1} 1 consommateur|]1,Inf] %nb% consommateurs"
+admin.super.consumers.list.no_consumer:         "Il n'y a pas encore de consommateur."
+admin.super.consumers.list.ref:                 "Réf"
+admin.super.consumers.list.name:                "Nom"
+admin.super.consumers.list.city:                "Ville"
+admin.super.consumers.list.email:               "E-mail"
+admin.super.consumers.list.phone_number:        "Tél."
+admin.super.consumers.list.edit:                "Éditer"
+admin.super.consumers.list.delete:              "Supprimer"
+
+admin.super.consumers.list.filter:                "Filtrer"
+admin.super.consumers.list.filter.clear:          "Remettre à zéro"
+admin.super.consumers.list.filter.ref:            "Identifiant (numéro de référence)"
+admin.super.consumers.list.filter.last_name:      "Nom"
+admin.super.consumers.list.filter.first_name:     "Prénom"
+admin.super.consumers.list.filter.deleted:        "Montrer les consommateurs supprimés"
+
+admin.super.consumers.edit.title:           "Édition de «%consumer%»"
+admin.super.consumers.delete.content:       "Êtes-vous vraiment certain de vouloir supprimer ce consommateur ?"
+
+admin.super.consumer.edit.is_newsletter_subscriber:               "Souhaite recevoir la newsletter"
+admin.super.consumer.edit.is_orders_open_notification_subscriber: "Souhaite recevoir un e-mail à l'ouverture des commandes"
+admin.super.consumer.edit.flash.success:                          "Le consommateur a été édité avec succès"
 
 # Admin / Association / Menu
 admin.association.menu.dashboard:  "Tableau de bord"

@@ -26,35 +26,8 @@
             </div>
         </div>
 
-        {% include 'IsicsOpenMiamMiamBundle:Admin:Association\\Consumer\\deleteConsumerDialog.html.twig' %}
-
         <div class="row">
             <div class="col-md-6">
-                {% if consumer is not null %}
-                    <div class="row consumer-links">
-                        <div class="col-md-6">
-                            <a href="{{ path('open_miam_miam.admin.association.consumer.edit', {
-                                'associationId': association.id,
-                                'consumerId':    consumer.id
-                            }) }}" class="btn btn-warning">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                {{ 'admin.association.consumers.show.edit_consumer'|trans }}
-                            </a>
-                        </div>
-                        <div class="col-md-6">
-                            {% if not consumer.locked %}
-                                <a data-url="{{ path('open_miam_miam.admin.association.consumer.delete', {
-                                    'associationId': association.id,
-                                    'consumerId':    consumer.id
-                                }) }}" data-toggle="modal" href="#delete-dialog" class="btn btn-danger">
-                                    <span class="glyphicon glyphicon-ban-circle"></span>
-                                    {{ 'admin.association.consumers.show.delete_consumer'|trans }}
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">

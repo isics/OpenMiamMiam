@@ -1043,3 +1043,16 @@ div.user_payment_allocation {
         padding: 20px 0;
     }
 }
+
+.table-striped > tbody > tr.deleted > td,
+.table-striped > tbody > tr.deleted > th {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #b94a48;
+}
+
+.table-striped > tbody > tr.deleted:nth-child(odd) > td,
+.table-striped > tbody > tr.deleted:nth-child(odd) > th {
+    background-color: darken(#f2dede, 5%);
+    border-color: darken(#ebccd1, 5%);
+}

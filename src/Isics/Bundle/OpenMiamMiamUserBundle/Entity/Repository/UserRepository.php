@@ -486,4 +486,78 @@ QUERY;
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Filters users by id
+     *
+     * @param QueryBuilder $qb
+     * @param integer $ref
+     *
+     * @return QueryBuilder
+     */
+    public function refFilter(QueryBuilder $qb, $ref)
+    {
+        if ($ref !== null) {
+            return $qb
+                ->andWhere('u.id = :ref')
+                ->setParameter('ref', $ref);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users by last name
+     *
+     * @param QueryBuilder $qb
+     * @param string $lastName
+     *
+     * @return QueryBuilder
+     */
+    public function lastNameFilter(QueryBuilder $qb, $lastName)
+    {
+        if ($lastName !== null) {
+            return $qb
+                ->andWhere('u.lastname LIKE :lastName')
+                ->setParameter('lastName', '%'.$lastName.'%');
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users by first name
+     *
+     * @param QueryBuilder $qb
+     * @param $firstName
+     *
+     * @return QueryBuilder
+     */
+    public function firstNameFilter(QueryBuilder $qb, $firstName)
+    {
+        if ($firstName !== null) {
+            return $qb
+                ->andWhere('u.firstname LIKE :firstName')
+                ->setParameter('firstName', '%'.$firstName.'%');
+        }
+
+        return $qb;
+    }
+
+    /**
+     * Filters users and returns the users who are not deleted
+     *
+     * @param QueryBuilder $qb
+     * @param boolean      $showDeleted
+     *
+     * @return QueryBuilder
+     */
+    public function deletedFilter(QueryBuilder $qb, $showDeleted = false)
+    {
+        if (false === $showDeleted) {
+            $qb->andWhere($qb->expr()->eq('u.locked', 0));
+        }
+
+        return $qb;
+    }
 }

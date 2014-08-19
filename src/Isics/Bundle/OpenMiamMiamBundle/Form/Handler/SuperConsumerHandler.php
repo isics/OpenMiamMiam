@@ -15,10 +15,12 @@ use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\AssociationConsumerFilter;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\SuperConsumerFilter;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class AssociationConsumerHandler
+class SuperConsumerHandler
 {
     /**
      * @var FormFactoryInterface $formFactory
@@ -26,17 +28,17 @@ class AssociationConsumerHandler
     protected $formFactory;
 
     /**
-     * @var SubscriptionRepository $repository
+     * @var UserRepository $repository
      */
     protected $repository;
 
     /**
      * @param FormFactoryInterface   $formFactory
-     * @param SubscriptionRepository $repository
+     * @param UserRepository $repository
      */
     public function __construct(
         FormFactoryInterface $formFactory,
-        SubscriptionRepository $repository
+        UserRepository $repository
     )
     {
         $this->formFactory  = $formFactory;
@@ -51,37 +53,49 @@ class AssociationConsumerHandler
     public function createSearchForm()
     {
         return $this->formFactory->create(
-            'open_miam_miam_association_consumer_search',
-            new AssociationConsumerFilter()
+            'open_miam_miam_super_consumer_search',
+            new SuperConsumerFilter()
+        );
+    }
+
+    /**
+     * Returns a user profile form
+     *
+     * @param User $consumer
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function createProfileForm(User $consumer)
+    {
+        return $this->formFactory->create(
+            'open_miam_miam_user_profile',
+            $consumer
         );
     }
 
     /**
      * Generate the QueryBuilder for search form
      *
-     * @param Association $association
-     *
      * @return QueryBuilder
      */
-    public function generateQueryBuilder(Association $association)
+    public function generateQueryBuilder()
     {
-        return $this->repository->getForAssociationQueryBuilder($association);
+        return $this->repository->createQueryBuilder('u');
     }
 
     /**
      * Applies filters values
      *
      * @param QueryBuilder              $qb
-     * @param AssociationConsumerFilter $data
+     * @param SuperConsumerFilter $data
      *
      * @return QueryBuilder
      */
-    public function applyFormFilters(QueryBuilder $qb, AssociationConsumerFilter $data)
+    public function applyFormFilters(QueryBuilder $qb, SuperConsumerFilter $data)
     {
         $this->repository->refFilter($qb, $data->getRef());
         $this->repository->lastNameFilter($qb, $data->getLastName());
         $this->repository->firstNameFilter($qb, $data->getFirstName());
-        $this->repository->creditorFilter($qb, $data->isCreditor());
         $this->repository->deletedFilter($qb, $data->isDeleted());
 
         return $qb;

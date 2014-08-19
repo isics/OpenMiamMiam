@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('pagination')
                             ->addDefaultsIfNotSet()
                             ->children()
+                                ->scalarNode('consumers')->defaultValue(20)->end()
                                 ->scalarNode('producer')->defaultValue(50)->end()
                                 ->scalarNode('user')->defaultValue(50)->end()
                             ->end()
