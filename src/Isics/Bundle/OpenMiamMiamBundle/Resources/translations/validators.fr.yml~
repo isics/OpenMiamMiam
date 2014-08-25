@@ -1,0 +1,23 @@
+order.confirm.error.terms_of_service: "Vous devez accepter les Conditions Générales d'Utilisation."
+
+error.invalid:  "Cette valeur n'est pas valide."
+error.required: "Cette valeur est requise."
+
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%."
+error.cart.product_unavailable:           "Produit indisponible."
+error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)."
+error.cart.decimal_quantity_not_allowed:  "Impossible de commander une quantité décimale pour ce produit."
+
+error.sales_order.not_enough_stock: "Pas assez de stock (reste %rest%)"
+error.sales_order.ref_not_unique:   "La référence doit être unique."
+
+error.calendar.invalid_branch_occurrence:   "Comptoir invalide"
+error.calendar.invalid_producer_attendance: "Présence invalide"
+
+error.product.invalid_branches:    "Au moins un comptoir est invalide."
+error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie."
+error.product.need_photo:          "Votre produit doit avoir une photo pour être désigné comme produit du moment."
+
+error.artificial_product.invalid: "Les deux champs doivent être renseignés"
+
+error.payment_allocation.amount_invalid: "Montant invalide. (max: %max%)"

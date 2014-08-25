@@ -418,6 +418,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    open_miam_miam.twig.category_level_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\CategoryLevelExtension
+        tags:
+            - { name: twig.extension }
+
     # Menus
     open_miam_miam.menu_builder:
         class:     %open_miam_miam.menu_builder.class%
