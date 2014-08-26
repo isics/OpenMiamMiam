@@ -17,5 +17,4 @@
             <directory>../src/Isics/Bundle/OpenMiamMiamBundle/Tests/Twig</directory>
         </testsuite>
     </testsuites>
-
 </phpunit>
