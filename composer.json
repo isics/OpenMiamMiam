@@ -35,7 +35,8 @@
         "twig/extensions": "1.0.*",
         "tecnick.com/tcpdf": "dev-master",
         "phpoffice/phpexcel": "1.7.9",
-        "jms/serializer-bundle": "dev-master"
+        "jms/serializer-bundle": "dev-master",
+        "raulfraile/ladybug-bundle": "~1.0"
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable",
