@@ -5,6 +5,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Tests\Twig;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Twig\CategoryLevelExtension;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 /**
  * Class CategoryLevelExtensionTest
@@ -14,6 +15,11 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
  */
 class CategoryLevelExtensionTest extends WebTestCase
 {
+    /**
+     * @var CategoryLevelExtension
+     */
+    protected $extension = null;
+
     /**
      * Method called before each test
      */
@@ -30,6 +36,20 @@ class CategoryLevelExtensionTest extends WebTestCase
             'Isics\Bundle\OpenMiamMiamBundle\DataFixtures\ORM\LoadProductData'
         );
         $this->loadFixtures($classes);
+
+        // Prepare the extension to test
+        /** @var Translator $translator */
+        $translator = $this->getContainer()->get('translator');
+        $this->extension = new CategoryLevelExtension($translator);
+    }
+
+    /**
+     * Test with an impossible level
+     *
+     * @expectedException \Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException
+     */
+    public function testWrongLevel() {
+        $this->extension->rootCategoryToLevel(new Category(), -3);
     }
 
     /**
@@ -40,8 +60,7 @@ class CategoryLevelExtensionTest extends WebTestCase
         $category = $this->getParticularCategoryByName('Porc');
 
         // Ask for the level 0 category (root)
-        $extension = new CategoryLevelExtension();
-        $rootCategory = $extension->rootCategoryToLevel($category, 0);
+        $rootCategory = $this->extension->rootCategoryToLevel($category, 0);
         $this->assertEquals($rootCategory->getName(), 'Racine (invisible)');
     }
 
@@ -53,8 +72,7 @@ class CategoryLevelExtensionTest extends WebTestCase
         $category = $this->getParticularCategoryByName('Porc');
 
         // Ask for the parent category
-        $extension = new CategoryLevelExtension();
-        $motherCategory = $extension->rootCategoryToLevel($category);
+        $motherCategory = $this->extension->rootCategoryToLevel($category);
         $this->assertEquals($motherCategory->getName(), 'Viande');
     }
 
@@ -66,8 +84,7 @@ class CategoryLevelExtensionTest extends WebTestCase
         $category = $this->getParticularCategoryByName('Porc');
 
         // Ask for the same category
-        $extension = new CategoryLevelExtension();
-        $sameCategory = $extension->rootCategoryToLevel($category, 2);
+        $sameCategory = $this->extension->rootCategoryToLevel($category, 2);
         $this->assertEquals($sameCategory->getName(), 'Porc');
     }
 

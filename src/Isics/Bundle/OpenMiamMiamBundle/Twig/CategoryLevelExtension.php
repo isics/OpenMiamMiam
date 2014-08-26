@@ -3,16 +3,30 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+use Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Twig_Extension;
 
 /**
  * Class CategoryLevelExtension
- * Allows you to get the parent (or grandparent or more) switch the asked level
+ * Allows you to get the parent (or grandparent or more) switch the asked level of a category
  *
  * @package Isics\Bundle\OpenMiamMiamBundle\Twig
  */
 class CategoryLevelExtension extends Twig_Extension
 {
+    /**
+     * @var Translator
+     */
+    protected $translator;
+
+    /**
+     * @param Translator $translator
+     */
+    public function __construct(Translator $translator) {
+        $this->translator = $translator;
+    }
+
     /**
      * Name of the extension
      *
@@ -40,9 +54,19 @@ class CategoryLevelExtension extends Twig_Extension
      *
      * @param Category $category
      * @param int $level
+     * @throws \Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException
      * @return Category
      */
     public function rootCategoryToLevel(Category $category, $level = 1) {
+        // Cast to int
+        $level = (int)$level;
+        // Check that the level is greater than or equals 0
+        if($level <= -1) {
+            throw new BadLevelException(
+                $this->translator->trans('category.badlevel', array(), 'exceptions')
+            );
+        }
+
         // Get the current level ...
         $currentLevel = $category->getLvl();
         // ... and check if he's greater than the asked one

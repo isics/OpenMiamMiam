@@ -420,6 +420,8 @@ services:
 
     open_miam_miam.twig.category_level_extension:
         class:     Isics\Bundle\OpenMiamMiamBundle\Twig\CategoryLevelExtension
+        arguments:
+            - @translator
         tags:
             - { name: twig.extension }
 
