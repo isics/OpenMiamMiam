@@ -40,7 +40,7 @@ class CategoryLevelExtensionTest extends WebTestCase
 
     /**
      * Method to empty a table & reset auto increments
-     * 
+     *
      * @param $classname
      */
     protected function truncateTable($classname) {
