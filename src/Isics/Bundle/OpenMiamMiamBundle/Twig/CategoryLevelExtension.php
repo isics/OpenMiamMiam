@@ -23,7 +23,8 @@ class CategoryLevelExtension extends Twig_Extension
     /**
      * @param Translator $translator
      */
-    public function __construct(Translator $translator) {
+    public function __construct(Translator $translator)
+    {
         $this->translator = $translator;
     }
 
@@ -45,7 +46,7 @@ class CategoryLevelExtension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('level', array($this, 'rootCategoryToLevel')),
+            new \Twig_SimpleFilter('category_level', array($this, 'findParentCategoryAtLevel')),
         );
     }
 
@@ -57,11 +58,12 @@ class CategoryLevelExtension extends Twig_Extension
      * @throws \Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException
      * @return Category
      */
-    public function rootCategoryToLevel(Category $category, $level = 1) {
+    public function findParentCategoryAtLevel(Category $category, $level = 1)
+    {
         // Cast to int
         $level = (int)$level;
         // Check that the level is greater than or equals 0
-        if($level <= -1) {
+        if ($level < 0) {
             throw new BadLevelException(
                 $this->translator->trans('category.badlevel', array(), 'exceptions')
             );
@@ -70,7 +72,7 @@ class CategoryLevelExtension extends Twig_Extension
         // Get the current level ...
         $currentLevel = $category->getLvl();
         // ... and check if he's greater than the asked one
-        if($currentLevel <= $level) {
+        if ($currentLevel <= $level) {
             return $category;
         }
 
@@ -79,7 +81,7 @@ class CategoryLevelExtension extends Twig_Extension
             /** @var Category $category */
             $category = $category->getParent();
             $currentLevel = $category->getLvl();
-        } while($currentLevel > $level);
+        } while ($currentLevel > $level);
 
         return $category;
     }

@@ -24,7 +24,8 @@ class CategoryLevelExtensionTest extends WebTestCase
     /**
      * Method called before each test
      */
-    public function setUp() {
+    public function setUp()
+    {
         // Truncate category table
         // In order to select a category by her id
         $this->truncateTable('Isics\Bundle\OpenMiamMiamBundle\Entity\Category');
@@ -43,7 +44,8 @@ class CategoryLevelExtensionTest extends WebTestCase
      *
      * @param $classname
      */
-    protected function truncateTable($classname) {
+    protected function truncateTable($classname)
+    {
         /** @var EntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager();
         $cmd = $em->getClassMetadata($classname);
@@ -60,43 +62,47 @@ class CategoryLevelExtensionTest extends WebTestCase
      *
      * @expectedException \Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException
      */
-    public function testWrongLevel() {
-        $this->extension->rootCategoryToLevel(new Category(), -3);
+    public function testWrongLevel()
+    {
+        $this->extension->findParentCategoryAtLevel(new Category(), -3);
     }
 
     /**
      * Test of getting the root category
      */
-    public function testGetRootCategory() {
+    public function testGetRootCategory()
+    {
         // Getting the "Porc" category
         $category = $this->getParticularCategory(7);
 
         // Ask for the level 0 category (root)
-        $rootCategory = $this->extension->rootCategoryToLevel($category, 0);
+        $rootCategory = $this->extension->findParentCategoryAtLevel($category, 0);
         $this->assertEquals($rootCategory->getName(), 'Racine (invisible)');
     }
 
     /**
      * Test of getting the level 1 category
      */
-    public function testGetLevelOneCategory() {
+    public function testGetLevelOneCategory()
+    {
         // Getting the "Porc" category
         $category = $this->getParticularCategory(7);
 
         // Ask for the parent category
-        $motherCategory = $this->extension->rootCategoryToLevel($category);
+        $motherCategory = $this->extension->findParentCategoryAtLevel($category);
         $this->assertEquals($motherCategory->getName(), 'Viande');
     }
 
     /**
      * Test of the direct return of the category
      */
-    public function testGetSameCategory() {
+    public function testGetSameCategory()
+    {
         // Getting the "Porc" category
         $category = $this->getParticularCategory(7);
 
         // Ask for the same category
-        $sameCategory = $this->extension->rootCategoryToLevel($category, 2);
+        $sameCategory = $this->extension->findParentCategoryAtLevel($category, 2);
         $this->assertEquals($sameCategory->getName(), 'Porc');
     }
 
@@ -106,14 +112,14 @@ class CategoryLevelExtensionTest extends WebTestCase
      * @param $id
      * @return Category
      */
-    protected function getParticularCategory($id) {
+    protected function getParticularCategory($id)
+    {
         return
             $this
                 ->getContainer()
                 ->get('doctrine')
                 ->getManager()
                 ->getRepository('IsicsOpenMiamMiamBundle:Category')
-                ->find($id)
-            ;
+                ->find($id);
     }
 }

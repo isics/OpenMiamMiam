@@ -11,4 +11,5 @@ use LogicException;
  * @package Isics\Bundle\OpenMiamMiamBundle\Exception
  */
 class BadLevelException extends LogicException
-{}
+{
+}
