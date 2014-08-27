@@ -46,7 +46,7 @@ class CategoryLevelExtension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('category_level', array($this, 'findParentCategoryAtLevel')),
+            new \Twig_SimpleFilter('level', array($this, 'findParentCategoryAtLevel')),
         );
     }
 
