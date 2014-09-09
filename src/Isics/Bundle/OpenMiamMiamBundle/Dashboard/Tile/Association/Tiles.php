@@ -122,7 +122,7 @@ class Tiles
         $tile->setIconClass('time');
         $tile->setDescription('admin.association.dashboard.producer_to_call');
 
-        $tile->setTileClass('danger');
+        $tile->setTileClass(($nb === 0 ? 'success' : 'danger'));
         $tile->setHeader($this->dateTimeHelper->format($branchOccurrence->getDate(), 'dd MMMM'));
         $tile->setValue($nb);
         $tile->setLink($this->router->generate('open_miam_miam.admin.association.branch.occurrence.list_attendances', array(
