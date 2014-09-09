@@ -134,7 +134,7 @@ class Tiles
             $nextBranchOccurrence = $this->branchOccurrenceRepository->findOneNextForBranchOccurrence($branchOccurrence);
 
             if ($nextBranchOccurrence) {
-                $branchOccurrenceProducersAttendances->setBranchOccurrence($branchOccurrence);
+                $branchOccurrenceProducersAttendances->setBranchOccurrence($nextBranchOccurrence);
                 $nb = count($branchOccurrenceProducersAttendances->getProducersAttendanceUnknown());
 
                 if ($nb > 0) {
