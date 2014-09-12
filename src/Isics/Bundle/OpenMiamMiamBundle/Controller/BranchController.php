@@ -180,7 +180,7 @@ class BranchController extends Controller
             throw new NotFoundHttpException('Branch not found');
         }
 
-        $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch);
+        $producers = $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:Producer')->findAllproducer($branch, false);
 
         if (null === $producers) {
             throw new NotFoundHttpException('Producers not found');

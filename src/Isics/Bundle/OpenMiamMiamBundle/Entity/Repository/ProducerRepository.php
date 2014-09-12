@@ -66,7 +66,7 @@ class ProducerRepository extends EntityRepository
     public function findAllProducer(Branch $branch, $randomize = true)
     {
         // Retrieve all producers ids
-        $ids = $this->findAllIds();
+        $ids = $this->findAllIds($branch);
         if (empty($ids)) {
             return array();
         }
