@@ -122,7 +122,7 @@ class Tiles
         $tile->setIconClass('time');
         $tile->setDescription('admin.association.dashboard.producer_to_call');
 
-        $tile->setTileClass('danger');
+        $tile->setTileClass(($nb === 0 ? 'success' : 'danger'));
         $tile->setHeader($this->dateTimeHelper->format($branchOccurrence->getDate(), 'dd MMMM'));
         $tile->setValue($nb);
         $tile->setLink($this->router->generate('open_miam_miam.admin.association.branch.occurrence.list_attendances', array(
@@ -134,12 +134,12 @@ class Tiles
             $nextBranchOccurrence = $this->branchOccurrenceRepository->findOneNextForBranchOccurrence($branchOccurrence);
 
             if ($nextBranchOccurrence) {
-                $branchOccurrenceProducersAttendances->setBranchOccurrence($branchOccurrence);
+                $branchOccurrenceProducersAttendances->setBranchOccurrence($nextBranchOccurrence);
                 $nb = count($branchOccurrenceProducersAttendances->getProducersAttendanceUnknown());
 
                 if ($nb > 0) {
                     $tile->setTileClass('warning');
-                    $tile->setHeader($nextBranchOccurrence->getDate()->format('d / m'));
+                    $tile->setHeader($this->dateTimeHelper->format($nextBranchOccurrence->getDate(), 'dd MMMM'));
                     $tile->setValue($nb);
                     $tile->setLink($this->router->generate('open_miam_miam.admin.association.branch.occurrence.list_attendances', array(
                         'id'                 => $association->getId(),
