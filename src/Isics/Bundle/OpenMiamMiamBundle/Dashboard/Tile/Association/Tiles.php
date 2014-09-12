@@ -139,7 +139,7 @@ class Tiles
 
                 if ($nb > 0) {
                     $tile->setTileClass('warning');
-                    $tile->setHeader($nextBranchOccurrence->getDate()->format('d / m'));
+                    $tile->setHeader($this->dateTimeHelper->format($nextBranchOccurrence->getDate(), 'dd MMMM'));
                     $tile->setValue($nb);
                     $tile->setLink($this->router->generate('open_miam_miam.admin.association.branch.occurrence.list_attendances', array(
                         'id'                 => $association->getId(),
