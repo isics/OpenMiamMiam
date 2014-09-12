@@ -16,10 +16,13 @@ class Statistics
 
     protected $currentYearData;
 
+    protected $isPriceInformation;
+
     public function __construct()
     {
         $this->setLastYear(date('Y') - 1);
         $this->setCurrentYear(date('Y'));
+        $this->isPriceInformation = true;
     }
 
     /**
@@ -118,7 +121,21 @@ class Statistics
         return $this->lastYearValue;
     }
 
+    /**
+     * @param boolean $isPriceInformation
+     */
+    public function setIsPriceInformation($isPriceInformation)
+    {
+        $this->isPriceInformation = $isPriceInformation;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function getIsPriceInformation()
+    {
+        return $this->isPriceInformation;
+    }
 
     /**
      * Returns array representation
@@ -133,7 +150,8 @@ class Statistics
             'currentYearValue' => $this->getCurrentYearValue(),
             'lastYearValue'    => $this->getLastYearValue(),
             'currentYearData'  => $this->getCurrentYearData(),
-            'lastYearData'     => $this->getLastYearData()
+            'lastYearData'      => $this->getLastYearData(),
+            'isPriceInformation' => $this->getIsPriceInformation()
         );
     }
 }

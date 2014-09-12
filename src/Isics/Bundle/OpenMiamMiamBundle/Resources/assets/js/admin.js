@@ -946,8 +946,10 @@ OpenMiamMiam.DashboardStatistics = function(){
             dateFormatter.format(chartData, 0);
 
             var currencyFormatter = new google.visualization.NumberFormat({pattern: '###,###.## €'});
-            currencyFormatter.format(chartData, 1);
-            currencyFormatter.format(chartData, 2);
+            if(data.isPriceInformation) {
+                currencyFormatter.format(chartData, 1);
+                currencyFormatter.format(chartData, 2);
+            }
 
             var chart = new google.visualization.LineChart(this.$graphContainer[0]);
             chart.draw(chartData, options);

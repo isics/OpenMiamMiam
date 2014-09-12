@@ -229,6 +229,7 @@ SQL;
 SQL;
 
         $statistics = new Statistics();
+        $statistics->setIsPriceInformation(false);
 
         $lastYear     = (string)(date('Y') - 1);
         $lastYearData = $this->indexArray($this->entityManager->getConnection()->fetchAll($sql, array_merge($parameters, array(
