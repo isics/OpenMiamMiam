@@ -245,14 +245,18 @@ SQL;
         ))));
 
         $statistics->setLastYearData($lastYearData);
-        $statistics->setLastYearValue($this->numberHelper->formatCurrency(array_sum(array_map(function ($row) {
-                return $row['value'];
-            }, $lastYearData)) / count($lastYearData), $this->currency));
+        $statistics->setLastYearValue($this->numberHelper->formatCurrency(
+            count($lastYearData) > 0 ?
+                array_sum(array_map(function ($row) { return $row['value']; }, $lastYearData)) / count($lastYearData) :
+                0
+            , $this->currency));
         $statistics->setCurrentYearData($currentYearData);
         $statistics->setCurrentYearValue(array_sum($currentYearData));
-        $statistics->setCurrentYearValue($this->numberHelper->formatCurrency(array_sum(array_map(function ($row) {
-                return $row['value'];
-            }, $currentYearData)) / count($currentYearData), $this->currency));
+        $statistics->setCurrentYearValue($this->numberHelper->formatCurrency(
+            count($currentYearData) > 0 ?
+                array_sum(array_map(function ($row) { return $row['value']; }, $currentYearData)) / count($currentYearData) :
+                0
+            , $this->currency));
 
         return $statistics;
     }
