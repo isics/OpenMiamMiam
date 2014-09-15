@@ -74,6 +74,13 @@ class CategoryRepository extends NestedTreeRepository
             ->setMaxResults(1);
     }
 
+    /**
+     * From a given category, find her parent category to a given level
+     *
+     * @param Category $category
+     * @param $level
+     * @return mixed
+     */
     public function getCategoryAtLevel(Category $category, $level) {
         return $this
             ->createQueryBuilder('c')
