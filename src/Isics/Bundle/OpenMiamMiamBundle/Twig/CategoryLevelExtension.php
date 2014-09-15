@@ -2,6 +2,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\CategoryRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
@@ -21,11 +22,17 @@ class CategoryLevelExtension extends Twig_Extension
     protected $translator;
 
     /**
+     * @var \Entity\Repository\CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
      * @param Translator $translator
      */
-    public function __construct(Translator $translator)
+    public function __construct(Translator $translator, CategoryRepository $categoryRepository)
     {
         $this->translator = $translator;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -35,7 +42,7 @@ class CategoryLevelExtension extends Twig_Extension
      */
     public function getName()
     {
-        return 'category_level';
+        return 'category_at_level';
     }
 
     /**
@@ -43,22 +50,22 @@ class CategoryLevelExtension extends Twig_Extension
      *
      * @return array
      */
-    public function getFilters()
+    public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFilter('level', array($this, 'findParentCategoryAtLevel')),
+            new \Twig_SimpleFunction('category_at_level', array($this, 'findParentCategoryAtLevel'))
         );
     }
 
     /**
      * Method to get the parent ( switch the asked level ) of a category
      *
-     * @param Category $category
+     * @param \Isics\Bundle\OpenMiamMiamBundle\Entity\Category $category
      * @param int $level
      * @throws \Isics\Bundle\OpenMiamMiamBundle\Exception\BadLevelException
      * @return Category
      */
-    public function findParentCategoryAtLevel(Category $category, $level = 1)
+    public function findParentCategoryAtLevel(Category $category, $level)
     {
         // Cast to int
         $level = (int)$level;
@@ -76,13 +83,7 @@ class CategoryLevelExtension extends Twig_Extension
             return $category;
         }
 
-        // Else do the loop to find the asked parent
-        do {
-            /** @var Category $category */
-            $category = $category->getParent();
-            $currentLevel = $category->getLvl();
-        } while ($currentLevel > $level);
-
-        return $category;
+        // Else find the asked parent
+        return $this->categoryRepository->getCategoryAtLevel($category, $level);
     }
 }

@@ -9,7 +9,7 @@
     {% block title %}{{ product.name }} - {{ parent() }}{% endblock %}
 
     {% block content %}
-        {% set root_category = product.category|level %}
+        {% set root_category = category_at_level(product.category, 1) %}
 
         <ol class="breadcrumb">
             <li><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ 'homepage'|trans }}</a></li>
