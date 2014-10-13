@@ -107,7 +107,7 @@ class Newsletter
      */
     public function __construct()
     {
-        $this->withoutBranch = true;
+        $this->withoutBranch = false;
         $this->branches = new ArrayCollection();
     }
 
