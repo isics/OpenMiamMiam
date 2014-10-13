@@ -126,6 +126,7 @@ class NewsletterManager
         $newsletter = new Newsletter();
 
         $newsletter->setRecipientType(Newsletter::RECIPIENT_TYPE_ALL);
+        $newsletter->setWithoutBranch(true);
 
         // Select all branches
         $newsletter->setBranches(
