@@ -11,7 +11,6 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
