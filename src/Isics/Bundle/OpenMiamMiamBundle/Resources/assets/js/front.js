@@ -186,6 +186,7 @@ OpenMiamMiam.CartUpdateForm = function() {
 
         this.addRemoveButtons();
         this.handleAjax();
+        this.preventChangeQuantity();
     };
 
     object.prototype = {
@@ -203,7 +204,7 @@ OpenMiamMiam.CartUpdateForm = function() {
 
                 removeButtonClone.click(function() {
                     quantity.val(0);
-                    this.trigger('change');
+                    quantity.trigger('change');
                 });
             });
         },
@@ -231,6 +232,15 @@ OpenMiamMiam.CartUpdateForm = function() {
                         alert(jqXHR.responseText);
                     }
                 });
+            });
+        },
+
+        preventChangeQuantity: function() {
+            $('.input-quantity-with-buttons').keydown(function(e) {
+                if (e.keyCode == 13) {
+                  e.preventDefault();
+                  $(this).trigger('change');
+                }
             });
         }
     };
