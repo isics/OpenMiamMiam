@@ -42,7 +42,7 @@ OpenMiamMiam.Quantity = function() {
                         .trigger('change');
                 });
             });
-        },
+        }
     };
 
     return object;

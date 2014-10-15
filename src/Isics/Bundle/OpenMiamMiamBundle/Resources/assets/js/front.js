@@ -190,7 +190,7 @@ OpenMiamMiam.CartUpdateForm = function() {
 
     object.prototype = {
         addRemoveButtons: function() {
-            var removeButton = $('<button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>');
+            var removeButton = $('<button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>');
 
             // Add TD to each rows
             this.form.find('tr').append($('<td></td>'));
@@ -201,9 +201,11 @@ OpenMiamMiam.CartUpdateForm = function() {
                 var removeButtonClone = removeButton.clone();
                 quantity.parents('tr').find('td:last').append(removeButtonClone);
 
-                removeButtonClone.click(function() {
-                    quantity.val(0);
-                });
+                removeButtonClone.click(function(e) {
+                        quantity.val(0);
+                        this.trigger('change');
+                    }
+                );
             });
         },
 
