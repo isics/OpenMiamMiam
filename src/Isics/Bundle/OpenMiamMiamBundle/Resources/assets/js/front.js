@@ -186,11 +186,12 @@ OpenMiamMiam.CartUpdateForm = function() {
 
         this.addRemoveButtons();
         this.handleAjax();
+        this.preventChangeQuantity();
     };
 
     object.prototype = {
         addRemoveButtons: function() {
-            var removeButton = $('<button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>');
+            var removeButton = $('<button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>');
 
             // Add TD to each rows
             this.form.find('tr').append($('<td></td>'));
@@ -203,6 +204,7 @@ OpenMiamMiam.CartUpdateForm = function() {
 
                 removeButtonClone.click(function() {
                     quantity.val(0);
+                    quantity.trigger('change');
                 });
             });
         },
@@ -230,6 +232,15 @@ OpenMiamMiam.CartUpdateForm = function() {
                         alert(jqXHR.responseText);
                     }
                 });
+            });
+        },
+
+        preventChangeQuantity: function() {
+            $('.input-quantity-with-buttons').keydown(function(e) {
+                if (e.keyCode == 13) {
+                  e.preventDefault();
+                  $(this).trigger('change');
+                }
             });
         }
     };

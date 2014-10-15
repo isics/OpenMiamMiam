@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -59,10 +60,12 @@ class CartType extends AbstractType implements EventSubscriberInterface
      */
     public function preSubmit(FormEvent $event)
     {
+        $transformer = new NumberToLocalizedStringTransformer();
+
         $data = $event->getData();
         if (isset($data['items']) && is_array($data['items'])) {
             foreach ($data['items'] as $idx => $_data) {
-                if (isset($_data['quantity']) && $_data['quantity'] <= 0) {
+                if (isset($_data['quantity']) && $transformer->reverseTransform($_data['quantity']) <= 0) {
                     unset($data['items'][$idx]);
                 }
             }
