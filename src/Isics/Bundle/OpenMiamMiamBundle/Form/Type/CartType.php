@@ -62,7 +62,7 @@ class CartType extends AbstractType implements EventSubscriberInterface
         $data = $event->getData();
         if (isset($data['items']) && is_array($data['items'])) {
             foreach ($data['items'] as $idx => $_data) {
-                if (isset($_data['quantity']) && $_data['quantity'] <= 0) {
+              if (isset($_data['quantity']) && str_replace(',','.', $_data['quantity']) <= 0) {
                     unset($data['items'][$idx]);
                 }
             }
