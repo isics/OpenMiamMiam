@@ -201,11 +201,10 @@ OpenMiamMiam.CartUpdateForm = function() {
                 var removeButtonClone = removeButton.clone();
                 quantity.parents('tr').find('td:last').append(removeButtonClone);
 
-                removeButtonClone.click(function(e) {
-                      quantity.val(0);
-                      this.trigger('change');
-                    }
-                );
+                removeButtonClone.click(function() {
+                    quantity.val(0);
+                    this.trigger('change');
+                });
             });
         },
 
