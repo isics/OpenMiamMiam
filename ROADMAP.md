@@ -4,7 +4,7 @@
 
 * Retour à la commande après la création de compte
 * Personnalisation des e-mails sortant : e-mail expéditeur + coordonnées dans le footer
-* Optimiser le process de commande (positionnement des boutons) _JL Favreau, CIVAM31, le 13/10/14_
+* Optimiser le process de commande (wording + positionnement des boutons) _JL Favreau, CIVAM31, le 13/10/14_
 
 ## Autre
 
