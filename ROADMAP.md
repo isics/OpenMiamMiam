@@ -25,5 +25,8 @@
 * Amélioration de l'ergonomie de la caisse / réglements
 * Création d'un consommmateur lors du comptoir
 * Création d'une commande pour un consommateur (non anonyme) lors du comptoir
+* Produits complémentaires
+* Mes règlements (côté consommateur)
+* Sauvegarde d'une commande
 * Application caisse offline
 * Application mobile
