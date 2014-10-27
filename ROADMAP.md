@@ -8,6 +8,7 @@
 * Optimiser le process de commande (wording + positionnement des boutons) _JL Favreau, CIVAM31, le 13/10/14_
 * Refondre homepage pour accueillir plus de comptoirs 
 * Rédaction d'un guide d'utilisation
+* Support de formation
 
 
 ## Autre
