@@ -11,6 +11,7 @@
 * Support de formation
 * Debug responsive
 * Mise en place outils d'animation du réseau
+* Réalisation d'un film de présentation
 
 ## Autre
 
