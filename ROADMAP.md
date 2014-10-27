@@ -9,7 +9,7 @@
 * Refondre homepage pour accueillir plus de comptoirs 
 * Rédaction d'un guide d'utilisation
 * Support de formation
-
+* Debug responsive
 
 ## Autre
 
@@ -34,3 +34,5 @@
 * Application caisse offline
 * Application mobile
 * Gestion des prix spéciaux par produit (avec date max)
+* + de photos par produit
+* Zoom photo
