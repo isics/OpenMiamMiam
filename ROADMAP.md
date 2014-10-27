@@ -12,6 +12,7 @@
 
 ## Autre
 
+* Login Facebook
 * Parrainage
 * Partage réseaux sociaux
 * Gestion des délais de fermeture/ouverture au niveau du comptoir et non de l'association
