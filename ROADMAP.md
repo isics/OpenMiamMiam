@@ -36,3 +36,6 @@
 * Gestion des prix spéciaux par produit (avec date max)
 * + de photos par produit
 * Zoom photo
+* Complètude producteur
+* Complètude association
+* Coaching e-mail (démarrage + trigger)
