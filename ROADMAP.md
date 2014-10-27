@@ -23,6 +23,7 @@
 * Covoiturage
 * Administateur : gestion des associations
 * Amélioration de l'ergonomie de la caisse / réglements
+  * Contrôle de la caisse après comptoir
 * Création d'un consommmateur lors du comptoir
 * Création d'une commande pour un consommateur (non anonyme) lors du comptoir
 * Produits complémentaires
