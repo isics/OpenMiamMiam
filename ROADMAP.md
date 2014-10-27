@@ -43,3 +43,4 @@
 * Complètude association
 * Coaching e-mail (démarrage + trigger)
 * Génération de visuels (affiche + flyers)
+* Gestion des contacts
