@@ -6,6 +6,9 @@
 * Retour à la commande après la création de compte
 * Personnalisation des e-mails sortant : e-mail expéditeur + coordonnées dans le footer
 * Optimiser le process de commande (wording + positionnement des boutons) _JL Favreau, CIVAM31, le 13/10/14_
+
+## Autre
+
 * Refondre homepage pour accueillir plus de comptoirs 
 * Rédaction d'un guide d'utilisation
 * Support de formation
@@ -13,9 +16,6 @@
 * Design : optimisation
 * Mise en place outils d'animation du réseau
 * Réalisation d'un film de présentation
-
-## Autre
-
 * Login Facebook
 * Parrainage
 * Partage réseaux sociaux
