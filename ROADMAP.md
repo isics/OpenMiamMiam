@@ -5,6 +5,7 @@
 
 * Retour à la commande après la création de compte
 * Personnalisation des e-mails sortant : e-mail expéditeur + coordonnées dans le footer
+* Rappeler le calendrier du comptoir dans les mails sortants
 * Optimiser le process de commande (wording + positionnement des boutons) _JL Favreau, CIVAM31, le 13/10/14_
 * Refondre homepage pour accueillir plus de comptoirs 
 * Rédaction d'un guide d'utilisation
