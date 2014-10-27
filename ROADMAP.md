@@ -9,7 +9,8 @@
 * Refondre homepage pour accueillir plus de comptoirs 
 * Rédaction d'un guide d'utilisation
 * Support de formation
-* Debug responsive
+* Design : responsive
+* Design : optimisation
 * Mise en place outils d'animation du réseau
 * Réalisation d'un film de présentation
 
