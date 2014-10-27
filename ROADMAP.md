@@ -33,3 +33,4 @@
 * Sauvegarde d'une commande
 * Application caisse offline
 * Application mobile
+* Gestion des prix spéciaux par produit (avec date max)
