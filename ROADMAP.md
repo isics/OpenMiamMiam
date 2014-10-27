@@ -10,6 +10,7 @@
 * Rédaction d'un guide d'utilisation
 * Support de formation
 * Debug responsive
+* Mise en place outils d'animation du réseau
 
 ## Autre
 
