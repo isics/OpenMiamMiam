@@ -45,3 +45,4 @@
 * Génération de visuels (affiche + flyers)
 * Gestion des contacts
 * Rappeler le calendrier du comptoir dans les mails sortants
+* Gestion des consignes _Serpolet, le 30/10/14_
