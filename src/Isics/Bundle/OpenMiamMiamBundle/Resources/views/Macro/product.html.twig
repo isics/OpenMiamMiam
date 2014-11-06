@@ -17,6 +17,14 @@
                 <span class="label label-danger">{{ (trans_prefix~'availability.out_of_stock')|trans }}</span>
             {% elseif productAvailability.reason is constant('REASON_AVAILABLE_AT', productAvailability) %}
                 <span class="label label-warning">{{ (trans_prefix~'availability.available_at')|trans({'%date%': productAvailability.product.availableAt|format_date}) }}</span>
+            {% elseif product.availability is constant('AVAILABILITY_AVAILABLE_AT', product) %}
+                <span class="label label-warning">{{ 'availability.available_at'|trans({'%date%': product.availableAt|format_date}) }}</span>
+            {% elseif product.availability is constant('AVAILABILITY_ACCORDING_TO_STOCK', product) %}
+                {% if product.stock > 0 %}
+                    <span class="label label-success">{{ 'availability.in_stock'|trans({'%stock%': product.stock}) }}</span>
+                {% else %}
+                    <span class="label label-danger">{{ 'availability.out_of_stock'|trans }}</span>
+                {% endif  %}
             {% endif %}
         {% endif %}
     </div>

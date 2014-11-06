@@ -901,6 +901,7 @@ error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir
 error.cart.product_unavailable:           "Produit indisponible."
 error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)."
 error.cart.decimal_quantity_not_allowed:  "Impossible de commander une quantité décimale pour ce produit."
+error.cart.available_at:                  "Produit disponible à partir du %date%"
 
 error.artificial_product.invalid: "Les deux champs doivent être renseignés"
 
