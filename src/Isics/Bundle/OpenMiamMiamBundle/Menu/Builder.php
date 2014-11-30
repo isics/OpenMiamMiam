@@ -115,6 +115,10 @@ class Builder
             'route' => 'open_miam_miam.admin.super.consumer.list',
             'label' => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.super.menu.consumer')),
         ));
+        $menu[$menuName]->addChild('Association', array(
+            'route' => 'open_miam_miam.admin.super.association.list',
+            'label' => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.super.menu.association')),
+        ));
         $menu[$menuName]->addChild('Producer', array(
             'route' => 'open_miam_miam.admin.super.producer.list',
             'label' => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.super.menu.producer')),
@@ -182,6 +186,11 @@ class Builder
             'route'           => 'open_miam_miam.admin.association.newsletter.create',
             'routeParameters' => array('id' => $association->getId()),
             'label'           => sprintf($this->labelFormat, 'envelope', $this->translator->trans('admin.association.menu.newsletter')),
+        ));
+        $menu[$menuName]->addChild('Association infos', array(
+            'route'           => 'open_miam_miam.admin.association.edit',
+            'routeParameters' => array('id' => $association->getId()),
+            'label'           => sprintf($this->labelFormat, 'user', $this->translator->trans('admin.producer.menu.association_infos')),
         ));
         if ($resource->isOwnerPerspective()) {
             $menu[$menuName]->addChild('Manager', array(
