@@ -63,6 +63,22 @@ open_miam_miam.admin.super.newsletter.report:
     pattern:  /super/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:showReport }
 
+open_miam_miam.admin.super.association.list:
+    pattern:  /super/associations
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:list }
+
+open_miam_miam.admin.super.association.create:
+    pattern:  /super/associations/new
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:create }
+
+open_miam_miam.admin.super.association.edit:
+    pattern:  /super/associations/{associationId}
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:edit }
+
+open_miam_miam.admin.super.association.delete:
+    pattern:  /super/associations/{associationId}/delete
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:delete }
+
 open_miam_miam.admin.super.producer.list:
     pattern:  /super/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:list }
@@ -94,8 +110,6 @@ open_miam_miam.admin.super.producer.manager.promote:
 open_miam_miam.admin.super.producer.manager.demote:
     pattern:  /super/producers/{producerId}/managers/demote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:demote }
-
-
 
 open_miam_miam.admin.super.category.list:
     pattern:  /super/categories
@@ -150,6 +164,10 @@ open_miam_miam.admin.super.consumer.delete:
 open_miam_miam.admin.association.show_dashboard:
     pattern:  /associations/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:showDashboard }
+
+open_miam_miam.admin.association.edit:
+    pattern:  /associations/{id}/edit
+    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:edit }
 
 open_miam_miam.admin.association.statistics:
     pattern:  /associations/{id}/dashboard/statistics

@@ -56,6 +56,7 @@ class ProducerController extends BaseController
     /**
      * Edit producers branch
      *
+     * @ParamConverter("association", class="IsicsOpenMiamMiamBundle:Association", options={"mapping": {"associationId": "id"}})
      * @ParamConverter("producer", class="IsicsOpenMiamMiamBundle:Producer", options={"mapping": {"producerId": "id"}})
      *
      * @param Request                $request

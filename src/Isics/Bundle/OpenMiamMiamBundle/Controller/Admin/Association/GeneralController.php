@@ -41,6 +41,47 @@ class GeneralController extends BaseController
     }
 
     /**
+     * Edits association informations
+     *
+     * @param Request     $request
+     * @param Association $association
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, Association $association)
+    {
+        $this->secure($association);
+
+        // @todo Replace all new types by a call to service
+        $associationManager = $this->get('open_miam_miam.association_manager');
+        $form            = $this->createForm(
+            $this->get('open_miam_miam.form.type.association'),
+            $association,
+            array(
+                'action' => $this->generateUrl('open_miam_miam.admin.association.edit', array('id' => $association->getId())),
+                'method' => 'POST'
+            )
+        );
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $associationManager->save($association, $this->get('security.context')->getToken()->getUser());
+
+                $this->get('session')->getFlashBag()->add('notice', 'admin.association.infos.message.updated');
+
+                return $this->redirect($this->generateUrl('open_miam_miam.admin.association.edit', array('id' => $association->getId())));
+            }
+        }
+
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Association:edit.html.twig', array(
+            'form'        => $form->createView(),
+            'association' => $association,
+            'activities'  => $associationManager->getActivities($association),
+        ));
+    }
+
+    /**
      * @param Request     $request
      * @param Association $association
      *

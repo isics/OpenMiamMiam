@@ -43,6 +43,7 @@ parameters:
     open_miam_miam.menu_voter.class:   'Isics\Bundle\OpenMiamMiamBundle\Menu\Voter'
 
     open_miam_miam.form.type.hidden_product.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\HiddenProductType'
+    open_miam_miam.form.type.association.class:                           'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationType'
     open_miam_miam.form.type.association_article.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationArticleType'
     open_miam_miam.form.type.association_has_producer.class:              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationHasProducerType'
     open_miam_miam.form.type.association_producer_export_transfer.class:  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationProducerExportTransferType'
@@ -51,6 +52,7 @@ parameters:
     open_miam_miam.form.type.category.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\CategoryType'
     open_miam_miam.form.type.product.class:                               'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType'
     open_miam_miam.form.type.producer.class:                              'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType'
+    open_miam_miam.form.type.super_association.class:                     'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperAssociationType'
     open_miam_miam.form.type.super_producer.class:                        'Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperProducerType'
     open_miam_miam.form.type.producer_has_branch.class:                   'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerHasBranchType'
     open_miam_miam.form.type.producer_attendances.class:                  'Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType'
@@ -164,6 +166,11 @@ services:
 
 
     # Form types
+    open_miam_miam.form.type.association:
+        class: %open_miam_miam.form.type.association.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_association }
+
     open_miam_miam.form.type.association_article:
         class: %open_miam_miam.form.type.association_article.class%
         tags:
@@ -221,6 +228,11 @@ services:
         class: %open_miam_miam.form.type.producer.class%
         tags:
             - { name: form.type, alias: open_miam_miam_producer }
+
+    open_miam_miam.form.type.super_association:
+        class: %open_miam_miam.form.type.super_association.class%
+        tags:
+            - { name: form.type, alias: open_miam_miam_super_association }
 
     open_miam_miam.form.type.super_producer:
         class: %open_miam_miam.form.type.super_producer.class%
@@ -476,11 +488,7 @@ services:
 
     open_miam_miam.association_manager:
         class: %open_miam_miam.association_manager.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-            - %open_miam_miam.artificial_product_ref%]
-            - @open_miam_miam.branch_occurrence_manager
-            - @open_miam_miam.repository.branch
+        arguments: [@doctrine.orm.entity_manager, %open_miam_miam.artificial_product_ref%, @open_miam_miam_user.manager.user, @open_miam_miam.activity_manager]
 
     open_miam_miam.association_has_producer_manager:
         class: %open_miam_miam.association_has_producer_manager.class%

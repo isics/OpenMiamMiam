@@ -51,6 +51,7 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('consumers')->defaultValue(20)->end()
+                                ->scalarNode('association')->defaultValue(50)->end()
                                 ->scalarNode('producer')->defaultValue(50)->end()
                                 ->scalarNode('user')->defaultValue(50)->end()
                             ->end()

@@ -15,8 +15,11 @@ use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AssociationWithOwner;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersDepositWithdrawal;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersTransfer;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Isics\Bundle\OpenMiamMiamUserBundle\Manager\UserManager;
 
 class AssociationManager
 {
@@ -26,20 +29,136 @@ class AssociationManager
     protected $entityManager;
 
     /**
-     * @var String $artificial_product_ref
+     * @var String $artificialProductRef
      */
-    protected $artificial_product_ref;
+    protected $artificialProductRef;
+
+    /**
+     * @var UserManager $userManager
+     */
+    protected $userManager;
+
+    /**
+     * @var ActivityManager $activityManager
+     */
+    protected $activityManager;
 
     /**
      * Constructs object
      *
      * @param EntityManager $entityManager
-     * @param String        $artificial_product_ref
+     * @param String        $artificialProductRef
      */
-    public function __construct(EntityManager $entityManager, $artificial_product_ref)
+    public function __construct(EntityManager $entityManager, $artificialProductRef, UserManager $userManager, ActivityManager $activityManager)
     {
-        $this->entityManager           = $entityManager;
-        $this->artificial_product_ref  = $artificial_product_ref;
+        $this->entityManager        = $entityManager;
+        $this->artificialProductRef = $artificialProductRef;
+        $this->userManager          = $userManager;
+        $this->activityManager      = $activityManager;
+    }
+
+    /**
+     * Creates an association
+     *
+     * @return Association
+     */
+    public function create()
+    {
+        $association = new Association();
+
+        return $association;
+    }
+
+    /**
+     * Saves a association
+     *
+     * @param Association $association
+     * @param User     $user
+     */
+    public function save(Association $association, User $user = null)
+    {
+        $activityTransKey = null;
+        if (null === $association->getId()) {
+            $activityTransKey = 'activity_stream.association.created';
+        } else {
+            $unitOfWork = $this->entityManager->getUnitOfWork();
+            $unitOfWork->computeChangeSets();
+
+            $changeSet = $unitOfWork->getEntityChangeSet($association);
+            if (!empty($changeSet)) {
+                $activityTransKey = 'activity_stream.association.updated';
+            }
+        }
+
+        // Save object
+        $this->entityManager->persist($association);
+        $this->entityManager->flush();
+
+        // Process image file
+        // $this->processProfileImageFile($association);
+        // $this->processPresentationImageFile($association);
+
+        // Activity
+        if (null !== $activityTransKey) {
+            $activity = $this->activityManager->createFromEntities(
+                $activityTransKey,
+                array('%name%' => $association->getName()),
+                $association,
+                null,
+                $user
+            );
+            $this->entityManager->persist($activity);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * Returns a AssociationWithOwner (DTO)
+     *
+     * @return AssociationWithOwner
+     */
+    public function getAssociationWithOwner(Association $association = null)
+    {
+        $associationWithOwner = new AssociationWithOwner();
+
+        if (null === $association) {
+            $associationWithOwner->setAssociation($this->create());
+        } else {
+            $associationWithOwner->setAssociation($association);
+
+            if (null !== $owner = $this->userManager->getOwner($association)) {
+                $associationWithOwner->setOwner($owner);
+            }
+        }
+
+        return $associationWithOwner;
+    }
+
+    /**
+     * Saves AssociationWithOwner
+     *
+     * @param AssociationWithOwner $associationWithOwner
+     * @param User              $user
+     */
+    public function saveAssociationWithOwner(AssociationWithOwner $associationWithOwner, User $user = null)
+    {
+        $association = $associationWithOwner->getAssociation();
+
+        $this->save($association, $user);
+
+        // Set owner
+        $this->userManager->setOwner($association, $associationWithOwner->getOwner());
+    }
+
+    /**
+     * Removes an association
+     *
+     * @param Association $association
+     */
+    public function delete(Association $association)
+    {
+        $this->entityManager->remove($association);
+        $this->entityManager->flush();
     }
 
     /**
@@ -163,7 +282,6 @@ class AssociationManager
      */
     public function getProducerTransferForBranchOccurrence(BranchOccurrence $branchOccurrence)
     {
-
         $producersDataQueryBuilder = $this->entityManager->createQueryBuilder();
         $producersData             = $producersDataQueryBuilder
             ->select('p.id AS producer_id')
@@ -188,8 +306,20 @@ class AssociationManager
         return new ProducersDepositWithdrawal(
             $branchOccurrence,
             $producersData,
-            $this->artificial_product_ref,
+            $this->artificialProductRef,
             $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
         );
     }
-} 
+
+    /**
+     * Returns activities of an association
+     *
+     * @param Association $association
+     *
+     * @return array
+     */
+    public function getActivities(Association $association)
+    {
+        return $this->entityManager->getRepository('IsicsOpenMiamMiamBundle:Activity')->findByEntities($association);
+    }
+}

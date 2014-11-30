@@ -173,6 +173,9 @@ class Association
     public function __construct()
     {
         $this->orderRefCounter = 0;
+        $this->closingDelay = 86400;
+        $this->openingDelay = 86400;
+        $this->defaultCommission = 10;
 
         $this->associationHasProducer = new ArrayCollection();
         $this->branches = new ArrayCollection();
