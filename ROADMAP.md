@@ -9,6 +9,7 @@
 
 ## Autre
 
+* Prévoir une page "Votre inscription a déjà été confirmée" au lieu d'une 404
 * Refondre homepage pour accueillir plus de comptoirs 
 * Rédaction d'un guide d'utilisation
 * Support de formation
