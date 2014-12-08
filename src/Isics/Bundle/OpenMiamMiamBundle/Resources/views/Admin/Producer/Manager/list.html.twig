@@ -69,7 +69,7 @@
 {% block javascript %}
     {{ parent() }}
     <script type="text/javascript">
-        var adminManagerAutocomplete = new OpenMiamMiam.AdminManagerAutocomplete('{{ path('open_miam_miam.admin.producer.manager.promote', {'id': producer.id, 'userId': 0}) }}');
+        var adminManagerAutocomplete = new OpenMiamMiam.AdminManagerAutocomplete('{{ path('open_miam_miam.admin.producer.manager.promote', {'id': producer.id, 'userId': 'userId'}) }}');
         $(function() {
             adminManagerAutocomplete.handleAutocomplete();
         });
