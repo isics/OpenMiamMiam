@@ -453,7 +453,8 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
                     $form.append($loader);
                 },
                 select: function(event, ui) {
-                    window.location = that.promoteUrlSchema.replace('0', ui.item.id);
+                    console.log(that.promoteUrlSchema);
+                    window.location = that.promoteUrlSchema.replace('userId', ui.item.id);
                 }
             });
         },
