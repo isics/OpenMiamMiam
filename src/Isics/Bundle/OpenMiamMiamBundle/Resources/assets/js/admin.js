@@ -453,7 +453,6 @@ OpenMiamMiam.AdminManagerAutocomplete = function() {
                     $form.append($loader);
                 },
                 select: function(event, ui) {
-                    console.log(that.promoteUrlSchema);
                     window.location = that.promoteUrlSchema.replace('userId', ui.item.id);
                 }
             });
@@ -817,7 +816,6 @@ OpenMiamMiam.ConsumerComment = function() {
                 },
                 error: function(xhr){
                     // Show to user
-                   console.log(xhr.responseText);
                 }
             });
         }
