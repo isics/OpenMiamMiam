@@ -13,8 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AssociationHasProducerType extends AbstractType
 {
@@ -23,9 +22,26 @@ class AssociationHasProducerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('commission', 'number', array('precision' => 2, 'required' => false))
-            ->add('producer', new ProducerHasBranchType())
+        $associationHasProducer = $options['data'];
+
+        $builder
+            ->add('commission', 'number', array('precision' => 2, 'required' => false))
+            ->add('branches', 'entity', array(
+                'multiple'     => true,
+                'expanded'     => true,
+                'class'        => 'IsicsOpenMiamMiamBundle:Branch',
+                'choices'      => $associationHasProducer->getAssociation()->getBranches(),
+                'property'     => 'name',
+                'by_reference' => false
+            ))
             ->add('save', 'submit');
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer'
+        ));
     }
 
     /**

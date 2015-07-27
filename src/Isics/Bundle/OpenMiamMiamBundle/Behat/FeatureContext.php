@@ -273,24 +273,37 @@ class FeatureContext extends BehatContext
      */
     public function branchHasFollowingProducers($branch_name, TableNode $table)
     {
+        /** @var Branch $branch */
         $branch = $this->getRepository('Branch')->findOneByName($branch_name);
         if (null === $branch) {
             throw new \InvalidArgumentException(
                 sprintf('Branch named "%s" was not found.', $branch_name)
             );
         }
+        $association = $branch->getAssociation();
 
         $entityManager = $this->getEntityManager();
 
         foreach ($table->getHash() as $data) {
+            /** @var Producer $producer */
             $producer = $this->getRepository('Producer')->findOneByName($data['name']);
             if (null === $producer) {
                 throw new \InvalidArgumentException(
-                    sprintf('Producer named "%s" was not found.', $association_name)
+                    sprintf('Producer named "%s" was not found.', $data['name'])
                 );
             }
-            $branch->addProducer($producer);
+
+            $associationProducer = $producer->getAssociationHasProducerByAssociation($association);
+
+            if (null === $associationProducer) {
+                throw new \InvalidArgumentException(
+                    sprintf('Producer "%s" is not linked with association of branch "%s".', $data['name'], $branch_name)
+                );
+            }
+
+            $branch->addAssociationProducer($associationProducer);
         }
+
 
         $entityManager->persist($branch);
         $entityManager->flush();

@@ -224,7 +224,7 @@ class ProductRepository extends EntityRepository
                 ->innerJoin('p.producer', 'pr')
                 ->innerJoin('pr.associationHasProducer', 'ahp')
                 ->innerJoin('ahp.association', 'a')
-                ->leftJoin('p.branches', 'b')
+                ->leftJoin('ahp.branches', 'b')
                 ->andWhere('a.id = :associationId')
                 ->setParameter('associationId', $association->getId())
                 ->addOrderBy('p.name')

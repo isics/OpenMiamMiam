@@ -100,7 +100,9 @@ class ProducerRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p')->select('p.id')
             ->where('p.deletedAt is null');
         if (null !== $branch) {
-            $qb->innerJoin('p.branches', 'b')
+            $qb
+                ->innerJoin('p.associationHasProducer', 'ahp')
+                ->innerJoin('ahp.branches', 'b')
                 ->andWhere('b.id = :branchId')
                 ->setParameter('branchId', $branch->getId());
         }
@@ -165,12 +167,16 @@ class ProducerRepository extends EntityRepository
                 $branchesIds[] = $_branch->getId();
             }
 
-            $qb->innerJoin('p.branches', 'b')
+            $qb
+                ->innerJoin('p.associationHasProducer', 'ahp')
+                ->innerJoin('ahp.branches', 'b')
                 ->andWhere('b.id IN (:branchesIds)')
                 ->setParameter('branchesIds', $branchesIds);
 
         } else {
-            $qb->innerJoin('p.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
+            $qb
+                ->innerJoin('p.associationHasProducer', 'ahp')
+                ->innerJoin('ahp.branches', 'b', Expr\Join::WITH, $qb->expr()->eq('b', ':branch'))
                 ->setParameter('branch', $branch);
         }
 
@@ -188,7 +194,9 @@ class ProducerRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
-        $qb->leftJoin('p.branches', 'b')
+        $qb
+            ->innerJoin('p.associationHasProducer', 'ahp')
+            ->leftJoin('ahp.branches', 'b')
             ->andWhere('b.id IS NULL');
 
         return $qb;

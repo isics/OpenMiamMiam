@@ -23,12 +23,6 @@ class GeneralController extends Controller
      */
     public function showDashboardAction()
     {
-        $activities = $this->getDoctrine()
-            ->getRepository('IsicsOpenMiamMiamBundle:Activity')
-            ->findBy(array(), array('date' => 'desc'));
-
-        return $this->render('IsicsOpenMiamMiamBundle:Admin\Super:showDashboard.html.twig', array(
-            'activities' => $activities,
-        ));
+        return $this->render('IsicsOpenMiamMiamBundle:Admin\Super:showDashboard.html.twig');
     }
 }

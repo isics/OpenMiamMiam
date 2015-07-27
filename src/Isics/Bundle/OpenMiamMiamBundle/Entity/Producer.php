@@ -133,13 +133,6 @@ class Producer
     private $associationHasProducer;
 
     /**
-     * @var Doctrine\Common\Collections\Collection $branches
-     *
-     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="producers")
-     */
-    private $branches;
-
-    /**
      * @var Doctrine\Common\Collections\Collection $producerAttendances
      *
      * @ORM\OneToMany(targetEntity="ProducerAttendance", mappedBy="producer")
@@ -753,22 +746,9 @@ class Producer
     {
         return $this->deletePresentationImage;
     }
-    /**
-     * Add branch
-     *
-     * @param Branch $branch
-     * @return Producer
-     */
-    public function addBranch(Branch $branch)
-    {
-        $this->branches[] = $branch;
-        $branch->addProducer($this);
-
-        return $this;
-    }
 
     /**
-     * Returns true if producer has branch
+     * Producer has branch ?
      *
      * @param Branch $branch
      *
@@ -776,34 +756,23 @@ class Producer
      */
     public function hasBranch(Branch $branch)
     {
-        foreach ($this->getBranches() as $_branch) {
-            if ($branch->getId() == $_branch->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Remove branch
-     *
-     * @param Branch $branch
-     */
-    public function removeBranch(Branch $branch)
-    {
-        $this->branches->removeElement($branch);
-        $branch->removeProducer($this);
+        return in_array($branch, $this->getBranches(), true);
     }
 
     /**
      * Get branches
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return array
      */
     public function getBranches()
     {
-        return $this->branches;
+        $branches = array();
+
+        foreach ($this->getAssociationHasProducer() as $associationHasProducer) {
+            $branches = array_merge($branches, $associationHasProducer->getBranches()->toArray());
+        }
+
+        return $branches;
     }
 
     /**

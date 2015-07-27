@@ -127,20 +127,35 @@ class Branch
      */
     private $facebook;
 
+//    /**
+//     * @var Doctrine\Common\Collections\Collection $producers
+//     *
+//     * @ORM\ManyToMany(targetEntity="Producer", inversedBy="branches")
+//     * @ORM\JoinTable(name="branch_has_producer",
+//     *   joinColumns={
+//     *     @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
+//     *   },
+//     *   inverseJoinColumns={
+//     *     @ORM\JoinColumn(name="producer_id", referencedColumnName="id", onDelete="CASCADE")
+//     *   }
+//     * )
+//     */
+//    private $producers;
+
     /**
-     * @var Doctrine\Common\Collections\Collection $producers
+     * @var \Doctrine\Common\Collections\Collection $associationProducers
      *
-     * @ORM\ManyToMany(targetEntity="Producer", inversedBy="branches")
-     * @ORM\JoinTable(name="branch_has_producer",
+     * @ORM\ManyToMany(targetEntity="AssociationHasProducer", inversedBy="branches")
+     * @ORM\JoinTable(name="branch_has_association_producer",
      *   joinColumns={
      *     @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
      *   },
      *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="producer_id", referencedColumnName="id", onDelete="CASCADE")
+     *     @ORM\JoinColumn(name="association_producer_id", referencedColumnName="id", onDelete="CASCADE")
      *   }
      * )
      */
-    private $producers;
+    private $associationProducers;
 
     /**
      * @var Doctrine\Common\Collections\Collection $products
@@ -485,36 +500,37 @@ class Branch
     }
 
     /**
-     * Add producer
+     * Add AssociationHasProducer
      *
-     * @param Producer $producer
-     * @return Branch
+     * @param AssociationHasProducer $associationHasProducer
+     *
+     * @return $this
      */
-    public function addProducer(Producer $producer)
+    public function addAssociationProducer(AssociationHasProducer $associationHasProducer)
     {
-        $this->producers[] = $producer;
+        $this->associationProducers[] = $associationHasProducer;
 
         return $this;
     }
 
     /**
-     * Remove producer
+     * Remove AssociationHasProducer
      *
-     * @param Producer $producer
+     * @param AssociationHasProducer $associationHasProducer
      */
-    public function removeProducer(Producer $producer)
+    public function removeAssociationProducer(AssociationHasProducer $associationHasProducer)
     {
-        $this->producers->removeElement($producer);
+        $this->associationProducers->removeElement($associationHasProducer);
     }
 
     /**
-     * Get producers
+     * Get AssociationProducers
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProducers()
+    public function getAssociationProducers()
     {
-        return $this->producers;
+        return $this->associationProducers;
     }
 
     /**

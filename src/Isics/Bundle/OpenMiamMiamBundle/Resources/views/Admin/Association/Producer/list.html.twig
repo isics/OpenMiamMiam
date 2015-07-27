@@ -55,7 +55,7 @@
                         <td>{{ associationHasProducer.getInheritedOrDefinedCommission }} %</td>
                         {% for branch in branches %}
                             <td>
-                                {% if branch in associationHasProducer.producer.branches %}
+                                {% if branch in associationHasProducer.branches %}
                                     <span class="glyphicon glyphicon-ok"></span>
                                 {% endif %}
                             </td>

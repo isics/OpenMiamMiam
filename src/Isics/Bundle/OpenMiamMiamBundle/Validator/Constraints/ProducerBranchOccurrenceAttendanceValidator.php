@@ -41,7 +41,7 @@ class ProducerBranchOccurrenceAttendanceValidator extends ConstraintValidator
     public function validate($attendance, Constraint $constraint)
     {
         // Validate branchOccurrence
-        if (!in_array($attendance->getBranchOccurrence()->getBranch(), $attendance->getProducer()->getBranches()->toArray())) {
+        if (!in_array($attendance->getBranchOccurrence()->getBranch(), $attendance->getProducer()->getBranches())) {
             $this->context->addViolationAt('brancheOccurrence', 'error.calendar.invalid_branch_occurrence');
         }
 

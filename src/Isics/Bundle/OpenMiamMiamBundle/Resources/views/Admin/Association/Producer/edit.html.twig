@@ -27,9 +27,9 @@
         </div>
 
         <div class="row-fluid control-group">
-            {{ form_errors(form.producer.branches) }}
-            {{ form_label(form.producer.branches, 'admin.association.producers.form.branches'|trans) }}
-            {{ form_widget(form.producer.branches) }}
+            {{ form_errors(form.branches) }}
+            {{ form_label(form.branches, 'admin.association.producers.form.branches'|trans) }}
+            {{ form_widget(form.branches) }}
         </div>
 
         <a href="{{ path('open_miam_miam.admin.association.producer.list', {'id': associationHasProducer.association.id}) }}" class="pull-right">{{ 'admin.return'|trans }}</a>

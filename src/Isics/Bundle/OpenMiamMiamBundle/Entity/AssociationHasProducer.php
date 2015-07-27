@@ -62,6 +62,13 @@ class AssociationHasProducer
      */
     private $commission;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection $branches
+     *
+     * @ORM\ManyToMany(targetEntity="Branch", mappedBy="associationProducers")
+     */
+    private $branches;
+
 
     /**
      * Get id
@@ -157,5 +164,58 @@ class AssociationHasProducer
         }
 
         return $this->getCommission();
+    }
+
+    /**
+     * Add branch
+     *
+     * @param Branch $branch
+     * @return Producer
+     */
+    public function addBranch(Branch $branch)
+    {
+        $this->branches[] = $branch;
+        $branch->addAssociationProducer($this);
+
+        return $this;
+    }
+
+    /**
+     * Returns true if producer has branch
+     *
+     * @param Branch $branch
+     *
+     * @return bool
+     */
+    public function hasBranch(Branch $branch)
+    {
+        foreach ($this->getBranches() as $_branch) {
+            if ($branch->getId() == $_branch->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove branch
+     *
+     * @param Branch $branch
+     */
+    public function removeBranch(Branch $branch)
+    {
+        $this->branches->removeElement($branch);
+        $branch->removeAssociationProducer($this);
+    }
+
+    /**
+     * Get branches
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBranches()
+    {
+        return $this->branches;
     }
 }

@@ -44,7 +44,7 @@ class AssociationHasProducerManager {
             ->getForAssociationQueryBuilder($association)
             ->innerjoin('ahp.producer', 'p')
             ->addSelect('p')
-            ->leftJoin('p.branches', 'b')
+            ->leftJoin('ahp.branches', 'b')
             ->addSelect('b')
             ->andWhere('p.deletedAt is null')
             ->addOrderBy('p.name', 'ASC')

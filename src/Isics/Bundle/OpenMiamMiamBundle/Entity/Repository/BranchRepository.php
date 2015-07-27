@@ -30,7 +30,8 @@ class BranchRepository extends EntityRepository
     {
         return $this->filterAssociation($association)
             ->addSelect('COUNT(p.id) AS nbProducers')
-            ->leftJoin('b.producers', 'p')
+            ->leftJoin('b.associationProducers', 'ap')
+            ->leftJoin('ap.producer', 'p')
             ->andWhere('p.deletedAt is null')
             ->groupBy('b.id')
             ->orderBy('b.name');
@@ -58,7 +59,8 @@ class BranchRepository extends EntityRepository
     {
         return $this->createQueryBuilder('b')
             ->addSelect('COUNT(p.id) AS nbProducers')
-            ->join('b.producers', 'p')
+            ->innerJoin('b.associationProducers', 'ap')
+            ->innerJoin('ap.producer', 'p')
             ->groupBy('b.id')
             ->orderBy('b.name');
     }
@@ -125,7 +127,6 @@ class BranchRepository extends EntityRepository
      *
      * @param Producer     $producer
      * @param QueryBuilder $qb
-     * @param string       $alias
      *
      * @return QueryBuilder
      */
@@ -133,7 +134,9 @@ class BranchRepository extends EntityRepository
     {
         $qb = null === $qb ? $this->createQueryBuilder('b') : $qb;
 
-        return $qb->innerJoin('b.producers', 'p', Expr\Join::WITH, $qb->expr()->eq('p', ':producer'))
+        return $qb
+            ->innerJoin('b.associationProducers', 'ap')
+            ->innerJoin('ap.producer', 'p', Expr\Join::WITH, $qb->expr()->eq('p', ':producer'))
             ->setParameter('producer', $producer);
     }
 }

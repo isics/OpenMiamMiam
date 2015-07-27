@@ -17,15 +17,16 @@ class ProducerListener
 
         if ($event->getEntity() instanceof Branch) {
 
+            /** @var Branch $branch */
             $branch = $event->getEntity();
 
-            $removedProducers = $branch->getProducers()->getDeleteDiff();
+            $removedAssociationProducers = $branch->getAssociationProducers()->getDeleteDiff();
 
-            foreach ($removedProducers as $removedProducer) {
+            foreach ($removedAssociationProducers as $removedAssociationProducer) {
                 // Prepare query to retrieve product's ids of producer
                 $productIdsQuery = $connection->prepare('SELECT id FROM product WHERE producer_id = :producer_id');
                 $productIdsQuery->execute(array(
-                    'producer_id' => $removedProducer->getId()
+                    'producer_id' => $removedAssociationProducer->getProducer()->getId()
                 ));
 
                 // Get product's ids of producer
