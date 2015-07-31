@@ -221,6 +221,8 @@ class ProductRepository extends EntityRepository
         $qb = null === $qb ? $this->createQueryBuilder('p') : $qb;
 
         return $qb->addSelect('b')
+                ->addSelect('ahp')
+                ->addSelect('pr')
                 ->innerJoin('p.producer', 'pr')
                 ->innerJoin('pr.associationHasProducer', 'ahp')
                 ->innerJoin('ahp.association', 'a')

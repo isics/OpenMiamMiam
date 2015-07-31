@@ -127,21 +127,6 @@ class Branch
      */
     private $facebook;
 
-//    /**
-//     * @var Doctrine\Common\Collections\Collection $producers
-//     *
-//     * @ORM\ManyToMany(targetEntity="Producer", inversedBy="branches")
-//     * @ORM\JoinTable(name="branch_has_producer",
-//     *   joinColumns={
-//     *     @ORM\JoinColumn(name="branch_id", referencedColumnName="id", onDelete="CASCADE")
-//     *   },
-//     *   inverseJoinColumns={
-//     *     @ORM\JoinColumn(name="producer_id", referencedColumnName="id", onDelete="CASCADE")
-//     *   }
-//     * )
-//     */
-//    private $producers;
-
     /**
      * @var \Doctrine\Common\Collections\Collection $associationProducers
      *
