@@ -92,7 +92,7 @@ class DepositWithdrawalExcel
         $this->numberFormatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::DECIMAL);
         $this->numberFormatter->setAttribute(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, true);
         $this->numberFormatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, 2);
-        $this->intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM Y');
+        $this->intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM yyyy');
 
         // Styles
         $this->styles['bold'] = array(

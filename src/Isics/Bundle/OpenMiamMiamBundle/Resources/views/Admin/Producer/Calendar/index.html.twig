@@ -30,7 +30,7 @@
                             {% for child2 in child1.children.branchOccurrenceAttendances.children %}
                                 {% set branchOccurrenceAttendance = child2.vars.data %}
                                 <tr>
-                                    <td>{{ branchOccurrenceAttendance.branchOccurrence.begin|format_date('eeee dd MMMM YYYY') }}</td>
+                                    <td>{{ branchOccurrenceAttendance.branchOccurrence.begin|format_date('eeee dd MMMM yyyy') }}</td>
                                     <td>{{ branchOccurrenceAttendance.branchOccurrence.begin|format_time }}</td>
                                     <td>{{ branchOccurrenceAttendance.branchOccurrence.end|format_time }}</td>
                                     <td>

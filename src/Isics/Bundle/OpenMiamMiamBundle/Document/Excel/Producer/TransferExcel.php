@@ -57,7 +57,7 @@ class TransferExcel
         $sheet->getPageSetup()->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
         $formatter = new \NumberFormatter($this->translator->getLocale(), \NumberFormatter::CURRENCY);
-        $intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM Y');
+        $intl = new \IntlDateFormatter($this->translator->getLocale(), \IntlDateFormatter::NONE, \IntlDateFormatter::NONE, null, null, 'MMMM yyyy');
 
         $boldStyle = array(
             'font' => array(
