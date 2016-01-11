@@ -55,7 +55,7 @@ class AssociationProducerExportTransferType extends AbstractType
             \IntlDateFormatter::NONE,
             null,
             null,
-            'MMMM Y'
+            'MMMM yyyy'
         );
 
         // Store last 12 previous months
