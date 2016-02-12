@@ -88,12 +88,8 @@
                 </td>
                 <td>
                     <label for="{{ child.vars.id }}">
-                        {{ salesOrder.ref }}
-                    </label>
-                </td>
-                <td>
-                    <label for="{{ child.vars.id }}">
-                        {{ salesOrder.date|date('d/m/Y') }}
+                        <span class="sales-order-ref">{{ salesOrder.ref }}</span>
+                        <span class="sales-order-date">{{ salesOrder.date|date('d/m/Y') }}</span>
                     </label>
                 </td>
                 <td class="text-right">

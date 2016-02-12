@@ -35,6 +35,11 @@ class SalesOrderManager
     protected $entityManager;
 
     /**
+     * @var AllocatePaymentManager
+     */
+    protected $allocatePaymentManager;
+
+    /**
      * @var array $orderConfig
      */
     protected $orderConfig;
@@ -49,22 +54,21 @@ class SalesOrderManager
      */
     protected $mailer;
 
-
-
     /**
-     * Constructs object
-     *
-     * @param array           $orderConfig
-     * @param EntityManager   $entityManager
-     * @param ActivityManager $activityManager
-     * @param Mailer          $mailer
+     * @param array                  $orderConfig
+     * @param EntityManager          $entityManager
+     * @param AllocatePaymentManager $allocatePaymentManager
+     * @param ActivityManager        $activityManager
+     * @param Mailer                 $mailer
      */
     public function __construct(array $orderConfig,
                                 EntityManager $entityManager,
+                                AllocatePaymentManager $allocatePaymentManager,
                                 ActivityManager $activityManager,
                                 Mailer $mailer)
     {
         $this->entityManager = $entityManager;
+        $this->allocatePaymentManager = $allocatePaymentManager;
         $this->activityManager = $activityManager;
         $this->mailer = $mailer;
 
@@ -339,6 +343,8 @@ class SalesOrderManager
             $this->entityManager->persist($activity);
         }
         $this->entityManager->flush();
+
+        $this->reallocatePayments($order, $user);
     }
 
     /**
@@ -375,6 +381,31 @@ class SalesOrderManager
         );
         $this->entityManager->persist($activity);
         $this->entityManager->flush();
+
+        $this->reallocatePayments($order, $user);
+    }
+
+    /**
+     * Reallocation payments to order
+     *
+     * @param SalesOrder $order
+     * @param User       $user
+     */
+    protected function reallocatePayments(SalesOrder $order, User $user = null)
+    {
+        // fetch payments related to actual payments allocations
+        $payments = array();
+        foreach ($order->getPaymentAllocations() as $paymentAllocation) {
+            $payments[] = $paymentAllocation->getPayment();
+            $this->allocatePaymentManager->deletePaymentAllocation($paymentAllocation, false);
+        }
+
+        // Reset allocations and order credit
+        $order->setPaymentAllocations(array());
+        $order->setCredit(-1 * $order->getTotal());
+
+        // Reallocate payments to order
+        $this->allocatePaymentManager->allocatePaymentsToSalesOrders($payments, array($order), $user);
     }
 
     /**
@@ -467,7 +498,7 @@ class SalesOrderManager
         $order->setTotal($total);
 
         // Credit
-        $credit = -1*$order->getTotal();
+        $credit = -1 * $order->getTotal();
         foreach ($order->getPaymentAllocations() as $allocation) {
             $credit += $allocation->getAmount();
         }

@@ -934,8 +934,23 @@ div.user_payment_allocation {
 
         td.payments span.payment-rest,
         td.sales-orders span.sales-order-left-to-pay {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: bold;
+        }
+
+        td.sales-orders {
+            .sales-order-ref,
+            .sales-order-date {
+                display: block;
+            }
+
+            .sales-order-ref {
+                font-size: 1.1em;
+            }
+
+            .sales-order-date {
+                font-size: .8em;
+            }
         }
 
         .well {
@@ -950,10 +965,6 @@ div.user_payment_allocation {
 
 #manage-payments-dialog {
     .modal-dialog {
-        &.modal-sm {
-            width: 500px;
-        }
-
         &.modal-lg {
             width: 800px;
         }

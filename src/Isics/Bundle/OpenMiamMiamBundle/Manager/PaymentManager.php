@@ -215,6 +215,7 @@ class PaymentManager
         $payment->addPaymentAllocation($paymentAllocation);
         $payment->setRest($payment->getRest()-$amount);
 
+        $order->addPaymentAllocation($paymentAllocation);
         $order->setCredit($order->getCredit()+$amount);
 
         $this->entityManager->persist($payment);

@@ -79,7 +79,7 @@ class ActivityRepository extends EntityRepository
      */
     public function findByEntities($object = null, $target = null, User $user = null)
     {
-        $qb = $this->createQueryBuilder('a')->addOrderBy('a.date', 'DESC');
+        $qb = $this->createQueryBuilder('a')->addOrderBy('a.date', 'DESC')->addOrderBy('a.id', 'DESC');
 
         if (null !== $object) {
             $qb = $this->findByObjectFromEntityQueryBuilder($object, $qb);

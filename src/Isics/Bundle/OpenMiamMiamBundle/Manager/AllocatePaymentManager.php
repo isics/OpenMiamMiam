@@ -131,12 +131,10 @@ class AllocatePaymentManager
     public function deletePaymentAndAllocations(Payment $payment)
     {
         foreach ($payment->getPaymentAllocations() as $paymentAllocation) {
-            $this->deletePaymentAllocation($paymentAllocation, false);
+            $this->deletePaymentAllocation($paymentAllocation);
         }
 
         $this->paymentManager->delete($payment);
-
-        $this->entityManager->flush();
     }
 
     /**

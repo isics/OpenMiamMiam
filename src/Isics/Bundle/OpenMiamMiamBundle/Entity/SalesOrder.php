@@ -485,7 +485,7 @@ class SalesOrder
     }
 
     /**
-     * @return array
+     * @return PaymentAllocation[]
      */
     public function getPaymentAllocations()
     {

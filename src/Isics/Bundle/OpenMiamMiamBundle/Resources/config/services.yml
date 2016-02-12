@@ -511,7 +511,12 @@ services:
 
     open_miam_miam.sales_order_manager:
         class: %open_miam_miam.sales_order_manager.class%
-        arguments: [%open_miam_miam.order%, @doctrine.orm.entity_manager, @open_miam_miam.activity_manager, @open_miam_miam.mailer]
+        arguments:
+            - %open_miam_miam.order%
+            - @doctrine.orm.entity_manager
+            - @open_miam_miam.allocate_payment_manager
+            - @open_miam_miam.activity_manager
+            - @open_miam_miam.mailer
 
     open_miam_miam.producer_sales_order_manager:
         class: %open_miam_miam.producer_sales_order_manager.class%
