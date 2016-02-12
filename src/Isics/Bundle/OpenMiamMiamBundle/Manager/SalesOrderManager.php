@@ -397,11 +397,10 @@ class SalesOrderManager
         $payments = array();
         foreach ($order->getPaymentAllocations() as $paymentAllocation) {
             $payments[] = $paymentAllocation->getPayment();
-            $this->allocatePaymentManager->deletePaymentAllocation($paymentAllocation, false);
+            $this->allocatePaymentManager->deletePaymentAllocation($paymentAllocation);
         }
 
         // Reset allocations and order credit
-        $order->setPaymentAllocations(array());
         $order->setCredit(-1 * $order->getTotal());
 
         // Reallocate payments to order
