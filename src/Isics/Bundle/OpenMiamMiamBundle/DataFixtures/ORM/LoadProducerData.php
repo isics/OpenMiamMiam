@@ -29,8 +29,9 @@ class LoadProducerData extends AbstractFixture implements OrderedFixtureInterfac
             $manager->persist($producer);
 
             $this->getReference('association')->addProducer($producer);
-            $this->getReference('branch.branch1')->addProducer($producer);
-            $this->getReference('branch.branch2')->addProducer($producer);
+            $associationProducer = $this->getReference('association')->getAssociationHasProducerByProducer($producer);
+            $this->getReference('branch.branch1')->addAssociationProducer($associationProducer);
+            $this->getReference('branch.branch2')->addAssociationProducer($associationProducer);
 
             $this->addReference($key, $producer);
         }
