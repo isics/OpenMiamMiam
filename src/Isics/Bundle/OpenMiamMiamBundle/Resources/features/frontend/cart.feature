@@ -14,6 +14,9 @@ Feature: Branch cart
       | name                 | category              | description | price |
       | Basket of vegetables | Fruits and vegetables |             | 15    |
     And an association "Friends of organic food"
+    And association "Friends of organic food" has following producers:
+      | name        |
+      | Beth Rave   |
     And association "Friends of organic food" has following branches:
       | name     |
       | Branch 1 |
