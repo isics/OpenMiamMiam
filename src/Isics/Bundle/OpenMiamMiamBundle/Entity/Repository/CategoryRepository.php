@@ -75,6 +75,28 @@ class CategoryRepository extends NestedTreeRepository
     }
 
     /**
+     * From a given category, find her parent category to a given level
+     *
+     * @param Category $category
+     * @param $level
+     * @return mixed
+     */
+    public function getCategoryAtLevel(Category $category, $level) {
+        return $this
+            ->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.lvl = :level')
+            ->andWhere('c.lft < :left')
+            ->andWhere('c.rgt > :right')
+            ->setParameter(':level', $level)
+            ->setParameter(':left', $category->getLft())
+            ->setParameter(':right', $category->getRgt())
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
      * Finds first level categories available in a branch
      *
      * @param Branch $branch Branch

@@ -45,7 +45,10 @@
         "behat/symfony2-extension": "*",
         "doctrine/data-fixtures": "1.0.*@dev",
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
-        "fzaninotto/faker": "1.2.*@dev"
+        "fzaninotto/faker": "1.2.*@dev",
+        "liip/functional-test-bundle": "1.0.*@dev",
+        "elao/web-profiler-extra-bundle" : "~2.3@dev",
+        "raulfraile/ladybug-bundle": "~1.0"
     },
     "scripts": {
         "post-install-cmd": [

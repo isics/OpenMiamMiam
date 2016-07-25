@@ -430,6 +430,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    open_miam_miam.twig.category_level_extension:
+        class:     Isics\Bundle\OpenMiamMiamBundle\Twig\CategoryLevelExtension
+        arguments:
+            - @translator
+            - @open_miam_miam.repository.category
+        tags:
+            - { name: twig.extension }
+
     # Menus
     open_miam_miam.menu_builder:
         class:     %open_miam_miam.menu_builder.class%
@@ -570,6 +578,13 @@ services:
         factory_method:  "getRepository"
         arguments:
             - "IsicsOpenMiamMiamBundle:Comment"
+
+    open_miam_miam.repository.category:
+        class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\CategoryRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method:  "getRepository"
+        arguments:
+            - "IsicsOpenMiamMiamBundle:Category"
 
     open_miam_miam.repository.branch:
         class: Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository
