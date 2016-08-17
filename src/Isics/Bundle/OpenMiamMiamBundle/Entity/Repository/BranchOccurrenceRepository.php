@@ -324,7 +324,7 @@ class BranchOccurrenceRepository extends EntityRepository
                 ->where('b.association = :association')
                 ->andWhere('bo.end <= :stop')
                 ->addOrderBy('bo.begin', 'DESC')
-                ->addOrderBy('b.name', 'ASC')
+                ->addOrderBy('b.city', 'ASC')
                 ->setParameter('association', $association)
                 ->setParameter('stop', $stop)
                 ->getQuery()

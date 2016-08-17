@@ -39,7 +39,7 @@ class SuperArticleType extends AbstractType
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('b')
                             ->addOrderBy('b.association')
-                            ->addOrderBy('b.name');
+                            ->addOrderBy('b.city');
                     },
                 ))
                 ->add('save', 'submit');

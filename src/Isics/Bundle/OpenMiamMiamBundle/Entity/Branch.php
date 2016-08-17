@@ -43,17 +43,10 @@ class Branch
     private $association;
 
     /**
-     * @var string $name
-     *
-     * @ORM\Column(name="name", type="string", length=128, nullable=false, unique=true)
-     */
-    private $name;
-
-    /**
      * @var string $slug
      *
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, nullable=false, unique=true)
+     * @Gedmo\Slug(fields={"city"})
+     * @ORM\Column(name="slug", type="string", length=64, nullable=false, unique=true)
      */
     private $slug;
 
@@ -98,6 +91,13 @@ class Branch
      * @ORM\Column(name="city", type="string", length=64, nullable=true)
      */
     private $city;
+
+   /**
+     * @var string $departmentNumber
+     *
+     * @ORM\Column(name="department_number", type="string", length=2, nullable=false)
+     */
+    private $departmentNumber;
 
     /**
      * @var string $phoneNumber1
@@ -176,26 +176,13 @@ class Branch
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Branch
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get name
      *
      * @return string
      */
     public function getName()
     {
-        return $this->name;
+        return sprintf('%s (%s)', $this->city, $this->departmentNumber);
     }
 
     /**
@@ -205,7 +192,7 @@ class Branch
      */
     public function getNameWithAssociation()
     {
-        return $this->getAssociation()->getName().' / '.$this->name;
+        return sprintf('%s / %s', $this->getAssociation()->getName(), $this->getName());
     }
 
     /**
@@ -367,6 +354,30 @@ class Branch
     public function getCity()
     {
         return $this->city;
+    }
+
+    /**
+     * Set department number
+     *
+     * @param string $departmentNumber
+     *
+     * @return Branch
+     */
+    public function setDepartmentNumber($departmentNumber)
+    {
+        $this->departmentNumber = $departmentNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get department number
+     *
+     * @return string
+     */
+    public function getDepartmentNumber()
+    {
+        return $this->departmentNumber;
     }
 
     /**

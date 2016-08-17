@@ -14,7 +14,6 @@
 
     {{ form_errors(form) }}
 
-    {{ form_row(form.name, {'label': 'admin.association.branch.form.name'|trans}) }}
     {{ form_row(form.address1, {'label': 'admin.association.branch.form.address1'|trans}) }}
     {{ form_errors(form.address2) }}
     {{ form_row(form.address2, {'label': 'admin.association.branch.form.address2'|trans}) }}
@@ -22,8 +21,11 @@
         <div class="col-md-3">
             {{ form_row(form.zipcode, {'label': 'admin.association.branch.form.zipcode'|trans}) }}
         </div>
-        <div class="col-md-9">
+        <div class="col-md-7">
             {{ form_row(form.city, {'label': 'admin.association.branch.form.city'|trans}) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.departmentNumber, {'label': 'admin.association.branch.form.department_number'|trans}) }}
         </div>
     </div>
     <div class="row">
