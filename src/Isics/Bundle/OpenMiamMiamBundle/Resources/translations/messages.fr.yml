@@ -29,7 +29,7 @@ catalog:              "Catalogue"
 
 
 # Hompage
-homepage.map.title:        "Choisissez l'association près de chez vous :"
+homepage.map.title:        "Choisissez le lieu de distribution près de chez vous :"
 homepage.map.branches:     "Lieu de distribution :"
 homepage.map.nb_producers: "{0} Aucun producteur|{1} 1 producteur|]1,Inf] %nb% producteurs"
 homepage.news.title:       "Actualités"
@@ -76,7 +76,7 @@ branch.producers.more:          "En savoir+"
 # Branch attendances
 branch_attendance_calendar.title:         "Calendrier de présence des producteurs"
 branch_attendance_calendar.no_producer:   "Aucun producteur"
-branch_attendance_calendar.no_occurrence: "Aucun prochain comptoir"
+branch_attendance_calendar.no_occurrence: "Aucune distribution planifiée"
 
 # Producer
 producer.name:          "Nom"
@@ -88,7 +88,7 @@ producer.phone_number1: "Téléphone"
 producer.phone_number2: "Portable"
 producer.website:       "Site web"
 producer.facebook:      "Page Facebook"
-producer.no_attendance: "Ce producteur n'a aucun comptoir de prévu"
+producer.no_attendance: "Ce producteur n'a aucune distribution de prévue"
 
 # Cart
 cart.title:                 "Mon panier"
@@ -223,7 +223,7 @@ admin.super.articles.form.edit_title:       "Article «%title%»"
 admin.super.articles.form.title:            "Titre"
 admin.super.articles.form.body:             "Corps"
 admin.super.articles.form.is_published:     "Publié"
-admin.super.articles.form.branches:         "Comptoir(s) où diffuser cet article"
+admin.super.articles.form.branches:         "Lieu(x) de distribution où diffuser cet article"
 admin.super.articles.message.created:       "L'article a bien été créé."
 admin.super.articles.message.updated:       "L'article a bien été mis à jour."
 admin.super.articles.message.deleted:       "L'article a bien été supprimé."
@@ -233,7 +233,7 @@ admin.super.articles.delete_dialog.content: "Êtes-vous vraiment certain de voul
 admin.super.newsletter.form.new_title:       "Envoyer une lettre d'information"
 admin.super.newsletter.form.edit_title:      "Envoyer une lettre d'information (correction)"
 admin.super.newsletter.form.recipients:      "Destinataires"
-admin.super.newsletter.form.without_branch:  "Sans comptoir"
+admin.super.newsletter.form.without_branch:  "Sans lieu de distribution"
 admin.super.newsletter.form.subject:         "Objet"
 admin.super.newsletter.form.body:            "Message"
 admin.super.newsletter.form.send_test:       "Envoyer une lettre test"
@@ -404,7 +404,7 @@ admin.association.producers.list.name:              "Nom"
 admin.association.producers.list.commission:        "Commission"
 admin.association.producers.edit.title:             "Producteur «%producer_name%»"
 admin.association.producers.message.updated:        "Le producteur a bien été mis à jour."
-admin.association.producers.form.branches:          "Comptoirs"
+admin.association.producers.form.branches:          "Lieu(x) de distribution"
 admin.association.producers.form.commission.helper: "Laissez ce champ vide pour garder la commission par défaut (%default_commission% %)"
 
 # Admin / Association / Consumer
@@ -447,7 +447,7 @@ admin.association.consumer.edit.is_orders_open_notification_subscriber: "Souhait
 admin.association.consumer.edit.flash.success:                          "Le consommateur a été édité avec succès"
 
 admin.association.consumer.orders.date:           "Date"
-admin.association.consumer.orders.branch:         "Comptoir"
+admin.association.consumer.orders.branch:         "Lieu de distribution"
 admin.association.consumer.orders.amount:         "Montant"
 admin.association.consumer.orders.complete_list:  "Accéder à la liste complète"
 admin.association.consumer.orders.first.date:     "Première commande le : %date%"
@@ -456,16 +456,16 @@ admin.association.consumer.orders.complete.title:               "Liste des comma
 admin.association.consumer.orders.complete.anonymous_title :    "Liste des commandes anonymes"
 admin.association.consumer.orders.complete.ref:                 "Référence"
 admin.association.consumer.orders.complete.date:                "Date"
-admin.association.consumer.orders.complete.branch:              "Comptoir"
+admin.association.consumer.orders.complete.branch:              "Lieu de distribution"
 admin.association.consumer.orders.complete.amount:              "Montant"
 admin.association.consumer.orders.complete.credit:              "Reste à payer"
 
 admin.association.consumer.orders.complete.filter.all_branches:     "Tous les lieux de distribution"
-admin.association.consumer.orders.complete.filter.no_order:         "Aucun comptoir ne correspond à ces critères."
+admin.association.consumer.orders.complete.filter.no_order:         "Aucune comande ne correspond à ces critères."
 admin.association.consumer.orders.complete.filter.clear:            "Remettre à zéro"
 admin.association.consumer.orders.complete.filter.filter:           "Filtrer"
 admin.association.consumer.orders.complete.filter.ref:              "Référence"
-admin.association.consumer.orders.complete.filter.branch:           "Comptoir"
+admin.association.consumer.orders.complete.filter.branch:           "Lieu de distribution"
 admin.association.consumer.orders.complete.filter.dates:            "Dates"
 admin.association.consumer.orders.complete.filter.min_date:         "Du"
 admin.association.consumer.orders.complete.filter.max_date:         "Au"
@@ -570,7 +570,7 @@ admin.association.sales_orders.form.edit_title:                       "Commande 
 admin.association.sales_orders.form.pay:                              "Régler"
 admin.association.sales_orders.sales_order_rows.no:                   "Il n'y a pas de ligne de commande pour cette commande."
 admin.association.sales_orders.form.consumer:                         "Consommateur"
-admin.association.sales_orders.form.branch:                           "Comptoir"
+admin.association.sales_orders.form.branch:                           "Lieu de distribution"
 admin.association.sales_orders.form.sales_order_row.ref:              "Réf"
 admin.association.sales_orders.form.sales_order_row.product:          "Produit"
 admin.association.sales_orders.form.sales_order_row.unit_price:       "Prix unitaire"
@@ -662,14 +662,14 @@ admin.association.branch.calendar.from:                  "De"
 admin.association.branch.calendar.to:                    "A"
 admin.association.branch.calendar.attendees:             "Présents"
 admin.association.branch.calendar.attendees.list:        "Voir les présences des producteurs"
-admin.association.branch.calendar.delete:                "Supprimer l'occurrence"
-admin.association.branch.calendar.message.created:       "L'occurrence a bien été ajoutée."
-admin.association.branch.calendar.message.deleted:       "L'occurrence a bien été supprimée."
-admin.association.branch.calendar.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cette occurrence ?"
+admin.association.branch.calendar.delete:                "Supprimer la distribution"
+admin.association.branch.calendar.message.created:       "La distribution a bien été planifiée."
+admin.association.branch.calendar.message.deleted:       "La distribution a bien été supprimée."
+admin.association.branch.calendar.delete_dialog.content: "Êtes-vous vraiment certain de vouloir supprimer cette distribution ?"
 
 # Admin / Association / Branch occurrences producers' attendances
-admin.association.branch.occurrences.attendances.title:                  "Présence des producteurs au comptoir"
-admin.association.branch.occurrences.attendances.alert.not_answered_yet: "Certains producteurs n'ont pas encore donné leur décision concernant leur présence au comptoir"
+admin.association.branch.occurrences.attendances.title:                  "Présence des producteurs à la distribution"
+admin.association.branch.occurrences.attendances.alert.not_answered_yet: "Certains producteurs n'ont pas encore donné leur décision concernant leur présence pour la distribution"
 admin.association.branch.occurrences.attendances.not_answered_yet:       "En attente"
 admin.association.branch.occurrences.attendances.agree:                  "Présents"
 admin.association.branch.occurrences.attendances.disagree:               "Absents"
@@ -688,7 +688,7 @@ admin.association.articles.form.edit_title:       "Article «%title%»"
 admin.association.articles.form.title:            "Titre"
 admin.association.articles.form.body:             "Corps"
 admin.association.articles.form.is_published:     "Publié"
-admin.association.articles.form.branches:         "Comptoir(s) où diffuser cet article"
+admin.association.articles.form.branches:         "Lieu(x) de distribution où diffuser cet article"
 admin.association.articles.message.created:       "L'article a bien été créé."
 admin.association.articles.message.updated:       "L'article a bien été mis à jour."
 admin.association.articles.message.deleted:       "L'article a bien été supprimé."
@@ -765,7 +765,7 @@ admin.producer.infos.presentation:       "Présentation"
 
 # Admin / Producer / Sales orders
 admin.producer.sales_orders.list.title:                         "Commandes à préparer"
-admin.producer.sales_orders.list.no_order:                      "Il n'y a pas encore de commande pour ce comptoir."
+admin.producer.sales_orders.list.no_order:                      "Il n'y a pas encore de commande pour cette distribution."
 admin.producer.sales_orders.list.ref:                           "Réf"
 admin.producer.sales_orders.list.date:                          "Date"
 admin.producer.sales_orders.list.consumer:                      "Consommateur"
@@ -778,7 +778,7 @@ admin.producer.sales_orders.list.export.products_to_prepare:    "Produits à pr�
 admin.producer.sales_orders.list.export.sales_orders:           "Commandes"
 admin.producer.sales_orders.form.edit_title:                    "Commande %ref%"
 admin.producer.sales_orders.form.consumer:                      "Consommateur"
-admin.producer.sales_orders.form.branch:                        "Comptoir"
+admin.producer.sales_orders.form.branch:                        "Lieu de distribution"
 admin.producer.sales_orders.form.total:                         "Total"
 admin.producer.sales_orders.sales_order_rows.no:                "Il n'y a pas de ligne de commande pour cette commande."
 admin.producer.sales_orders.form.sales_order_row.ref:           "Réf"
@@ -815,8 +815,8 @@ admin.producer.sales_orders.list_history.title:                 "Historique des 
 admin.producer.sales_orders.list_history.filter.all_branches:   "Tous les lieux de distribution"
 admin.producer.sales_orders.list_history.filter.min_date:       "Du"
 admin.producer.sales_orders.list_history.filter.max_date:       "Au"
-admin.producer.sales_orders.list_history.no_order:              "Il n'y a pas eu de commande pour ce comptoir"
-admin.producer.sales_orders.list_history.no_branch_occurrence:  "Aucun comptoir ne correspond aux critères"
+admin.producer.sales_orders.list_history.no_order:              "Il n'y a pas eu de commande pour cette distribution"
+admin.producer.sales_orders.list_history.no_branch_occurrence:  "Aucune distribution ne correspond aux critères"
 
 admin.producer.sales_orders.delete_dialog.sales_order_row.content: "Êtes-vous vraiment certain de vouloir supprimer cette ligne de commande ?"
 
@@ -855,7 +855,7 @@ admin.producer.products.form.price_info.placeholder:   "Prix au kg, poids moyen 
 admin.producer.products.form.availability:             "Disponibilité"
 admin.producer.products.form.stock:                    "Stock"
 admin.producer.products.form.available_at:             "Disponible le"
-admin.producer.products.form.branches:                 "Comptoir(s) où trouver ce produit"
+admin.producer.products.form.branches:                 "Lieu(x) de distribution où trouver ce produit"
 admin.producer.products.form.is_of_the_moment:         "Produit du moment !"
 admin.producer.products.message.created:               "Le produit a bien été créé."
 admin.producer.products.message.updated:               "Le produit a bien été mis à jour."
@@ -864,7 +864,7 @@ admin.producer.products.delete_dialog.content:         "Êtes-vous vraiment cert
 
 # Admin / Producer / Calendar
 admin.producer.calendar.title:              "Calendrier de présence"
-admin.producer.calendar.no_occurence:       "Aucun comptoir n'a été planifié."
+admin.producer.calendar.no_occurrence:      "Aucune distribution n'a été planifiée."
 admin.producer.calendar.at:                 "Le"
 admin.producer.calendar.from:               "De"
 admin.producer.calendar.to:                 "A"
@@ -896,10 +896,10 @@ message.cart.updated: "Votre panier a été mis à jour."
 
 
 # Activities
-activity_stream.branch.created:                         "a créé le comptoir %name%."
-activity_stream.branch.updated:                         "a mis à jour le comptoir %name%."
+activity_stream.branch.created:                         "a créé le lieu de distribution %name%."
+activity_stream.branch.updated:                         "a mis à jour le lieu de distribution %name%."
 activity_stream.association.created:                    "a créé l'assocation «%name%»."
-activity_stream.association.updated:                    "a mis à jour l'aassocation «%name%»."
+activity_stream.association.updated:                    "a mis à jour l'association «%name%»."
 activity_stream.producer.created:                       "a créé le producteur «%name%»."
 activity_stream.producer.updated:                       "a mis à jour le producteur «%name%»."
 activity_stream.product.created:                        "a créé le produit %name%."
@@ -929,13 +929,13 @@ error.required: "Cette valeur est requise"
 error.sales_order.not_enough_stock: "Pas assez de stock (reste %rest%)"
 error.sales_order.ref_not_unique:   "La référence doit être unique"
 
-error.calendar.invalid_branch_occurrence:   "Comptoir invalide"
+error.calendar.invalid_branch_occurrence:   "Distribution invalide"
 error.calendar.invalid_producer_attendance: "Présence invalide"
 
-error.product.invalid_branches:    "Au moins un comptoir est invalide"
+error.product.invalid_branches:    "Au moins un lieu de distribution est invalide"
 error.product.category_not_a_leaf: "La catégorie sélectionnée ne doit pas contenir d'autre catégorie"
 
-error.cart.product_unavailable_in_branch: "Produit indisponible pour le comptoir %branch%."
+error.cart.product_unavailable_in_branch: "Produit indisponible pour le lieu de distribution %branch%."
 error.cart.product_unavailable:           "Produit indisponible."
 error.cart.not_enough_stock:              "Pas assez de stock (reste %rest%)."
 error.cart.decimal_quantity_not_allowed:  "Impossible de commander une quantité décimale pour ce produit."
@@ -1006,12 +1006,12 @@ mail.newsletter_test.edit:               "NON"
 mail.newsletter_test.send_help:          "Envoyer à tous les destinataires"
 mail.newsletter_test.edit_help:          "Corriger et envoyer un nouveau test"
 
-mail.branch.orders_open.log.branch_name: "<info>Les commandes pour le comptoir \"%branch_name%\" sont ouvertes. Notification envoyée par email à :</info>"
+mail.branch.orders_open.log.branch_name: "<info>Les commandes pour le lieu de distribution \"%branch_name%\" sont ouvertes. Notification envoyée par email à :</info>"
 mail.branch.orders_open.log.task_end:    "<info>%email_sent%</info> email(s) envoyé(s) en <info>%time%</info> secondes. Consommation mémoire : <info>%memory%</info> Mo"
-mail.branch.orders_open.subject:         "Les commandes sont ouvertes pour le comptoir %branch_name% !"
+mail.branch.orders_open.subject:         "Les commandes sont ouvertes pour le lieu de distribution %branch_name% !"
 mail.branch.orders_open.message_html:    |
     <p>Bonjour %firstname%,</p>
-    <p>Les commandes pour le comptoir <a href="%branch_url%">%branch_name%</a> sont ouvertes <strong>du %order_open_date% au %order_closed_date%</strong>.</p>
+    <p>Les commandes pour le lieu de distribution <a href="%branch_url%">%branch_name%</a> sont ouvertes <strong>du %order_open_date% au %order_closed_date%</strong>.</p>
     <p><strong>Rendez-vous sur <a href="%branch_url%">%branch_url%</a> pour commander !</strong></p>
 mail.branch.orders_open.unsubscribe:     |
     <p style="font-size: 0.8em;">
@@ -1021,9 +1021,9 @@ mail.branch.orders_open.unsubscribe:     |
         </em>
     </p>
 
-mail.branch.orders_closed.log.branch_name: "<info>Les commandes pour le comptoir \"%branch_name%\" sont fermées. Email de rappel de commande envoyé à :</info>"
+mail.branch.orders_closed.log.branch_name: "<info>Les commandes pour le lieu de distribution \"%branch_name%\" sont fermées. Email de rappel de commande envoyé à :</info>"
 mail.branch.orders_closed.log.task_end:    "<info>%email_sent%</info> email(s) envoyé(s) en <info>%time%</info> secondes. Consommation mémoire : <info>%memory%</info> Mo"
-mail.branch.orders_closed.subject:         "N'oubliez pas votre commande %ref% pour le comptoir %branch_name% !"
+mail.branch.orders_closed.subject:         "N'oubliez pas votre commande %ref% pour le lieu de distribution %branch_name% !"
 mail.branch.orders_closed.message_html:    |
     <p>Bonjour %firstname%,</p>
     <p><strong>N'oubliez pas de venir chercher votre commande %ref% !</strong></p>
