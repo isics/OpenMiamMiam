@@ -88,7 +88,7 @@ class Branch
     /**
      * @var string $city
      *
-     * @ORM\Column(name="city", type="string", length=64, nullable=true)
+     * @ORM\Column(name="city", type="string", length=64, nullable=false)
      */
     private $city;
 
