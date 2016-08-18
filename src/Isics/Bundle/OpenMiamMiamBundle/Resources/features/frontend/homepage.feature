@@ -5,9 +5,9 @@ Feature: Branch homepage
   Background:
     Given an association "Friends of organic food"
     And association "Friends of organic food" has following branches:
-      | name     |
-      | Branch 1 |
-      | Branch 2 |
+      | city   | department_number |
+      | City 1 | 29                |
+      | City 2 | 81                |
 
   Scenario Outline: Branch homepage title
     Given I am on "<url>"
@@ -15,9 +15,9 @@ Feature: Branch homepage
     And the "h1" element should contain "<title>"
 
   Examples:
-    | url       | title    |
-    | /branch-1 | Branch 1 |
-    | /branch-2 | Branch 2 |
+    | url     | title  |
+    | /city-1 | City 1 |
+    | /city-2 | City 2 |
 
   Scenario: Branch homepage for a nonexistent branch
     Given I am on "/foobar"

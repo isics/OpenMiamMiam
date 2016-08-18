@@ -147,7 +147,8 @@ class FeatureContext extends BehatContext
         foreach ($table->getHash() as $data) {
             $branch = new Branch();
             $branch->setAssociation($association);
-            $branch->setName($data['name']);
+            $branch->setCity($data['city']);
+            $branch->setDepartmentNumber($data['department_number']);
 
             $entityManager->persist($branch);
         }
@@ -245,12 +246,12 @@ class FeatureContext extends BehatContext
     /**
      * @Given /^branch "([^"]*)" has following calendar:$/
      */
-    public function branchHasFollowingCalendar($branch_name, TableNode $table)
+    public function branchHasFollowingCalendar($branch_city, TableNode $table)
     {
-        $branch = $this->getRepository('Branch')->findOneByName($branch_name);
+        $branch = $this->getRepository('Branch')->findOneByCity($branch_city);
         if (null === $branch) {
             throw new \InvalidArgumentException(
-                sprintf('Branch named "%s" was not found.', $branch_name)
+                sprintf('Branch named "%s" was not found.', $branch_city)
             );
         }
 
@@ -271,13 +272,13 @@ class FeatureContext extends BehatContext
     /**
      * @Given /^branch "([^"]*)" has following producers:$/
      */
-    public function branchHasFollowingProducers($branch_name, TableNode $table)
+    public function branchHasFollowingProducers($branch_city, TableNode $table)
     {
         /** @var Branch $branch */
-        $branch = $this->getRepository('Branch')->findOneByName($branch_name);
+        $branch = $this->getRepository('Branch')->findOneByCity($branch_city);
         if (null === $branch) {
             throw new \InvalidArgumentException(
-                sprintf('Branch named "%s" was not found.', $branch_name)
+                sprintf('Branch named "%s" was not found.', $branch_city)
             );
         }
         $association = $branch->getAssociation();
@@ -297,7 +298,7 @@ class FeatureContext extends BehatContext
 
             if (null === $associationProducer) {
                 throw new \InvalidArgumentException(
-                    sprintf('Producer "%s" is not linked with association of branch "%s".', $data['name'], $branch_name)
+                    sprintf('Producer "%s" is not linked with association of branch "%s".', $data['name'], $branch_city)
                 );
             }
 
@@ -312,12 +313,12 @@ class FeatureContext extends BehatContext
     /**
      * @Given /^branch "([^"]*)" has following products:$/
      */
-    public function branchHasFollowingProducts($branch_name, TableNode $table)
+    public function branchHasFollowingProducts($branch_city, TableNode $table)
     {
-        $branch = $this->getRepository('Branch')->findOneByName($branch_name);
+        $branch = $this->getRepository('Branch')->findOneByCity($branch_city);
         if (null === $branch) {
             throw new \InvalidArgumentException(
-                sprintf('Branch named "%s" was not found.', $branch_name)
+                sprintf('Branch named "%s" was not found.', $branch_city)
             );
         }
 
@@ -363,10 +364,10 @@ class FeatureContext extends BehatContext
         $entityManager = $this->getEntityManager();
 
         foreach ($table->getHash() as $data) {
-            $branch = $this->getRepository('Branch')->findOneByName($data['branch']);
+            $branch = $this->getRepository('Branch')->findOneByCity($data['city']);
             if (null === $branch) {
                 throw new \InvalidArgumentException(
-                    sprintf('Branch named "%s" was not found.', $data['branch'])
+                    sprintf('Branch named "%s" was not found.', $data['city'])
                 );
             }
 
@@ -382,7 +383,7 @@ class FeatureContext extends BehatContext
                 ->getOneOrNullResult();
             if (null === $branchOccurrence) {
                 throw new \InvalidArgumentException(
-                    sprintf('No branch occurrence for branch named "%s" at %s.', $data['branch'], date('c', strtotime($data['date'])))
+                    sprintf('No branch occurrence for branch named "%s" at %s.', $data['city'], date('c', strtotime($data['date'])))
                 );
             }
 

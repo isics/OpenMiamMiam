@@ -28,10 +28,10 @@ Feature: Branch catalog
       | Fruit yoghurt        | Dairy produce         |             | 0.60  | unavailable             |
     And an association "Friends of organic food"
     And association "Friends of organic food" has following branches:
-      | name     |
-      | Branch 1 |
-      | Branch 2 |
-    And branch "Branch 1" has following calendar:
+      | city   | department_number |
+      | City 1 | 29                |
+      | City 2 | 81                |
+    And branch "City 1" has following calendar:
       | date     | from   | to     |
       | + 1 week | 5 p.m. | 7 p.m. |
     And association "Friends of organic food" has following producers:
@@ -39,17 +39,17 @@ Feature: Branch catalog
       | Beth Rave   |
       | Elsa Dorsa  |
       | Romeo Frigo |
-    And branch "Branch 1" has following producers:
+    And branch "City 1" has following producers:
       | name        |
       | Beth Rave   |
       | Elsa Dorsa  |
       | Romeo Frigo |
-    And branch "Branch 2" has following producers:
+    And branch "City 2" has following producers:
       | name        |
       | Beth Rave   |
       | Elsa Dorsa  |
       | Romeo Frigo |
-    And branch "Branch 1" has following products:
+    And branch "City 1" has following products:
       | producer    | product              |
       | Beth Rave   | Basket of vegetables |
       | Elsa Dorsa  | Prime rib of beef    |
@@ -57,7 +57,7 @@ Feature: Branch catalog
       | Romeo Frigo | Butter               |
       | Romeo Frigo | Plain yoghurt        |
       | Romeo Frigo | Fruit yoghurt        |
-    And branch "Branch 2" has following products:
+    And branch "City 2" has following products:
       | producer    | product              |
       | Beth Rave   | Basket of vegetables |
       | Romeo Frigo | Butter               |
@@ -65,34 +65,34 @@ Feature: Branch catalog
       | Romeo Frigo | Fruit yoghurt        |
 
   Scenario: See categories that have products 1/2
-    Given I am on "/branch-1"
+    Given I am on "/city-1"
     Then I should see "Fruits and vegetables"
     And I should see "Dairy produce"
     And I should see "Meat"
 
   Scenario: See categories that have products 2/2
-    Given I am on "/branch-2"
+    Given I am on "/city-2"
     Then I should see "Fruits and vegetables"
     And I should see "Dairy produce"
     But I should not see "Meat"
 
   Scenario: See products of a category
-    Given I am on "/branch-1"
+    Given I am on "/city-1"
     When I follow "Meat"
     Then I should see "Sausages"
     But I should not see "Yahout nature"
 
   Scenario: Category with no product
-    Given I am on "/branch-2/meat"
+    Given I am on "/city-2/meat"
     Then the response status code should be 404
 
   Scenario: Not see products unavailable
-    Given I am on "/branch-1/dairy-produce"
+    Given I am on "/city-1/dairy-produce"
     Then I should see "Butter"
     And I should see "Plain yoghurt"
     But I should not see "Fruit yoghurt"
 
   Scenario: See product details
-    Given I am on "/branch-1/meat"
+    Given I am on "/city-1/meat"
     When I follow "Sausages"
     Then I should see "100% lamb"
