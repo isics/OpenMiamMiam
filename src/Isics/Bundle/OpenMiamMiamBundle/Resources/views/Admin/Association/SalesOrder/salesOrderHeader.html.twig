@@ -14,7 +14,7 @@
             <div class="panel-body">
                 <p>
                     {% set branch=order.branchOccurrence.branch %}
-                    <strong>{{ branch.name }}</strong><br />
+                    <strong>{{ branch.association.name }}</strong><br />
                     {{ branch.address1 }}<br />
                     {% if branch.address2 != null %}
                         {{ branch.address2 }}<br />

@@ -7,7 +7,7 @@
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch, 'homepage': true} %}
     {% block content %}
-        <h1>{{ branch.name }}</h1>
+        <h1>{{ branch.nameWithAssociation }}</h1>
 
         {{ branch.presentation|raw }}
     {% endblock %}
