@@ -9,7 +9,7 @@
         </strong>
         <a href="{{ path('open_miam_miam.cart.show', {'branchSlug': branch.slug}) }}" class="btn btn-primary btn-block">
             <span class="glyphicon glyphicon-shopping-cart"></span>
-            {{ 'checkout'|trans }}
+            {{ 'cart.checkout'|trans }}
         </a>
     {% else %}
         <strong>{{ 'cart.title'|trans }} (0)</strong>
