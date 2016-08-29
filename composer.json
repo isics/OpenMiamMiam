@@ -33,7 +33,7 @@
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/symfony": "2.3.*",
         "twig/extensions": "1.0.*",
-        "tecnick.com/tcpdf": "dev-master",
+        "tecnickcom/tcpdf": "6.0.068",
         "phpoffice/phpexcel": "1.7.9",
         "jms/serializer-bundle": "dev-master"
     },
