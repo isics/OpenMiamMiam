@@ -65,7 +65,7 @@ zone.footer.admin_link:            "Accès gestionnaire"
 
 
 # Branch
-branch.producers.title:         "Les producteurs présents à %city%"
+branch.producers.title:         "Les producteurs présents à %name%"
 branch.producers.name:          "Nom"
 branch.producers.zipcode:       "Code postal"
 branch.producers.city:          "Ville"
