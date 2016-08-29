@@ -55,7 +55,7 @@ user.change_password.title: "Changer mon mot de passe"
 
 # User / order show
 user.orders.title:      "Mes commandes"
-user.orders.branch:     "Comptoir"
+user.orders.branch:     "Lieu de distribution"
 user.orders.reference:  "Référence"
 user.orders.order_date: "Date de la commande"
 user.orders.total:      "Montant"

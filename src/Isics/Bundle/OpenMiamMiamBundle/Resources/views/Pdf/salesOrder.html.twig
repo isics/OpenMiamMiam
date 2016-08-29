@@ -49,7 +49,7 @@
                 <td>
                     <h3>{{ 'pdf.sales_order.withdrawal'|trans }}</h3>
                     <p>
-                        <strong>{{ branch.name }}</strong><br />
+                        <strong>{{ branch.association.name }}</strong><br />
                         {{ branch.address1 }}<br />
                         {% if branch.address2 != null %}
                             {{ branch.address2 }}<br />
