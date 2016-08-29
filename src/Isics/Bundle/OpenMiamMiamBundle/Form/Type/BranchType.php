@@ -24,13 +24,13 @@ class BranchType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-            ->add('welcomeText', 'textarea')
+        $builder->add('welcomeText', 'textarea')
             ->add('presentation', 'textarea')
             ->add('address1', 'text', array('required' => false))
             ->add('address2', 'text', array('required' => false))
             ->add('zipcode', 'text', array('required' => false))
             ->add('city', 'text', array('required' => false))
+            ->add('departmentNumber', 'text')
             ->add('phoneNumber1', 'text', array('required' => false))
             ->add('phoneNumber2', 'text', array('required' => false))
             ->add('website', 'url', array('required' => false))

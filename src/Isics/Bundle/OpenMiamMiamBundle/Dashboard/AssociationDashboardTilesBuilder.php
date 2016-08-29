@@ -61,7 +61,7 @@ class AssociationDashboardTilesBuilder
 
         $branches = $this->branchRepository
             ->filterAssociation($association)
-            ->orderBy('b.name', 'ASC')
+            ->orderBy('b.city', 'ASC')
             ->getQuery()
             ->getResult();
 

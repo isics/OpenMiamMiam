@@ -50,6 +50,7 @@
                                     -
                                     {{ salesOrder.branchOccurrence.end|format_time('HH:mm') }}
                                 </strong><br />
+                                {{ salesOrder.branchOccurrence.branch.association.name }}<br />
                                 {{ salesOrder.branchOccurrence.branch.address1 }}<br />
                                 {% if salesOrder.branchOccurrence.branch.address2 is not null %}{{ salesOrder.branchOccurrence.branch.address2 }}<br />{% endif %}
                                 {{ salesOrder.branchOccurrence.branch.zipcode }}

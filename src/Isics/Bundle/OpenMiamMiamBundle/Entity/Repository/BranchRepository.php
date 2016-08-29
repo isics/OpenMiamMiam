@@ -34,7 +34,7 @@ class BranchRepository extends EntityRepository
             ->leftJoin('ap.producer', 'p')
             ->andWhere('p.deletedAt is null')
             ->groupBy('b.id')
-            ->orderBy('b.name');
+            ->orderBy('b.city');
     }
 
     /**
@@ -47,7 +47,7 @@ class BranchRepository extends EntityRepository
     public function getForProducerQueryBuilder(Producer $producer)
     {
         return $this->filterProducer($producer)
-            ->orderBy('b.name');
+            ->orderBy('b.city');
     }
 
     /**
@@ -62,7 +62,7 @@ class BranchRepository extends EntityRepository
             ->innerJoin('b.associationProducers', 'ap')
             ->innerJoin('ap.producer', 'p')
             ->groupBy('b.id')
-            ->orderBy('b.name');
+            ->orderBy('b.city');
     }
 
     /**

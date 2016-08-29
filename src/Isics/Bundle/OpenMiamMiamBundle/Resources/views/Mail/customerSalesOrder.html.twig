@@ -2,7 +2,7 @@
 
 <h2>{{ 'mail.consumer.new_order.withdrawal'|trans }}</h2>
 <p>
-    <strong>{{ branch.name }}</strong><br />
+    <strong>{{ branch.association.name }}</strong><br />
     {{ branch.address1 }}<br />
     {% if branch.address2 != null %}
         {{ branch.address2 }}<br />

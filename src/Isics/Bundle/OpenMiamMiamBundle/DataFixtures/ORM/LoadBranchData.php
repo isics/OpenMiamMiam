@@ -50,18 +50,18 @@ class LoadBranchData extends AbstractFixture implements OrderedFixtureInterface,
         $faker = Faker\Factory::create();
         $faker->addProvider(new Faker\Provider\fr_FR\Address($faker));
 
-        foreach (array('branch.branch1', 'branch.branch2') as $name) {
+        for ($i = 1; $i <= 2; $i++) {
             $branch = new Branch();
-            $branch->setName($this->translator->trans($name, array(), 'fixtures'));
             $branch->setAssociation($this->getReference('association'));
             $branch->setPresentation($faker->text);
             $branch->setAddress1($faker->streetAddress);
             $branch->setZipcode($faker->postcode);
             $branch->setCity($faker->city);
+            $branch->setDepartmentNumber($faker->departmentNumber);
 
             $manager->persist($branch);
 
-            $this->addReference($name, $branch);
+            $this->addReference('branch.branch'.$i, $branch);
         }
 
         $manager->flush();
