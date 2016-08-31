@@ -13,19 +13,19 @@
         "psr-0": { "Isics": "src/", "": "src/" }
     },
     "require": {
-        "php": ">=5.4.0",
-        "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.2.*",
+        "php": ">=5.5.0",
+        "doctrine/orm": "2.4.*",
+        "doctrine/doctrine-bundle": "1.6.*",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "incenteev/composer-parameter-handler": "~2.0",
-        "liip/imagine-bundle": "dev-master",
-        "knplabs/knp-menu": "2.0.*@dev",
-        "knplabs/knp-menu-bundle": "2.0.*@dev",
+        "liip/imagine-bundle": "1.6.0",
+        "knplabs/knp-menu": "2.0.*",
+        "knplabs/knp-menu-bundle": "2.0.*",
         "white-october/pagerfanta-bundle": "dev-master",
         "sensio/distribution-bundle": "2.3.*",
         "sensio/framework-extra-bundle": "2.3.*",
         "sensio/generator-bundle": "2.3.*",
-        "stfalcon/tinymce-bundle": "dev-master",
+        "stfalcon/tinymce-bundle": "1.1.*",
         "stof/doctrine-extensions-bundle": "~1.1@dev",
         "sonata-project/intl-bundle": "2.1.1",
         "symfony/assetic-bundle": "2.3.*",
@@ -35,7 +35,7 @@
         "twig/extensions": "1.0.*",
         "tecnickcom/tcpdf": "6.0.068",
         "phpoffice/phpexcel": "1.7.9",
-        "jms/serializer-bundle": "dev-master"
+        "jms/serializer-bundle": "^1.1"
     },
     "require-dev": {
         "behat/behat": "2.4.*@stable",
