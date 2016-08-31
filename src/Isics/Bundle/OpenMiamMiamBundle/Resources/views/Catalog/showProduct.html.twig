@@ -10,7 +10,7 @@
 
     {% block content %}
         {% set root_category = product.category %}
-        {% if root_category.parent.lvl > 2 %}
+        {% if root_category.lvl >= 2 %}
             {% set root_category = root_category.parent %}
         {% endif %}
 
