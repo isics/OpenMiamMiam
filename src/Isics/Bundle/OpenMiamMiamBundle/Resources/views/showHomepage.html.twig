@@ -34,7 +34,7 @@
 
 {% block javascript %}
     {{ parent() }}
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key={{ google_map_api_key }}"></script>
     <script type="text/javascript">
         var homepageMap = new OpenMiamMiam.HomepageMap('FRANCE' {#todo add openmiammiam.country param#});
 

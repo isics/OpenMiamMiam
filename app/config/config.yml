@@ -26,6 +26,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
+        google_map_api_key: %google_map_api_key%
         pagerfanta_opts:
             previous_message: '&laquo;'
             next_message:     '&raquo;'

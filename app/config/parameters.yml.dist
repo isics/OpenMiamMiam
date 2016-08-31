@@ -23,3 +23,5 @@ parameters:
 
     # Usefull for generating URLs in CLI
     router.request_context.host: www.open-miam-miam.fr
+
+    google_map_api_key: ~
