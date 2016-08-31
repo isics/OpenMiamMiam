@@ -8,6 +8,9 @@
 {% import "IsicsOpenMiamMiamBundle:Macro:producer.html.twig" as producer_macro %}
 
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch, 'homepage': false} %}
+    {% block title %}{{ 'branch.producers.attendance.title'|trans({'%branch_name%': branch.name}, 'seo') }}{% endblock %}
+    {% block meta_description %}{{ 'branch.producers.attendance.meta_description'|trans({'%branch_name%': branch.name}, 'seo') }}{% endblock %}
+
     {% block content %}
         <h1>
             <span class="glyphicon glyphicon-calendar"></span>

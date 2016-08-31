@@ -7,6 +7,10 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
+{% block title %}{{ 'producer.title'|trans({'%producer_name%': producer.name}, 'seo') }}{% endblock %}
+{% block meta_description %}{{ 'producer.meta_description'|trans({'%producer_name%': producer.name, '%producer_presentation%': producer.presentation|striptags|truncate(250)}, 'seo') }}{% endblock %}
+
+
 {% import "IsicsOpenMiamMiamBundle:Macro:producer.html.twig" as producer_macro %}
 
 {% block content %}
