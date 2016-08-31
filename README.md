@@ -6,7 +6,7 @@ OpenMiamMiam is an open source pre-order platform designed for collectives point
 
 ## Requirements
 
-- PHP 5.4
+- PHP 5.5
 
 ## Configuration reference
 
