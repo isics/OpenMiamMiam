@@ -11,9 +11,9 @@
             <div id="header-main-body">
                 <div id="header-branch-name">
                     {% if homepage %}
-                        <h1><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ branch.name }}</a></h1>
+                        <h1>{{ branch.name }}</h1>
                     {% else %}
-                        <strong><a href="{{ path('open_miam_miam.branch.homepage', {'branchSlug': branch.slug}) }}">{{ branch.name }}</a></strong>
+                        <strong>{{ branch.name }}</strong>
                     {% endif %}
                     <small>{{ branch.association.name }}</small>
                     <a href="{{ path('open_miam_miam.homepage') }}" id="header-branch-change-link">{{ 'zone.header.branch.change'|trans }}</a>
