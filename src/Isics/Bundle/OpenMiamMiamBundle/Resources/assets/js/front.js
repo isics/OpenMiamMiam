@@ -247,3 +247,21 @@ OpenMiamMiam.CartUpdateForm = function() {
 
     return object;
 }();
+
+
+OpenMiamMiam.AccordionFocus = function() {
+
+    var object = function() {
+        $('[data-accordion-focus]').on('shown.bs.collapse', function (e) {
+            var headingTop = $(e.target).prev('.panel-heading').offset().top - 5;
+            var visibleTop = $(window).scrollTop();
+            if (headingTop < visibleTop) {
+                $('html,body').animate({
+                    scrollTop: headingTop
+                }, 500);
+            }
+        });
+    };
+
+    return object;
+}();

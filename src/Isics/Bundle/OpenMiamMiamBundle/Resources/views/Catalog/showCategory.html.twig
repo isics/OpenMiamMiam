@@ -22,7 +22,7 @@
         {% if products|length > 0 %}
             {% include 'IsicsOpenMiamMiamBundle:Catalog:products.html.twig' %}
         {% else %}
-            <div class="panel-group" id="categories-accordion">
+            <div class="panel-group" id="categories-accordion" data-accordion-focus>
                 {% for subCategory in category.children %}
                     {% set products = get_products_to_display(branch, subCategory) %}
                     {% if products|length > 0 %}
@@ -52,6 +52,7 @@
         {{ parent() }}
         <script type="text/javascript">
             $(function() {
+                new OpenMiamMiam.AccordionFocus;
                 new OpenMiamMiam.Quantity;
                 new OpenMiamMiam.CartAddForm;
             });
