@@ -7,9 +7,21 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
-{% block title %}{{ 'producer.title'|trans({'%producer_name%': producer.name}, 'seo') }}{% endblock %}
-{% block meta_description %}{{ 'producer.meta_description'|trans({'%producer_name%': producer.name, '%producer_presentation%': producer.presentation|striptags|truncate(250)}, 'seo') }}{% endblock %}
+{% block title %}
+    {% if producer.city %}
+        {{ 'producer_with_city.title'|trans({'%producer_name%': producer.name, '%producer_zip_code%': producer.zipCode, '%producer_city%': producer.city}, 'seo') }}
+    {% else %}
+        {{ 'producer.title'|trans({'%producer_name%': producer.name}, 'seo') }}
+    {% endif %}
+{% endblock %}
 
+{% block meta_description %}
+    {% if producer.city %}
+        {{ 'producer_with_city.meta_description'|trans({'%producer_name%': producer.name, '%producer_zip_code%': producer.zipCode, '%producer_city%': producer.city, '%producer_presentation%': producer.presentation|striptags|truncate(250)}, 'seo') }}
+    {% else %}
+        {{ 'producer.meta_description'|trans({'%producer_name%': producer.name, '%producer_presentation%': producer.presentation|striptags|truncate(250)}, 'seo') }}
+    {% endif %}
+{% endblock %}
 
 {% import "IsicsOpenMiamMiamBundle:Macro:producer.html.twig" as producer_macro %}
 

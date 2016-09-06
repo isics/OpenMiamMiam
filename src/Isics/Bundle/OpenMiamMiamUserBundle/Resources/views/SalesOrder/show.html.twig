@@ -7,6 +7,8 @@
  #}
 {% extends 'IsicsOpenMiamMiamUserBundle:Profile:base.html.twig' %}
 
+{% block title %}{{ 'sales_order.title'|trans({}, 'seo') }}{% endblock %}
+
 {% block content %}
     <h1>{{ 'user.orders.title'|trans }}</h1>
 

@@ -8,8 +8,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}{{ 'homepage.title'|trans({}, 'seo') }}{% endblock %}</title>
-        <meta name="description" content="{% block meta_description %}{{ 'homepage.meta_description'|trans({}, 'seo') }}{% endblock %}" />
+        <title>{% block title %}{{ 'default.title'|trans({}, 'seo') }}{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}{{ 'default.meta_description'|trans({}, 'seo') }}{% endblock %}">
+        <meta name="keywords" content="{% block meta_keywords %}{{ 'default.meta_keywords'|trans({}, 'seo') }}"{% endblock %}>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8" />

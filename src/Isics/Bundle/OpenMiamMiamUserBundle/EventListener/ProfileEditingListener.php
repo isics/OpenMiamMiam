@@ -33,7 +33,8 @@ class ProfileEditingListener implements EventSubscriberInterface
     {
         return array(
             FOSUserEvents::PROFILE_EDIT_SUCCESS => 'onSuccess',
-            FOSUserEvents::RESETTING_RESET_SUCCESS => 'onSuccess'
+            FOSUserEvents::RESETTING_RESET_SUCCESS => 'onSuccess',
+            FOSUserEvents::CHANGE_PASSWORD_SUCCESS => 'onSuccess',
         );
     }
 

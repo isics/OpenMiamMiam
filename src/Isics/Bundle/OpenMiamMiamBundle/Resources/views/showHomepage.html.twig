@@ -7,6 +7,9 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
+{% block title %}{{ 'homepage.title'|trans({}, 'seo') }}{% endblock %}
+{% block meta_description %}{{ 'homepage.meta_description'|trans({}, 'seo') }}{% endblock %}
+
 {% block content %}
 
     <div id="homepage-map">

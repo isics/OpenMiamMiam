@@ -7,6 +7,9 @@
  #}
 {% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
+{% block title %}{{ 'registration.title'|trans({}, 'seo') }}{% endblock %}
+{% block meta_description %}{{ 'registration.meta_description'|trans({}, 'seo') }}{% endblock %}
+
 {% form_theme form _self 'IsicsOpenMiamMiamBundle::form.html.twig' %}
 
 {% block content %}
