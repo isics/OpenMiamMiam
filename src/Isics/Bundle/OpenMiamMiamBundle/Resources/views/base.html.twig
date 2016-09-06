@@ -35,13 +35,14 @@
                     {% if app.user %}
                         <li>
                             <a type="button" class="dropdown-toggle" data-toggle="dropdown">
-                                {{ app.user }}
+                                <span class="glyphicon glyphicon-user"></span>
+                                {{ 'hello_user'|trans({'%firstname%': app.user.firstname}) }}
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                 <li>
                                     <a href="{{ path('fos_user_profile_edit') }}">
-                                        <span class="glyphicon glyphicon-user"></span>
+                                        <span class="glyphicon glyphicon-cog"></span>
                                         {{ 'my_profile'|trans }}
                                     </a>
                                 </li>

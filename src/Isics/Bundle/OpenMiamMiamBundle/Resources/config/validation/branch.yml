@@ -1,6 +1,6 @@
 Isics\Bundle\OpenMiamMiamBundle\Entity\Branch:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [name]
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [city]
     properties:
         address1:
             - Length:
@@ -14,7 +14,7 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Branch:
         city:
             - Length:
                 max:  64
-        name:
+        departmentNumber:
             - NotNull: ~
             - Length:
                 max: 2
