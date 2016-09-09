@@ -588,8 +588,13 @@ class SalesOrderController extends BaseController
             $this->getDoctrine()->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')->findWithRowsForBranchOccurrence($branchOccurrence)
         );
 
-        return new StreamedResponse(function() use ($salesOrdersPdf){
-            $salesOrdersPdf->render();
+        $filename = $this->get('translator')->trans(
+            'pdf.association.sales_orders.filename',
+            $branchOccurrence->getParamsForDocumentsName()
+        );
+
+        return new StreamedResponse(function() use ($salesOrdersPdf, $filename){
+            $salesOrdersPdf->render($filename);
         });
     }
 
@@ -613,12 +618,10 @@ class SalesOrderController extends BaseController
 
         $document = $this->get('open_miam_miam.association.deposit_withdrawal');
 
-        $filename = $this->get('translator')->trans('excel.association.sales_orders.deposit_withdrawal.filename', array(
-            '%branch%' => $branchOccurrence->getBranch()->getSlug(),
-            '%year%'   => $branchOccurrence->getEnd()->format('Y'),
-            '%day%'    => $branchOccurrence->getEnd()->format('d'),
-            '%month%'  => $branchOccurrence->getEnd()->format('m')
-        ));
+        $filename = $this->get('translator')->trans(
+            'excel.association.sales_orders.deposit_withdrawal.filename',
+            $branchOccurrence->getParamsForDocumentsName()
+        );
 
         $response = new StreamedResponse();
         $response->headers->set('Content-type', 'application/vnd.ms-excel');

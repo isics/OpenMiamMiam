@@ -307,4 +307,19 @@ class BranchOccurrence
 
         return null;
     }
+
+    /**
+     * Returns params for name of documents
+     *
+     * @return array
+     */
+    public function getParamsForDocumentsName()
+    {
+        return array(
+            '%branch%' => $this->getBranch()->getSlug(),
+            '%year%'   => $this->getEnd()->format('Y'),
+            '%day%'    => $this->getEnd()->format('d'),
+            '%month%'  => $this->getEnd()->format('m')
+        );
+    }
 }

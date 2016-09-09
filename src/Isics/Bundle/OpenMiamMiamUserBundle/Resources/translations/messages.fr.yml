@@ -64,3 +64,6 @@ user.orders.details:    "Détail"
 user.orders.order:      "Mes commandes"
 user.orders.no_order:   "Vous n'avez encore passé aucune commande."
 
+# PDF
+pdf.user.sales_order.filename: "%ref%.pdf"
+
