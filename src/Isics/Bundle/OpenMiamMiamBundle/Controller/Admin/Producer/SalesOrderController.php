@@ -449,8 +449,13 @@ class SalesOrderController extends BaseController
             $this->get('open_miam_miam.producer_sales_order_manager')->getForBranchOccurrence($producer, $branchOccurrence)
         );
 
-        return new StreamedResponse(function() use ($salesOrdersPdf){
-            $salesOrdersPdf->render();
+        $filename = $this->get('translator')->trans(
+            'pdf.producer.sales_orders.filename',
+            $branchOccurrence->getParamsForDocumentsName()
+        );
+
+        return new StreamedResponse(function() use ($salesOrdersPdf, $filename){
+            $salesOrdersPdf->render($filename);
         });
     }
 
@@ -480,8 +485,13 @@ class SalesOrderController extends BaseController
             )
         );
 
-        return new StreamedResponse(function() use ($productsToPreparePdf){
-            $productsToPreparePdf->render();
+        $filename = $this->get('translator')->trans(
+            'pdf.producer.products_to_prepare.filename',
+            $branchOccurrence->getParamsForDocumentsName()
+        );
+
+        return new StreamedResponse(function() use ($productsToPreparePdf, $filename){
+            $productsToPreparePdf->render($filename);
         });
     }
 }

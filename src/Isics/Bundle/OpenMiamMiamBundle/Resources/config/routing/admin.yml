@@ -181,10 +181,6 @@ open_miam_miam.admin.association.sales_order.list_for_branch_occurrence:
     pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:listForBranchOccurrence }
 
-open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/sales_orders
-    defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
-
 open_miam_miam.admin.association.sales_order.create:
     pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/create
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:create }

@@ -1031,10 +1031,10 @@ mail.branch.orders_closed.message_html:    |
     <p><strong>N'oubliez pas de venir chercher votre commande %ref% !</strong></p>
 
 # Excel
-excel.association.producer.transfer.filename:                                   "virements aux producteurs %month%-%year%.xlsx"
+excel.association.producer.transfer.filename:                                   "virements-producteurs-%month%-%year%.xlsx"
 excel.association.producer.transfer.total:                                      "TOTAL"
 excel.association.producer.transfer.title:                                      "VIREMENTS AUX PRODUCTEURS"
-excel.association.sales_orders.deposit_withdrawal.filename:                     "dépôt-retrait %branch% %day%-%month%-%year%.xlsx"
+excel.association.sales_orders.deposit_withdrawal.filename:                     "depot-retrait-%branch%-%day%-%month%-%year%.xlsx"
 excel.association.sales_orders.deposit_withdrawal.summary_title:                "Feuille de caisse"
 excel.association.sales_orders.deposit_withdrawal.summary.header.sales_order:   "Commandes"
 excel.association.sales_orders.deposit_withdrawal.summary.header.branch:        "Ventes\nsur place"
@@ -1055,3 +1055,8 @@ excel.association.sales_orders.deposit_withdrawal.total_to_pay:                 
 excel.association.sales_orders.deposit_withdrawal.total:                        "TOTAL"
 excel.association.sales_orders.deposit_withdrawal.number_sales_order:           "Nombre de commandes  "
 excel.association.sales_orders.deposit_withdrawal.average_amout:                "Montant moyen par commande  "
+
+# PDF
+pdf.association.sales_orders.filename: "commandes-%branch%-%day%-%month%-%year%.pdf"
+pdf.producer.sales_orders.filename: "commandes-%branch%-%day%-%month%-%year%.pdf"
+pdf.producer.products_to_prepare.filename: "preparation.pdf"

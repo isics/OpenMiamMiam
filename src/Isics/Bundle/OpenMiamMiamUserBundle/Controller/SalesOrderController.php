@@ -53,8 +53,13 @@ class SalesOrderController extends Controller
         $salesOrdersPdf = $this->get('open_miam_miam.sales_orders_pdf');
         $salesOrdersPdf->setSalesOrders(array($order));
 
-        return new StreamedResponse(function() use ($salesOrdersPdf){
-            $salesOrdersPdf->render();
+        $filename = $this->get('translator')->trans(
+            'pdf.user.sales_order.filename',
+            array('%ref%' => $order->getRef())
+        );
+
+        return new StreamedResponse(function() use ($salesOrdersPdf, $filename){
+            $salesOrdersPdf->render($filename);
         });
     }
 }
