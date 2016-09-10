@@ -7,11 +7,13 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
+{% block title %}{{ 'profile.title'|trans({}, 'seo') }}{% endblock %}
+
 {% block header %}
     <header>
         <div id="header-logo">
             <a href="{{ path('open_miam_miam.homepage') }}">{% include 'IsicsOpenMiamMiamBundle::baseLogo.html.twig' %}</a>
-        </div>   
+        </div>
     </header>
 {% endblock %}
 

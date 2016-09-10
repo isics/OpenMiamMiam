@@ -1,0 +1,55 @@
+default:
+    title: OpenMiamMiam
+    meta_description: OpenMiamMiam, the open source pre-order platform designed for collectives points of sale
+    meta_keywords: openmiammiam, open source pre-order platform
+
+homepage:
+    title: Welcome to OpenMiamMiam
+    meta_description: Welcome to OpenMiamMiam, the open source pre-order platform designed for collectives points of sale
+
+branch:
+    homepage:
+        title: Collective point of sale of %branch_name%
+        meta_description: Collective point of sale of %branch_name%
+    news:
+        title: News of the collective point of sale of %branch_name%
+        meta_description: News of the collective point of sale of %branch_name%
+        article:
+            title: %article_title% - Collective point of sale of %branch_name%
+            meta_description: %article_body%
+    presentation:
+        title: %association_name% - Collective point of sale of %branch_name%
+        meta_description: %branch_presentation%
+    producers:
+        title: Producers of the collective point of sale of %branch_name%
+        meta_description: Producers of the collective point of sale of %branch_name%
+        attendance:
+            title: Attendance of producers of the collective point of sale of %branch_name%
+            meta_description: Attendance of producers of the collective point of sale of %branch_name%
+
+cart:
+    title: My cart - Collective point of sale of %branch_name%
+    meta_description: My cart on Collective point of sale of %branch_name%
+
+catalog:
+    category:
+        title: %category_name% - Collective point of sale of %branch_name%
+        meta_description: List of products of category %category_name% of collective point of sale of %branch_name%
+    product:
+        title: %product_name% of producer %producer_name% - Collective point of sale of %branch_name%
+        meta_description: %product_name% of %producer_name%, producer of collective point of sale of %branch_name%
+
+news:
+    title: News of OpenMiamMiam
+    meta_description: News of OpenMiamMiam, the open source pre-order platform designed for collectives points of sale
+    article:
+        title: %article_title% - OpenMiamMiam
+        meta_description: %article_body%
+
+producer_with_city:
+    title: %producer_name% producer at %producer_city% (%producer_zip_code%) - OpenMiamMiam
+    meta_description: %producer_name%: OpenMiamMiam producer at %producer_city% (%producer_zip_code%). %producer_presentation%
+
+producer:
+    title: %producer_name% - OpenMiamMiam
+    meta_description: %producer_name%: producer on OpenMiamMiam website. %producer_presentation%

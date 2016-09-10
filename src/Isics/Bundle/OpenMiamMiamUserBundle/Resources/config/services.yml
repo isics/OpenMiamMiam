@@ -4,7 +4,7 @@ parameters:
 services:
     open_miam_miam.form.type.user_registration:
         class: Isics\Bundle\OpenMiamMiamUserBundle\Form\Type\RegistrationType
-        arguments: 
+        arguments:
             - %fos_user.model.user.class%
             - @open_miam_miam.twig.terms_of_service_extension
         tags:

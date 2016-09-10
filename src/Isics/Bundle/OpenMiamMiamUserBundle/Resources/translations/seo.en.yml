@@ -1,0 +1,29 @@
+login:
+    title: Log in OpenMiamMiam
+    meta_description: Log in OpenMiamMiam website
+
+registration:
+    title: Create an account on OpenMiamMiam
+    meta_description: Create an account on OpenMiamMiam website
+    check_email:
+        title: Check your email to activate your account - OpenMiamMiam
+    confirmation:
+        title: Account activated - OpenMiamMiam
+
+profile:
+    title: Edit your account - OpenMiamMiam
+
+change_password:
+    title: Change your password - OpenMiamMiam
+
+reset_password:
+    title: Reset your password - OpenMiamMiam
+    meta_description: Reset your password on OpenMiamMiam website
+    check_email:
+        title: Check your email to reset your password - OpenMiamMiam
+    change:
+        title: Change your password - OpenMiamMiam
+
+sales_order:
+    title: Your sale orders - OpenMiamMiam
+

@@ -7,7 +7,8 @@
  #}
 {% extends 'IsicsOpenMiamMiamBundle::base.html.twig' %}
 
-{% block title %}{{ branch.name }}{% endblock %}
+{% block title %}{{ 'branch.homepage.title'|trans({'%branch_name%': branch.name}, 'seo') }}{% endblock %}
+{% block meta_description %}{{ 'branch.homepage.meta_description'|trans({'%branch_name%': branch.name}, 'seo') }}{% endblock %}
 
 {% block header %}
     <header>

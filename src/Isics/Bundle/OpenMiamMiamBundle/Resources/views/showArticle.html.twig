@@ -6,7 +6,8 @@
  # with this source code in the file LICENSE.
  #}
 {% embed 'IsicsOpenMiamMiamBundle::base.html.twig' %}
-    {% block title %}{{ article.title }}{% endblock %}
+    {% block title %}{{ 'news.article.title'|trans({'%article_title%': article.title}, 'seo') }}{% endblock %}
+    {% block meta_description %}{{ 'news.article.meta_description'|trans({'%article_body%': article.body|striptags|truncate(250)}, 'seo') }}{% endblock %}
 
     {% block content %}
         <ol class="breadcrumb">

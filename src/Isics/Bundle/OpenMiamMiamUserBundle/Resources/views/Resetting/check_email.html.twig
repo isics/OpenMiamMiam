@@ -7,8 +7,12 @@
  #}
 {% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
+{% block title %}{{ 'reset_password.check_email.title'|trans({}, 'seo') }}{% endblock %}
+
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block content %}
-    <div class="alert alert-success">{{ 'registration_check_email_html'|trans({'%email%': user.email})|raw }}</div>
-{% endblock content %}
+    <p>
+        {{ 'resetting.check_email'|trans({'%email%': email}) }}
+    </p>
+{% endblock %}

@@ -6,7 +6,8 @@
  # with this source code in the file LICENSE.
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
-    {% block title %}{{ product.name }} - {{ parent() }}{% endblock %}
+    {% block title %}{{ 'catalog.product.title'|trans({'%product_name%': product.name, '%producer_name%': product.producer.name, '%branch_name%': branch.name}, 'seo') }}{% endblock %}
+    {% block meta_description %}{{ 'catalog.product.meta_description'|trans({'%product_name%': product.name, '%producer_name%': product.producer.name, '%branch_name%': branch.name}, 'seo') }}{% endblock %}
 
     {% block content %}
         {% set root_category = product.category %}

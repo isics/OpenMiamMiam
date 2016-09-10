@@ -1,5 +1,8 @@
 {% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
+{% block title %}{{ 'login.title'|trans({}, 'seo') }}{% endblock %}
+{% block meta_description %}{{ 'login.meta_description'|trans({}, 'seo') }}{% endblock %}
+
 {% block content %}
     <h1>{% trans %}user.login.title{% endtrans %}</h1>
 

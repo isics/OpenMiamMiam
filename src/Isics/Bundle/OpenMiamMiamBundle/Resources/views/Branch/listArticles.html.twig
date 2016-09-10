@@ -6,7 +6,8 @@
  # with this source code in the file LICENSE.
  #}
 {% embed 'IsicsOpenMiamMiamBundle:Branch:base.html.twig' with {'branch': branch} %}
-    {% block title %}{{ 'news'|trans }}{% endblock %}
+    {% block title %}{{ 'branch.news.title'|trans({'%branch_name%': branch.name}, 'seo') }}{% endblock %}
+    {% block meta_description %}{{ 'branch.news.meta_description'|trans({'%branch_name%': branch.name}, 'seo') }}{% endblock %}
 
     {% block content %}
         <ol class="breadcrumb">

@@ -7,6 +7,8 @@
  #}
 {% extends "IsicsOpenMiamMiamBundle::minimal.html.twig" %}
 
+{% block title %}{{ 'registration.confirmation.title'|trans({}, 'seo') }}{% endblock %}
+
 {% block content %}
     <h1>{{ 'user.register.confirmed.title'|trans({'%firstname%': format_user_identity(user, '%firstname%'), '%lastname%': format_user_identity(user, '%lastname%'), '%email%': user.email}) }}</h1>
     {{ 'user.register.confirmed.body_html'|trans({'%firstname%': format_user_identity(user, '%firstname%'), '%lastname%': format_user_identity(user, '%lastname%'), '%email%': user.email})|raw }}
