@@ -6,12 +6,22 @@
 # with this source code in the file LICENSE.
 
 default:
-    context:
-        class: Isics\Bundle\OpenMiamMiamBundle\Behat\FeatureContext
+    suites:
+        main:
+            type: symfony_bundle
+            bundle: IsicsOpenMiamMiamBundle
+            mink_session: symfony2
+            contexts:
+                - Isics\Bundle\OpenMiamMiamBundle\Behat\Context\MainFeatureContext:
+                    output_path: '/build/behat/output/'
+            paths:
+                features: src/Isics/Bundle/OpenMiamMiamBundle/Behat/Features
+
     extensions:
-        Behat\MinkExtension\Extension:
-            base_url: 'your_base_url'
+        Behat\MinkExtension:
+            base_url: 'http://openmiammiam.local/app_test.php'
             goutte: ~
-        Behat\Symfony2Extension\Extension: ~
-    paths:
-        features: src/Isics/Bundle/OpenMiamMiamBundle/Resources
+            sessions:
+                symfony2:
+                    symfony2: ~
+        Behat\Symfony2Extension: ~
