@@ -44,7 +44,7 @@ user.edit.cancel:                                  "Annuler"
 user.edit.submit:                                  "Mettre à jour"
 user.edit.confirmed.title:                         "Bienvenue %firstname% !"
 user.edit.confirmed.body_html:   |
-    <p>Votre compte a bien été créé.<p>
+    <p>Votre compte a bien été modifié.<p>
 
 user.resetting.request:       "Mot de passe oublié ?"
 user.resetting.request.title: "Réinitialisez votre mot de passe"
