@@ -1,0 +1,29 @@
+login:
+    title: Identifiez-vous sur OpenMiamMiam
+    meta_description: Identifiez-vous sur le site OpenMiamMiam
+
+registration:
+    title: Créer un compte sur OpenMiamMiam
+    meta_description: Créer un compte sur le site OpenMiamMiam
+    check_email:
+        title: Vérifiez votre boîte mail pour activer votre compte - OpenMiamMiam
+    confirmation:
+        title: Compte activé - OpenMiamMiam
+
+profile:
+    title: Editer votre compte - OpenMiamMiam
+
+change_password:
+    title: Changer votre mot de passe - OpenMiamMiam
+
+reset_password:
+    title: Réinitialiser votre mot de passe - OpenMiamMiam
+    meta_description: Réinitialiser votre mot de passe du site OpenMiamMiam
+    check_email:
+        title: Vérifiez votre boîte mail pour réinitialiser votre mot de passe - OpenMiamMiam
+    change:
+        title: Changer votre mot de passe - OpenMiamMiam
+
+sales_order:
+    title: Vos commandes - OpenMiamMiam
+
