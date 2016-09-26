@@ -77,7 +77,7 @@ Feature: Branch cart
     When I press "Add"
     Then I should be on "/city-1/cart"
     And I should see "My cart (1) €15.00"
-    And I should see "Item has been added to cart."
+    And I should see "Item has been added to cart"
 
   Scenario: Add a product via product page
     Given I am on "/city-1/fruits-and-vegetables"
@@ -85,7 +85,7 @@ Feature: Branch cart
     When I press "Add"
     Then I should be on "/city-1/cart"
     And I should see "My cart (1) €15.00"
-    And I should see "Item has been added to cart."
+    And I should see "Item has been added to cart"
 
   Scenario: Add an existing product via product page
     Given I am on "/city-1/fruits-and-vegetables"
@@ -95,7 +95,7 @@ Feature: Branch cart
     When I press "Add"
     Then I should be on "/city-1/cart"
     And I should see "My cart (1) €30.00"
-    And I should see "Item has been added to cart."
+    And I should see "Item has been added to cart"
 
   Scenario: Update quantity
     Given I am on "/city-1/fruits-and-vegetables"
@@ -104,7 +104,7 @@ Feature: Branch cart
     And I change quantity to "3"
     When I press "update"
     Then I should see "My cart (1) €45.00"
-    And I should see "Cart has been updated."
+    And I should see "Cart has been updated"
 
   Scenario: Reset quantity (remove)
     Given I am on "/city-1/fruits-and-vegetables"
@@ -113,7 +113,7 @@ Feature: Branch cart
     And I change quantity to "0"
     When I press "update"
     Then I should not see "My cart (1)"
-    And I should see "Cart has been updated."
+    And I should see "Cart has been updated"
 
   Scenario: Product available
     Given I am on "/city-1/basket-of-vegetables-1"
