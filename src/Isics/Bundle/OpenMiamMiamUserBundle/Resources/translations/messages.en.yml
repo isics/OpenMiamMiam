@@ -1,0 +1,69 @@
+# User / login
+user.login.title:                "Log in"
+user.login.existing.title:       "Already Have an account?"
+user.login.new.title:            "New customer?"
+user.login.submit:               "Log in"
+user.login.register:             "Create an account"
+user.login.email.label:          "Email"
+user.login.password.label:       "Password"
+
+# User / register
+user.register.title:                                  "Create an account:"
+user.register.firstname:                              "Firstname"
+user.register.lastname:                               "Lastname"
+user.register.address1:                               "Address"
+user.register.address2:                               "Address"
+user.register.zipcode:                                "Postcode"
+user.register.city:                                   "City"
+user.register.phone_number:                           "Phonenumber"
+user.register.is_orders_open_notification_subscriber: "I want to receive reminder email when branch is opening"
+user.register.is_newsletter_subscriber:               "I want to receive newsletter"
+user.register.cancel:                                 "Cancel"
+user.register.submit:                                 "Register"
+user.register.read_agree:                             "I have read and accept"
+user.register.terms_of_service:                       "Terms of use"
+user.register.error.terms_of_service:                 "You must accept terms of use"
+user.register.confirmed.title:                        "Hello %firstname% !"
+user.register.confirmed.body_html:   |
+    <p>Your account has been created.<p>
+user.register.confirmed.next:                         "Continue"
+
+# User / edit
+user.edit.title:                                   "My info"
+user.edit.firstname:                               "Firstname"
+user.edit.lastname:                                "Lastname"
+user.edit.email:                                   "Email"
+user.edit.address1:                                "Address"
+user.edit.address2:                                "Address"
+user.edit.zipcode:                                 "Postcode"
+user.edit.city:                                    "City"
+user.edit.phone_number:                            "Phonenumber"
+user.edit.is_orders_open_notification_subscriber:  "JI want to receive reminder email when branch is opening"
+user.edit.is_newsletter_subscriber:                "I want to receive newsletter"
+user.edit.cancel:                                  "Cancel"
+user.edit.submit:                                  "Update"
+user.edit.confirmed.title:                         "Hello %firstname% !"
+user.edit.confirmed.body_html:   |
+    <p>Your account has been updated.<p>
+
+user.resetting.request:       "Forgot your password?"
+user.resetting.request.title: "Reset your password"
+user.resetting.reset.title:   "Reset your password"
+
+user.change_password:       "Change password"
+user.change_password.title: "Change password"
+
+# User / order show
+user.orders.title:      "My sales orders"
+user.orders.branch:     "Branch"
+user.orders.reference:  "Reference"
+user.orders.order_date: "Date"
+user.orders.total:      "Amount"
+user.orders.withdrawal: "Withdrawal"
+user.orders.details:    "Detail"
+user.orders.order:      "My sales orders"
+user.orders.no_order:   "No sales order"
+
+# PDF
+pdf.user.sales_order.filename: "%ref%.pdf"
+
