@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\True;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
 class RegistrationType extends BaseType implements EventSubscriberInterface
 {
@@ -79,8 +79,8 @@ class RegistrationType extends BaseType implements EventSubscriberInterface
                 'mapped' => false,
                 'constraints' => array(
                     new True(array('message' => 'user.register.error.terms_of_service'))
-                )  
-            )); 
+                )
+            ));
         }
     }
 
