@@ -78,7 +78,7 @@ class RegistrationType extends BaseType implements EventSubscriberInterface
             $form->add("termsOfService", "checkbox", array(
                 'mapped' => false,
                 'constraints' => array(
-                    new True(array('message' => 'user.register.error.terms_of_service'))
+                    new IsTrue(array('message' => 'user.register.error.terms_of_service'))
                 )
             ));
         }

@@ -65,7 +65,7 @@ class SalesOrderConfirmationType extends AbstractType implements EventSubscriber
             $form->add("termsOfService", "checkbox", array(
                 'mapped' => false,
                 'constraints' => array(
-                    new True(array('message' => 'order.confirm.error.terms_of_service'))
+                    new IsTrue(array('message' => 'order.confirm.error.terms_of_service'))
                 )
             ));
         }
