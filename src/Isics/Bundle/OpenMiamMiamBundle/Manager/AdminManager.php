@@ -11,8 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminAdminResource;
 use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AdminResourceCollection;
 use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AssociationAdminResource;

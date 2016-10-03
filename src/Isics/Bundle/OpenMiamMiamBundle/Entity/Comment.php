@@ -11,8 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User as User;
 use Doctrine\ORM\Mapping as ORM;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User as User;
 
 /**
  * Comment

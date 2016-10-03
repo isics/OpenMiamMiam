@@ -17,10 +17,10 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
-use Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Intl\Intl;
 

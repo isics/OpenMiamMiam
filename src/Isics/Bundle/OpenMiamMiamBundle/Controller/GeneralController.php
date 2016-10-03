@@ -11,8 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
-use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\ProducerAttendance;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

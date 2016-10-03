@@ -10,8 +10,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
-use Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class PaymentExtension extends \Twig_Extension

@@ -12,8 +12,8 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 /**
  * Isics\OpenMiamMiamBundle\Entity\ActivityLog

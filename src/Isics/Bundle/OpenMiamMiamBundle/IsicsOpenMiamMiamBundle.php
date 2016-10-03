@@ -11,9 +11,9 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\DependencyInjection\Compiler\ValidatorPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class IsicsOpenMiamMiamBundle extends Bundle
 {
