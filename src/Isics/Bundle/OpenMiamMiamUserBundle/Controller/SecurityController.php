@@ -11,8 +11,8 @@ namespace Isics\Bundle\OpenMiamMiamUserBundle\Controller;
 
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class SecurityController extends BaseController
 {
