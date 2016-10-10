@@ -19,7 +19,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\AssociationAdminResource
 use Isics\Bundle\OpenMiamMiamBundle\Model\AdminResource\ProducerAdminResource;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 
 /**
  * Class AdminManager
@@ -30,9 +31,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class AdminManager
 {
     /**
-     * @var SecurityContext $securityContext
+     * @var AuthorizationCheckerInterface $authorizationChecker
      */
-    protected $securityContext;
+    protected $authorizationChecker;
 
     /**
      * @var EntityManager $entityManager
@@ -49,12 +50,12 @@ class AdminManager
     /**
      * Constructs object
      *
-     * @param SecurityContextInterface $securityContext
-     * @param EntityManager            $entityManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param EntityManager                 $entityManager
      */
-    public function __construct(SecurityContextInterface $securityContext, EntityManager $entityManager)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManager $entityManager)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
         $this->entityManager = $entityManager;
 
         $this->adminResourceCollection = new AdminResourceCollection();
@@ -79,10 +80,10 @@ class AdminManager
      */
     protected function lookForAdminAdminResource()
     {
-        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $adminAdminResource = new AdminAdminResource();
 
-            if ($this->securityContext->isGranted('ROLE_SUPER_ADMIN')) {
+            if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
                 $adminAdminResource->setOwnerPerspective(true);
             }
             $this->adminResourceCollection->add($adminAdminResource);
@@ -99,11 +100,11 @@ class AdminManager
         foreach ($repository->findAllIds() as $pk) {
             $objectIdentity = new ObjectIdentity($pk, $repository->getClassName());
 
-            if ($this->securityContext->isGranted('OWNER', $objectIdentity)) {
+            if ($this->authorizationChecker->isGranted('OWNER', $objectIdentity)) {
                 $associationAdminResource = new AssociationAdminResource($repository->findOneById($pk));
                 $associationAdminResource->setOwnerPerspective(true);
                 $this->adminResourceCollection->add($associationAdminResource);
-            } else if ($this->securityContext->isGranted('OPERATOR', $objectIdentity)) {
+            } else if ($this->authorizationChecker->isGranted('OPERATOR', $objectIdentity)) {
                 $this->adminResourceCollection->add(new AssociationAdminResource($repository->findOneById($pk)));
             }
         }
@@ -119,11 +120,11 @@ class AdminManager
         foreach ($repository->findAllIds() as $pk) {
             $objectIdentity = new ObjectIdentity($pk, $repository->getClassName());
 
-            if ($this->securityContext->isGranted('OWNER', $objectIdentity)) {
+            if ($this->authorizationChecker->isGranted('OWNER', $objectIdentity)) {
                 $producerAdminResource = new ProducerAdminResource($repository->findOneById($pk));
                 $producerAdminResource->setOwnerPerspective(true);
                 $this->adminResourceCollection->add($producerAdminResource);
-            } else if ($this->securityContext->isGranted('OPERATOR', $objectIdentity)) {
+            } else if ($this->authorizationChecker->isGranted('OPERATOR', $objectIdentity)) {
                 $this->adminResourceCollection->add(new ProducerAdminResource($repository->findOneById($pk)));
             }
         }

@@ -467,11 +467,11 @@ services:
 
     open_miam_miam.cart_manager:
         class:     %open_miam_miam.cart_manager.class%
-        arguments: [@open_miam_miam.branch_occurrence_manager, @doctrine.orm.entity_manager, @session, @security.context]
+        arguments: [@open_miam_miam.branch_occurrence_manager, @doctrine.orm.entity_manager, @session]
 
     open_miam_miam.admin_manager:
         class: %open_miam_miam.admin_manager.class%
-        arguments: [@security.context, @doctrine.orm.entity_manager]
+        arguments: [@security.authorization_checker, @doctrine.orm.entity_manager]
         shared: true
 
     open_miam_miam.article_manager:

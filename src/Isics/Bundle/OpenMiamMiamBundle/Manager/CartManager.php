@@ -18,7 +18,6 @@ use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartExpiredException;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Manages cart operations
@@ -48,27 +47,19 @@ class CartManager
     protected $session;
 
     /**
-     * @var SecurityContext
-     */
-    protected $securityContext;
-
-    /**
      * Constructor
      *
      * @param BranchOccurrenceManager  $branchOccurrenceManager Branch Occurrence Manager
      * @param EntityManager            $entityManager           Object Manager
      * @param Session                  $session                 Session
-     * @param SecurityContextInterface $securityContext         Security context
      */
     public function __construct(BranchOccurrenceManager $branchOccurrenceManager,
                                 EntityManager $entityManager,
-                                Session $session,
-                                SecurityContextInterface $securityContext)
+                                Session $session)
     {
         $this->branchOccurrenceManager = $branchOccurrenceManager;
         $this->entityManager           = $entityManager;
         $this->session                 = $session;
-        $this->securityContext         = $securityContext;
 
         $this->carts = array();
     }
