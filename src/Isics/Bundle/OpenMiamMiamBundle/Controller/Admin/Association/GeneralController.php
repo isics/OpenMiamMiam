@@ -66,7 +66,7 @@ class GeneralController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $associationManager->save($association, $this->get('security.context')->getToken()->getUser());
+                $associationManager->save($association, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.infos.message.updated');
 

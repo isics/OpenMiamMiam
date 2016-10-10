@@ -66,7 +66,7 @@ class AssociationController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.context')->getToken()->getUser());
+                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.associations.message.created');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.association.list'));
@@ -97,7 +97,7 @@ class AssociationController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.context')->getToken()->getUser());
+                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.associations.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.association.list'));
@@ -149,7 +149,7 @@ class AssociationController extends Controller
     public function deleteAction(Association $association)
     {
         $associationManager = $this->get('open_miam_miam.association_manager');
-        $associationManager->delete($association, $this->get('security.context')->getToken()->getUser());
+        $associationManager->delete($association, $this->get('security.token_storage')->getToken()->getUser());
         $this->get('session')->getFlashBag()->add('notice', 'admin.super.associations.message.deleted');
 
         return $this->redirect($this->generateUrl('open_miam_miam.admin.super.association.list'));

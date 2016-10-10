@@ -80,7 +80,7 @@ class BranchController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $branchManager->save($branch, $this->get('security.context')->getToken()->getUser());
+                $branchManager->save($branch, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.message.created');
 
@@ -119,7 +119,7 @@ class BranchController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $branchManager->save($branch, $this->get('security.context')->getToken()->getUser());
+                $branchManager->save($branch, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.message.updated');
 
@@ -175,7 +175,7 @@ class BranchController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $branchOccurrenceManager->save($branchOccurrence, $this->get('security.context')->getToken()->getUser());
+                $branchOccurrenceManager->save($branchOccurrence, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.calendar.message.created');
 

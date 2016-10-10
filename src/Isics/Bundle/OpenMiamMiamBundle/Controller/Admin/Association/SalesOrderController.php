@@ -152,7 +152,7 @@ class SalesOrderController extends BaseController
         $salesOrderManager = $this->get('open_miam_miam.sales_order_manager');
 
         $order = $salesOrderManager->createForBranchOccurrence($branchOccurrence);
-        $salesOrderManager->save($order, $association, $this->get('security.context')->getToken()->getUser());
+        $salesOrderManager->save($order, $association, $this->get('security.token_storage')->getToken()->getUser());
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.admin.association.sales_order.edit',
@@ -199,7 +199,7 @@ class SalesOrderController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
+                $user = $this->get('security.token_storage')->getToken()->getUser();
                 $this->get('open_miam_miam.sales_order_manager')->save($order, $association, $user);
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
@@ -252,7 +252,7 @@ class SalesOrderController extends BaseController
             throw new $this->createNotFoundException('Invalid sales order row for association');
         }
 
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow($row, $user);
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
 
@@ -292,7 +292,7 @@ class SalesOrderController extends BaseController
         }
 
         $this->get('open_miam_miam.sales_order_manager')
-                ->addProduct($order, $product, $association, $this->get('security.context')->getToken()->getUser());
+                ->addProduct($order, $product, $association, $this->get('security.token_storage')->getToken()->getUser());
 
         // todo: use salesOrderManager to do that
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
@@ -368,7 +368,7 @@ class SalesOrderController extends BaseController
                     $order,
                     $artificialProductForm->getData(),
                     $association,
-                    $this->get('security.context')->getToken()->getUser()
+                    $this->get('security.token_storage')->getToken()->getUser()
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit($association, $order->getUser());
@@ -470,7 +470,7 @@ class SalesOrderController extends BaseController
 //                $paymentManager->addPaymentAllocation(
 //                    $order,
 //                    $form->getData(),
-//                    $this->get('security.context')->getToken()->getUser()
+//                    $this->get('security.token_storage')->getToken()->getUser()
 //                );
 //
 //                $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_added');
@@ -515,7 +515,7 @@ class SalesOrderController extends BaseController
 //
 //        $this->get('open_miam_miam.payment_manager')->deletePaymentAllocation(
 //            $paymentAllocation,
-//            $this->get('security.context')->getToken()->getUser()
+//            $this->get('security.token_storage')->getToken()->getUser()
 //        );
 //
 //        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocation_deleted');
@@ -555,7 +555,7 @@ class SalesOrderController extends BaseController
 //        $this->get('open_miam_miam.payment_manager')->allocatePayment(
 //            $payment,
 //            $order,
-//            $this->get('security.context')->getToken()->getUser()
+//            $this->get('security.token_storage')->getToken()->getUser()
 //        );
 //
 //        $this->get('session')->getFlashBag()->add('notice', 'admin.association.sales_orders.message.payment_allocated');

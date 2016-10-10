@@ -53,7 +53,7 @@ class NewsletterController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
+                $user = $this->get('security.token_storage')->getToken()->getUser();
                 $newsletterManager->saveAndSendTest($newsletter, $user);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.created');
 
@@ -88,14 +88,14 @@ class NewsletterController extends BaseController
 
         if ($newsletter->getSentAt() === null) {
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
-            $user= $this->get('security.context')->getToken()->getUser();
+            $user= $this->get('security.token_storage')->getToken()->getUser();
 
             $form = $this->getForm($newsletter);
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $user = $this->get('security.context')->getToken()->getUser();
+                    $user = $this->get('security.token_storage')->getToken()->getUser();
                     $newsletterManager->saveAndSendTest($newsletter, $user);
                     $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.updated');
 
@@ -135,7 +135,7 @@ class NewsletterController extends BaseController
         $this->secureNewsletter($association, $newsletter);
 
         if ($newsletter->getSentAt() === null) {
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
             $newsletterManager->send($newsletter, $user);
 

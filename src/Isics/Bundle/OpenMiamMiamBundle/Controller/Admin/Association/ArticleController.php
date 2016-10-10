@@ -72,7 +72,7 @@ class ArticleController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $articleManager->save($article, $this->get('security.context')->getToken()->getUser());
+                $articleManager->save($article, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.created');
 
@@ -111,7 +111,7 @@ class ArticleController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $articleManager->save($article, $this->get('security.context')->getToken()->getUser());
+                $articleManager->save($article, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.updated');
 

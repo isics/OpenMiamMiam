@@ -34,7 +34,7 @@ class NewsletterController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
+                $user = $this->get('security.token_storage')->getToken()->getUser();
                 $newsletterManager->saveAndSendTest($newsletter, $user);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.created');
 
@@ -70,7 +70,7 @@ class NewsletterController extends Controller
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $user = $this->get('security.context')->getToken()->getUser();
+                    $user = $this->get('security.token_storage')->getToken()->getUser();
                     $newsletterManager->saveAndSendTest($newsletter, $user);
                     $this->get('session')->getFlashBag()->add('notice', 'admin.super.newsletter.message.updated');
 
@@ -103,7 +103,7 @@ class NewsletterController extends Controller
     public function sendAction(Newsletter $newsletter)
     {
         if ($newsletter->getSentAt() === null) {
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
             $newsletterManager->send($newsletter, $user);
 
