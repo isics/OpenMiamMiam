@@ -35,10 +35,10 @@ class TermsOfServiceExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'terms_of_service_url' => new \Twig_Function_Method($this, 'getTermsOfServiceUrl'),
-            'has_terms_of_service' => new \Twig_Function_Method($this, 'hasTermsOfService')
-        );
+        return [
+            new \Twig_SimpleFunction('terms_of_service_url', [$this, 'getTermsOfServiceUrl']),
+            new \Twig_SimpleFunction('has_terms_of_service', [$this, 'hasTermsOfService']),
+        ];
     }
 
     /**

@@ -40,9 +40,9 @@ class PaymentExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'has_missing_allocations' => new \Twig_Function_Method($this, 'hasMissingAllocations'),
-        );
+        return [
+            new \Twig_SimpleFunction('has_missing_allocations', [$this, 'hasMissingAllocations']),
+        ];
     }
 
     /**
