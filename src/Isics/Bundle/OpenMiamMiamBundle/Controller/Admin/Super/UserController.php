@@ -26,7 +26,7 @@ class UserController extends Controller
 {
     public function searchAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             throw new NotFoundHttpException();
         }
 

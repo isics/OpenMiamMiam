@@ -178,7 +178,7 @@ class SalesOrderController extends BaseController
         if (!$isLocked && $request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
+                $user = $this->get('security.token_storage')->getToken()->getUser();
 
                 $this->get('open_miam_miam.sales_order_manager')->save(
                     $order,
@@ -239,7 +239,7 @@ class SalesOrderController extends BaseController
         $this->ensureSalesOrderIsOpen($order);
 
         $order = $row->getSalesOrder();
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $this->get('open_miam_miam.sales_order_manager')->deleteSalesOrderRow(
             $row,
@@ -288,7 +288,7 @@ class SalesOrderController extends BaseController
         }
 
         $this->get('open_miam_miam.sales_order_manager')
-                ->addProduct($order, $product, $producer, $this->get('security.context')->getToken()->getUser());
+                ->addProduct($order, $product, $producer, $this->get('security.token_storage')->getToken()->getUser());
 
         // todo: use salesOrderManager to do that
         $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(
@@ -366,7 +366,7 @@ class SalesOrderController extends BaseController
                     $order,
                     $artificialProductForm->getData(),
                     $producer,
-                    $this->get('security.context')->getToken()->getUser()
+                    $this->get('security.token_storage')->getToken()->getUser()
                 );
 
                 $this->get('open_miam_miam.payment_manager')->computeConsumerCredit(

@@ -42,7 +42,7 @@ class SalesOrderController extends Controller
             return $this->redirectToCart($cart);
         }
 
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         $form = $this->createForm(
             $this->get('open_miam_miam.form.type.sales_order_confirmation'),
@@ -103,7 +103,7 @@ class SalesOrderController extends Controller
      */
     public function confirmCreationAction(Branch $branch, SalesOrder $order)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         if ($user->getId() !== $order->getUser()->getId()) {
             throw $this->createNotFoundException('Sales order not found');
         }

@@ -70,7 +70,7 @@ class ProducerController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.context')->getToken()->getUser());
+                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.producers.message.created');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.producer.list'));
@@ -101,7 +101,7 @@ class ProducerController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.context')->getToken()->getUser());
+                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.producers.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.producer.list'));
@@ -153,7 +153,7 @@ class ProducerController extends Controller
     public function deleteAction(Producer $producer)
     {
         $producerManager = $this->get('open_miam_miam.producer_manager');
-        $producerManager->delete($producer, $this->get('security.context')->getToken()->getUser());
+        $producerManager->delete($producer, $this->get('security.token_storage')->getToken()->getUser());
         $this->get('session')->getFlashBag()->add('notice', 'admin.super.producers.message.deleted');
 
         return $this->redirect($this->generateUrl('open_miam_miam.admin.super.producer.list'));

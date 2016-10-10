@@ -27,7 +27,7 @@ class BaseController extends Controller
      */
     protected function secure(Producer $producer, $owner = false)
     {
-        if (false === $this->get('security.context')->isGranted($owner ? 'OWNER' : 'OPERATOR', $producer)) {
+        if (false === $this->get('security.authorization_checker')->isGranted($owner ? 'OWNER' : 'OPERATOR', $producer)) {
             throw new AccessDeniedException();
         }
     }

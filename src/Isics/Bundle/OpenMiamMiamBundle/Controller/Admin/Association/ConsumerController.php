@@ -243,7 +243,7 @@ class ConsumerController extends BaseController
 
         $comment = $this->get('open_miam_miam.comment_manager')->createComment(
             $association,
-            $this->get('security.context')->getToken()->getUser(),
+            $this->get('security.token_storage')->getToken()->getUser(),
             $consumer,
             $salesOrder
         );
