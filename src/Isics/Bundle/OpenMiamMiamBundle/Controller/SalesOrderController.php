@@ -44,17 +44,20 @@ class SalesOrderController extends Controller
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.sales_order_confirmation'),
-            new SalesOrderConfirmation(),
-            array(
-                'action' => $this->generateUrl(
-                    'open_miam_miam.sales_order.confirm',
-                    array('branchSlug' => $cart->getBranch()->getSlug())
-                ),
-                'method' => 'POST'
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_sales_order_confirmation',
+                SalesOrderConfirmationType::class,
+                new SalesOrderConfirmation(),
+                array(
+                    'action' => $this->generateUrl(
+                        'open_miam_miam.sales_order.confirm',
+                        array('branchSlug' => $cart->getBranch()->getSlug())
+                    ),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);

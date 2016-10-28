@@ -92,13 +92,14 @@ class GeneralController extends BaseController
      */
     public function statisticsAction(Request $request, Producer $producer)
     {
-        $form = $this->createForm(
-            ProducerStatisticsType::class,
-            null,
-            array(
-                'producer' => $producer
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_producer_statistics',
+                ProducerStatisticsType::class,
+                null,
+                array('producer' => $producer)
             )
-        );
+            ->getForm();
 
         $data = null;
 
