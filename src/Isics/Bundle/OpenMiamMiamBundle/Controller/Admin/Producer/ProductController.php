@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -150,11 +151,14 @@ class ProductController extends BaseController
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.product'),
-            $product,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_product',
+                ProductType::class,
+                $product,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**

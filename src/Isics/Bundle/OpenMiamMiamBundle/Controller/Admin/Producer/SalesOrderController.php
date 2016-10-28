@@ -17,6 +17,9 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ArtificialProductType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerSalesOrderType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductsFilterType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
@@ -162,18 +165,21 @@ class SalesOrderController extends BaseController
         // Should we have to remove form controls ?
         $isLocked = $this->get('open_miam_miam.sales_order_manager')->isLocked($order);
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.producer_sales_order'),
-            new ProducerSalesOrder($producer, $order),
-            array(
-                'locked' => $isLocked,
-                'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.sales_order.edit',
-                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
-                ),
-                'method' => 'POST'
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_producer_sales_order',
+                ProducerSalesOrderType::class,
+                new ProducerSalesOrder($producer, $order),
+                array(
+                    'locked' => $isLocked,
+                    'action' => $this->generateUrl(
+                        'open_miam_miam.admin.producer.sales_order.edit',
+                        array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                    ),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
         if (!$isLocked && $request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -334,29 +340,35 @@ class SalesOrderController extends BaseController
         $this->secureSalesOrder($producer, $order);
         $this->ensureSalesOrderIsOpen($order);
 
-        $filterForm = $this->createForm(
-            $this->get('open_miam_miam.form.type.products_filter'),
-            null,
-            array(
-                'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.sales_order.add_products',
-                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
-                ),
-                'method' => 'POST'
+        $filterForm =  $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_products_filter',
+                ProductsFilterType::class,
+                null,
+                array(
+                    'action' => $this->generateUrl(
+                        'open_miam_miam.admin.producer.sales_order.add_products',
+                        array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                    ),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
-        $artificialProductForm = $this->createForm(
-            $this->get('open_miam_miam.form.type.artificial_product'),
-            $this->get('open_miam_miam.product_manager')->createArtificialProduct($producer),
-            array(
-                'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.sales_order.add_products',
-                    array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
-                ),
-                'method' => 'POST'
+        $artificialProductForm = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_artificial_product',
+                ArtificialProductType::class,
+                $this->get('open_miam_miam.product_manager')->createArtificialProduct($producer),
+                array(
+                    'action' => $this->generateUrl(
+                        'open_miam_miam.admin.producer.sales_order.add_products',
+                        array('id' => $producer->getId(), 'salesOrderId' => $order->getId())
+                    ),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
         $filters = null;
         if ($request->isMethod('POST')) {

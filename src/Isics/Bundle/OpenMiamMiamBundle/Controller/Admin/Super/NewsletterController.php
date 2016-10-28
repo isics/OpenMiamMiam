@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperNewsletterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -154,10 +155,13 @@ class NewsletterController extends Controller
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.super_newsletter'),
-            $newsletter,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_super_newsletter',
+                SuperNewsletterType::class,
+                $newsletter,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 }

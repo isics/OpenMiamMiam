@@ -13,8 +13,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenceAttendance;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProducerBranchOccurrenceAttendanceType extends AbstractType
 {
@@ -23,7 +24,7 @@ class ProducerBranchOccurrenceAttendanceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('attendance', 'choice', array(
+        $builder->add('attendance', ChoiceType::class, array(
             'expanded' => true,
             'choices' => array(
                 ProducerBranchOccurrenceAttendance::ATTENDANCE_YES     => 'attendance.yes',
@@ -36,18 +37,8 @@ class ProducerBranchOccurrenceAttendanceType extends AbstractType
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchOccurrenceAttendance',
-        ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_producer_branch_occurrence_attendance';
+        $resolver->setDefaults(array('data_class' => ProducerBranchOccurrenceAttendance::class));
     }
 }

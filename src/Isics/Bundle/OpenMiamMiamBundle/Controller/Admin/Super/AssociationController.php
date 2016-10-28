@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperAssociationType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AssociationWithOwner;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
@@ -130,11 +131,14 @@ class AssociationController extends Controller
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.super_association'),
-            $associationWithOwner,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_super_association',
+                SuperAssociationType::class,
+                $associationWithOwner,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**

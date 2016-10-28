@@ -17,8 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesOrderConfirmationType extends AbstractType implements EventSubscriberInterface
 {
@@ -74,18 +74,10 @@ class SalesOrderConfirmationType extends AbstractType implements EventSubscriber
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation',
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_sales_order_confirmation';
     }
 }

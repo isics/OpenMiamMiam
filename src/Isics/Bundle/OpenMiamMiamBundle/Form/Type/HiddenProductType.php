@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 use Doctrine\ORM\EntityManager;
 use Isics\Bundle\OpenMiamMiamBundle\Form\DataTransformer\ProductToIdentifierDataTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class HiddenProductType extends AbstractType
@@ -48,14 +49,6 @@ class HiddenProductType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_hidden_product';
+        return HiddenType::class;
     }
 }

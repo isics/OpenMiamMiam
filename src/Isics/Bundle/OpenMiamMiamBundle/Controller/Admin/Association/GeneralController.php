@@ -13,6 +13,8 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationStatisticsType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,16 +54,18 @@ class GeneralController extends BaseController
     {
         $this->secure($association);
 
-        // @todo Replace all new types by a call to service
         $associationManager = $this->get('open_miam_miam.association_manager');
-        $form            = $this->createForm(
-            $this->get('open_miam_miam.form.type.association'),
-            $association,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.admin.association.edit', array('id' => $association->getId())),
-                'method' => 'POST'
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association',
+                AssociationType::class,
+                $association,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.admin.association.edit', array('id' => $association->getId())),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -89,13 +93,14 @@ class GeneralController extends BaseController
      */
     public function statisticsAction(Request $request, Association $association)
     {
-        $form = $this->createForm(
-            'open_miam_miam_association_statistics',
-            null,
-            array(
-                'association' => $association
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association_statistics',
+                AssociationStatisticsType::class,
+                null,
+                array('association' => $association)
             )
-        );
+            ->getForm();
 
         $data = null;
 

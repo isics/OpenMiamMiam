@@ -13,8 +13,11 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentType extends AbstractType
 {
@@ -29,37 +32,29 @@ class PaymentType extends AbstractType
         );
 
         if (!$options['without_amount']) {
-            $builder->add('amount', 'money');
+            $builder->add('amount', MoneyType::class);
             $typeChoices[Payment::TYPE_TRANSFER] = 'payment.transfer';
         }
 
-        $builder->add('type', 'choice', array(
-                    'choices'  => $typeChoices,
-                    'expanded' => false
-                ));
+        $builder->add('type', ChoiceType::class, array(
+            'choices'  => $typeChoices,
+            'expanded' => false
+        ));
 
         if ($options['with_submit']) {
-            $builder->add('save', 'submit');
+            $builder->add('save', SubmitType::class);
         }
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'     => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Payment',
+            'data_class'     => Payment::class,
             'without_amount' => true,
             'with_submit'    => true
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_payment';
     }
 }

@@ -15,6 +15,8 @@ use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\BranchOccurrenceType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\BranchType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\BranchOccurrence\BranchOccurrenceProducersAttendances;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,14 +165,17 @@ class BranchController extends BaseController
 
         $branchOccurrence = $branchOccurrenceManager->createForBranch($branch);
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.branch_occurrence'),
-            $branchOccurrence,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.admin.association.branch.edit_calendar', array('id' => $association->getId(), 'branchId' => $branch->getId())),
-                'method' => 'POST',
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_branch_occurrence',
+                BranchOccurrenceType::class,
+                $branchOccurrence,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.admin.association.branch.edit_calendar', array('id' => $association->getId(), 'branchId' => $branch->getId())),
+                    'method' => 'POST',
+                )
             )
-        );
+            ->getForm();
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -268,36 +273,13 @@ class BranchController extends BaseController
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.branch'),
-            $branch,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_branch',
+                BranchType::class,
+                $branch,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
-
-    // /**
-    //  * Delete branch
-    //  *
-    //  * @ParamConverter("branch", class="IsicsOpenMiamMiamBundle:Branch", options={"mapping": {"branchId": "id"}})
-    //  *
-    //  * @param Association $association
-    //  * @param Branch     $branch
-    //  *
-    //  * @return Response
-    //  */
-    // public function deleteAction(Association $association, Branch $branch)
-    // {
-    //     $this->secure($association);
-    //     $this->secureBranch($association, $branch);
-
-    //     $branchManager = $this->get('open_miam_miam.branch_manager');
-    //     $branchManager->delete($branch);
-
-    //     $this->get('session')->getFlashBag()->add('notice', 'admin.association.branch.message.deleted');
-
-    //     return $this->redirect($this->generateUrl(
-    //         'open_miam_miam.admin.association.branch.list',
-    //         array('id' => $association->getId())
-    //     ));
-    // }
 }

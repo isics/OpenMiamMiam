@@ -13,12 +13,19 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // @todo (only next years)
 class ProductType extends AbstractType  implements EventSubscriberInterface
@@ -45,45 +52,45 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-                ->add('category', 'entity', array(
+        $builder->add('name', TextType::class)
+                ->add('category', EntityType::class, array(
                     'class' => 'IsicsOpenMiamMiamBundle:Category',
-                    'property' => 'indentedName',
+                    'choice_label' => 'indentedName',
                     'query_builder' => function(EntityRepository $er) {
                         return $er->getNodesHierarchyQueryBuilder()->andWhere('node.lvl > 0');
                     },
                 ))
-                ->add('ref', 'text')
-                ->add('isBio', 'checkbox', array(
+                ->add('ref', TextType::class)
+                ->add('isBio', CheckboxType::class, array(
                     'required' => false
                 ))
-                ->add('isOfTheMoment', 'checkbox', array(
+                ->add('isOfTheMoment', CheckboxType::class, array(
                     'required' => false
                 ))
-                ->add('imageFile', 'file', array(
+                ->add('imageFile', FileType::class, array(
                     'required' => false
                 ))
-                ->add('description', 'textarea', array(
+                ->add('description', TextareaType::class, array(
                     'required' => false
                 ))
-                ->add('buyingUnit', 'choice', array(
+                ->add('buyingUnit', ChoiceType::class, array(
                     'empty_value' => 'Without unit',
                     'choices' => $this->buyingUnits,
                     'required' => false
                 ))
-                ->add('allowDecimalQuantity', 'checkbox', array(
+                ->add('allowDecimalQuantity', CheckboxType::class, array(
                     'required' => false
                 ))
-                ->add('hasNoPrice', 'checkbox', array(
+                ->add('hasNoPrice', CheckboxType::class, array(
                     'required' => false
                 ))
-                ->add('price', 'text', array(
+                ->add('price', TextType::class, array(
                     'required' => false
                 ))
-                ->add('priceInfo', 'text', array(
+                ->add('priceInfo', TextType::class, array(
                     'required' => false
                 ))
-                ->add('availability', 'choice', array(
+                ->add('availability', ChoiceType::class, array(
                     'choices' => array(
                         Product::AVAILABILITY_AVAILABLE => 'availability.available',
                         Product::AVAILABILITY_ACCORDING_TO_STOCK => 'availability.in_stock',
@@ -92,14 +99,14 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
                     ),
                     'expanded' => true,
                 ))
-                ->add('stock', 'text', array(
+                ->add('stock', TextType::class, array(
                     'required' => false
                 ))
-                ->add('availableAt', 'date', array(
+                ->add('availableAt', DateType::class, array(
                     'required' => false
                 ))
                 ->addEventSubscriber($this)
-                ->add('save', 'submit');
+                ->add('save', SubmitType::class);
     }
 
     /**
@@ -126,8 +133,8 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
         if (null !== $producer) {
             $form->add('branches', 'entity', array(
                 'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                'property' => 'name',
-                'empty_value' => '',
+                'choice_label' => 'name',
+                'placeholder' => '',
                 'multiple' => true,
                 'expanded' => true,
                 'by_reference' => false,
@@ -147,18 +154,10 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Product',
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_product';
     }
 }

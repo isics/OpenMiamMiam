@@ -12,11 +12,13 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 class ProductsFilterType extends AbstractType
 {
@@ -25,14 +27,14 @@ class ProductsFilterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-                ->add('filter', 'submit');
+        $builder->add('name', TextType::class)
+                ->add('filter', SubmitType::class);
 
         if (isset($options['association'])) {
             $association = $options['association'];
-            $builder->add('producer', 'entity', array(
+            $builder->add('producer', EntityType::class, array(
                 'class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer',
-                'property' => 'name',
+                'choice_label' => 'name',
                 'required' => false,
                 'expanded' => false,
                 'multiple' => false,
@@ -46,17 +48,9 @@ class ProductsFilterType extends AbstractType
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setOptional(array('association'));
         $resolver->setAllowedTypes(array('association' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association'));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_product';
     }
 }

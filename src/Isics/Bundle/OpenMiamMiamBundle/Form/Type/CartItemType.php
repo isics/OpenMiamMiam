@@ -11,9 +11,12 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CartItemType extends AbstractType
 {
@@ -22,29 +25,21 @@ class CartItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('product', 'open_miam_miam_hidden_product');
-        $builder->add('quantity', 'number');
+        $builder->add('product', HiddenProductType::class);
+        $builder->add('quantity', NumberType::class);
         if ($options['submit_button']) {
-            $builder->add('add', 'submit');
+            $builder->add('add', SubmitType::class);
         }
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'    => 'Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem',
+            'data_class'    => CartItem::class,
             'submit_button' => false,
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_cart_item';
     }
 }

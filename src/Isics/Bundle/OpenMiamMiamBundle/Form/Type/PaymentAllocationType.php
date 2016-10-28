@@ -11,9 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PaymentAllocationType extends AbstractType
 {
@@ -22,26 +24,16 @@ class PaymentAllocationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('amount', 'money', array(
-                    'required' => false
-                ))
-                ->add('payment', 'open_miam_miam_payment')
-                ->add('add', 'submit');
+        $builder->add('amount', MoneyType::class, array('required' => false))
+            ->add('payment', PaymentType::class)
+            ->add('add', 'submit');
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation'));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_payment_allocation';
+        $resolver->setDefaults(array('data_class' => PaymentAllocation::class));
     }
 }

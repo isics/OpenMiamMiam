@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationNewsletterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -194,10 +195,13 @@ class NewsletterController extends BaseController
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.association_newsletter'),
-            $newsletter,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association_newsletter',
+                AssociationNewsletterType::class,
+                $newsletter,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 }

@@ -13,6 +13,8 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerStatisticsType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,16 +53,19 @@ class GeneralController extends BaseController
     {
         $this->secure($producer);
 
-        // @todo Replace all new types by a call to service
         $producerManager = $this->get('open_miam_miam.producer_manager');
-        $form            = $this->createForm(
-            $this->get('open_miam_miam.form.type.producer'),
-            $producer,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.admin.producer.edit', array('id' => $producer->getId())),
-                'method' => 'POST'
+
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_producer',
+                ProducerType::class,
+                $producer,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.admin.producer.edit', array('id' => $producer->getId())),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -88,7 +93,7 @@ class GeneralController extends BaseController
     public function statisticsAction(Request $request, Producer $producer)
     {
         $form = $this->createForm(
-            'open_miam_miam_producer_statistics',
+            ProducerStatisticsType::class,
             null,
             array(
                 'producer' => $producer

@@ -844,6 +844,7 @@ admin.producer.manager.message.demoted:    "User has been demote from administra
 
 # Messages
 message.cart.added:       "Item has been added to cart"
+message.cart.not_added:   "Unable to add item"
 message.cart.updated:     "Cart has been updated"
 
 # Activities

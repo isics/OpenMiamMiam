@@ -3,10 +3,12 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProducerStatisticsType extends AbstractType
 {
@@ -38,7 +40,7 @@ class ProducerStatisticsType extends AbstractType
         $producer = $options['producer'];
 
         $builder
-            ->add('mode', 'choice', array(
+            ->add('mode', ChoiceType::class, array(
                 'choices' => [
                     self::MODE_TURNOVER     => $this->translator->trans('admin.producer.dashboard.statistics.mode.turnover'),
                     self::MODE_SALES_ORDERS => $this->translator->trans('admin.producer.dashboard.statistics.mode.sales_orders'),
@@ -47,17 +49,17 @@ class ProducerStatisticsType extends AbstractType
                 'expanded' => true,
                 'multiple' => false
             ))
-            ->add('branch', 'entity', array(
+            ->add('branch', EntityType::class, array(
                 'class'         => 'Isics\\Bundle\\OpenMiamMiamBundle\\Entity\\Branch',
                 'query_builder' => function (BranchRepository $branchRepository) use ($producer) {
                     return $branchRepository->filterProducer($producer);
                 },
-                'property'      => 'name',
-                'empty_value'   => $this->translator->trans('admin.producer.dashboard.statistics.all_branches')
+                'choice_label'  => 'name',
+                'placeholder'   => $this->translator->trans('admin.producer.dashboard.statistics.all_branches')
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setRequired(array(
@@ -66,15 +68,5 @@ class ProducerStatisticsType extends AbstractType
             ->setAllowedTypes(array(
                 'producer' => 'Isics\\Bundle\\OpenMiamMiamBundle\\Entity\\Producer'
             ));
-    }
-
-    /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_producer_statistics';
     }
 }

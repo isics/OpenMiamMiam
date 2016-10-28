@@ -11,19 +11,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle;
 
-use Isics\Bundle\OpenMiamMiamBundle\DependencyInjection\Compiler\ValidatorPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class IsicsOpenMiamMiamBundle extends Bundle
 {
-    /**
-     * @param ContainerBuilder $container
-     */
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        $container->addCompilerPass(new ValidatorPass());
-    }
 }

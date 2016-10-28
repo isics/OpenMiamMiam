@@ -248,7 +248,13 @@ class ConsumerController extends BaseController
             $salesOrder
         );
 
-        $form = $this->createForm(new CommentType, $comment);
+        $form =  $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_comment',
+                CommentType::class,
+                $comment
+            )
+            ->getForm();
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);

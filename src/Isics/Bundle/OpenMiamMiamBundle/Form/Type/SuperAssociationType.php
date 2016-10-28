@@ -11,7 +11,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use FOS\UserBundle\Form\Type\UsernameFormType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SuperAssociationType extends AbstractType
@@ -25,9 +28,9 @@ class SuperAssociationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text')
-            ->add('owner', 'fos_user_username')
-            ->add('save', 'submit');
+            ->add('name', TextType::class)
+            ->add('owner', UsernameFormType::class)
+            ->add('save', SubmitType::class);
     }
 
     /**
@@ -38,14 +41,5 @@ class SuperAssociationType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Association\AssociationWithOwner');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_super_association';
     }
 }

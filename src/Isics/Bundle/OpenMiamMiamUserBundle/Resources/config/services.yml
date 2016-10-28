@@ -6,7 +6,7 @@ services:
         class: Isics\Bundle\OpenMiamMiamUserBundle\Form\Type\RegistrationType
         arguments:
             - %fos_user.model.user.class%
-            - @open_miam_miam.twig.terms_of_service_extension
+            - '@open_miam_miam.twig.terms_of_service_extension'
         tags:
             - { name: form.type, alias: open_miam_miam_user_registration }
 
@@ -18,36 +18,35 @@ services:
 
     open_miam_miam_user.listener.profile_editing:
         class: Isics\Bundle\OpenMiamMiamUserBundle\EventListener\ProfileEditingListener
-        arguments: [@router]
+        arguments: ['@router']
         tags:
             - { name: kernel.event_subscriber }
 
     open_miam_miam_user.listener.authentication:
         class: Isics\Bundle\OpenMiamMiamUserBundle\EventListener\AuthenticationListener
         arguments:
-            - @session
+            - '@session'
         tags:
             - { name: kernel.event_subscriber }
 
     open_miam_miam_user.manager.user:
         class: %open_miam_miam_user.manager.user.class%
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
             - %open_miam_miam_user.last_order_nb_days_considering_customer%
-            - @security.acl.provider
+            - '@security.acl.provider'
 
     # Repositories
     open_miam_miam.repository.user:
         class: Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository
-        factory_service: doctrine.orm.entity_manager
-        factory_method:  "getRepository"
+        factory: ['@doctrine.orm.entity_manager', getRepository]
         arguments:
-            - "IsicsOpenMiamMiamUserBundle:User"
+            - 'IsicsOpenMiamMiamUserBundle:User'
 
     # Twig extensions
     open_miam_miam.twig.open_miam_miam_user_extension:
         class:     Isics\Bundle\OpenMiamMiamUserBundle\Twig\OpenMiamMiamUserExtension
         arguments:
-            - @open_miam_miam_user.manager.user
+            - '@open_miam_miam_user.manager.user'
         tags:
             - { name: twig.extension }
