@@ -12,7 +12,6 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerAttendances;
-use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -27,7 +26,7 @@ class ProducerAttendancesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('branchAttendances', CollectionType::class, array('entry_type' => ProducerBranchAttendances::class))
+            ->add('branchAttendances', CollectionType::class, array('entry_type' => ProducerBranchAttendancesType::class))
             ->add('save', SubmitType::class)
         ;
     }

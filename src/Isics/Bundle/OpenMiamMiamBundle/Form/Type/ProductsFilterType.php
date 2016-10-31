@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -51,6 +52,6 @@ class ProductsFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setOptional(array('association'));
-        $resolver->setAllowedTypes(array('association' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association'));
+        $resolver->setAllowedTypes('association', Association::class);
     }
 }

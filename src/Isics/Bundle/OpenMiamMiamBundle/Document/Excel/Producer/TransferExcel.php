@@ -13,7 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Document\Excel\Tools;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Document\ProducersTransfer;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class TransferExcel
 {
@@ -38,7 +38,7 @@ class TransferExcel
      * @param \PHPExcel                                 $excel
      * @param \Symfony\Component\Translation\Translator $translator
      */
-    public function __construct(\PHPExcel $excel, Translator $translator, $currency)
+    public function __construct(\PHPExcel $excel, TranslatorInterface $translator, $currency)
     {
         $this->excel      = $excel;
         $this->translator = $translator;

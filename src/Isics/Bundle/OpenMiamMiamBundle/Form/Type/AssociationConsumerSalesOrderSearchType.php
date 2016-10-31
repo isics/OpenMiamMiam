@@ -78,6 +78,6 @@ class AssociationConsumerSalesOrderSearchType extends AbstractType
         $resolver
             ->setDefaults(array('data_class' => AssociationConsumerSalesOrdersFilter::class))
             ->setRequired(array('association'))
-            ->setAllowedTypes(array('association' => Association::class));
+            ->setAllowedTypes('association', Association::class);
     }
 }

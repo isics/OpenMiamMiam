@@ -194,7 +194,7 @@ class AllocatePaymentType extends AbstractType
     {
         $resolver
             ->setDefined(array('user'))
-            ->setAllowedTypes(array('user' => User::class))
+            ->setAllowedTypes('user', User::class)
             ->setDefaults(array('data_class' => AllocatePayment::class))
         ;
     }

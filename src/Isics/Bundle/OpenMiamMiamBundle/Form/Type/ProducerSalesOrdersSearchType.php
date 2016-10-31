@@ -13,6 +13,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -42,13 +43,13 @@ class ProducerSalesOrdersSearchType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder'  => $this->translator->trans('admin.producer.sales_orders.list_history.filter.all_branches'),
             ))
-            ->add('minDate', 'date', array(
+            ->add('minDate', DateType::class, array(
                 'widget'   => 'single_text',
                 'format'   => 'dd/MM/yyyy',
                 'input'    => 'datetime',
                 'required' => false
             ))
-            ->add('maxDate', 'date', array(
+            ->add('maxDate', DateType::class, array(
                 'widget'   => 'single_text',
                 'format'   => 'dd/MM/yyyy',
                 'input'    => 'datetime',
@@ -64,6 +65,6 @@ class ProducerSalesOrdersSearchType extends AbstractType
         $resolver
             ->setDefaults(array('data_class' => ProducerSalesOrdersFilter::class))
             ->setRequired(array('producer'))
-            ->setAllowedTypes(array('producer' => Producer::class));
+            ->setAllowedTypes('producer', Producer::class);
     }
 }

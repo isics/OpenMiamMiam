@@ -2,6 +2,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,12 +43,13 @@ class ProducerStatisticsType extends AbstractType
         $builder
             ->add('mode', ChoiceType::class, array(
                 'choices' => [
-                    self::MODE_TURNOVER     => $this->translator->trans('admin.producer.dashboard.statistics.mode.turnover'),
-                    self::MODE_SALES_ORDERS => $this->translator->trans('admin.producer.dashboard.statistics.mode.sales_orders'),
-                    self::MODE_AVERAGE_CART => $this->translator->trans('admin.producer.dashboard.statistics.mode.average_cart')
+                    $this->translator->trans('admin.producer.dashboard.statistics.mode.turnover') => self::MODE_TURNOVER,
+                    $this->translator->trans('admin.producer.dashboard.statistics.mode.sales_orders') => self::MODE_SALES_ORDERS,
+                    $this->translator->trans('admin.producer.dashboard.statistics.mode.average_cart') => self::MODE_AVERAGE_CART
                 ],
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
+                'choices_as_values' => true,
             ))
             ->add('branch', EntityType::class, array(
                 'class'         => 'Isics\\Bundle\\OpenMiamMiamBundle\\Entity\\Branch',
@@ -62,11 +64,8 @@ class ProducerStatisticsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setRequired(array(
-                'producer'
-            ))
-            ->setAllowedTypes(array(
-                'producer' => 'Isics\\Bundle\\OpenMiamMiamBundle\\Entity\\Producer'
-            ));
+            ->setRequired(array('producer'))
+            ->setAllowedTypes('producer', Producer::class)
+        ;
     }
 }

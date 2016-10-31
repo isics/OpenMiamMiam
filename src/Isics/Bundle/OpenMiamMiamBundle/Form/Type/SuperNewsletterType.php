@@ -36,12 +36,13 @@ class SuperNewsletterType extends AbstractType
         $builder
             ->add('recipientType', ChoiceType::class, array(
                 'choices' => array(
-                    Newsletter::RECIPIENT_TYPE_ALL      => 'recipient.type.all',
-                    Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
-                    Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
+                    'recipient.type.all' => Newsletter::RECIPIENT_TYPE_ALL,
+                    'recipient.type.consumers' => Newsletter::RECIPIENT_TYPE_CONSUMER,
+                    'recipient.type.producers' => Newsletter::RECIPIENT_TYPE_PRODUCER,
                 ),
                 'multiple' => false,
                 'expanded' => true,
+                'choices_as_values' => true
             ))
             ->add('branches', EntityType::class, array(
                 'class'         => 'IsicsOpenMiamMiamBundle:Branch',

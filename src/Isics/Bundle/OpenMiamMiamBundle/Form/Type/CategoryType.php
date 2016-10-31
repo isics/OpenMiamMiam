@@ -34,11 +34,12 @@ class CategoryType extends AbstractType
         if (!$options['data']->isRoot()) {
             $builder->add('position', ChoiceType::class, array(
                 'choices' => array(
-                    CategoryNode::POSITION_FIRST_CHILD_OF  => 'tree.position.first_child_of',
-                    CategoryNode::POSITION_LAST_CHILD_OF   => 'tree.position.last_child_of',
-                    CategoryNode::POSITION_PREV_SIBLING_OF => 'tree.position.prev_sibling_of',
-                    CategoryNode::POSITION_NEXT_SIBLING_OF => 'tree.position.next_sibling_of',
-                )
+                    'tree.position.first_child_of' => CategoryNode::POSITION_FIRST_CHILD_OF,
+                    'tree.position.last_child_of' => CategoryNode::POSITION_LAST_CHILD_OF,
+                    'tree.position.prev_sibling_of' => CategoryNode::POSITION_PREV_SIBLING_OF,
+                    'tree.position.next_sibling_of' => CategoryNode::POSITION_NEXT_SIBLING_OF,
+                ),
+                'choices_as_values' => true,
             ))
             ->add('target', EntityType::class, array(
                 'class'         => Category::class,

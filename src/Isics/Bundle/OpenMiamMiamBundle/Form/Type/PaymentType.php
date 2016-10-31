@@ -27,18 +27,19 @@ class PaymentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $typeChoices = array(
-            Payment::TYPE_CASH => 'payment.cash',
-            Payment::TYPE_CHEQUE => 'payment.cheque'
+            'payment.cash' => Payment::TYPE_CASH,
+            'payment.cheque' => Payment::TYPE_CHEQUE
         );
 
         if (!$options['without_amount']) {
             $builder->add('amount', MoneyType::class);
-            $typeChoices[Payment::TYPE_TRANSFER] = 'payment.transfer';
+            $typeChoices['payment.transfer'] = Payment::TYPE_TRANSFER;
         }
 
         $builder->add('type', ChoiceType::class, array(
             'choices'  => $typeChoices,
-            'expanded' => false
+            'expanded' => false,
+            'choices_as_values' => true,
         ));
 
         if ($options['with_submit']) {

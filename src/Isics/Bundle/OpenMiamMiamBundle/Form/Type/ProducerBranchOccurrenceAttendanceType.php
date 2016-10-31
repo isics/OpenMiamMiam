@@ -27,10 +27,11 @@ class ProducerBranchOccurrenceAttendanceType extends AbstractType
         $builder->add('attendance', ChoiceType::class, array(
             'expanded' => true,
             'choices' => array(
-                ProducerBranchOccurrenceAttendance::ATTENDANCE_YES     => 'attendance.yes',
-                ProducerBranchOccurrenceAttendance::ATTENDANCE_NO      => 'attendance.no',
-                ProducerBranchOccurrenceAttendance::ATTENDANCE_UNKNOWN => 'attendance.unknown'
+                'attendance.yes' => ProducerBranchOccurrenceAttendance::ATTENDANCE_YES,
+                'attendance.no' => ProducerBranchOccurrenceAttendance::ATTENDANCE_NO,
+                'attendance.unknown' => ProducerBranchOccurrenceAttendance::ATTENDANCE_UNKNOWN
             ),
+            'choices_as_values' => true,
         ));
     }
 

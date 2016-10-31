@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationConsumerSearchType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\AssociationConsumerFilter;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -51,7 +52,7 @@ class AssociationConsumerHandler
     public function createSearchForm()
     {
         return $this->formFactory->create(
-            'open_miam_miam_association_consumer_search',
+            AssociationConsumerSearchType::class,
             new AssociationConsumerFilter()
         );
     }
@@ -91,4 +92,4 @@ class AssociationConsumerHandler
     {
         $this->repository->deletedFilter($qb, false);
     }
-} 
+}

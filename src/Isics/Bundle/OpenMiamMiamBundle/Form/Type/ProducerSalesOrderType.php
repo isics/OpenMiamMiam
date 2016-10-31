@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -26,7 +27,7 @@ class ProducerSalesOrderType extends AbstractType
     {
         $builder
             ->add('salesOrderRows', CollectionType::class, array(
-                'entry_type' => 'open_miam_miam_sales_order_row',
+                'entry_type' => SalesOrderRowType::class,
                 'options' => array(
                    'locked' => (bool)$options['locked']
                 )
@@ -43,7 +44,7 @@ class ProducerSalesOrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder',
+            'data_class' => ProducerSalesOrder::class,
             'locked'     => false
         ));
     }

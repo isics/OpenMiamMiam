@@ -58,16 +58,15 @@ class AssociationProducerExportTransferType extends AbstractType
 
         // Store last 12 previous months
         for ($i = 0 ; $i < 12 ; $i++) {
-            $choices[$date->format('Y-m')] = $this->translator->trans(
-                'admin.association.producers.list.export.choice',
-                array('%month%' => $formatter->format($date))
-            );
-
+            $choices[$this->translator->trans('admin.association.producers.list.export.choice', array('%month%' => $formatter->format($date)))] = $date->format('Y-m');
             $date->modify('first day of previous month midnight');
         }
 
         $builder
-            ->add('month', ChoiceType::class, array('choices' => $choices))
+            ->add('month', ChoiceType::class, array(
+                'choices' => $choices,
+                'choices_as_values' => true
+            ))
             ->add('export', SubmitType::class);
     }
 }

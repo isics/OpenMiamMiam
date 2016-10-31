@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -76,7 +77,8 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
                 ->add('buyingUnit', ChoiceType::class, array(
                     'empty_value' => 'Without unit',
                     'choices' => $this->buyingUnits,
-                    'required' => false
+                    'required' => false,
+                    'choices_as_values' => true,
                 ))
                 ->add('allowDecimalQuantity', CheckboxType::class, array(
                     'required' => false
@@ -92,12 +94,13 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
                 ))
                 ->add('availability', ChoiceType::class, array(
                     'choices' => array(
-                        Product::AVAILABILITY_AVAILABLE => 'availability.available',
-                        Product::AVAILABILITY_ACCORDING_TO_STOCK => 'availability.in_stock',
-                        Product::AVAILABILITY_AVAILABLE_AT => 'availability.available_at',
-                        Product::AVAILABILITY_UNAVAILABLE => 'availability.unavailable',
+                        'availability.available' => Product::AVAILABILITY_AVAILABLE,
+                        'availability.in_stock' => Product::AVAILABILITY_ACCORDING_TO_STOCK,
+                        'availability.available_at' => Product::AVAILABILITY_AVAILABLE_AT,
+                        'availability.unavailable' => Product::AVAILABILITY_UNAVAILABLE,
                     ),
                     'expanded' => true,
+                    'choices_as_values' => true,
                 ))
                 ->add('stock', TextType::class, array(
                     'required' => false

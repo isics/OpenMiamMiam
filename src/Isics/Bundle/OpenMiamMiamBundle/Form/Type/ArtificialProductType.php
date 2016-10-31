@@ -55,7 +55,7 @@ class ArtificialProductType extends AbstractType
         $resolver
             ->setDefaults(array('data_class' => ArtificialProduct::class))
             ->setDefined(array('association'))
-            ->setAllowedTypes(array('association' => Association::class))
+            ->setAllowedTypes('association', Association::class)
         ;
     }
 }

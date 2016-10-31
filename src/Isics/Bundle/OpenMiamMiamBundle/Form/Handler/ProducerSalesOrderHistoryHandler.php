@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchOccurrenceRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerSalesOrdersSearchType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrders;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -45,7 +46,7 @@ class ProducerSalesOrderHistoryHandler
     public function createSearchForm(Producer $producer)
     {
         return $this->formFactory->create(
-            'open_miam_miam_producer_sales_order_search',
+            ProducerSalesOrdersSearchType::class,
             new ProducerSalesOrdersFilter(),
             [
                 'producer' => $producer,
@@ -80,4 +81,4 @@ class ProducerSalesOrderHistoryHandler
 
         return $qb;
     }
-} 
+}

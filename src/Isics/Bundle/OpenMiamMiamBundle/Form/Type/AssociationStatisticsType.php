@@ -45,13 +45,14 @@ class AssociationStatisticsType extends AbstractType
         $builder
             ->add('mode', ChoiceType::class, array(
                 'choices' => [
-                    self::MODE_TURNOVER     => $this->translator->trans('admin.association.dashboard.statistics.mode.turnover'),
-                    self::MODE_COMMISSION   => $this->translator->trans('admin.association.dashboard.statistics.mode.commission'),
-                    self::MODE_SALES_ORDERS => $this->translator->trans('admin.association.dashboard.statistics.mode.sales_orders'),
-                    self::MODE_AVERAGE_CART => $this->translator->trans('admin.association.dashboard.statistics.mode.average_cart')
+                    $this->translator->trans('admin.association.dashboard.statistics.mode.turnover') => self::MODE_TURNOVER,
+                    $this->translator->trans('admin.association.dashboard.statistics.mode.commission') => self::MODE_COMMISSION,
+                    $this->translator->trans('admin.association.dashboard.statistics.mode.sales_orders') => self::MODE_SALES_ORDERS,
+                    $this->translator->trans('admin.association.dashboard.statistics.mode.average_cart') => self::MODE_AVERAGE_CART,
                 ],
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
+                'choices_as_values' => true,
             ))
             ->add('branch', EntityType::class, array(
                 'class'         => Branch::class,
@@ -70,7 +71,7 @@ class AssociationStatisticsType extends AbstractType
     {
         $resolver
             ->setRequired(array('association'))
-            ->setAllowedTypes(array('association' => Association::class))
+            ->setAllowedTypes('association', Association::class)
         ;
     }
 }
