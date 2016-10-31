@@ -6,12 +6,7 @@ framework:
     session:
         storage_id: session.storage.mock_file
     profiler:
-        enabled: false
-    default_locale: en
-
-doctrine:
-    dbal:
-        dbname:   %database_name%_test
+        collect: false
 
 web_profiler:
     toolbar: false
@@ -19,3 +14,7 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        dbname: %database_name%_test

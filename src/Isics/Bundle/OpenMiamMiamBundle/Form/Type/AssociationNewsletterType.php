@@ -12,10 +12,16 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssociationNewsletterType extends AbstractType
 {
@@ -30,19 +36,19 @@ class AssociationNewsletterType extends AbstractType
         $association = $options['data']->getAssociation();
 
         $builder
-            ->add('recipientType', 'choice', array(
-                    'choices' => array(
-                        Newsletter::RECIPIENT_TYPE_ALL      => 'recipient.type.all',
-                        Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
-                        Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
-                    ),
-                    'multiple' => false,
-                    'expanded' => true
+            ->add('recipientType', ChoiceType::class, array(
+                'choices' => array(
+                    Newsletter::RECIPIENT_TYPE_ALL      => 'recipient.type.all',
+                    Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
+                    Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
+                ),
+                'multiple' => false,
+                'expanded' => true
             ))
-            ->add('branches', 'entity', array(
-                'class'         => 'IsicsOpenMiamMiamBundle:Branch',
-                'property'      => 'name',
-                'empty_value'   => '',
+            ->add('branches', EntityType::class, array(
+                'class'         => Branch::class,
+                'choice_label'  => 'name',
+                'placeholder'   => '',
                 'multiple'      => true,
                 'expanded'      => true,
                 'by_reference'  => false,
@@ -52,26 +58,16 @@ class AssociationNewsletterType extends AbstractType
                         ->setParameter('association', $association);
                 },
             ))
-            ->add('subject', 'text')
-            ->add('body', 'textarea')
-            ->add('send', 'submit');
+            ->add('subject', TextType::class)
+            ->add('body', TextareaType::class)
+            ->add('send', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter',
-        ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_association_newsletter';
+        $resolver->setDefaults(array('data_class' => Newsletter::class));
     }
 }

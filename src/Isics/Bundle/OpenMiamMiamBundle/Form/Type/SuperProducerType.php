@@ -11,7 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use FOS\UserBundle\Form\Type\UsernameFormType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SuperProducerType extends AbstractType
@@ -25,17 +29,17 @@ class SuperProducerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text')
-            ->add('owner', 'fos_user_username')
-            ->add('associations', 'entity', array(
+            ->add('name', TextType::class)
+            ->add('owner', UsernameFormType::class)
+            ->add('associations', EntityType::class, array(
                 'class'        => 'IsicsOpenMiamMiamBundle:Association',
-                'property'     => 'name',
-                'empty_value'  => '',
+                'choice_label' => 'name',
+                'placeholder'  => '',
                 'multiple'     => true,
                 'expanded'     => true,
                 'by_reference' => false,
             ))
-            ->add('save', 'submit');
+            ->add('save', SubmitType::class);
     }
 
     /**
@@ -46,14 +50,5 @@ class SuperProducerType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_super_producer';
     }
 }

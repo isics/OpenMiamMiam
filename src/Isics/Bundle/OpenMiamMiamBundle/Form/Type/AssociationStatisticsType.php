@@ -2,11 +2,15 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\BranchRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssociationStatisticsType extends AbstractType
 {
@@ -39,7 +43,7 @@ class AssociationStatisticsType extends AbstractType
         $association = $options['association'];
 
         $builder
-            ->add('mode', 'choice', array(
+            ->add('mode', ChoiceType::class, array(
                 'choices' => [
                     self::MODE_TURNOVER     => $this->translator->trans('admin.association.dashboard.statistics.mode.turnover'),
                     self::MODE_COMMISSION   => $this->translator->trans('admin.association.dashboard.statistics.mode.commission'),
@@ -49,34 +53,24 @@ class AssociationStatisticsType extends AbstractType
                 'expanded' => true,
                 'multiple' => false
             ))
-            ->add('branch', 'entity', array(
-                'class'         => 'Isics\\Bundle\\OpenMiamMiamBundle\\Entity\\Branch',
+            ->add('branch', EntityType::class, array(
+                'class'         => Branch::class,
                 'query_builder' => function (BranchRepository $branchRepository) use ($association) {
                     return $branchRepository->filterAssociation($association);
                 },
-                'property'      => 'name',
-                'empty_value'   => $this->translator->trans('admin.association.dashboard.statistics.all_branches')
-            ));
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver
-            ->setRequired(array(
-                'association'
-            ))
-            ->setAllowedTypes(array(
-                'association' => 'Isics\\Bundle\\OpenMiamMiamBundle\\Entity\\Association'
+                'choice_label'  => 'name',
+                'placeholder'   => $this->translator->trans('admin.association.dashboard.statistics.all_branches')
             ));
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * @see AbstractType
      */
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return 'open_miam_miam_association_statistics';
+        $resolver
+            ->setRequired(array('association'))
+            ->setAllowedTypes(array('association' => Association::class))
+        ;
     }
 }

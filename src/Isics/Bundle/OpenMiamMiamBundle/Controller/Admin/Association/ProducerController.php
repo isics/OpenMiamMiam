@@ -13,10 +13,12 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationHasProducerType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationProducerExportTransferType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 class ProducerController extends BaseController
@@ -37,14 +39,18 @@ class ProducerController extends BaseController
 
         $associationHasProducers = $this->get('open_miam_miam.association_has_producer_manager')->findForAssociation($association);
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.association_producer_export_transfer'),
-            null,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.admin.association.producer.export', array('id' => $association->getId())),
-                'method' => 'POST'
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association_producer_export_transfer',
+                AssociationProducerExportTransferType::class,
+                null,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.admin.association.producer.export', array('id' => $association->getId())),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
+
 
         return $this->render('IsicsOpenMiamMiamBundle:Admin\Association\Producer:list.html.twig', array(
             'form'                    => $form->createView(),
@@ -72,10 +78,13 @@ class ProducerController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.association_has_producer'),
-            $associationHasProducer
-        );
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association_has_producer',
+                AssociationHasProducerType::class,
+                $associationHasProducer
+            )
+            ->getForm();
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);

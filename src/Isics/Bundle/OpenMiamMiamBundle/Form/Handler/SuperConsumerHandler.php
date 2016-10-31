@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Handler;
 use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SubscriptionRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperConsumerSearchType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\AssociationConsumerFilter;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\SuperConsumerFilter;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\Repository\UserRepository;
@@ -53,7 +54,7 @@ class SuperConsumerHandler
     public function createSearchForm()
     {
         return $this->formFactory->create(
-            'open_miam_miam_super_consumer_search',
+            SuperConsumerSearchType::class,
             new SuperConsumerFilter()
         );
     }
@@ -105,4 +106,4 @@ class SuperConsumerHandler
     {
         $this->repository->deletedFilter($qb, false);
     }
-} 
+}

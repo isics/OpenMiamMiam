@@ -8,11 +8,12 @@
  * This source file is subject to the AGPL v3 license that is bundled
  * with this source code in the file LICENSE.
  */
+namespace Isics\Bundle\OpenMiamMiamBundle\Behat\Context;
 
-namespace Isics\Bundle\OpenMiamMiamBundle\Behat;
-
-use Behat\Behat\Context\BehatContext,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Gherkin\Node\TableNode;
+use Behat\MinkExtension\Context\MinkContext;
 
 use Doctrine\ORM\Tools\SchemaTool;
 
@@ -31,20 +32,15 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity,
 /**
  * Features context.
  */
-class FeatureContext extends BehatContext
+class MainFeatureContext extends MinkContext implements Context, SnippetAcceptingContext
 {
-    use \Behat\MinkExtension\Context\MinkDictionary;
     use \Behat\Symfony2Extension\Context\KernelDictionary;
 
     /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
+     * @{inheritDoc}
      */
-    public function __construct(array $parameters)
+    public function __construct($output_path)
     {
-        // Initialize your context here
     }
 
     /**
@@ -497,7 +493,7 @@ class FeatureContext extends BehatContext
      */
     public function theAdministrationAreaSwitcherShouldBeOn($value)
     {
-        $this->assertElementContains('select[data-type="url-switcher"]', 'selected="selected">'.$value);
+        $this->assertElementContainsText('select[data-type="url-switcher"] option[selected="selected"]', $value);
     }
 
     /**

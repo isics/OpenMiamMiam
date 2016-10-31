@@ -6,6 +6,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AllocatePaymentType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AllocatePayment;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -70,10 +71,13 @@ class PaymentController extends BaseController
         $allocatePayment = $this->get('open_miam_miam.factory.allocate_payment')->create($association);
         $subscription    = $this->get('open_miam_miam.subscription_manager')->create($association);
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.allocate_payment'),
-            $allocatePayment
-        );
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_allocate_payment',
+                AllocatePaymentType::class,
+                $allocatePayment
+            )
+            ->getForm();
 
         $response = new Response(null, 200);
 
@@ -123,10 +127,13 @@ class PaymentController extends BaseController
         $allocatePayment = $this->get('open_miam_miam.factory.allocate_payment')->create($association, $user);
         $subscription    = $this->get('open_miam_miam.subscription_manager')->create($association, $user);
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.allocate_payment'),
-            $allocatePayment
-        );
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_allocate_payment',
+                AllocatePaymentType::class,
+                $allocatePayment
+            )
+            ->getForm();
 
         $response = new Response(null, 200);
 

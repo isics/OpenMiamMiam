@@ -11,10 +11,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 /**
  * Isics\OpenMiamMiamBundle\Entity\Association

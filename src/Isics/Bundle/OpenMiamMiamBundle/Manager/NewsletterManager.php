@@ -12,8 +12,8 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
 use Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamUserBundle\Manager\UserManager;

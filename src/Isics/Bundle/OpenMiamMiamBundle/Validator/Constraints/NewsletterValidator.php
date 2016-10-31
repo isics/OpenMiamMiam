@@ -29,7 +29,10 @@ class NewsletterValidator extends ConstraintValidator
         if (null !== $association = $newsletter->getAssociation()) {
             foreach ($newsletter->getBranches() as $branch) {
                 if ($association !== $branch->getAssociation()) {
-                    $this->context->addViolationAt('branches', 'error.invalid');
+                    $this->context
+                        ->buildViolation('error.invalid')
+                        ->atPath('branches')
+                        ->addViolation();
                     break;
                 }
             }
@@ -37,7 +40,10 @@ class NewsletterValidator extends ConstraintValidator
 
         // Branches (included without_branch) not empty
         if (0 === count($newsletter->getBranches()) + ($newsletter->isWithoutBranch() ? 1 : 0)) {
-            $this->context->addViolationAt('branches', 'error.invalid');
+            $this->context
+                ->buildViolation('error.invalid')
+                ->atPath('branches')
+                ->addViolation();
         }
     }
 }

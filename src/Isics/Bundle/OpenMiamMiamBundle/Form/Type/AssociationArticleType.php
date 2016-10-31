@@ -13,12 +13,18 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Article;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssociationArticleType extends AbstractType implements EventSubscriberInterface
 {
@@ -27,12 +33,10 @@ class AssociationArticleType extends AbstractType implements EventSubscriberInte
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text')
-                ->add('body', 'textarea')
-                ->add('isPublished', 'checkbox', array(
-                    'required' => false
-                ))
-                ->add('save', 'submit')
+        $builder->add('title', TextType::class)
+                ->add('body', TextareaType::class)
+                ->add('isPublished', CheckboxType::class, array('required' => false))
+                ->add('save', SubmitType::class)
                 ->addEventSubscriber($this);
     }
 
@@ -58,10 +62,10 @@ class AssociationArticleType extends AbstractType implements EventSubscriberInte
 
         $association = $article->getAssociation();
         if (null !== $association) {
-            $form->add('branches', 'entity', array(
-                'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                'property' => 'name',
-                'empty_value' => '',
+            $form->add('branches', EntityType::class, array(
+                'class' => Branch::class,
+                'choice_label' => 'name',
+                'placeholder' => '',
                 'multiple' => true,
                 'expanded' => true,
                 'by_reference' => false,
@@ -77,18 +81,8 @@ class AssociationArticleType extends AbstractType implements EventSubscriberInte
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Article',
-        ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_association_article';
+        $resolver->setDefaults(array('data_class' => Article::class));
     }
 }

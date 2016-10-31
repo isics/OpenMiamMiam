@@ -10,71 +10,71 @@
     ],
     "description": "OpenMiamMiam",
     "autoload": {
-        "psr-0": { "Isics": "src/", "": "src/" }
+        "psr-4": { "": "src/" },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "require": {
         "php": ">=5.5.0",
-        "doctrine/orm": "2.4.*",
+        "symfony/symfony": "2.8.*",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/dbal": "<2.5",
         "doctrine/doctrine-bundle": "1.6.*",
-        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~5.0",
+        "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-        "liip/imagine-bundle": "1.6.0",
-        "knplabs/knp-menu": "2.0.*",
-        "knplabs/knp-menu-bundle": "2.0.*",
+        "jms/serializer-bundle": "1.1.*",
+        "stof/doctrine-extensions-bundle": "1.2.*",
+        "symfony/assetic-bundle": "2.8.*",
+        "twig/extensions": "1.3.*",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "liip/imagine-bundle": "1.6.*",
+        "knplabs/knp-menu": "2.1.*",
+        "knplabs/knp-menu-bundle": "2.1.*",
         "white-october/pagerfanta-bundle": "dev-master",
-        "sensio/distribution-bundle": "2.3.*",
-        "sensio/framework-extra-bundle": "2.3.*",
-        "sensio/generator-bundle": "2.3.*",
+        "sonata-project/intl-bundle": "2.2.*",
         "stfalcon/tinymce-bundle": "1.1.*",
-        "stof/doctrine-extensions-bundle": "~1.1@dev",
-        "sonata-project/intl-bundle": "2.1.1",
-        "symfony/assetic-bundle": "2.3.*",
-        "symfony/monolog-bundle": "2.3.*",
-        "symfony/swiftmailer-bundle": "2.3.*",
-        "symfony/symfony": "2.3.*",
-        "twig/extensions": "1.0.*",
         "tecnickcom/tcpdf": "6.0.068",
-        "phpoffice/phpexcel": "1.7.9",
-        "jms/serializer-bundle": "^1.1"
+        "phpoffice/phpexcel": "1.7.9"
     },
     "require-dev": {
-        "behat/behat": "2.4.*@stable",
-        "behat/mink-extension": "*",
-        "fabpot/goutte": "1.0.2",
-        "behat/mink-goutte-driver": "1.0.*",
-        "behat/symfony2-extension": "*",
-        "doctrine/data-fixtures": "1.0.*@dev",
-        "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
-        "fzaninotto/faker": "1.2.*@dev"
+        "sensio/generator-bundle": "~3.0",
+        "symfony/phpunit-bridge": "~2.7",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "fzaninotto/faker": "^1.6",
+        "behat/symfony2-extension": "^2.1",
+        "behat/mink-extension": "^2.2",
+        "behat/mink-goutte-driver": "^1.2"
     },
     "scripts": {
-        "post-install-cmd": [
+        "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-install-cmd": [
+            "@symfony-scripts"
         ],
         "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+            "@symfony-scripts"
         ]
     },
     "config": {
         "bin-dir": "bin"
     },
-    "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
+        "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.3-dev"
+            "dev-master": "2.8-dev"
         }
     }
 }

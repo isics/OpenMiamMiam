@@ -56,32 +56,47 @@ class ProductValidator extends ConstraintValidator
         if ($product->getHasNoPrice()) {
             $product->setPrice(null);
         } elseif (null === $product->getPrice()) {
-            $this->context->addViolationAt('price', 'error.required');
+            $this->context
+                ->buildViolation('error.required')
+                ->atPath('price')
+                ->addViolation();
         }
 
         // Stock validation
         if (ProductEntity::AVAILABILITY_ACCORDING_TO_STOCK !== $product->getAvailability()) {
             $product->setStock(null);
         } elseif (null === $product->getStock()) {
-            $this->context->addViolationAt('stock', 'error.required');
+            $this->context
+                ->buildViolation('error.required')
+                ->atPath('stock')
+                ->addViolation();
         }
 
         // Availability date validation
         if (ProductEntity::AVAILABILITY_AVAILABLE_AT !== $product->getAvailability()) {
             $product->setAvailableAt(null);
         } elseif (null === $product->getAvailableAt()) {
-            $this->context->addViolationAt('availableAt', 'error.required');
+            $this->context
+                ->buildViolation('error.required')
+                ->atPath('availableAt')
+                ->addViolation();
         }
 
         // Category is leaf
         if ($product->getCategory()->getRgt()-$product->getCategory()->getlft() > 1) {
-            $this->context->addViolationAt('category', 'error.product.category_not_a_leaf');
+            $this->context
+                ->buildViolation('error.product.category_not_a_leaf')
+                ->atPath('category')
+                ->addViolation();
         }
 
         // Product of the moment
         if ($product->getIsOfTheMoment()) {
             if ($product->getImage() === null && $product->getImageFile() === null) {
-                $this->context->addViolationAt('isOfTheMoment', 'error.product.need_photo');
+                $this->context
+                    ->buildViolation('error.product.need_photo')
+                    ->atPath('isOfTheMoment')
+                    ->addViolation();
             }
         }
     }

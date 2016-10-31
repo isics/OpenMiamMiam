@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CategoryType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Category\CategoryNode;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -49,7 +50,7 @@ class CategoryController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
+                $categoryManager->saveNode($categoryNode, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.category.message.created');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.category.list'));
@@ -81,7 +82,7 @@ class CategoryController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $categoryManager->saveNode($categoryNode, $this->get('security.context')->getToken()->getUser());
+                $categoryManager->saveNode($categoryNode, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.category.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.category.list'));
@@ -114,11 +115,14 @@ class CategoryController extends Controller
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.category'),
-            $categoryNode,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_category',
+                CategoryType::class,
+                $categoryNode,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**

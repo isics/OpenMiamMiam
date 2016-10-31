@@ -16,7 +16,7 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Activity;
 use Isics\Bundle\OpenMiamMiamBundle\Twig\UserExtension;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+
 
 /**
  * Class ActivityManager

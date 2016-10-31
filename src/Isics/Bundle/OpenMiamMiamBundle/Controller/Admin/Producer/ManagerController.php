@@ -12,6 +12,7 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SearchType;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Adapter\CallbackAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
@@ -122,14 +123,17 @@ class ManagerController extends BaseController
      */
     protected function getSearchForm(Producer $producer)
     {
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.search'),
-            null,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.admin.producer.manager.search', array('id' => $producer->getId())),
-                'method' => 'GET',
-         )
-     );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_search',
+                SearchType::class,
+                null,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.admin.producer.manager.search', array('id' => $producer->getId())),
+                    'method' => 'GET',
+                )
+            )
+            ->getForm();
     }
 
     /**

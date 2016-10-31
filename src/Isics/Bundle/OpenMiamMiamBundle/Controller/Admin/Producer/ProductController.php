@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -72,7 +73,7 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager->save($product, $this->get('security.context')->getToken()->getUser());
+                $productManager->save($product, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.created');
 
@@ -111,7 +112,7 @@ class ProductController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $productManager->save($product, $this->get('security.context')->getToken()->getUser());
+                $productManager->save($product, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.producer.products.message.updated');
 
@@ -150,11 +151,14 @@ class ProductController extends BaseController
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.product'),
-            $product,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_product',
+                ProductType::class,
+                $product,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**

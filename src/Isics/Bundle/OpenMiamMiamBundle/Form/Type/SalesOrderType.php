@@ -12,8 +12,9 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesOrderType extends AbstractType
 {
@@ -22,23 +23,15 @@ class SalesOrderType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('salesOrderRows','collection', array('type' => 'open_miam_miam_sales_order_row'))
-                ->add('save', 'submit');
+        $builder->add('salesOrderRows','collection', array('type' => SalesOrderRowType::class))
+                ->add('save', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder'));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_sales_order';
     }
 }

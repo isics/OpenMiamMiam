@@ -41,8 +41,8 @@ class OpenMiamMiamUserExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'is_association_owner' => new \Twig_Function_Method($this, 'isAssociationOwner'),
-            'is_producer_owner' => new \Twig_Function_Method($this, 'isProducerOwner'),
+            new \Twig_SimpleFunction('is_association_owner', [$this, 'isAssociationOwner']),
+            new \Twig_SimpleFunction('is_producer_owner', [$this, 'isProducerOwner']),
         );
     }
 

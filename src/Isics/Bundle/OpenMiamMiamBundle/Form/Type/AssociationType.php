@@ -11,10 +11,14 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class AssociationType extends AbstractType
 {
@@ -26,55 +30,27 @@ class AssociationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-            ->add('closingDelay', 'integer')
-            ->add('openingDelay', 'integer')
-            ->add('defaultCommission', 'number')
-            ->add('address1', 'text', array(
-                'required' => false
-            ))
-            ->add('address2', 'text', array(
-                'required' => false
-            ))
-            ->add('zipcode', 'text', array(
-                'required' => false
-            ))
-            ->add('city', 'text', array(
-                'required' => false
-            ))
-            ->add('phoneNumber1', 'text', array(
-                'required' => false
-            ))
-            ->add('phoneNumber2', 'text', array(
-                'required' => false
-            ))
-            ->add('website', 'url', array(
-                'required' => false
-            ))
-            ->add('facebook', 'url', array(
-                'required' => false
-            ))
-            ->add('presentation', 'textarea', array(
-                'required' => false
-            ));
+        $builder
+            ->add('name', TextType::class)
+            ->add('closingDelay', IntegerType::class)
+            ->add('openingDelay', IntegerType::class)
+            ->add('defaultCommission', NumberType::class)
+            ->add('address1', TextType::class, array('required' => false))
+            ->add('address2', TextType::class, array('required' => false))
+            ->add('zipcode', TextType::class, array('required' => false))
+            ->add('city', TextType::class, array('required' => false))
+            ->add('phoneNumber1', TextType::class, array('required' => false))
+            ->add('phoneNumber2', TextType::class, array('required' => false))
+            ->add('website', UrlType::class, array('required' => false))
+            ->add('facebook', UrlType::class, array('required' => false))
+            ->add('presentation', TextareaType::class, array('required' => false));
     }
 
     /**
-     *
-     * @param array $options
-     * @return multitype:string
+     * @see AbstractType
      */
     public function getDefaultOptions(array $options)
     {
-        return array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_association';
+        return array('data_class' => Association::class);
     }
 }

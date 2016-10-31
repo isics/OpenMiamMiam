@@ -13,10 +13,10 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Isics\OpenMiamMiamBundle\Entity\SalesOrder

@@ -13,10 +13,11 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesOrderRowType extends AbstractType implements EventSubscriberInterface
 {
@@ -47,32 +48,22 @@ class SalesOrderRowType extends AbstractType implements EventSubscriberInterface
 
         if (!$form->getConfig()->getOption('locked')) {
 
-            $form->add('quantity', 'number');
+            $form->add('quantity', NumberType::class);
 
             if (null !== $data && (null === $data->getUnitPrice() || .0 === (float)$data->getUnitPrice())) {
-                $form->add('total', 'number');
+                $form->add('total', NumberType::class);
             }
         }
-
-
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow',
             'locked'     => false
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_sales_order_row';
     }
 }

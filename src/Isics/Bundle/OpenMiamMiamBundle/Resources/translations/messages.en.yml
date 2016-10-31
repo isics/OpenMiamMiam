@@ -106,7 +106,7 @@ order.confirm.cart.title:                  "Your cart"
 order.confirm.cart.update:                 "Edit my cart"
 order.confirm.submit:                      "Checkout"
 order.confirm.consumer_comment:            "Feel free to leave us a comment:"
-order.confirmed.title:                     "Your command has bee registered!"
+order.confirmed.title:                     "Your command has been registered!"
 order.confirm.read_agree:                  "I've read and accept"
 order.confirm.terms_of_service:            "terms of use"
 order.confirm.error.terms_of_service:      "You must accept terms of use"
@@ -844,6 +844,7 @@ admin.producer.manager.message.demoted:    "User has been demote from administra
 
 # Messages
 message.cart.added:       "Item has been added to cart"
+message.cart.not_added:   "Unable to add item"
 message.cart.updated:     "Cart has been updated"
 
 # Activities

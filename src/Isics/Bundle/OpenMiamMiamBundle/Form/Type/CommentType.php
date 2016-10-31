@@ -2,9 +2,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentType extends AbstractType
 {
@@ -14,26 +15,14 @@ class CommentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('content')
-        ;
-    }
-    
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Comment'
-        ));
+        $builder->add('content');
     }
 
     /**
-     * @return string
+     * @see AbstractType
      */
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return 'open_miam_miam_comment';
+        $resolver->setDefaults(array('data_class' => Comment::class));
     }
 }

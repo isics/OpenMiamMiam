@@ -13,9 +13,9 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner;
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ class UserController extends Controller
 {
     public function searchAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('ROLE_ADMIN')){
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
             throw new NotFoundHttpException();
         }
 

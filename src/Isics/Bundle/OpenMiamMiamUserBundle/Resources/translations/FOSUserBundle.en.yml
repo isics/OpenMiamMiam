@@ -1,0 +1,26 @@
+change_password.cancel: "Cancel"
+
+registration_check_email_html: An email has been sent to <strong>%email%</strong>. Clic on the link to activate your account.
+
+registration.email.subject: "Confirm your account"
+registration.email.message_html: |
+    <p>Hello %firstname%,</p>
+    <p>
+        To confirm your account, please clic on the link below :<br />
+        <strong><a href="%confirmationUrl%">%confirmationUrl%</a></strong>
+    </p>
+
+resetting.request.username: "Email"
+
+
+# Password resetting
+resetting.email.message: |
+    <p>Hello %firstname%,</p>
+    <p>
+        To reset your password, please clic on the link below:<br />
+        <strong><a href="%confirmationUrl%">%confirmationUrl%</a></strong><br />
+    </p>
+
+user.register.email:                 "Email"
+user.register.password:              "Password"
+user.register.password_confirmation: "Password configuration"

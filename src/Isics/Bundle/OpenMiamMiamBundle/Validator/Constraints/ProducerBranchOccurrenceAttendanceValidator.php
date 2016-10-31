@@ -42,7 +42,10 @@ class ProducerBranchOccurrenceAttendanceValidator extends ConstraintValidator
     {
         // Validate branchOccurrence
         if (!in_array($attendance->getBranchOccurrence()->getBranch(), $attendance->getProducer()->getBranches())) {
-            $this->context->addViolationAt('brancheOccurrence', 'error.calendar.invalid_branch_occurrence');
+            $this->context
+                ->buildViolation('error.calendar.invalid_branch_occurrence')
+                ->atPath('brancheOccurrence')
+                ->addViolation();
         }
 
         // Validate ProducerAttendance
@@ -54,7 +57,10 @@ class ProducerBranchOccurrenceAttendanceValidator extends ConstraintValidator
                 ));
 
         if ($producerAttendance != $attendance->getProducerAttendance()) {
-            $this->context->addViolationAt('brancheOccurrence', 'error.calendar.invalid_producer_attendance');
+            $this->context
+                ->buildViolation('error.calendar.invalid_producer_attendance')
+                ->atPath('brancheOccurrence')
+                ->addViolation();
         }
     }
 }

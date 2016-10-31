@@ -11,9 +11,11 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProducerBranchAttendancesType extends AbstractType
 {
@@ -22,28 +24,16 @@ class ProducerBranchAttendancesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'branchOccurrenceAttendances',
-            'collection',
-            array('type' => 'open_miam_miam_producer_branch_occurrence_attendance')
-        );
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\ProducerAttendance\ProducerBranchAttendances',
+        $builder->add('branchOccurrenceAttendances', CollectionType::class, array(
+            'entry_type' => ProducerBranchOccurenceAttendance::class
         ));
     }
 
     /**
      * @see AbstractType
      */
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return 'open_miam_miam_producer_branch_attendances';
+        $resolver->setDefaults(array('data_class' => ProducerBranchAttendances::class));
     }
 }

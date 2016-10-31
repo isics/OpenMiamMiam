@@ -11,11 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BranchOccurrenceType extends AbstractType
 {
@@ -24,27 +26,17 @@ class BranchOccurrenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', 'date')
-            ->add('beginTime', 'time')
-            ->add('endTime', 'time')
-            ->add('add', 'submit');
+        $builder->add('date', DateType::class)
+            ->add('beginTime', TimeType::class)
+            ->add('endTime', TimeType::class)
+            ->add('add', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence',
-        ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_branch_occurrence';
+        $resolver->setDefaults(array('data_class' => BranchOccurrence::class));
     }
 }

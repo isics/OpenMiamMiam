@@ -12,10 +12,14 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Article;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SuperArticleType extends AbstractType
 {
@@ -24,15 +28,15 @@ class SuperArticleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text')
-                ->add('body', 'textarea')
-                ->add('isPublished', 'checkbox', array(
+        $builder->add('title', TextType::class)
+                ->add('body', TextareaType::class)
+                ->add('isPublished', CheckboxType::class, array(
                     'required' => false
                 ))
-                ->add('branches', 'entity', array(
+                ->add('branches', EntityType::class, array(
                     'class' => 'IsicsOpenMiamMiamBundle:Branch',
-                    'property' => 'nameWithAssociation',
-                    'empty_value' => '',
+                    'choice_label' => 'nameWithAssociation',
+                    'placeholder' => '',
                     'multiple' => true,
                     'expanded' => true,
                     'by_reference' => false,
@@ -42,24 +46,16 @@ class SuperArticleType extends AbstractType
                             ->addOrderBy('b.city');
                     },
                 ))
-                ->add('save', 'submit');
+                ->add('save', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Article',
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_super_article';
     }
 }

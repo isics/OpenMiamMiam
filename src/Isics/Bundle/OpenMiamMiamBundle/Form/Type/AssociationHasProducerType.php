@@ -11,9 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AssociationHasProducerType extends AbstractType
 {
@@ -25,30 +29,23 @@ class AssociationHasProducerType extends AbstractType
         $associationHasProducer = $options['data'];
 
         $builder
-            ->add('commission', 'number', array('precision' => 2, 'required' => false))
-            ->add('branches', 'entity', array(
+            ->add('commission', NumberType::class, array('precision' => 2, 'required' => false))
+            ->add('branches', EntityType::class, array(
                 'multiple'     => true,
                 'expanded'     => true,
-                'class'        => 'IsicsOpenMiamMiamBundle:Branch',
+                'class'        => Branch::class,
                 'choices'      => $associationHasProducer->getAssociation()->getBranches(),
-                'property'     => 'name',
+                'choice_label' => 'name',
                 'by_reference' => false
             ))
-            ->add('save', 'submit');
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\AssociationHasProducer'
-        ));
+            ->add('save', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return 'open_miam_miam_association_has_producer';
+        $resolver->setDefaults(array('data_class' => AssociationHasProducer::class));
     }
 }

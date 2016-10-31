@@ -12,10 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperProducerType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Producer\ProducerWithOwner;
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +71,7 @@ class ProducerController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.context')->getToken()->getUser());
+                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.producers.message.created');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.producer.list'));
@@ -101,7 +102,7 @@ class ProducerController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.context')->getToken()->getUser());
+                $producerManager->saveProducerWithOwner($producerWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.producers.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.producer.list'));
@@ -134,11 +135,14 @@ class ProducerController extends Controller
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.super_producer'),
-            $producerWithOwner,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_super_producer',
+                SuperProducerType::class,
+                $producerWithOwner,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**
@@ -153,7 +157,7 @@ class ProducerController extends Controller
     public function deleteAction(Producer $producer)
     {
         $producerManager = $this->get('open_miam_miam.producer_manager');
-        $producerManager->delete($producer, $this->get('security.context')->getToken()->getUser());
+        $producerManager->delete($producer, $this->get('security.token_storage')->getToken()->getUser());
         $this->get('session')->getFlashBag()->add('notice', 'admin.super.producers.message.deleted');
 
         return $this->redirect($this->generateUrl('open_miam_miam.admin.super.producer.list'));

@@ -17,14 +17,14 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ConsumerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProducerManager;
 use Isics\Bundle\OpenMiamMiamBundle\Manager\ProductManager;
-use Isics\Bundle\OpenMiamMiamBundle\Manager\BranchOccurrenceManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\Intl\Intl;
 
-class OpenMiamMiamExtension extends \Twig_Extension
+class OpenMiamMiamExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     /**
      * @var string $title
@@ -102,13 +102,13 @@ class OpenMiamMiamExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'get_image_product_path' => new \Twig_Function_Method($this, 'getImageProductPath'),
-            'get_producer_profile_image_path' => new \Twig_Function_Method($this, 'getProfileImageProducerPath'),
-            'get_producer_presentation_image_path' => new \Twig_Function_Method($this, 'getPresentationImageProducerPath'),
-            'get_products_to_display' => new \Twig_Function_Method($this, 'getProductsToDisplay'),
-            'get_product_availability' => new \Twig_Function_Method($this, 'getProductAvailability')
-        );
+        return [
+            new \Twig_SimpleFunction('get_image_product_path', [$this, 'getImageProductPath']),
+            new \Twig_SimpleFunction('get_producer_profile_image_path', [$this, 'getProfileImageProducerPath']),
+            new \Twig_SimpleFunction('get_producer_presentation_image_path', [$this, 'getPresentationImageProducerPath']),
+            new \Twig_SimpleFunction('get_products_to_display', [$this, 'getProductsToDisplay']),
+            new \Twig_SimpleFunction('get_product_availability', [$this, 'getProductAvailability']),
+        ];
     }
 
     /**

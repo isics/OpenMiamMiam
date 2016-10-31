@@ -11,8 +11,8 @@ namespace Isics\Bundle\OpenMiamMiamUserBundle\Controller;
 
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Exception\DisabledException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SecurityController extends BaseController
 {
@@ -25,11 +25,11 @@ class SecurityController extends BaseController
         $session = $request->getSession();
 
         // get the error if any (works with forward and redirect -- see below)
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } elseif (null !== $session && $session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        if ($request->attributes->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContextInterface::AUTHENTICATION_ERROR);
+        } elseif (null !== $session && $session->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
+            $error = $session->get(SecurityContextInterface::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
         } else {
             $error = '';
         }
@@ -47,10 +47,10 @@ class SecurityController extends BaseController
             $error = $error->getMessage();
         }
         // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
+        $lastUsername = (null === $session) ? '' : $session->get(SecurityContextInterface::LAST_USERNAME);
 
-        $csrfToken = $this->container->has('form.csrf_provider')
-                ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate')
+        $csrfToken = $this->container->has('security.csrf.token_manager')
+                ? $this->container->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
                 : null;
 
         return $this->renderLogin(array(

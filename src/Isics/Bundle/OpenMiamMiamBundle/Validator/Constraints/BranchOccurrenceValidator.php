@@ -42,19 +42,28 @@ class BranchOccurrenceValidator extends ConstraintValidator
     {
         // Begin > today
         if (!($branchOccurrence->getBegin() > new \DateTime())) {
-            $this->context->addViolationAt('date', 'error.invalid');
+            $this->context
+                ->buildViolation('error.invalid')
+                ->atPath('date')
+                ->addViolation();
         }
 
         // End > begin
         if (!($branchOccurrence->getEnd() > $branchOccurrence->getBegin())) {
-            $this->context->addViolationAt('endTime', 'error.invalid');
+            $this->context
+                ->buildViolation('error.invalid')
+                ->atPath('endTime')
+                ->addViolation();
         }
 
         // No overlapping
         if ($this->entityManager
             ->getRepository('IsicsOpenMiamMiamBundle:BranchOccurrence')
             ->isOverlapping($branchOccurrence)) {
-            $this->context->addViolationAt('date', 'error.invalid');
+            $this->context
+                ->buildViolation('error.invalid')
+                ->atPath('date')
+                ->addViolation();
         }
     }
 }

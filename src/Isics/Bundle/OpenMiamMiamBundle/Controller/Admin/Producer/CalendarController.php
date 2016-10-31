@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Producer\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\ProducerAttendancesType;
 use Symfony\Component\HttpFoundation\Request;
 
 class CalendarController extends BaseController
@@ -30,17 +31,21 @@ class CalendarController extends BaseController
         $this->secure($producer);
 
         $attendancesManager = $this->get('open_miam_miam.producer_attendances_manager');
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.producer_attendances'),
-            $attendancesManager->getNextAttendancesOf($producer),
-            array(
-                'action' => $this->generateUrl(
-                    'open_miam_miam.admin.producer.calendar.edit',
-                    array('id' => $producer->getId())
-                ),
-                'method' => 'POST'
+
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_producer_attendances',
+                ProducerAttendancesType::class,
+                $attendancesManager->getNextAttendancesOf($producer),
+                array(
+                    'action' => $this->generateUrl(
+                        'open_miam_miam.admin.producer.calendar.edit',
+                        array('id' => $producer->getId())
+                    ),
+                    'method' => 'POST'
+                )
             )
-        );
+            ->getForm();
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);

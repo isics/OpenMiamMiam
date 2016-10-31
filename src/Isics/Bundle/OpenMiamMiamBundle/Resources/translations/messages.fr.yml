@@ -893,6 +893,7 @@ admin.producer.manager.message.demoted:    "L'utilisateur a bien été révoqué
 
 # Messages
 message.cart.added:   "Le produit a été ajouté à votre panier."
+message.cart.not_added: "Impossible d'ajouter le produit au panier."
 message.cart.updated: "Votre panier a été mis à jour."
 
 
