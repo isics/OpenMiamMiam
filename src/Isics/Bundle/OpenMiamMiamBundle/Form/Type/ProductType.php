@@ -75,7 +75,7 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
                     'required' => false
                 ))
                 ->add('buyingUnit', ChoiceType::class, array(
-                    'empty_value' => 'Without unit',
+                    'placeholder' => 'Without unit',
                     'choices' => $this->buyingUnits,
                     'required' => false,
                     'choices_as_values' => true,
@@ -134,7 +134,7 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
 
         $producer = $product->getProducer();
         if (null !== $producer) {
-            $form->add('branches', 'entity', array(
+            $form->add('branches', EntityType::class, array(
                 'class' => 'IsicsOpenMiamMiamBundle:Branch',
                 'choice_label' => 'name',
                 'placeholder' => '',

@@ -28,7 +28,7 @@ class ProducerSalesOrderType extends AbstractType
         $builder
             ->add('salesOrderRows', CollectionType::class, array(
                 'entry_type' => SalesOrderRowType::class,
-                'options' => array(
+                'entry_options' => array(
                    'locked' => (bool)$options['locked']
                 )
             ));
