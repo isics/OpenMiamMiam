@@ -2,8 +2,8 @@
 association.friends_of_organic_food: Friends of organic food
 
 # Branch
-branch.branch1: "Branch #1"
-branch.branch2: "Branch #2"
+branch.branch1: 'Branch #1'
+branch.branch2: 'Branch #2'
 
 # Category
 category.beef:                  Beef

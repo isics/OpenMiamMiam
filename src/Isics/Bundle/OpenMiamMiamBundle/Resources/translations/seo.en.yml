@@ -48,8 +48,8 @@ news:
 
 producer_with_city:
     title: %producer_name% producer at %producer_city% (%producer_zip_code%) - OpenMiamMiam
-    meta_description: %producer_name%: OpenMiamMiam producer at %producer_city% (%producer_zip_code%). %producer_presentation%
+    meta_description: %producer_name%, OpenMiamMiam producer at %producer_city% (%producer_zip_code%). %producer_presentation%
 
 producer:
     title: %producer_name% - OpenMiamMiam
-    meta_description: %producer_name%: producer on OpenMiamMiam website. %producer_presentation%
+    meta_description: %producer_name%, producer on OpenMiamMiam website. %producer_presentation%

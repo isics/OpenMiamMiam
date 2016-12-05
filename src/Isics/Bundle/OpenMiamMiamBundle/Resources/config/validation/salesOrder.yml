@@ -1,7 +1,7 @@
 Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation:
     properties:
         termsOfSaleChecked:
-            - "IsTrue": ~
+            - IsTrue: ~
 
 Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder:
     properties:

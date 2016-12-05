@@ -3,38 +3,38 @@ fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
 fos_user_profile_edit:
-    pattern:  /profile/edit
+    path:     /profile/edit
     defaults: { _controller: FOSUserBundle:Profile:edit }
 
 fos_user_profile_orders:
-    pattern:  /profile/orders
+    path:     /profile/orders
     defaults: { _controller: IsicsOpenMiamMiamUserBundle:SalesOrder:Show }
 
 fos_user_profile_orders_pdf:
-    pattern:  /profile/orders/{id}/pdf
+    path:     /profile/orders/{id}/pdf
     defaults: { _controller: IsicsOpenMiamMiamUserBundle:SalesOrder:getPdf }
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /register
+    prefix:   /register
 
 fos_user_resetting:
     resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
-    prefix: /resetting
+    prefix:   /resetting
 
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix: /profile
+    prefix:   /profile
 
 # Admin
 open_miam_miam_user.admin.security.login:
-    pattern:  /admin/login
+    path:     /admin/login
     defaults: { _controller: IsicsOpenMiamMiamUserBundle:Security:login }
 
 open_miam_miam_user.admin.security.login_check:
-    pattern:  /admin/login_check
+    path:     /admin/login_check
     defaults: { _controller: IsicsOpenMiamMiamUserBundle:Security:login }
 
 open_miam_miam_user.admin.security.logout:
-    pattern:  /admin/logout
+    path:     /admin/logout
     defaults: { _controller: FOSUserBundle:Security:logout }

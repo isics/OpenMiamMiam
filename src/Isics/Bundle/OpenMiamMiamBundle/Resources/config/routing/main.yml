@@ -68,20 +68,17 @@ open_miam_miam.branch.producers.attendance:
 open_miam_miam.cart.show:
     path: /{branchSlug}/cart
     defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:show }
-    requirements:
-        _method: GET
+    methods: [GET]
 
 open_miam_miam.cart.add:
     path: /{branchSlug}/cart
     defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:add }
-    requirements:
-        _method: POST
+    methods: [POST]
 
 open_miam_miam.cart.update:
     path: /{branchSlug}/cart
     defaults: { _controller: IsicsOpenMiamMiamBundle:Cart:update }
-    requirements:
-        _method: PUT
+    methods: [PUT]
 
 #
 # Order
