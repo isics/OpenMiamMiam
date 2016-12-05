@@ -590,7 +590,7 @@ admin.association.sales_orders.delete_dialog.sales_order_row.content: "Are you s
 # Admin / Association / Branch
 admin.association.branch.list.title:             "{0} No branch|{1} 1 branch|]1,Inf] %nb% branches"
 admin.association.branch.list.create:            "Create branch"
-admin.association.branch.list.no_article:        "No branch"
+admin.association.branch.list.no_branch:         "No branch"
 admin.association.branch.list.name:              "Name"
 admin.association.branch.list.nb_producers:      "Producers"
 admin.association.branch.list.next_occurrence:   "Next distribution"
