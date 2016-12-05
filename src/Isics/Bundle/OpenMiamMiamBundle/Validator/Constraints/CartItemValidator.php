@@ -40,23 +40,35 @@ class CartItemValidator extends ConstraintValidator
 
         // Validates that product exists in branch
         if (!$cartItem->getProduct()->getBranches()->contains($cartItem->getCart()->getBranch())) {
-            $this->context->addViolationAt('product', 'error.cart.product_unavailable_in_branch', array('branch' => $cartItem->getCart()->getBranch()->getName()));
+            $this->context
+                ->buildViolation('error.cart.product_unavailable_in_branch', array('branch' => $cartItem->getCart()->getBranch()->getName()))
+                ->atPath('quantity')
+                ->addViolation();
         }
 
         // Validates that product is available
         if (!$this->branchOccurrenceManager->getProductAvailabilityForNext($cartItem->getCart()->getBranch(), $cartItem->getProduct())->isAvailable()) {
-            $this->context->addViolationAt('product', 'error.cart.product_unavailable');
+            $this->context
+                ->buildViolation('error.cart.product_unavailable')
+                ->atPath('quantity')
+                ->addViolation();
         }
 
         // Validates stock
         if (Product::AVAILABILITY_ACCORDING_TO_STOCK === $cartItem->getProduct()->getAvailability() && $cartItem->getProduct()->getStock() < $cartItem->getQuantity()) {
-            $this->context->addViolationAt('product', 'error.cart.not_enough_stock', array('rest' => $cartItem->getProduct()->getStock()));
+            $this->context
+                ->buildViolation('error.cart.not_enough_stock', array('rest' => $cartItem->getProduct()->getStock()))
+                ->atPath('quantity')
+                ->addViolation();
         }
 
         // Validate decimal quantity
         $quantity = $cartItem->getQuantity();
         if ((intval($quantity) != floatval($quantity)) && !$cartItem->getProduct()->getAllowDecimalQuantity()) {
-            $this->context->addViolationAt('product', 'error.cart.decimal_quantity_not_allowed');
+            $this->context
+                ->buildViolation('error.cart.decimal_quantity_not_allowed')
+                ->atPath('quantity')
+                ->addViolation();
         }
     }
 }

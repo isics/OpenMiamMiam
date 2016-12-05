@@ -64,7 +64,7 @@
 {% block money_widget %}
     {% set currency = money_pattern|replace({'{{ widget }}': ''}) %}
 
-    <div {% if form.vars.errors %}class="has-error"{% endif %}>
+    <div {% if form.vars.errors|length %}class="has-error"{% endif %}>
         <div class="input-group">
             {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
             <span class="input-group-addon">{{ currency }}</span>

@@ -14,11 +14,14 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Isics\Bundle\OpenMiamMiamBundle\Twig\TermsOfServiceExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\True;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesOrderConfirmationType extends AbstractType implements EventSubscriberInterface
 {
@@ -40,8 +43,8 @@ class SalesOrderConfirmationType extends AbstractType implements EventSubscriber
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('consumerComment', 'textarea', array('required' => false))
-                ->add('save', 'submit')
+        $builder->add('consumerComment', TextareaType::class, array('required' => false))
+                ->add('save', SubmitType::class)
                 ->addEventSubscriber($this);
 
     }
@@ -62,10 +65,10 @@ class SalesOrderConfirmationType extends AbstractType implements EventSubscriber
         $form = $event->getForm();
 
         if($this->termsOfServiceExtension->hasTermsOfService()) {
-            $form->add("termsOfService", "checkbox", array(
+            $form->add("termsOfService", CheckboxType::class, array(
                 'mapped' => false,
                 'constraints' => array(
-                    new True(array('message' => 'order.confirm.error.terms_of_service'))
+                    new IsTrue(array('message' => 'order.confirm.error.terms_of_service'))
                 )
             ));
         }
@@ -74,18 +77,10 @@ class SalesOrderConfirmationType extends AbstractType implements EventSubscriber
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation',
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_sales_order_confirmation';
     }
 }

@@ -27,7 +27,10 @@ class PaymentValidator extends ConstraintValidator
         }
 
         if ($payment->getAmount() < $allocatedAmount) {
-            $this->context->addViolationAt('amount', 'error.payment.amount_invalid', array('%min%' => $allocatedAmount));
+            $this->context
+                ->buildViolation('error.payment.amount_invalid', array('%min%' => $allocatedAmount))
+                ->atPath('amount')
+                ->addViolation();
         }
     }
 }

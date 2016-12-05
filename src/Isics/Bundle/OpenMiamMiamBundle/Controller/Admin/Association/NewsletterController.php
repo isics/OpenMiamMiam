@@ -14,6 +14,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationNewsletterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,7 +54,7 @@ class NewsletterController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
+                $user = $this->get('security.token_storage')->getToken()->getUser();
                 $newsletterManager->saveAndSendTest($newsletter, $user);
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.created');
 
@@ -88,14 +89,14 @@ class NewsletterController extends BaseController
 
         if ($newsletter->getSentAt() === null) {
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
-            $user= $this->get('security.context')->getToken()->getUser();
+            $user= $this->get('security.token_storage')->getToken()->getUser();
 
             $form = $this->getForm($newsletter);
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $user = $this->get('security.context')->getToken()->getUser();
+                    $user = $this->get('security.token_storage')->getToken()->getUser();
                     $newsletterManager->saveAndSendTest($newsletter, $user);
                     $this->get('session')->getFlashBag()->add('notice', 'admin.association.newsletter.message.updated');
 
@@ -135,7 +136,7 @@ class NewsletterController extends BaseController
         $this->secureNewsletter($association, $newsletter);
 
         if ($newsletter->getSentAt() === null) {
-            $user = $this->get('security.context')->getToken()->getUser();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
             $newsletterManager = $this->get('open_miam_miam.newsletter_manager');
             $newsletterManager->send($newsletter, $user);
 
@@ -194,10 +195,13 @@ class NewsletterController extends BaseController
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.association_newsletter'),
-            $newsletter,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association_newsletter',
+                AssociationNewsletterType::class,
+                $newsletter,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 }

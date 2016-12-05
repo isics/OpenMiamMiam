@@ -26,9 +26,9 @@ class ProducerExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'get_producer_sales_orders_for_branch_occurrence' => new \Twig_Function_Method($this, 'getProducerSalesOrdersForBranchOccurrence'),
-        );
+        return [
+            new \Twig_SimpleFunction('get_producer_sales_orders_for_branch_occurrence', [$this, 'getProducerSalesOrdersForBranchOccurrence']),
+        ];
     }
 
     public function getProducerSalesOrdersForBranchOccurrence(Producer $producer, BranchOccurrence $branchOccurrence)
@@ -46,4 +46,4 @@ class ProducerExtension extends \Twig_Extension
         return 'open_miam_miam_producer_extension';
     }
 
-} 
+}

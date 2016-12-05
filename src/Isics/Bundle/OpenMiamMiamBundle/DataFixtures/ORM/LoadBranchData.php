@@ -16,8 +16,8 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class LoadBranchData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface

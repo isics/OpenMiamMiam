@@ -15,24 +15,25 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Sonata\IntlBundle\SonataIntlBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
-            new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
-            new Isics\Bundle\OpenMiamMiamUserBundle\IsicsOpenMiamMiamUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle()
+            new Sonata\IntlBundle\SonataIntlBundle(),
+            new Isics\Bundle\OpenMiamMiamBundle\IsicsOpenMiamMiamBundle(),
+            new Isics\Bundle\OpenMiamMiamUserBundle\IsicsOpenMiamMiamUserBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
+        if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
         }
 
         return $bundles;

@@ -9,152 +9,152 @@
 # General
 #
 open_miam_miam.admin:
-    pattern:  /
+    path: /
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:index }
 
 open_miam_miam.admin.go_to_user_switch:
-    pattern:  /go_to_user_switch
+    path: /go_to_user_switch
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\General:goToUserSwitch }
 
 #
 # Super admin
 #
 open_miam_miam.admin.super.show_dashboard:
-    pattern:  /super/dashboard
+    path: /super/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\General:showDashboard }
 
 open_miam_miam.admin.super.user_switch.list:
-    pattern:  /super/user-switch
+    path: /super/user-switch
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\UserSwitch:list }
 
 open_miam_miam.admin.super.user.search:
-    pattern:  /super/user/search
+    path: /super/user/search
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\User:search }
 
 open_miam_miam.admin.super.article.list:
-    pattern:  /super/articles
+    path: /super/articles
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:list }
 
 open_miam_miam.admin.super.article.create:
-    pattern:  /super/articles/new
+    path: /super/articles/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:create }
 
 open_miam_miam.admin.super.article.edit:
-    pattern:  /super/articles/{articleId}
+    path: /super/articles/{articleId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:edit }
 
 open_miam_miam.admin.super.article.delete:
-    pattern:  /super/articles/{articleId}/delete
+    path: /super/articles/{articleId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Article:delete }
 
 open_miam_miam.admin.super.newsletter.create:
-    pattern:  /super/newsletters
+    path: /super/newsletters
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:create }
 
 open_miam_miam.admin.super.newsletter.edit:
-    pattern:  /super/newsletters/{newsletterId}
+    path: /super/newsletters/{newsletterId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:edit }
 
 open_miam_miam.admin.super.newsletter.send:
-    pattern:  /super/newsletters/{newsletterId}/send
+    path: /super/newsletters/{newsletterId}/send
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:send }
 
 open_miam_miam.admin.super.newsletter.report:
-    pattern:  /super/newsletters/{newsletterId}/report
+    path: /super/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Newsletter:showReport }
 
 open_miam_miam.admin.super.association.list:
-    pattern:  /super/associations
+    path: /super/associations
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:list }
 
 open_miam_miam.admin.super.association.create:
-    pattern:  /super/associations/new
+    path: /super/associations/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:create }
 
 open_miam_miam.admin.super.association.edit:
-    pattern:  /super/associations/{associationId}
+    path: /super/associations/{associationId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:edit }
 
 open_miam_miam.admin.super.association.delete:
-    pattern:  /super/associations/{associationId}/delete
+    path: /super/associations/{associationId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Association:delete }
 
 open_miam_miam.admin.super.producer.list:
-    pattern:  /super/producers
+    path: /super/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:list }
 
 open_miam_miam.admin.super.producer.create:
-    pattern:  /super/producers/new
+    path: /super/producers/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:create }
 
 open_miam_miam.admin.super.producer.edit:
-    pattern:  /super/producers/{producerId}
+    path: /super/producers/{producerId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:edit }
 
 open_miam_miam.admin.super.producer.delete:
-    pattern:  /super/producers/{producerId}/delete
+    path: /super/producers/{producerId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Producer:delete }
 
 open_miam_miam.admin.super.producer.manager.list:
-    pattern:  /super/producers/{producerId}/managers
+    path: /super/producers/{producerId}/managers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:list }
 
 open_miam_miam.admin.super.producer.manager.seach:
-    pattern:  /super/producers/{producerId}/managers/search
+    path: /super/producers/{producerId}/managers/search
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:search }
 
 open_miam_miam.admin.super.producer.manager.promote:
-    pattern:  /super/producers/{producerId}/managers/promote/{userId}
+    path: /super/producers/{producerId}/managers/promote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:promote }
 
 open_miam_miam.admin.super.producer.manager.demote:
-    pattern:  /super/producers/{producerId}/managers/demote/{userId}
+    path: /super/producers/{producerId}/managers/demote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\ProducerManager:demote }
 
 open_miam_miam.admin.super.category.list:
-    pattern:  /super/categories
+    path: /super/categories
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:list }
 
 open_miam_miam.admin.super.category.create:
-    pattern:  /super/categories/new
+    path: /super/categories/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:create }
 
 open_miam_miam.admin.super.category.edit:
-    pattern:  /super/categories/{categoryId}
+    path: /super/categories/{categoryId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:edit }
 
 open_miam_miam.admin.super.category.delete:
-    pattern:  /super/categories/{categoryId}/delete
+    path: /super/categories/{categoryId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Category:delete }
 
 open_miam_miam.admin.super.manager.list:
-    pattern:  /super/managers
+    path: /super/managers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:list }
 
 open_miam_miam.admin.super.manager.search:
-    pattern:  /super/managers/search
+    path: /super/managers/search
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:search }
 
 open_miam_miam.admin.super.manager.promote:
-    pattern:  /super/managers/promote/{id}
+    path: /super/managers/promote/{id}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:promote }
 
 open_miam_miam.admin.super.manager.demote:
-    pattern:  /super/managers/demote/{id}
+    path: /super/managers/demote/{id}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Manager:demote }
 
 
 
 open_miam_miam.admin.super.consumer.list:
-    pattern:  /super/consumers
+    path: /super/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Consumer:list }
 
 open_miam_miam.admin.super.consumer.edit:
-    pattern:  /super/consumers/{consumerId}/edit
+    path: /super/consumers/{consumerId}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Consumer:edit }
 
 open_miam_miam.admin.super.consumer.delete:
-    pattern:  /super/consumers/{consumerId}/delete
+    path: /super/consumers/{consumerId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Super\Consumer:delete }
 
 
@@ -162,340 +162,340 @@ open_miam_miam.admin.super.consumer.delete:
 # Admin Association
 #
 open_miam_miam.admin.association.show_dashboard:
-    pattern:  /associations/{id}/dashboard
+    path: /associations/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:showDashboard }
 
 open_miam_miam.admin.association.edit:
-    pattern:  /associations/{id}/edit
+    path: /associations/{id}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:edit }
 
 open_miam_miam.admin.association.statistics:
-    pattern:  /associations/{id}/dashboard/statistics
+    path: /associations/{id}/dashboard/statistics
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\General:statistics }
 
 open_miam_miam.admin.association.sales_order.list:
-    pattern:  /associations/{id}/sales_orders
+    path: /associations/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:list }
 
 open_miam_miam.admin.association.sales_order.list_for_branch_occurrence:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}
+    path: /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:listForBranchOccurrence }
 
 open_miam_miam.admin.association.sales_order.create:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/create
+    path: /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/create
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:create }
 
 open_miam_miam.admin.association.sales_order.view:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}
+    path: /associations/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:view }
 
 open_miam_miam.admin.association.sales_order.edit:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/edit
+    path: /associations/{id}/sales_orders/{salesOrderId}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:edit }
 
 open_miam_miam.admin.association.sales_order.delete_row:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
+    path: /associations/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:deleteSalesOrderRow }
 
 open_miam_miam.admin.association.sales_order.add_products:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/add_products
+    path: /associations/{id}/sales_orders/{salesOrderId}/add_products
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addProducts }
 
 open_miam_miam.admin.association.sales_order.add_product:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/add_product/{productId}
+    path: /associations/{id}/sales_orders/{salesOrderId}/add_product/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addProduct }
 
 open_miam_miam.admin.association.sales_order.add_artificial_product:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/rows/add/{productId}
+    path: /associations/{id}/sales_orders/{salesOrderId}/rows/add/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:addSalesOrderRow }
 
 open_miam_miam.admin.association.sales_orders.get_sales_orders_pdf_for_branch_occurrence:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/sales_order
+    path: /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/sales_order
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
 
 open_miam_miam.admin.association.sales_orders.get_deposit_withdrawal_excel_for_branch_occurrence:
-    pattern:  /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/deposit_withdrawal
+    path: /associations/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/document/deposit_withdrawal
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\SalesOrder:getDepositWithdrawalExcelForBranchOccurrence }
 
 open_miam_miam.admin.association.branch.list:
-    pattern:  /associations/{id}/branches
+    path: /associations/{id}/branches
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:list }
 
 open_miam_miam.admin.association.branch.create:
-    pattern:  /associations/{id}/branches/new
+    path: /associations/{id}/branches/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:create }
 
 open_miam_miam.admin.association.branch.edit:
-    pattern:  /associations/{id}/branches/{branchId}
+    path: /associations/{id}/branches/{branchId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:edit }
 
 open_miam_miam.admin.association.branch.edit_calendar:
-    pattern:  /associations/{id}/branches/{branchId}/calendar
+    path: /associations/{id}/branches/{branchId}/calendar
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:editCalendar }
 
 open_miam_miam.admin.association.branch.occurrence.list_attendances:
-    pattern:  /associations/{id}/branches/occurrences/{branchOccurrenceId}/list_attendances
+    path: /associations/{id}/branches/occurrences/{branchOccurrenceId}/list_attendances
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:listAttendances }
 
 open_miam_miam.admin.association.branch.delete_occurrence:
-    pattern:  /associations/{id}/branches/{branchId}/calendar/{branchOccurrenceId}/delete
+    path: /associations/{id}/branches/{branchId}/calendar/{branchOccurrenceId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:deleteOccurrence }
 
 open_miam_miam.admin.association.branch.delete:
-    pattern:  /associations/{id}/branches/{branchId}/delete
+    path: /associations/{id}/branches/{branchId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Branch:delete }
 
 open_miam_miam.admin.association.producer.list:
-    pattern:  /associations/{id}/producers
+    path: /associations/{id}/producers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:list }
 
 open_miam_miam.admin.association.producer.edit:
-    pattern:  /associations/{associationId}/producers/{producerId}/edit
+    path: /associations/{associationId}/producers/{producerId}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:edit }
 
 open_miam_miam.admin.association.producer.export:
-    pattern:  /associations/{id}/producers/export
+    path: /associations/{id}/producers/export
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Producer:export }
     #methods: [POST]
 
 open_miam_miam.admin.association.consumer.show_anonymous:
-    pattern:  /associations/{associationId}/consumers/anonymous/show
+    path: /associations/{associationId}/consumers/anonymous/show
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show }
 
 open_miam_miam.admin.association.consumer.show:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/show
+    path: /associations/{associationId}/consumers/{consumerId}/show
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:show }
 
 open_miam_miam.admin.association.consumer.list_anonymous_orders:
-    pattern:  /associations/{associationId}/consumers/anonymous/list_orders
+    path: /associations/{associationId}/consumers/anonymous/list_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders }
 
 open_miam_miam.admin.association.consumer.list_orders:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/list_orders
+    path: /associations/{associationId}/consumers/{consumerId}/list_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listSalesOrders }
 
 open_miam_miam.admin.association.consumer.add_anonymous_comment_on_sales_order:
-    pattern:  /associations/{associationId}/consumers/anonymous/sales_order/{salesOrderId}/add_comment/
+    path: /associations/{associationId}/consumers/anonymous/sales_order/{salesOrderId}/add_comment/
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
 
 open_miam_miam.admin.association.consumer.add_comment_on_sales_order:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/sales_order/{salesOrderId}/add_comment/
+    path: /associations/{associationId}/consumers/{consumerId}/sales_order/{salesOrderId}/add_comment/
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
 
 open_miam_miam.admin.association.consumer.add_anonymous_comment:
-    pattern:  /associations/{associationId}/consumers/anonymous/add_comment
+    path: /associations/{associationId}/consumers/anonymous/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
 
 open_miam_miam.admin.association.consumer.add_comment:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/add_comment
+    path: /associations/{associationId}/consumers/{consumerId}/add_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:addComment }
 
 open_miam_miam.admin.association.consumer.list_anonymous_comments_for_sales_order:
-    pattern:  /associations/{associationId}/consumers/anonymous/sales_order/{salesOrderId}/list_comment
+    path: /associations/{associationId}/consumers/anonymous/sales_order/{salesOrderId}/list_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
 
 open_miam_miam.admin.association.consumer.list_comments_for_sales_order:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/sales_order/{salesOrderId}/list_comment
+    path: /associations/{associationId}/consumers/{consumerId}/sales_order/{salesOrderId}/list_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
 
 open_miam_miam.admin.association.consumer.list_anonymous_comments:
-    pattern:  /associations/{associationId}/consumers/anonymous/list_comment
+    path: /associations/{associationId}/consumers/anonymous/list_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
 
 open_miam_miam.admin.association.consumer.list_comments:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/list_comment
+    path: /associations/{associationId}/consumers/{consumerId}/list_comment
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listComments }
 
 open_miam_miam.admin.association.consumer.process_anonymous_comment:
-    pattern:  /associations/{associationId}/consumers/anonymous/comments/{commentId}/process
+    path: /associations/{associationId}/consumers/anonymous/comments/{commentId}/process
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
 
 open_miam_miam.admin.association.consumer.process_comment:
-    pattern:  /associations/{associationId}/consumers/{consumerId}/comments/{commentId}/process
+    path: /associations/{associationId}/consumers/{consumerId}/comments/{commentId}/process
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:processComment }
 
 open_miam_miam.admin.association.consumer.list:
-    pattern:  /associations/{id}/consumers
+    path: /associations/{id}/consumers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:list }
 
 open_miam_miam.admin.association.consumer.list_anonymous_payments:
-    pattern:  /associations/{id}/consumers/anonymous/payments
+    path: /associations/{id}/consumers/anonymous/payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listAnonymousPayments }
 
 open_miam_miam.admin.association.consumer.list_payments:
-    pattern:  /associations/{id}/consumers/{consumerId}/payments
+    path: /associations/{id}/consumers/{consumerId}/payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPayments }
 
 open_miam_miam.admin.association.consumer.delete_payment:
-    pattern:  /associations/{id}/consumers/payments/{paymentId}/delete
+    path: /associations/{id}/consumers/payments/{paymentId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:delete }
 
 open_miam_miam.admin.association.consumer.payment.list_allocations:
-    pattern:  /associations/{id}/consumers/payments/{paymentId}/allocations
+    path: /associations/{id}/consumers/payments/{paymentId}/allocations
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Consumer:listPaymentAllocations }
 
 open_miam_miam.admin.association.consumer.payment.delete_allocation:
-    pattern:  /associations/{id}/consumers/payments/{paymentId}/allocations/{paymentAllocationId}/delete
+    path: /associations/{id}/consumers/payments/{paymentId}/allocations/{paymentAllocationId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:deletePaymentAllocation }
 
 open_miam_miam.admin.association.article.list:
-    pattern:  /associations/{id}/articles
+    path: /associations/{id}/articles
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:list }
 
 open_miam_miam.admin.association.article.create:
-    pattern:  /associations/{id}/articles/new
+    path: /associations/{id}/articles/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:create }
 
 open_miam_miam.admin.association.article.edit:
-    pattern:  /associations/{id}/articles/{articleId}
+    path: /associations/{id}/articles/{articleId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:edit }
 
 open_miam_miam.admin.association.article.delete:
-    pattern:  /associations/{id}/articles/{articleId}/delete
+    path: /associations/{id}/articles/{articleId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Article:delete }
 
 open_miam_miam.admin.association.newsletter.create:
-    pattern:  /associations/{id}/newsletters
+    path: /associations/{id}/newsletters
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:create }
 
 open_miam_miam.admin.association.newsletter.edit:
-    pattern:  /associations/{id}/newsletters/{newsletterId}
+    path: /associations/{id}/newsletters/{newsletterId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:edit }
 
 open_miam_miam.admin.association.newsletter.send:
-    pattern:  /associations/{id}/newsletters/{newsletterId}/send
+    path: /associations/{id}/newsletters/{newsletterId}/send
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:send }
 
 open_miam_miam.admin.association.newsletter.report:
-    pattern:  /associations/{id}/newsletters/{newsletterId}/report
+    path: /associations/{id}/newsletters/{newsletterId}/report
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Newsletter:showReport }
 
 open_miam_miam.admin.association.manager.list:
-    pattern:  /associations/{id}/managers
+    path: /associations/{id}/managers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:list }
 
 open_miam_miam.admin.association.manager.search:
-    pattern:  /associations/{id}/managers/search
+    path: /associations/{id}/managers/search
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:search }
 
 open_miam_miam.admin.association.manager.promote:
-    pattern:  /associations/{id}/managers/promote/{userId}
+    path: /associations/{id}/managers/promote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:promote }
 
 open_miam_miam.admin.association.manager.demote:
-    pattern:  /associations/{id}/managers/demote/{userId}
+    path: /associations/{id}/managers/demote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Manager:demote }
 
 #
 # Admin Payment
 #
 open_miam_miam.admin.association.payment.manage_anonymous_payments:
-    pattern:  /associations/{id}/consumers/anonymous/manage_payments
+    path: /associations/{id}/consumers/anonymous/manage_payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:manageAnonymousPayments }
 
 open_miam_miam.admin.association.payment.manage_user_payments:
-    pattern:  /associations/{id}/consumers/{userId}/manage_payments
+    path: /associations/{id}/consumers/{userId}/manage_payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:manageUserPayments }
 
 open_miam_miam.admin.association.payment.manage_payments.from_sales_order:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/manage_payments
+    path: /associations/{id}/sales_orders/{salesOrderId}/manage_payments
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:manageSalesOrderPayments }
 
 open_miam_miam.admin.association.payment.anonymous_summary:
-    pattern:  /associations/{id}/consumers/anonymous/payments_summary
+    path: /associations/{id}/consumers/anonymous/payments_summary
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:anonymousSummary }
 
 open_miam_miam.admin.association.payment.user_summary:
-    pattern:  /associations/{id}/consumers/{userId}/payments_summary
+    path: /associations/{id}/consumers/{userId}/payments_summary
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:userSummary }
 
 open_miam_miam.admin.association.payment.sales_order_summary:
-    pattern:  /associations/{id}/sales_orders/{salesOrderId}/payments_summary
+    path: /associations/{id}/sales_orders/{salesOrderId}/payments_summary
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Association\Payment:salesOrderSummary }
 
 #
 # Admin Producer
 #
 open_miam_miam.admin.producer.show_dashboard:
-    pattern:  /producers/{id}/dashboard
+    path: /producers/{id}/dashboard
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:showDashboard }
 
 open_miam_miam.admin.producer.statistics:
-    pattern:  /producers/{id}/dashboard/statistics
+    path: /producers/{id}/dashboard/statistics
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:statistics }
 
 open_miam_miam.admin.producer.edit:
-    pattern:  /producers/{id}/edit
+    path: /producers/{id}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\General:edit }
 
 open_miam_miam.admin.producer.product.list:
-    pattern:  /producers/{id}/products
+    path: /producers/{id}/products
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:list }
 
 open_miam_miam.admin.producer.product.create:
-    pattern:  /producers/{id}/products/new
+    path: /producers/{id}/products/new
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:create }
 
 open_miam_miam.admin.producer.product.edit:
-    pattern:  /producers/{id}/products/{productId}
+    path: /producers/{id}/products/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:edit }
 
 open_miam_miam.admin.producer.product.delete:
-    pattern:  /producers/{id}/products/{productId}/delete
+    path: /producers/{id}/products/{productId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Product:delete }
 
 open_miam_miam.admin.producer.calendar.edit:
-    pattern:  /producers/{id}/calendar
+    path: /producers/{id}/calendar
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Calendar:edit }
 
 open_miam_miam.admin.producer.sales_order.list:
-    pattern:  /producers/{id}/sales_orders
+    path: /producers/{id}/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:list }
 
 open_miam_miam.admin.producer.sales_order.history:
-    pattern:  /producers/{id}/sales_orders/history
+    path: /producers/{id}/sales_orders/history
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:listSalesOrderHistory }
 
 open_miam_miam.admin.producer.sales_order.get_products_to_prepare_pdf_for_branch_occurrence:
-    pattern:  /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/products_to_prepare
+    path: /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/products_to_prepare
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:getProductsToPreparePdfForBranchOccurrence }
 
 open_miam_miam.admin.producer.sales_order.get_sales_orders_pdf_for_branch_occurrence:
-    pattern:  /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/sales_orders
+    path: /producers/{id}/sales_orders/branch_occurrences/{branchOccurrenceId}/pdfs/sales_orders
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:getSalesOrdersPdfForBranchOccurrence }
 
 open_miam_miam.admin.producer.sales_order.view:
-    pattern:  /producers/{id}/sales_orders/{salesOrderId}
+    path: /producers/{id}/sales_orders/{salesOrderId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:view }
 
 open_miam_miam.admin.producer.sales_order.edit:
-    pattern:  /producers/{id}/sales_orders/{salesOrderId}/edit
+    path: /producers/{id}/sales_orders/{salesOrderId}/edit
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:edit }
 
 open_miam_miam.admin.producer.sales_order.delete_row:
-    pattern:  /producers/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
+    path: /producers/{id}/sales_orders/{salesOrderId}/rows/{salesOrderRowId}/delete
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:deleteSalesOrderRow }
 
 open_miam_miam.admin.producer.sales_order.add_products:
-    pattern:  /producers/{id}/sales_orders/{salesOrderId}/add_products
+    path: /producers/{id}/sales_orders/{salesOrderId}/add_products
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProducts }
 
 open_miam_miam.admin.producer.sales_order.add_product:
-    pattern:  /producers/{id}/sales_orders/{salesOrderId}/add_product/{productId}
+    path: /producers/{id}/sales_orders/{salesOrderId}/add_product/{productId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\SalesOrder:addProduct }
 
 open_miam_miam.admin.producer.manager.list:
-    pattern:  /producers/{id}/managers
+    path: /producers/{id}/managers
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:list }
 
 open_miam_miam.admin.producer.manager.search:
-    pattern:  /producers/{id}/managers/search
+    path: /producers/{id}/managers/search
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:search }
 
 open_miam_miam.admin.producer.manager.promote:
-    pattern:  /producers/{id}/managers/promote/{userId}
+    path: /producers/{id}/managers/promote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:promote }
 
 open_miam_miam.admin.producer.manager.demote:
-    pattern:  /producers/{id}/managers/demote/{userId}
+    path: /producers/{id}/managers/demote/{userId}
     defaults: { _controller: IsicsOpenMiamMiamBundle:Admin\Producer\Manager:demote }

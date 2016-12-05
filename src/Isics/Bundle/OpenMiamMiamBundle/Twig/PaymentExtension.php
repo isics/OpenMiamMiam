@@ -10,8 +10,8 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
-use Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Manager\PaymentManager;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class PaymentExtension extends \Twig_Extension
@@ -40,9 +40,9 @@ class PaymentExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'has_missing_allocations' => new \Twig_Function_Method($this, 'hasMissingAllocations'),
-        );
+        return [
+            new \Twig_SimpleFunction('has_missing_allocations', [$this, 'hasMissingAllocations']),
+        ];
     }
 
     /**

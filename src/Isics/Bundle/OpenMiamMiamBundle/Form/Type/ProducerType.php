@@ -13,6 +13,11 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -27,39 +32,39 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-                ->add('specialty', 'text')
-                ->add('profileImageFile', 'file', array(
+        $builder->add('name', TextType::class)
+                ->add('specialty', TextType::class)
+                ->add('profileImageFile', FileType::class, array(
                         'required' => false
                 ))
-                ->add('presentationImageFile', 'file', array(
+                ->add('presentationImageFile', FileType::class, array(
                         'required' => false
                 ))
-                ->add('address1', 'text', array(
+                ->add('address1', TextType::class, array(
                     'required' => false
                 ))
-                ->add('address2', 'text', array(
+                ->add('address2', TextType::class, array(
                     'required' => false
                 ))
-                ->add('zipcode', 'text', array(
+                ->add('zipcode', TextType::class, array(
                     'required' => false
                 ))
-                ->add('city', 'text', array(
+                ->add('city', TextType::class, array(
                     'required' => false
                 ))
-                ->add('phoneNumber1', 'text', array(
+                ->add('phoneNumber1', TextType::class, array(
                     'required' => false
                 ))
-                ->add('phoneNumber2', 'text', array(
+                ->add('phoneNumber2', TextType::class, array(
                     'required' => false
                 ))
-                ->add('website', 'url', array(
+                ->add('website', UrlType::class, array(
                     'required' => false
                 ))
-                ->add('facebook', 'url', array(
+                ->add('facebook', UrlType::class, array(
                     'required' => false
                 ))
-                ->add('presentation', 'textarea', array(
+                ->add('presentation', TextareaType::class, array(
                         'required' => false
                 ))
                 ->addEventSubscriber($this);
@@ -82,10 +87,10 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
         $producer = $event->getData();
 
         if (null !== $producer->getProfileImage()) {
-            $form->add('deleteProfileImage', 'checkbox', array('required' => false));
+            $form->add('deleteProfileImage', CheckboxType::class, array('required' => false));
         }
         if (null !== $producer->getPresentationImage()) {
-            $form->add('deletePresentationImage', 'checkbox', array('required' => false));
+            $form->add('deletePresentationImage', CheckboxType::class, array('required' => false));
         }
     }
 
@@ -97,14 +102,5 @@ class ProducerType extends AbstractType implements EventSubscriberInterface
     public function getDefaultOptions(array $options)
     {
         return array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer');
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_producer';
     }
 }

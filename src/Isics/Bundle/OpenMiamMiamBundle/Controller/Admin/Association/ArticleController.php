@@ -12,8 +12,9 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Article;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\AssociationArticleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -72,7 +73,7 @@ class ArticleController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $articleManager->save($article, $this->get('security.context')->getToken()->getUser());
+                $articleManager->save($article, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.created');
 
@@ -111,7 +112,7 @@ class ArticleController extends BaseController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $articleManager->save($article, $this->get('security.context')->getToken()->getUser());
+                $articleManager->save($article, $this->get('security.token_storage')->getToken()->getUser());
 
                 $this->get('session')->getFlashBag()->add('notice', 'admin.association.articles.message.updated');
 
@@ -150,11 +151,14 @@ class ArticleController extends BaseController
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.association_article'),
-            $article,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_association_article',
+                AssociationArticleType::class,
+                $article,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**

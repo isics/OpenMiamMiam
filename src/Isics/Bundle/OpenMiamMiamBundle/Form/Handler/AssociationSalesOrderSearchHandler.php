@@ -6,8 +6,8 @@ use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Repository\SalesOrderRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\AssociationConsumerSalesOrdersFilter;
-use Symfony\Component\Form\FormFactoryInterface;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class AssociationSalesOrderSearchHandler
 {

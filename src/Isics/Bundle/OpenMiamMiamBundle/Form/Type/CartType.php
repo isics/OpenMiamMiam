@@ -11,13 +11,17 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 
 class CartType extends AbstractType implements EventSubscriberInterface
 {
@@ -26,9 +30,9 @@ class CartType extends AbstractType implements EventSubscriberInterface
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('items', 'collection', array('type' => 'open_miam_miam_cart_item', 'allow_delete' => true));
-        $builder->add('update', 'submit');
-        $builder->add('checkout', 'submit');
+        $builder->add('items', CollectionType::class, array('entry_type' => CartItemType::class, 'allow_delete' => true));
+        $builder->add('update', SubmitType::class);
+        $builder->add('checkout', SubmitType::class);
 
         $builder->addEventSubscriber($this);
     }
@@ -36,12 +40,9 @@ class CartType extends AbstractType implements EventSubscriberInterface
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class'         => 'Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart',
-            'cascade_validation' => true,
-        ));
+        $resolver->setDefaults(array('data_class' => Cart::class));
     }
 
     /**
@@ -72,13 +73,5 @@ class CartType extends AbstractType implements EventSubscriberInterface
         }
 
         $event->setData($data);
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_cart';
     }
 }

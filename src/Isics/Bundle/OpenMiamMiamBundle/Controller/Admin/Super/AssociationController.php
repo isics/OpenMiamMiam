@@ -12,10 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SuperAssociationType;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Association\AssociationWithOwner;
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,7 +67,7 @@ class AssociationController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.context')->getToken()->getUser());
+                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.associations.message.created');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.association.list'));
@@ -97,7 +98,7 @@ class AssociationController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.context')->getToken()->getUser());
+                $associationManager->saveAssociationWithOwner($associationWithOwner, $this->get('security.token_storage')->getToken()->getUser());
                 $this->get('session')->getFlashBag()->add('notice', 'admin.super.associations.message.updated');
 
                 return $this->redirect($this->generateUrl('open_miam_miam.admin.super.association.list'));
@@ -130,11 +131,14 @@ class AssociationController extends Controller
             );
         }
 
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.super_association'),
-            $associationWithOwner,
-            array('action' => $action, 'method' => 'POST')
-        );
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_super_association',
+                SuperAssociationType::class,
+                $associationWithOwner,
+                array('action' => $action, 'method' => 'POST')
+            )
+            ->getForm();
     }
 
     /**
@@ -149,7 +153,7 @@ class AssociationController extends Controller
     public function deleteAction(Association $association)
     {
         $associationManager = $this->get('open_miam_miam.association_manager');
-        $associationManager->delete($association, $this->get('security.context')->getToken()->getUser());
+        $associationManager->delete($association, $this->get('security.token_storage')->getToken()->getUser());
         $this->get('session')->getFlashBag()->add('notice', 'admin.super.associations.message.deleted');
 
         return $this->redirect($this->generateUrl('open_miam_miam.admin.super.association.list'));

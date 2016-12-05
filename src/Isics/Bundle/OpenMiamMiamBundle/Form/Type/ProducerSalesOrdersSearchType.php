@@ -8,12 +8,15 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProducerSalesOrdersSearchType extends AbstractType
 {
@@ -34,53 +37,34 @@ class ProducerSalesOrdersSearchType extends AbstractType
     {
         $builder
             ->setMethod('get')
-            ->add(
-                'branch',
-                'entity',
-                array(
-                    'class'       => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Branch',
-                    'required'    => false,
-                    'property'    => 'name',
-                    'empty_value' => $this->translator->trans('admin.producer.sales_orders.list_history.filter.all_branches'),
-                )
-            )
-            ->add(
-                'minDate',
-                'date',
-                array(
-                    'widget'   => 'single_text',
-                    'format'   => 'dd/MM/yyyy',
-                    'input'    => 'datetime',
-                    'required' => false
-                )
-            )
-            ->add(
-                'maxDate',
-                'date',
-                array(
-                    'widget'   => 'single_text',
-                    'format'   => 'dd/MM/yyyy',
-                    'input'    => 'datetime',
-                    'required' => false
-                )
-            );
+            ->add('branch', EntityType::class, array(
+                'class'        => Branch::class,
+                'required'     => false,
+                'choice_label' => 'name',
+                'placeholder'  => $this->translator->trans('admin.producer.sales_orders.list_history.filter.all_branches'),
+            ))
+            ->add('minDate', DateType::class, array(
+                'widget'   => 'single_text',
+                'format'   => 'dd/MM/yyyy',
+                'input'    => 'datetime',
+                'required' => false
+            ))
+            ->add('maxDate', DateType::class, array(
+                'widget'   => 'single_text',
+                'format'   => 'dd/MM/yyyy',
+                'input'    => 'datetime',
+                'required' => false
+            ));
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
-                'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrdersFilter',
-            ))
-            ->setRequired(['producer'])
-            ->setAllowedTypes(['producer' => Producer::class]);
+            ->setDefaults(array('data_class' => ProducerSalesOrdersFilter::class))
+            ->setRequired(array('producer'))
+            ->setAllowedTypes('producer', Producer::class);
     }
-
-    public function getName()
-    {
-        return 'open_miam_miam_producer_sales_order_search';
-    }
-} 
+}

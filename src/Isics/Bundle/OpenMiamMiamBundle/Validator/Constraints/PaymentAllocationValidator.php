@@ -24,9 +24,15 @@ class PaymentAllocationValidator extends ConstraintValidator
         $salesOrder = $paymentAllocation->getSalesOrder();
         $payment = $paymentAllocation->getPayment();
         if (null !== $salesOrder && $salesOrder->getLeftToPay() < $paymentAllocation->getAmount()) {
-            $this->context->addViolationAt('amount', 'error.payment_allocation.amount_invalid', array('%max%' => $salesOrder->getLeftToPay()));
+            $this->context
+                ->buildViolation('error.payment_allocation.amount_invalid', array('%max%' => $salesOrder->getLeftToPay()))
+                ->atPath('amount')
+                ->addViolation();
         } elseif (null !== $payment && $payment->getRest() < $paymentAllocation->getAmount()) {
-            $this->context->addViolationAt('amount', 'error.payment_allocation.amount_invalid', array('%max%' => $payment->getRest()));
+            $this->context
+                ->buildViolation('error.payment_allocation.amount_invalid', array('%max%' => $payment->getRest()))
+                ->atPath('amount')
+                ->addViolation();
         }
     }
 }

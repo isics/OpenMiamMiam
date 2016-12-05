@@ -12,10 +12,15 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Category;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Category\CategoryNode;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
@@ -24,20 +29,21 @@ class CategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text');
+        $builder->add('name', TextType::class);
 
         if (!$options['data']->isRoot()) {
-            $builder->add('position', 'choice', array(
+            $builder->add('position', ChoiceType::class, array(
                 'choices' => array(
-                    CategoryNode::POSITION_FIRST_CHILD_OF  => 'tree.position.first_child_of',
-                    CategoryNode::POSITION_LAST_CHILD_OF   => 'tree.position.last_child_of',
-                    CategoryNode::POSITION_PREV_SIBLING_OF => 'tree.position.prev_sibling_of',
-                    CategoryNode::POSITION_NEXT_SIBLING_OF => 'tree.position.next_sibling_of',
-                )
+                    'tree.position.first_child_of' => CategoryNode::POSITION_FIRST_CHILD_OF,
+                    'tree.position.last_child_of' => CategoryNode::POSITION_LAST_CHILD_OF,
+                    'tree.position.prev_sibling_of' => CategoryNode::POSITION_PREV_SIBLING_OF,
+                    'tree.position.next_sibling_of' => CategoryNode::POSITION_NEXT_SIBLING_OF,
+                ),
+                'choices_as_values' => true,
             ))
-            ->add('target', 'entity', array(
-                'class'         => 'IsicsOpenMiamMiamBundle:Category',
-                'property'      => 'indentedName',
+            ->add('target', EntityType::class, array(
+                'class'         => Category::class,
+                'choice_label'  => 'indentedName',
                 'query_builder' => function(EntityRepository $er) {
                     return $er->getNodesHierarchyQueryBuilder();
                 },
@@ -45,24 +51,14 @@ class CategoryType extends AbstractType
             ));
         }
 
-        $builder->add('save', 'submit');
+        $builder->add('save', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Category\CategoryNode'
-        ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_category';
+        $resolver->setDefaults(array('data_class' => CategoryNode::class));
     }
 }

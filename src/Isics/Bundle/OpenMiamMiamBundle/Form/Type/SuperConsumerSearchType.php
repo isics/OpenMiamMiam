@@ -12,9 +12,11 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SuperConsumerSearchType extends AbstractType
 {
@@ -27,45 +29,37 @@ class SuperConsumerSearchType extends AbstractType
             ->setMethod('get')
             ->add(
                 'ref',
-                'integer',
+                IntegerType::class,
                 array(
                     'required' => false
                 )
             )
             ->add(
                 'lastName',
-                'text',
+                TextType::class,
                 array(
                     'required' => false
                 )
             )
             ->add(
                 'firstName',
-                'text',
+                TextType::class,
                 array(
                     'required' => false
                 )
             )
-            ->add('deleted', 'checkbox', ['required' => false])
+            ->add('deleted', CheckboxType::class, ['required' => false])
             ;
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(array(
                 'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Consumer\SuperConsumerFilter',
         ));
     }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_super_consumer_search';
-    }
-} 
+}

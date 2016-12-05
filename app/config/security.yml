@@ -22,7 +22,7 @@ security:
             pattern: ^/admin
             form_login:
                 provider: fos_userbundle
-                csrf_provider: form.csrf_provider
+                csrf_provider: security.csrf.token_manager
                 check_path: /admin/login_check
                 login_path: /admin/login
                 default_target_path: /admin
@@ -39,7 +39,7 @@ security:
            pattern: ^/
            form_login:
                provider: fos_userbundle
-               csrf_provider: form.csrf_provider
+               csrf_provider: security.csrf.token_manager
            logout:    true
            anonymous: true
            remember_me:

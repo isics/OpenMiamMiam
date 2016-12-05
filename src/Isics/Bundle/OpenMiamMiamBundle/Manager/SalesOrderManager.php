@@ -15,11 +15,11 @@ use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrderRow;
-use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
-use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
 use Isics\Bundle\OpenMiamMiamBundle\Model\Mailer;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
 use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\SalesOrderConfirmation;
+use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 

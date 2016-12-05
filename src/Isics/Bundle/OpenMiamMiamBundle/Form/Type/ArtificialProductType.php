@@ -12,9 +12,15 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArtificialProductType extends AbstractType
 {
@@ -23,15 +29,15 @@ class ArtificialProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text')
-                ->add('price', 'text', array('required' => false))
-                ->add('add', 'submit');
+        $builder->add('name', TextType::class)
+                ->add('price', TextType::class, array('required' => false))
+                ->add('add', SubmitType::class);
 
         if (isset($options['association'])) {
             $association = $options['association'];
-            $builder->add('producer', 'entity', array(
-                'class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Producer',
-                'property' => 'name',
+            $builder->add('producer', EntityType::class, array(
+                'class' => Producer::class,
+                'choice_label' => 'name',
                 'expanded' => false,
                 'multiple' => false,
                 'query_builder' => function(EntityRepository $er) use ($association) {
@@ -44,18 +50,12 @@ class ArtificialProductType extends AbstractType
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\Product\ArtificialProduct'));
-        $resolver->setOptional(array('association'));
-        $resolver->setAllowedTypes(array('association' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Association'));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_artificial_product';
+        $resolver
+            ->setDefaults(array('data_class' => ArtificialProduct::class))
+            ->setDefined(array('association'))
+            ->setAllowedTypes('association', Association::class)
+        ;
     }
 }

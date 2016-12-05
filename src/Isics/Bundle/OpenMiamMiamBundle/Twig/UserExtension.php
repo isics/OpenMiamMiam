@@ -7,12 +7,12 @@
  * This source file is subject to the AGPL v3 license that is bundled
  * with this source code in the file LICENSE.
  */
- 
+
 namespace Isics\Bundle\OpenMiamMiamBundle\Twig;
 
 use Isics\Bundle\OpenMiamMiamBundle\Formatter\UserFormatter;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
- 
+
 class UserExtension extends \Twig_Extension
 {
     /**
@@ -36,16 +36,16 @@ class UserExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'format_user_identity' => new \Twig_Function_Method($this, 'formatUserIdentity'),
-            'format_identity' => new \Twig_Function_Method($this, 'formatIdentity'),
+            new \Twig_SimpleFunction('format_user_identity', [$this, 'formatUserIdentity']),
+            new \Twig_SimpleFunction('format_identity', [$this, 'formatIdentity']),
         );
     }
 
     /**
      * Return format user identity
-     * 
+     *
      * @param User    $user
-     * @param $string $pattern 
+     * @param $string $pattern
      *
      * @return array
      */
@@ -56,14 +56,14 @@ class UserExtension extends \Twig_Extension
 
     /**
      * Return format identity
-     * 
+     *
      * @param string $firstname_first_letter
      * @param string $lastname
-     * @param string $pattern  
+     * @param string $pattern
      *
      * @return array
      */
-    public function formatIdentity($lastname = null, $firstname = null, $pattern = null) 
+    public function formatIdentity($lastname = null, $firstname = null, $pattern = null)
     {
         return $this->userFormatter->formatIdentity($lastname, $firstname, $pattern);
     }

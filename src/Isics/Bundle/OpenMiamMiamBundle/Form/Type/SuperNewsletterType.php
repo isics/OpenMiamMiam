@@ -13,9 +13,15 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SuperNewsletterType extends AbstractType
 {
@@ -28,19 +34,20 @@ class SuperNewsletterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('recipientType', 'choice', array(
+            ->add('recipientType', ChoiceType::class, array(
                 'choices' => array(
-                    Newsletter::RECIPIENT_TYPE_ALL      => 'recipient.type.all',
-                    Newsletter::RECIPIENT_TYPE_CONSUMER => 'recipient.type.consumers',
-                    Newsletter::RECIPIENT_TYPE_PRODUCER => 'recipient.type.producers',
+                    'recipient.type.all' => Newsletter::RECIPIENT_TYPE_ALL,
+                    'recipient.type.consumers' => Newsletter::RECIPIENT_TYPE_CONSUMER,
+                    'recipient.type.producers' => Newsletter::RECIPIENT_TYPE_PRODUCER,
                 ),
                 'multiple' => false,
                 'expanded' => true,
+                'choices_as_values' => true
             ))
-            ->add('branches', 'entity', array(
+            ->add('branches', EntityType::class, array(
                 'class'         => 'IsicsOpenMiamMiamBundle:Branch',
-                'property'      => 'nameWithAssociation',
-                'empty_value'   => '',
+                'choice_label'  => 'nameWithAssociation',
+                'placeholder'   => '',
                 'multiple'      => true,
                 'expanded'      => true,
                 'by_reference'  => false,
@@ -51,27 +58,19 @@ class SuperNewsletterType extends AbstractType
                         ->addOrderBy('b.city');
                 },
             ))
-            ->add('withoutBranch', 'checkbox', array('required' => false))
-            ->add('subject', 'text')
-            ->add('body', 'textarea')
-            ->add('send', 'submit');
+            ->add('withoutBranch', CheckboxType::class, array('required' => false))
+            ->add('subject', TextType::class)
+            ->add('body', TextareaType::class)
+            ->add('send', SubmitType::class);
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter',
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_super_newsletter';
     }
 }

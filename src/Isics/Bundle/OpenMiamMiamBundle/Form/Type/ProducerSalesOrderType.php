@@ -11,9 +11,12 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
+use Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProducerSalesOrderType extends AbstractType
 {
@@ -23,34 +26,26 @@ class ProducerSalesOrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('salesOrderRows','collection', array(
-                'type'    => 'open_miam_miam_sales_order_row',
-                'options' => array(
+            ->add('salesOrderRows', CollectionType::class, array(
+                'entry_type' => SalesOrderRowType::class,
+                'entry_options' => array(
                    'locked' => (bool)$options['locked']
                 )
             ));
 
         if (!$options['locked']) {
-            $builder->add('save', 'submit');
+            $builder->add('save', SubmitType::class);
         }
     }
 
     /**
      * @see AbstractType
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Isics\Bundle\OpenMiamMiamBundle\Model\SalesOrder\ProducerSalesOrder',
+            'data_class' => ProducerSalesOrder::class,
             'locked'     => false
         ));
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_producer_sales_order';
     }
 }

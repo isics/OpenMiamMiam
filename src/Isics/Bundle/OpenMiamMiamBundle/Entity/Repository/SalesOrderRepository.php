@@ -11,13 +11,13 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Entity\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\BranchOccurrence;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 
 class SalesOrderRepository extends EntityRepository

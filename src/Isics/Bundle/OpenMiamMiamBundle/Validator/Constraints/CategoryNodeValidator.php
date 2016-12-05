@@ -52,7 +52,10 @@ class CategoryNodeValidator extends ConstraintValidator
             !empty($rootNodes) && null !== $categoryId && $rootNodes[0]->getId() === $categoryId)
             && _CategoryNode::POSITION_FIRST_CHILD !== $categoryNode->getPosition()) {
 
-            $this->context->addViolationAt('position', 'error.tree.invalid_position');
+            $this->context
+                ->buildViolation('error.tree.invalid_position')
+                ->atPath('position')
+                ->addViolation();
         }
 
         // First child position is forbidden in other cases
@@ -60,7 +63,10 @@ class CategoryNodeValidator extends ConstraintValidator
             && (null === $categoryId || null !== $categoryId && $rootNodes[0]->getId() !== $categoryId)
             && _CategoryNode::POSITION_FIRST_CHILD === $categoryNode->getPosition()) {
 
-            $this->context->addViolationAt('position', 'error.tree.invalid_position');
+            $this->context
+                ->buildViolation('error.tree.invalid_position')
+                ->atPath('position')
+                ->addViolation();
         }
 
         // Target required for 4 reference positions
@@ -69,7 +75,10 @@ class CategoryNodeValidator extends ConstraintValidator
                 _CategoryNode::POSITION_PREV_SIBLING_OF, _CategoryNode::POSITION_NEXT_SIBLING_OF
             )) && null === $categoryNode->getTarget()) {
 
-            $this->context->addViolationAt('target', 'error.required');
+            $this->context
+                ->buildViolation('error.required')
+                ->atPath('target')
+                ->addViolation();
         }
 
         // Not a sibling of root
@@ -77,7 +86,10 @@ class CategoryNodeValidator extends ConstraintValidator
                 _CategoryNode::POSITION_PREV_SIBLING_OF, _CategoryNode::POSITION_NEXT_SIBLING_OF
             )) && 0 === $categoryNode->getTarget()->getLvl()) {
 
-            $this->context->addViolationAt('target', 'error.tree.invalid_position');
+            $this->context
+                ->buildViolation('error.tree.invalid_position')
+                ->atPath('target')
+                ->addViolation();
         }
 
         // Depth limit
@@ -85,7 +97,10 @@ class CategoryNodeValidator extends ConstraintValidator
                 _CategoryNode::POSITION_FIRST_CHILD_OF, _CategoryNode::POSITION_LAST_CHILD_OF
             )) && 1 < $categoryNode->getTarget()->getLvl()) {
 
-            $this->context->addViolationAt('target', 'error.tree.too_deep');
+            $this->context
+                ->buildViolation('error.tree.too_deep')
+                ->atPath('target')
+                ->addViolation();
         }
 
         // Category is not a parent of target
@@ -95,7 +110,10 @@ class CategoryNodeValidator extends ConstraintValidator
                 ->getPath($categoryNode->getTarget());
 
             if (in_array($categoryNode->getCategory(), $path)) {
-                $this->context->addViolationAt('target', 'error.tree.invalid_position');
+                $this->context
+                    ->buildViolation('error.tree.invalid_position')
+                    ->atPath('target')
+                    ->addViolation();
             }
         }
     }

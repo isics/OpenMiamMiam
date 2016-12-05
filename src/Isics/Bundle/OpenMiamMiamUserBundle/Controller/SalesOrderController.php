@@ -25,7 +25,7 @@ class SalesOrderController extends Controller
      */
     public function showAction()
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $salesOrders = $this->getDoctrine()
             ->getRepository('IsicsOpenMiamMiamBundle:SalesOrder')
             ->findForUser($user);
@@ -46,7 +46,7 @@ class SalesOrderController extends Controller
      */
     public function getPdfAction(SalesOrder $order)
     {
-        if ($this->get('security.context')->getToken()->getUser() !== $order->getUser()) {
+        if ($this->get('security.token_storage')->getToken()->getUser() !== $order->getUser()) {
             throw $this->createNotFoundException('Order not found!');
         }
 

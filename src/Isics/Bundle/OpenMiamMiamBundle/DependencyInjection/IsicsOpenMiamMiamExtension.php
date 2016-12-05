@@ -53,25 +53,6 @@ class IsicsOpenMiamMiamExtension extends Extension
         $container->setParameter('open_miam_miam.producer', $config['producer']);
 
         $container->setParameter('open_miam_miam.mailer', $config['mailer']);
-
-        $this->loadValidationFiles($container);
-    }
-
-    /**
-     * Loads validation files
-     *
-     * @param ContainerBuilder $container
-     */
-    private function loadValidationFiles(ContainerBuilder $container)
-    {
-        $yamlMappingFiles = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
-
-        $finder = new Finder();
-        foreach ($finder->files()->name('*.yml')->in(__DIR__.'/../Resources/config/validation') as $file) {
-            $yamlMappingFiles[] = (string) $file;
-        }
-
-        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
     }
 
     /**

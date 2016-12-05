@@ -14,15 +14,15 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Association\BaseController;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Payment;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\PaymentAllocation;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\SalesOrder;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Comment;
 use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CommentType;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
-use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -243,12 +243,18 @@ class ConsumerController extends BaseController
 
         $comment = $this->get('open_miam_miam.comment_manager')->createComment(
             $association,
-            $this->get('security.context')->getToken()->getUser(),
+            $this->get('security.token_storage')->getToken()->getUser(),
             $consumer,
             $salesOrder
         );
 
-        $form = $this->createForm(new CommentType, $comment);
+        $form =  $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_comment',
+                CommentType::class,
+                $comment
+            )
+            ->getForm();
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);

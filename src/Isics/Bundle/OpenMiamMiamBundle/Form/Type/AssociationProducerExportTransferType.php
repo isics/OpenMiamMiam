@@ -11,12 +11,10 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Newsletter;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Intl;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AssociationProducerExportTransferType extends AbstractType
@@ -60,25 +58,15 @@ class AssociationProducerExportTransferType extends AbstractType
 
         // Store last 12 previous months
         for ($i = 0 ; $i < 12 ; $i++) {
-            $choices[$date->format('Y-m')] = $this->translator->trans(
-                'admin.association.producers.list.export.choice',
-                array('%month%' => $formatter->format($date))
-            );
-
+            $choices[$this->translator->trans('admin.association.producers.list.export.choice', array('%month%' => $formatter->format($date)))] = $date->format('Y-m');
             $date->modify('first day of previous month midnight');
         }
 
-        $builder->add('month', 'choice', array(
-                'choices' => $choices
+        $builder
+            ->add('month', ChoiceType::class, array(
+                'choices' => $choices,
+                'choices_as_values' => true
             ))
-            ->add('export', 'submit');
-    }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_association_producer_export_transfert';
+            ->add('export', SubmitType::class);
     }
 }

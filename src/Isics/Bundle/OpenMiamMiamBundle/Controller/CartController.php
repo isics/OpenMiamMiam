@@ -13,6 +13,10 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Controller;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Branch;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Product;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartItemType;
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\CartType;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\Cart;
+use Isics\Bundle\OpenMiamMiamBundle\Model\Cart\CartItem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
@@ -66,17 +70,21 @@ class CartController extends Controller
             throw $this->createNotFoundException('Orders are closed!');
         }
 
-        $form = $this->createForm(
-            $this->get('open_miam_miam.form.type.cart'),
-            $cart,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
-                'method' => 'PUT',
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_cart',
+                CartType::class,
+                $cart,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
+                    'method' => 'PUT',
+                )
             )
-        );
+            ->getForm();
 
         $validator = $this->get('validator');
         $errors = $validator->validate($cart);
+
         $violationMapper = new ViolationMapper();
         foreach ($errors as $error) {
             $violationMapper->mapViolation($error, $form);
@@ -117,15 +125,18 @@ class CartController extends Controller
                 $cartItem->setProduct($product);
                 $cartItem->setQuantity(1);
 
-                $form = $this->createForm(
-                    $this->get('open_miam_miam.form.type.cart_item'),
-                    $cartItem,
-                    array(
-                        'action'        => $this->generateUrl('open_miam_miam.cart.add', array('branchSlug' => $branch->getSlug())),
-                        'method'        => 'POST',
-                        'submit_button' => true,
+                $form = $this->container->get('form.factory')
+                    ->createNamedBuilder(
+                        'open_miam_miam_cart_item',
+                        CartItemType::class,
+                        $cartItem,
+                        array(
+                            'action'        => $this->generateUrl('open_miam_miam.cart.add', array('branchSlug' => $branch->getSlug())),
+                            'method'        => 'POST',
+                            'submit_button' => true,
+                        )
                     )
-                );
+                    ->getForm();
 
                 $renderParameters['form'] = $form->createView();
             }
@@ -157,7 +168,14 @@ class CartController extends Controller
         $cart     = $this->getCart($branch);
         $cartItem = $cart->createItem();
 
-        $form = $this->createForm($this->get('open_miam_miam.form.type.cart_item'), $cartItem, array('submit_button' => true));
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_cart_item',
+                CartItemType::class,
+                $cartItem,
+                array('submit_button' => true)
+            )
+            ->getForm();
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -173,19 +191,32 @@ class CartController extends Controller
                     'notice',
                     'message.cart.added'
                 );
+
+                return $this->redirect($this->generateUrl(
+                    'open_miam_miam.cart.show',
+                    array('branchSlug' => $branch->getSlug())
+                ));
             }
         }
 
         $translator = $this->get('translator');
 
         if ($request->isXmlHttpRequest()) {
+            $errors = array();
+            foreach ($form->getErrors() as $error) {
+                $errors[] = $translator->trans($error->getMessage(), $error->getMessageParameters());
+            }
+
             return new JsonResponse(array(
                 'message' => $this->container->get('translator')->trans('cart.unable_to_add_item'),
-                'errors'  => array_map(function(FormError $error) use ($translator) {
-                    return $translator->trans($error->getMessage(), $error->getMessageParameters());
-                }, $form->getErrors())
+                'errors'  => $errors,
             ), 400);
         }
+
+        $this->get('session')->getFlashBag()->add(
+            'error',
+            'message.cart.not_added'
+        );
 
         return $this->redirect($this->generateUrl(
             'open_miam_miam.cart.show',
@@ -208,10 +239,18 @@ class CartController extends Controller
         $cart        = $this->getCart($branch);
         $updatedCart = clone $cart;
 
-        $form = $this->createForm($this->get('open_miam_miam.form.type.cart'), $updatedCart, array(
-            'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
-            'method' => 'PUT',
-        ));
+
+        $form = $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_cart',
+                CartType::class,
+                $updatedCart,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.cart.update', array('branchSlug' => $branch->getSlug())),
+                    'method' => 'PUT',
+                )
+            )
+            ->getForm();
 
         $form->handleRequest($request);
         if ($form->isValid()) {

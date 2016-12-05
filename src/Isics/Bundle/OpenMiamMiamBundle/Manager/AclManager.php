@@ -12,12 +12,12 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Manager;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
-use Symfony\Component\Security\Acl\Dbal\AclProvider;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-
+use Isics\Bundle\OpenMiamMiamBundle\Entity\Producer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Acl\Dbal\AclProvider;
+
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 class AclManager
 {

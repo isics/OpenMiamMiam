@@ -12,6 +12,8 @@
 namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SearchType extends AbstractType
@@ -22,16 +24,7 @@ class SearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('keyword', 'text', array('required' => false))
-            ->add('search', 'submit');
+            ->add('keyword', TextType::class, array('required' => false))
+            ->add('search', SubmitType::class);
     }
-
-    /**
-     * @see AbstractType
-     */
-    public function getName()
-    {
-        return 'open_miam_miam_search';
-    }
-
 }

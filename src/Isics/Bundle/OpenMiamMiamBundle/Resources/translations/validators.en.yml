@@ -1,0 +1,23 @@
+order.confirm.error.terms_of_service: "You have to accept terms of use."
+
+error.invalid:  "Invalid."
+error.required: "Required."
+
+error.cart.product_unavailable_in_branch: "Product unavailable for branch %branch%."
+error.cart.product_unavailable:           "Product unavailable."
+error.cart.not_enough_stock:              "Not enough stock(rest %rest%)."
+error.cart.decimal_quantity_not_allowed:  "Invalid quantity."
+
+error.sales_order.not_enough_stock: "Not enough stock(rest %rest%)"
+error.sales_order.ref_not_unique:   "Reference must be uniq."
+
+error.calendar.invalid_branch_occurrence:   "Invalid branch"
+error.calendar.invalid_producer_attendance: "Invalid attendance"
+
+error.product.invalid_branches:    "At least one branch is invalid."
+error.product.category_not_a_leaf: "Selected category can not contain other category."
+error.product.need_photo:          "Your product must have a photo to be set as feature."
+
+error.artificial_product.invalid: "Invalid"
+
+error.payment_allocation.amount_invalid: "Invalid amount(max: %max%)"

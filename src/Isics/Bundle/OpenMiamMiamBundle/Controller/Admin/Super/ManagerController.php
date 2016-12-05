@@ -11,6 +11,7 @@
 
 namespace Isics\Bundle\OpenMiamMiamBundle\Controller\Admin\Super;
 
+use Isics\Bundle\OpenMiamMiamBundle\Form\Type\SearchType;
 use Isics\Bundle\OpenMiamMiamUserBundle\Entity\User;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
@@ -100,14 +101,17 @@ class ManagerController extends Controller
      */
     protected function getSearchForm()
     {
-        return $this->createForm(
-            $this->get('open_miam_miam.form.type.search'),
-            null,
-            array(
-                'action' => $this->generateUrl('open_miam_miam.admin.super.manager.search'),
-                'method' => 'GET',
+        return $this->container->get('form.factory')
+            ->createNamedBuilder(
+                'open_miam_miam_search',
+                SearchType::class,
+                null,
+                array(
+                    'action' => $this->generateUrl('open_miam_miam.admin.super.manager.search'),
+                    'method' => 'GET',
+                )
             )
-        );
+            ->getForm();
     }
 
     /**

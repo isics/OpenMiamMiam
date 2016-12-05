@@ -3,17 +3,15 @@ imports:
 
 #framework:
 #    validation:
-#        cache: apc
+#        cache: validator.mapping.cache.doctrine.apc
+#    serializer:
+#        cache: serializer.mapping.cache.apc
 
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc
 #        result_cache_driver: apc
 #        query_cache_driver: apc
-
-# Swiftmailer Configuration
-swiftmailer:
-    spool:     { type: memory }
 
 monolog:
     handlers:
@@ -23,8 +21,10 @@ monolog:
             handler:      nested
         nested:
             type:  stream
-            path:  %kernel.logs_dir%/%kernel.environment%.log
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+        console:
+            type:  console
 
 isics_open_miam_miam_user:
     last_order_nb_days_considering_customer: 180
