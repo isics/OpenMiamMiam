@@ -148,7 +148,7 @@ class ProductType extends AbstractType  implements EventSubscriberInterface
         }
 
         if (null !== $product->getImage()) {
-            $form->add('deleteImage', 'checkbox', array(
+            $form->add('deleteImage', CheckboxType::class, array(
                 'required' => false
             ));
         }
