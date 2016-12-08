@@ -50,3 +50,6 @@ Isics\Bundle\OpenMiamMiamBundle\Entity\Association:
             - Url: ~
         facebook:
             - Url: ~
+        email:
+            - NotNull: ~
+            - Email: ~

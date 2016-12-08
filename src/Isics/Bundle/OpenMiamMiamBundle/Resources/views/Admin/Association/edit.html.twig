@@ -25,6 +25,8 @@
             </div>
         </div>
 
+        {{ form_row(form.email, {'label': 'admin.association.infos.email'|trans}) }}
+
         {{ form_row(form.address1, {'label': 'admin.association.infos.address1'|trans}) }}
         {{ form_errors(form.address2) }}
         {{ form_row(form.address2, {'label': 'admin.association.infos.address2'|trans}) }}

@@ -51,6 +51,7 @@ class LoadAssociationData extends AbstractFixture implements OrderedFixtureInter
         $association->setClosingDelay(86400);
         $association->setOpeningDelay(86400);
         $association->setDefaultCommission(10);
+        $association->setEmail('contact@domain.tld');
 
         $manager->persist($association);
         $manager->flush();
