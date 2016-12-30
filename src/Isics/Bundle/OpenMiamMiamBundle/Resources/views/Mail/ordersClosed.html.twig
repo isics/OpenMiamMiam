@@ -8,7 +8,6 @@
 {% extends 'IsicsOpenMiamMiamBundle:Mail:base.html.twig' %}
 
 {% block content %}
-
     {{ 'mail.branch.orders_closed.message_html'|trans({
         '%firstname%': format_user_identity(salesOrder.user, '%firstname%'),
         '%ref%': salesOrder.ref,
@@ -17,5 +16,9 @@
     })|raw }}
 
     {% include 'IsicsOpenMiamMiamBundle:Mail:customerSalesOrder.html.twig' with {'order': salesOrder} %}
+{% endblock %}
 
+{% block signature %}
+    <hr />
+    {{ branchOccurrence.branch.association.getName() }}
 {% endblock %}

@@ -8,11 +8,14 @@
 {% extends 'IsicsOpenMiamMiamBundle:Mail:base.html.twig' %}
 
 {% block content %}
-
     {{ newsletter.body|raw }}
 
     {{ 'newsletter.unsubscribe'|trans({
         '%url%': url('fos_user_profile_edit')
     })|raw }}
+{% endblock %}
 
+{% block signature %}
+    <hr />
+    {{ newsletter.association.getName() }}
 {% endblock %}

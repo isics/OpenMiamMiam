@@ -188,6 +188,7 @@ class NewsletterManager
     {
         $recipients    = array();
         $recipientType = $newsletter->getRecipientType();
+        $association = $newsletter->getAssociation();
 
         $userRepository = $this->entityManager->getRepository('IsicsOpenMiamMiamUserBundle:User');
 
@@ -242,7 +243,7 @@ class NewsletterManager
                 $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($recipient, '%firstname%'), $this->userExtension->formatUserIdentity($recipient, '%lastname%')), $body);
 
                 $message = \Swift_Message::newInstance()
-                    ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
+                    ->setFrom(array($association->getEmail() => $association->getName()))
                     ->setTo($recipient->getEmail())
                     ->setSubject($newsletter->getSubject())
                     ->setBody($body, 'text/html');
@@ -264,12 +265,14 @@ class NewsletterManager
      */
     public function sendTest(Newsletter $newsletter, User $user)
     {
+        $association = $newsletter->getAssociation();
+
         $body = $this->engine->render('IsicsOpenMiamMiamBundle:Mail:newsletterTest.html.twig', array('newsletter' => $newsletter));
 
         $body = str_replace(array('[FIRSTNAME]', '[LASTNAME]'), array($this->userExtension->formatUserIdentity($user, '%firstname%'), $this->userExtension->formatUserIdentity($user, '%lastname%')), $body);
 
         $message = \Swift_Message::newInstance()
-            ->setFrom(array($this->mailerConfig['sender_address'] => $this->mailerConfig['sender_name']))
+            ->setFrom(array($association->getEmail() => $association->getName()))
             ->setTo($user->getEmail())
             ->setSubject('[TEST] '.$newsletter->getSubject())
             ->setBody($body, 'text/html');

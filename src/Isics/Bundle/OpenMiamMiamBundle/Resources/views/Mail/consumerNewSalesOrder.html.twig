@@ -12,3 +12,8 @@
 
     {% include 'IsicsOpenMiamMiamBundle:Mail:customerSalesOrder.html.twig' with {'order': order} %}
 {% endblock %}
+
+{% block signature %}
+    <hr />
+    {{ association.getName() }}
+{% endblock %}

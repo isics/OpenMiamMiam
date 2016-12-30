@@ -84,6 +84,8 @@ class SendMailOrdersOpenCommand extends ContainerAwareCommand
                     continue;
                 }
 
+                $association = $branch->getAssociation();
+
                 $output->writeln($translator->trans('mail.branch.orders_open.log.branch_name', array(
                     '%branch_name%' => $branch->getName()
                 )));
@@ -91,6 +93,7 @@ class SendMailOrdersOpenCommand extends ContainerAwareCommand
                 foreach ($customers as $customer) {
                     $message = $mailer->getNewMessage();
                     $message
+                        ->setFrom(array($association->getEmail() => $association->getName()))
                         ->setTo($customer->getEmail())
                         ->setSubject(
                             $mailer->translate(

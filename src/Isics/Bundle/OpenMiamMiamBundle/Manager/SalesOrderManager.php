@@ -554,7 +554,10 @@ class SalesOrderManager
             return;
         }
 
+        $association = $order->getBranchOccurrence()->getBranch()->getAssociation();
+
         $message = $this->mailer->getNewMessage()
+                ->setFrom(array($association->getEmail() => $association->getName()))
                 ->setTo($order->getUser()->getEmail())
                 ->setSubject(
                     $this->mailer->translate(
@@ -565,7 +568,10 @@ class SalesOrderManager
                 ->setBody(
                     $this->mailer->render(
                         'IsicsOpenMiamMiamBundle:Mail:consumerNewSalesOrder.html.twig',
-                        array('order' => $order)
+                        array(
+                            'order' => $order,
+                            'association' => $association
+                        )
                     ),
                     'text/html'
                 );
