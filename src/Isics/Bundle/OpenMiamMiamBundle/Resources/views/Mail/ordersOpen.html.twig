@@ -8,7 +8,6 @@
 {% extends 'IsicsOpenMiamMiamBundle:Mail:base.html.twig' %}
 
 {% block content %}
-
     {{ 'mail.branch.orders_open.message_html'|trans({
         '%firstname%': format_identity(customer.lastname, customer.firstname, '%firstname%'),
         '%branch_name%': branchOccurrence.branch.name,
@@ -20,5 +19,9 @@
     {{ 'mail.branch.orders_open.unsubscribe'|trans({
         '%url%': url('fos_user_profile_edit')
     })|raw }}
+{% endblock %}
 
+{% block signature %}
+    <hr />
+    {{ branchOccurrence.branch.association.getName() }}
 {% endblock %}

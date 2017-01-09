@@ -2,8 +2,8 @@
 association.friends_of_organic_food: Les amis du bio
 
 # Branch
-branch.branch1: "Comptoir #1"
-branch.branch2: "Comptoir #2"
+branch.branch1: 'Comptoir #1'
+branch.branch2: 'Comptoir #2'
 
 # Category
 category.beef:                  Bœuf

@@ -121,6 +121,7 @@ class MainFeatureContext extends MinkContext implements Context, SnippetAcceptin
         $association->setClosingDelay(86400);
         $association->setOpeningDelay(86400);
         $association->setDefaultCommission(10);
+        $association->setEmail('contact@domain.com');
 
         $entityManager->persist($association);
         $entityManager->flush();

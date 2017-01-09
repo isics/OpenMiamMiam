@@ -14,6 +14,8 @@
     <body>
         {% block content %}{% endblock %}
 
-        {% include 'IsicsOpenMiamMiamBundle:Mail:baseSignature.html.twig' %}
+        {% block signature %}
+            {% include 'IsicsOpenMiamMiamBundle:Mail:baseSignature.html.twig' %}
+        {% endblock %}
     </body>
 </html>

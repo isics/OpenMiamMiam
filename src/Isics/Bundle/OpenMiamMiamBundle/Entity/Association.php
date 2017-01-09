@@ -168,6 +168,15 @@ class Association
     private $payments;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=128)
+     */
+    private $email;
+
+
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -757,5 +766,29 @@ class Association
     public function getPayments()
     {
         return $this->payments;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Association
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

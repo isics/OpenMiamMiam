@@ -27,6 +27,13 @@ class AssociationWithOwner
     protected $owner;
 
     /**
+     * @var string
+     */
+    protected $email;
+
+
+
+    /**
      * Sets Association
      *
      * @param Association
@@ -80,5 +87,21 @@ class AssociationWithOwner
     public function getName()
     {
         return $this->association->getName();
+    }
+
+    /**
+     * @see Association
+     */
+    public function setEmail($email)
+    {
+        $this->association->setEmail($email);
+    }
+
+    /**
+     * @see Association
+     */
+    public function getEmail()
+    {
+        return $this->association->getEmail();
     }
 }

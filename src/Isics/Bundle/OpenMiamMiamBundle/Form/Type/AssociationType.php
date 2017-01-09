@@ -13,6 +13,7 @@ namespace Isics\Bundle\OpenMiamMiamBundle\Form\Type;
 
 use Isics\Bundle\OpenMiamMiamBundle\Entity\Association;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -32,6 +33,7 @@ class AssociationType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            ->add('email', EmailType::class)
             ->add('closingDelay', IntegerType::class)
             ->add('openingDelay', IntegerType::class)
             ->add('defaultCommission', NumberType::class)

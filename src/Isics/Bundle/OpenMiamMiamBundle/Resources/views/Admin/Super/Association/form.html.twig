@@ -15,6 +15,9 @@
     {{ form_errors(form) }}
 
     {{ form_row(form.name, {'label': 'admin.super.associations.form.name'|trans}) }}
+
+    {{ form_row(form.email, {'label': 'admin.super.associations.form.email'|trans}) }}
+
     <div class="owner-container">
         {{ form_row(form.owner, {'label': 'admin.super.associations.form.owner'|trans, 'attr': {'placeholder':  'admin.super.associations.form.owner.placeholder'|trans}}) }}
     </div>
