@@ -46,7 +46,7 @@
                     <dt>{{ 'producer'|trans }}</dt>
                     <dd>
                         <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
-                            <span class="glyphicon glyphicon-user"></span>  {{ product.producer }}
+                            <span class="glyphicon glyphicon-user"></span>  {{ product.producer }} <span class="badge">{{  product.producer.specialty }}</span>
                         </a>
                     </dd>
                     <dt>{{ 'price'|trans }}</dt>

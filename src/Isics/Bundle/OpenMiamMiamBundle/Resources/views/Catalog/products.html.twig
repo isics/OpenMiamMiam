@@ -43,7 +43,8 @@
             <td>
                 <a href="{{ path('open_miam_miam.producer', {'producerSlug': product.producer.slug}) }}">
                     <span class="glyphicon glyphicon-user"></span> {{ product.producer }}
-                </a>
+                </a><br />
+                <span class="badge">{{  product.producer.specialty }}</span>
             </td>
             <td{% if product.hasNoPrice %} class="td-no-price"{% endif %}>
                 <span class="price">
