@@ -15,7 +15,7 @@ default:
                 - Isics\Bundle\OpenMiamMiamBundle\Behat\Context\MainFeatureContext:
                     output_path: '/build/behat/output/'
             paths:
-                features: src/Isics/Bundle/OpenMiamMiamBundle/Behat/Features
+                features: vendor/isics/openmiammiam-bundle/Behat/Features
 
     extensions:
         Behat\MinkExtension:
