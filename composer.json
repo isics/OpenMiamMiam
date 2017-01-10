@@ -36,7 +36,9 @@
         "sonata-project/intl-bundle": "2.2.*",
         "stfalcon/tinymce-bundle": "1.1.*",
         "tecnickcom/tcpdf": "6.0.068",
-        "phpoffice/phpexcel": "1.7.9"
+        "phpoffice/phpexcel": "1.7.9",
+        "isics/openmiammiam-bundle": "dev-master",
+        "isics/openmiammiam-user-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

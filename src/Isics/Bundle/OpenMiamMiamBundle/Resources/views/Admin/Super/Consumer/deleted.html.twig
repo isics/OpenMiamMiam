@@ -1,8 +1,0 @@
-{% if consumer is not null%}
-    {% if consumer.locked %}
-        <div class="alert alert-danger text-center">
-            <span class="glyphicon glyphicon-ban-circle"></span>
-            {{ 'admin.super.consumer.deleted'|trans }}
-        </div>
-    {% endif %}
-{% endif %}

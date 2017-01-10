@@ -1,8 +1,0 @@
-{% trans_default_domain 'FOSUserBundle' %}
-{% block subject %}
-{% autoescape false %}{{ 'registration.email.subject'|trans }}{% endautoescape %}
-{% endblock %}
-{% block body_text %}{% endblock %}
-{% block body_html %}
-    {{ 'registration.email.message_html'|trans({'%firstname%': format_user_identity(user, '%firstname%'), '%lastname%': format_user_identity(user, '%lastname%'), '%confirmationUrl%': confirmationUrl})|raw }}
-{% endblock %}
