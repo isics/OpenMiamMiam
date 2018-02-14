@@ -1168,12 +1168,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/isics/OpenMiamMiamBundle.git",
-                "reference": "1e9c94362ac569f5426e7b53ce2ec9912a265ecf"
+                "reference": "cc297813ade12e7bbbf6b21371bfd93f9d7cd4d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isics/OpenMiamMiamBundle/zipball/1e9c94362ac569f5426e7b53ce2ec9912a265ecf",
-                "reference": "1e9c94362ac569f5426e7b53ce2ec9912a265ecf",
+                "url": "https://api.github.com/repos/isics/OpenMiamMiamBundle/zipball/cc297813ade12e7bbbf6b21371bfd93f9d7cd4d7",
+                "reference": "cc297813ade12e7bbbf6b21371bfd93f9d7cd4d7",
                 "shasum": ""
             },
             "require": {
@@ -1222,7 +1222,7 @@
             ],
             "description": "OpenMiamMiam Core Bundle",
             "homepage": "https://github.com/isics/OpenMiamMiam",
-            "time": "2017-08-11 09:02:43"
+            "time": "2018-02-14T14:41:21+00:00"
         },
         {
             "name": "isics/openmiammiam-user-bundle",
@@ -1256,7 +1256,7 @@
             ],
             "description": "OpenMiamMiam User Bundle",
             "homepage": "https://github.com/isics/OpenMiamMiam",
-            "time": "2017-08-07 10:02:21"
+            "time": "2017-08-07T10:02:21+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2113,6 +2113,7 @@
                 "xls",
                 "xlsx"
             ],
+            "abandoned": "phpoffice/phpspreadsheet",
             "time": "2015-05-01T07:00:55+00:00"
         },
         {
