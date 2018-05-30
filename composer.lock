@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "e171a508e6f8875fd9ba7e4804b3120d",
@@ -1168,12 +1168,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/isics/OpenMiamMiamBundle.git",
-                "reference": "7ac338be341253b214007ecb3f6d188f77cfe128"
+                "reference": "b79911367ca4cdd0801755602fb963fd66420298"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isics/OpenMiamMiamBundle/zipball/7ac338be341253b214007ecb3f6d188f77cfe128",
-                "reference": "7ac338be341253b214007ecb3f6d188f77cfe128",
+                "url": "https://api.github.com/repos/isics/OpenMiamMiamBundle/zipball/b79911367ca4cdd0801755602fb963fd66420298",
+                "reference": "b79911367ca4cdd0801755602fb963fd66420298",
                 "shasum": ""
             },
             "require": {
@@ -1222,7 +1222,7 @@
             ],
             "description": "OpenMiamMiam Core Bundle",
             "homepage": "https://github.com/isics/OpenMiamMiam",
-            "time": "2018-05-29T09:41:24+00:00"
+            "time": "2018-05-30T10:18:34+00:00"
         },
         {
             "name": "isics/openmiammiam-user-bundle",
