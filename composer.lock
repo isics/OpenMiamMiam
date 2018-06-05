@@ -1168,12 +1168,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/isics/OpenMiamMiamBundle.git",
-                "reference": "b79911367ca4cdd0801755602fb963fd66420298"
+                "reference": "8610e9437e2af47191205ef959c852d4dd648a20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/isics/OpenMiamMiamBundle/zipball/b79911367ca4cdd0801755602fb963fd66420298",
-                "reference": "b79911367ca4cdd0801755602fb963fd66420298",
+                "url": "https://api.github.com/repos/isics/OpenMiamMiamBundle/zipball/8610e9437e2af47191205ef959c852d4dd648a20",
+                "reference": "8610e9437e2af47191205ef959c852d4dd648a20",
                 "shasum": ""
             },
             "require": {
@@ -1222,7 +1222,7 @@
             ],
             "description": "OpenMiamMiam Core Bundle",
             "homepage": "https://github.com/isics/OpenMiamMiam",
-            "time": "2018-05-30T10:18:34+00:00"
+            "time": "2018-06-05T06:45:59+00:00"
         },
         {
             "name": "isics/openmiammiam-user-bundle",
