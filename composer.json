@@ -23,12 +23,14 @@
         "symfony/assetic-bundle": "~2.3",
         "symfony/monolog-bundle": "^3.0.2",
         "symfony/swiftmailer-bundle": "~2.3,>=2.3.10",
-        "symfony/symfony": "2.8.*",
+        "symfony/symfony": "3.4.",
         "twig/twig": "^1.0",
-        "isics/openmiammiam-bundle": "dev-master",
+        "isics/openmiammiam-bundle": "dev-migration-3.4",
         "isics/openmiammiam-user-bundle": "dev-master",
-        "friendsofsymfony/user-bundle": "v2.0.0-alpha3",
-        "sensio/distribution-bundle": "~5.0"
+        "friendsofsymfony/user-bundle": "v2.1.",
+        "sensio/distribution-bundle": "~5.0",
+        "symfony/security-acl": "^3.0",
+        "api-platform/core": "^2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

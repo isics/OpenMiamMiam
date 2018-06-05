@@ -151,7 +151,7 @@ assetic:
         less:
             node:       %node_path%
             node_paths: [%node_path%, %node_modules_path%]
-            apply_to:   "\.less$"
+            apply_to:   ".less$"
         uglifycss:
             bin: %node_uglifycss_bin%
         uglifyjs2:
